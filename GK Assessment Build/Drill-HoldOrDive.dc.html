@@ -9,6 +9,7 @@
 <x-dc>
 <helmet>
 <link href="assets/vendor/fonts/fonts.css" rel="stylesheet">
+<script src="./fa-pitch.js"></script>
 <style>
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;background:#04060c;}
@@ -106,26 +107,7 @@
         <div style="position:relative;container-type:size;width:100%;aspect-ratio:5/3;max-height:min(60vh,540px);margin:0 auto;border-radius:16px;overflow:hidden;background:radial-gradient(120% 130% at 50% 20%,#0d1c2e 0%,#091324 52%,#050c17 100%);border:1px solid rgba(120,140,166,.18);box-shadow:inset 0 0 60px rgba(0,0,0,.45);{{ vizShake }}">
           <div style="position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.5;background:repeating-linear-gradient(90deg,rgba(140,200,220,.03) 0px,rgba(140,200,220,.03) 1px,transparent 1px,transparent 40px);"></div>
 
-          <svg viewBox="0 0 500 300" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;z-index:1;">
-            <!-- pitch approach markings -->
-            <g stroke="rgba(150,200,220,.09)" stroke-width="1">
-              <line x1="0" y1="205" x2="500" y2="205"/><line x1="0" y1="250" x2="500" y2="250"/>
-              <line x1="205" y1="160" x2="205" y2="300"/><line x1="295" y1="160" x2="295" y2="300"/>
-            </g>
-            <!-- goal net -->
-            <g stroke="rgba(150,200,220,.12)" stroke-width="0.8">
-              <line x1="110" y1="42" x2="110" y2="158"/><line x1="150" y1="42" x2="150" y2="158"/><line x1="190" y1="42" x2="190" y2="158"/><line x1="230" y1="42" x2="230" y2="158"/><line x1="270" y1="42" x2="270" y2="158"/><line x1="310" y1="42" x2="310" y2="158"/><line x1="350" y1="42" x2="350" y2="158"/><line x1="390" y1="42" x2="390" y2="158"/>
-              <line x1="72" y1="72" x2="428" y2="72"/><line x1="72" y1="102" x2="428" y2="102"/><line x1="72" y1="132" x2="428" y2="132"/>
-            </g>
-            <!-- goal frame (24ft x 8ft, 3:1) -->
-            <g stroke="rgba(196,228,242,.9)" stroke-width="5" stroke-linecap="square" fill="none">
-              <line x1="70" y1="40" x2="70" y2="160"/>
-              <line x1="430" y1="40" x2="430" y2="160"/>
-              <line x1="67.5" y1="40" x2="432.5" y2="40"/>
-            </g>
-            <!-- goal line / ground -->
-            <line x1="6" y1="160" x2="494" y2="160" stroke="rgba(196,228,242,.5)" stroke-width="2"/>
-          </svg>
+          <canvas ref="{{ canvasRef }}" style="position:absolute;inset:0;width:100%;height:100%;display:block;z-index:1;"></canvas>
 
           <div style="position:absolute;top:9px;left:9px;width:13px;height:13px;border-top:1.5px solid color-mix(in srgb,var(--accent,#22D3EE) 45%,transparent);border-left:1.5px solid color-mix(in srgb,var(--accent,#22D3EE) 45%,transparent);z-index:2;pointer-events:none;"></div>
           <div style="position:absolute;top:9px;right:9px;width:13px;height:13px;border-top:1.5px solid color-mix(in srgb,var(--accent,#22D3EE) 45%,transparent);border-right:1.5px solid color-mix(in srgb,var(--accent,#22D3EE) 45%,transparent);z-index:2;pointer-events:none;"></div>
@@ -135,25 +117,6 @@
           <div style="position:absolute;top:11px;left:30px;z-index:7;display:inline-flex;align-items:center;gap:7px;font:700 9px 'IBM Plex Mono';letter-spacing:.18em;color:color-mix(in srgb,var(--accent,#22D3EE) 90%,#fff);text-shadow:0 1px 7px rgba(2,6,12,.9);pointer-events:none;">
             <span style="width:6px;height:6px;border-radius:50%;background:var(--accent,#22D3EE);box-shadow:0 0 8px var(--accent,#22D3EE);animation:fa-blink 1.6s ease-in-out infinite;"></span>{{ cam }}
           </div>
-          </sc-if>
-
-          <!-- keeper (standing ≈ 3/4 goal height) -->
-          <div style="position:absolute;z-index:4;width:15cqh;height:30cqh;transform-origin:50% 100%;transition:left .3s cubic-bezier(.34,.85,.3,1),top .3s cubic-bezier(.34,.85,.3,1),transform .3s cubic-bezier(.2,.85,.3,1);{{ keeperStyle }}">
-            <div style="position:relative;width:100%;height:100%;border-radius:5cqh;background:linear-gradient(180deg,#EAFBFF,#8fd8e6);display:grid;place-items:center;box-shadow:0 1cqh 3cqh rgba(0,0,0,.5),0 0 0 0.4cqh rgba(255,255,255,.18),0 0 3cqh color-mix(in srgb,var(--accent,#22D3EE) 45%,transparent);">
-              <span style="font:800 6cqh 'Archivo';color:#04202a;letter-spacing:.04em;">GK</span>
-              <span style="position:absolute;top:-1.4cqh;left:50%;transform:translateX(-50%);width:4cqh;height:4cqh;border-radius:50%;background:#EAFBFF;box-shadow:0 0 2cqh color-mix(in srgb,var(--accent,#22D3EE) 60%,transparent);"></span>
-            </div>
-          </div>
-
-          <!-- striker (penalty spot, body-shape tell) -->
-          <div style="position:absolute;left:50%;top:92%;z-index:3;transform-origin:50% 100%;transition:transform .32s cubic-bezier(.3,.7,.3,1);transform:{{ strikerStyle }};">
-            <div style="width:0;height:0;margin:0 auto;border-left:4.5cqh solid transparent;border-right:4.5cqh solid transparent;border-bottom:10cqh solid #FF5A6E;filter:drop-shadow(0 0 1.4cqh rgba(255,90,110,.5));opacity:.88;"></div>
-            <div style="width:8cqh;height:1.1cqh;margin:1cqh auto 0;border-radius:1cqh;background:rgba(255,90,110,.5);"></div>
-          </div>
-
-          <!-- ball (≈ 9% of goal height) -->
-          <sc-if value="{{ ballOn }}" hint-placeholder-val="{{ false }}">
-            <div style="position:absolute;z-index:5;transform:translate(-50%,-50%);width:3.6cqh;height:3.6cqh;border-radius:50%;background:radial-gradient(circle at 34% 30%,#fff,#bcc9d4);box-shadow:0 0 1.6cqh rgba(255,255,255,.55),0 0.4cqh 1cqh rgba(0,0,0,.45);transition:{{ ballTransition }};{{ ballStyle }}"></div>
           </sc-if>
 
           <!-- cue label -->
@@ -305,7 +268,67 @@ class Component extends DCLogic {
 
   _now(){ return (typeof performance!=='undefined'&&performance.now)?performance.now():Date.now(); }
   _clear(){ clearTimeout(this._go); clearTimeout(this._win); clearTimeout(this._adv); clearTimeout(this._fx); if(this._raf) cancelAnimationFrame(this._raf); this._raf=null; }
-  componentWillUnmount(){ this._clear(); }
+  componentWillUnmount(){ this._clear(); this._stopLoop(); }
+
+  /* ---------- goal canvas harness (front elevation via fa-pitch) ---------- */
+  _cvRef(el){ if (el === this._canvas) return; this._canvas = el; if (el) requestAnimationFrame(() => { this._resize(); this._startLoop(); }); }
+  _resize(){ const cv = this._canvas; if (!cv) return; const r = cv.getBoundingClientRect(); if (!r.width) return; const dpr = Math.min(2, window.devicePixelRatio || 1); const w = Math.max(2, Math.round(r.width * dpr)), h = Math.max(2, Math.round(r.height * dpr)); if (cv.width !== w || cv.height !== h) { cv.width = w; cv.height = h; } this._dpr = dpr; this._W = r.width; this._H = r.height; }
+  _startLoop(){ if (this._loopOn) return; this._loopOn = true; const step = () => { if (!this._loopOn) return; this._loopRaf = requestAnimationFrame(step); if ((!this._W || !this._H) && this._canvas) this._resize(); this._draw(); }; this._loopRaf = requestAnimationFrame(step); }
+  _stopLoop(){ this._loopOn = false; if (this._loopRaf) cancelAnimationFrame(this._loopRaf); this._loopRaf = null; }
+
+  _draw(){
+    const cv = this._canvas; if (!cv) return;
+    const ctx = cv.getContext('2d'); const W = this._W, H = this._H, dpr = this._dpr || 1;
+    if (!W || !H) return;
+    const FP = window.FAPitch; if (!FP) return;
+    const acc = this.props.accent || '#22D3EE', now = performance.now();
+    const motion = this.props.motion !== false;
+    const reduce = !motion || (window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches);
+    ctx.save(); ctx.scale(dpr, dpr); ctx.clearRect(0, 0, W, H);
+    const s = this.state, t = this.TRIALS[s.ti] || this.TRIALS[0];
+    const phase = s.phase, resolved = phase === 'resolved', live = phase === 'live';
+    const gx = W * 0.14, gy = H * 0.133, gw = W * 0.72, gh = H * 0.40;
+    const KX = this.KEEPER.x, isGo = t.type === 'go', tapped = s.tapped, o = s.outcome;
+    const saved = resolved && o && tapped && isGo;
+    // reveal the struck cell on resolve — accent on a save, red if a real shot beat you
+    let zone = null, zoneColor = '#FF5A6E';
+    if (resolved && isGo) { zoneColor = saved ? acc : '#FF5A6E'; const zc = t.end.x < 40 ? 0 : (t.end.x > 60 ? 2 : 1); const zr = t.end.y < 33 ? 0 : 1; zone = zr * 3 + zc; }
+    FP.goalFace(ctx, { x:gx, y:gy, w:gw, h:gh }, { cols:3, rows:2, zone:zone, zoneColor:zoneColor });
+    // keeper — dives to the ball on a correct dive, commits wrong if it bought the dummy, else holds
+    let tdive = 0;
+    if (resolved && tapped) { const dir = t.end.x >= KX ? 1 : -1; tdive = isGo ? Math.max(-1, Math.min(1, (t.end.x - KX) / 22)) : dir * 0.4; }
+    if (this._rdSi !== s.ti || this._rdive == null) { this._rdive = 0; this._rdSi = s.ti; }
+    this._rdive += (tdive - this._rdive) * (reduce ? 1 : 0.28);
+    FP.keeperFront(ctx, gx + gw / 2, gy + gh, gh, { dive: this._rdive });
+    // striker — open red chevron at the spot, rotated by the body-lean tell
+    let lean = 0;
+    if (isGo) lean = (t.end.x - 50) * 0.42; else if (t.sub === 'FEINT') lean = ((s.ti % 2) ? -1 : 1) * 18; else if (t.sub === 'WIDE') lean = (t.end.x - 50) * 0.5; else if (t.sub === 'BACK-PASS') lean = -19;
+    lean = Math.max(-24, Math.min(24, lean));
+    const spx = W * 0.5, spy = H * 0.9, cr = Math.max(9, H * 0.05);
+    ctx.save(); ctx.translate(spx, spy); ctx.rotate(lean * Math.PI / 180);
+    ctx.fillStyle = 'rgba(255,96,118,.08)'; ctx.strokeStyle = '#FF6076'; ctx.lineWidth = Math.max(1.6, H * 0.008); ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(0, -cr); ctx.lineTo(cr * 0.85, cr * 0.6); ctx.lineTo(0, cr * 0.2); ctx.lineTo(-cr * 0.85, cr * 0.6); ctx.closePath(); ctx.fill(); ctx.stroke(); ctx.restore();
+    // eased ball — rests on the spot, flies to the end (corner / wide / feint)
+    const start = t.start || { x:50, y:92 };
+    const target = phase === 'ready' ? start : { x:t.end.x, y:t.end.y };
+    if (this._rbSi !== s.ti || !this._rb) { this._rb = { ...start }; this._rbSi = s.ti; }
+    const ez = reduce ? 1 : (phase === 'ready' ? 1 : 0.12);
+    this._rb.x += (target.x - this._rb.x) * ez; this._rb.y += (target.y - this._rb.y) * ez;
+    const bx = this._rb.x / 100 * W, by = this._rb.y / 100 * H, r = Math.max(4, H * 0.03);
+    ctx.save(); if (live || resolved) { ctx.shadowColor = 'rgba(220,240,255,.6)'; ctx.shadowBlur = 8; }
+    ctx.fillStyle = '#EEF5FC'; ctx.beginPath(); ctx.arc(bx, by, r, 0, 7); ctx.fill(); ctx.shadowBlur = 0;
+    ctx.strokeStyle = 'rgba(9,20,34,.4)'; ctx.lineWidth = Math.max(1, r * 0.14); ctx.beginPath(); ctx.arc(bx, by, r * 0.9, 0, 7); ctx.stroke(); ctx.restore();
+    // burst on a resolved dive
+    if (resolved && tapped) {
+      if (this._resSi !== s.ti) { this._resSi = s.ti; this._resT0 = now; }
+      const life = Math.min(1, (now - (this._resT0 || now)) / 520);
+      const pf = { px: (x, y) => [x, y], m: (v) => v * (gh * 0.09) };
+      if (saved) FP.catchBurst(ctx, pf, bx, by, { accent:acc, life:life });
+      else if (isGo) FP.impactBurst(ctx, pf, bx, by, { accent:acc, kind:'goal', life:life });
+      else FP.impactBurst(ctx, pf, gx + gw / 2 + this._rdive * gh * 0.6, gy + gh, { accent:acc, kind:'froze', life:life });
+    }
+    ctx.restore();
+  }
   componentDidMount(){
     let soundOn = true; try { if (localStorage.getItem('fa_sound') === '0') soundOn = false; } catch(e) {}
     if (soundOn !== this.state.soundOn) this.setState({ soundOn });
@@ -565,6 +588,7 @@ class Component extends DCLogic {
       soundOn, soundOff: !soundOn, soundColor: soundOn ? accent : '#61748c', soundTitle: soundOn ? 'Sound on' : 'Sound off', toggleSound: () => this._toggleSound(),
       isIntro:!embedded&&view==='intro', isDrill, isResult:!embedded&&view==='result',
       ready, live, resolved, cam:'GOAL-LINE CAM · '+('0'+(ti+1)).slice(-2), camOn: ready,
+      canvasRef: this._cvRefFn || (this._cvRefFn = (el) => this._cvRef(el)),
       ballOn, ballStyle, ballTransition, keeperStyle, windowMs:this.WINDOWS[ti]||900,
       cueOn, cueText, cueColor, cueDot, cueBorder, trueLabel, strikerStyle,
       outcomeWord, outcomeColor, outcomeBorder,
