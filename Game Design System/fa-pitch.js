@@ -221,54 +221,55 @@
     ctx.restore();
   }
 
-  /* ---- TOKEN (labelled disc, our team) ------------------------------------*/
+  /* ---- TOKEN (our unit — hollow HUD ring with a target lock) ---------------
+   * Minimalist: a wireframe ring, faint fill, mono label. Focal units
+   * (carrier / keeper / best / state:'best') get the accent ring + glow +
+   * cardinal target-lock ticks; off-focus units are cool grey. state:'free'
+   * adds a pulsing green ring, state:'danger' a dashed red one. Back-compat:
+   * o.best / o.free / o.kind still work alongside o.state. */
   function token(ctx, f, nx, ny, o) {
-    o = o || {}; var P = f.px(nx, ny), x = P[0], y = P[1], r = o.r || f.r;
-    var acc = o.accent || '#22D3EE';
-    var fill = o.kind === 'carrier' ? acc : (o.fill || COL.us);
-    var ringOn = o.best || o.kind === 'best';
+    o = o || {}; var P = f.px(nx, ny), x = P[0], y = P[1], acc = o.accent || '#22D3EE';
+    var r = (o.r || f.r) * (o.scale || 1);
+    var focal = o.kind === 'carrier' || o.kind === 'keeper' || o.best || o.state === 'best';
+    var free = o.free || o.kind === 'free' || o.state === 'free';
+    var danger = o.state === 'danger';
+    var stroke = focal ? acc : 'rgba(160,190,222,.62)';
     ctx.save(); ctx.globalAlpha = o.alpha == null ? 1 : o.alpha;
-    // free-man halo (independent of disc styling)
-    if (o.free || o.kind === 'free') {
-      var pulse = o.pulse == null ? 0 : o.pulse;
-      ctx.strokeStyle = COL.free; ctx.globalAlpha = (0.4 + 0.5 * pulse) * (o.alpha == null ? 1 : o.alpha);
-      ctx.lineWidth = Math.max(2, f.m(0.09)); ctx.beginPath(); ctx.arc(x, y, r + 5 + pulse * 4, 0, 7); ctx.stroke();
-      ctx.globalAlpha = o.alpha == null ? 1 : o.alpha;
+    // grounding shadow
+    ctx.fillStyle = 'rgba(0,0,0,.3)'; ctx.beginPath(); ctx.ellipse(x, y + r * 0.92, r * 0.72, r * 0.22, 0, 0, 7); ctx.fill();
+    // faint fill
+    ctx.fillStyle = focal ? hexA(acc, 0.1) : 'rgba(126,168,208,.055)'; ctx.beginPath(); ctx.arc(x, y, r, 0, 7); ctx.fill();
+    // ring
+    if (focal) { ctx.shadowColor = acc; ctx.shadowBlur = Math.max(6, r * 0.55); }
+    ctx.strokeStyle = stroke; ctx.lineWidth = Math.max(1.4, r * 0.1); ctx.beginPath(); ctx.arc(x, y, r, 0, 7); ctx.stroke(); ctx.shadowBlur = 0;
+    if (o.kind === 'keeper') { ctx.strokeStyle = hexA(acc, 0.5); ctx.lineWidth = 1; ctx.beginPath(); ctx.arc(x, y, r * 0.68, 0, 7); ctx.stroke(); }
+    // target-lock cardinal ticks for a focal unit
+    if (focal && o.ticks !== false) {
+      ctx.strokeStyle = hexA(acc, 0.85); ctx.lineWidth = Math.max(1.2, r * 0.09); ctx.lineCap = 'round';
+      var gg = r * 1.32, tk = r * 0.34;
+      [[0, -1], [0, 1], [-1, 0], [1, 0]].forEach(function (d) { ctx.beginPath(); ctx.moveTo(x + d[0] * gg, y + d[1] * gg); ctx.lineTo(x + d[0] * (gg + tk), y + d[1] * (gg + tk)); ctx.stroke(); });
+      ctx.lineCap = 'butt';
     }
-    // drop shadow
-    ctx.fillStyle = 'rgba(0,0,0,.34)'; ctx.beginPath(); ctx.ellipse(x, y + r * 0.85, r * 0.9, r * 0.3, 0, 0, 7); ctx.fill();
-    // disc
-    if (o.kind === 'keeper') { var kg = ctx.createLinearGradient(x, y - r * 1.14, x, y + r * 0.86); kg.addColorStop(0, '#EAFBFF'); kg.addColorStop(1, '#8fd8e6'); ctx.fillStyle = kg; }
-    else ctx.fillStyle = fill;
-    ctx.strokeStyle = ringOn ? acc : 'rgba(255,255,255,.24)';
-    ctx.lineWidth = ringOn ? Math.max(2.2, f.m(0.09)) : Math.max(1.2, f.m(0.05));
-    ctx.beginPath(); ctx.arc(x, y - r * 0.14, r, 0, 7); ctx.fill(); ctx.stroke();
-    // label
-    if (o.role) {
-      ctx.fillStyle = o.kind === 'carrier' ? '#160a2e' : (o.kind === 'keeper' ? '#06202a' : COL.usLabel);
-      ctx.font = "800 " + (o.font || f.font) + "px 'IBM Plex Mono'";
-      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-      ctx.fillText(o.role, x, y - r * 0.14); ctx.textBaseline = 'alphabetic';
-    }
-    // body orientation notch (which way the player faces)
-    if (o.facing != null) {
-      var fx = x + Math.cos(o.facing) * r, fy = (y - r * 0.14) + Math.sin(o.facing) * r;
-      ctx.fillStyle = 'rgba(255,255,255,.92)'; ctx.beginPath(); ctx.arc(fx, fy, Math.max(2, f.m(0.13)), 0, 7); ctx.fill();
-    }
+    if (free) { var pulse = o.pulse || 0; ctx.strokeStyle = hexA(COL.free, 0.32 + 0.42 * pulse); ctx.lineWidth = Math.max(1.4, r * 0.09); ctx.beginPath(); ctx.arc(x, y, r + 3 + pulse * 5, 0, 7); ctx.stroke(); }
+    if (danger) { ctx.strokeStyle = hexA(COL.them, 0.75); ctx.lineWidth = Math.max(1.4, r * 0.1); ctx.setLineDash([3, 3]); ctx.beginPath(); ctx.arc(x, y, r + 4, 0, 7); ctx.stroke(); ctx.setLineDash([]); }
+    if (o.facing != null) { ctx.fillStyle = focal ? hexA(acc, 0.95) : 'rgba(200,220,240,.9)'; ctx.beginPath(); ctx.arc(x + Math.cos(o.facing) * r, y + Math.sin(o.facing) * r, Math.max(1.6, r * 0.13), 0, 7); ctx.fill(); }
+    if (o.role) { ctx.fillStyle = focal ? '#E6EEF8' : '#8497ad'; ctx.font = "700 " + Math.max(7.5, (o.font ? o.font : r * 0.6)) + "px 'IBM Plex Mono'"; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(o.role, x, y + 0.5); ctx.textBaseline = 'alphabetic'; }
     ctx.restore();
-    return [x, y - r * 0.14];
+    return [x, y];
   }
 
-  /* ---- CHEVRON (opponent, points at OUR goal) -----------------------------*/
+  /* ---- CHEVRON (opponent — open outline, points at OUR goal) ---------------*/
   function chevron(ctx, f, nx, ny, o) {
     o = o || {}; var P = f.px(nx, ny), x = P[0], y = P[1];
-    var r = o.r || Math.max(9, f.r * 0.85);
-    // point toward our goal: in EW that's toward low screen-x; in NS toward bottom.
+    var r = o.r || Math.max(9, f.r * 0.9);
     var ang = f.orient === 'ew' ? (f.attackDir === 'rtl' ? 0 : Math.PI)
                                 : (f.attackDir === 'rtl' ? Math.PI / 2 : -Math.PI / 2);
     ctx.save(); ctx.globalAlpha = o.alpha == null ? 1 : o.alpha;
-    ctx.translate(x, y); ctx.rotate(ang); ctx.fillStyle = o.color || COL.them;
-    ctx.beginPath(); ctx.moveTo(-r, 0); ctx.lineTo(r * 0.55, -r * 0.85); ctx.lineTo(r * 0.15, 0); ctx.lineTo(r * 0.55, r * 0.85); ctx.closePath(); ctx.fill();
+    ctx.translate(x, y); ctx.rotate(ang);
+    ctx.fillStyle = hexA(o.color || COL.them, 0.08); ctx.strokeStyle = o.color || COL.them;
+    ctx.lineWidth = Math.max(1.5, r * 0.15); ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(-r * 0.92, 0); ctx.lineTo(r * 0.5, -r * 0.82); ctx.lineTo(r * 0.16, 0); ctx.lineTo(r * 0.5, r * 0.82); ctx.closePath();
+    ctx.fill(); ctx.stroke();
     ctx.restore();
     if (o.role) {
       ctx.save(); ctx.globalAlpha = o.alpha == null ? 1 : o.alpha;
@@ -277,24 +278,19 @@
     }
   }
 
-  /* ---- BALL (white radial dot; glows in flight) — the AM look --------------*/
+  /* ---- BALL (crisp flat disc + thin rim; soft glow only in flight) ---------*/
   function ball(ctx, f, nx, ny, o) {
-    o = o || {}; var P = f.px(nx, ny), x = P[0], y = P[1], r = o.r || f.ballR;
+    o = o || {}; var P = f.px(nx, ny), x = P[0], y = P[1];
+    var r = o.r || (f.m ? Math.max(3.4, f.m(0.42)) : (f.ballR || 5));
     ctx.save();
-    // motion trail (fading discs behind the ball, along -dir)
     if (o.trail && o.dir) {
       var d = o.dir, mag = Math.hypot(d[0], d[1]) || 1, ux = d[0] / mag, uy = d[1] / mag;
-      for (var t = 4; t >= 1; t--) {
-        var tx = x - ux * r * 1.5 * t, ty = y - uy * r * 1.5 * t;
-        ctx.globalAlpha = 0.16 * (5 - t) / 4;
-        ctx.fillStyle = '#ffffff'; ctx.beginPath(); ctx.arc(tx, ty, r * (1 - t * 0.13), 0, 7); ctx.fill();
-      }
+      for (var t = 4; t >= 1; t--) { ctx.globalAlpha = 0.14 * (5 - t) / 4; ctx.fillStyle = '#EEF5FC'; ctx.beginPath(); ctx.arc(x - ux * r * 1.7 * t, y - uy * r * 1.7 * t, r * (1 - t * 0.13), 0, 7); ctx.fill(); }
       ctx.globalAlpha = 1;
     }
-    if (o.flight) { ctx.shadowColor = 'rgba(255,255,255,.85)'; ctx.shadowBlur = 12; }
-    var g = ctx.createRadialGradient(x - r * 0.3, y - r * 0.35, r * 0.15, x, y, r);
-    g.addColorStop(0, '#ffffff'); g.addColorStop(1, '#c7d2dc');
-    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, r, 0, 7); ctx.fill();
+    if (o.flight) { ctx.shadowColor = 'rgba(220,240,255,.6)'; ctx.shadowBlur = 8; }
+    ctx.fillStyle = o.color || '#EEF5FC'; ctx.beginPath(); ctx.arc(x, y, r, 0, 7); ctx.fill(); ctx.shadowBlur = 0;
+    ctx.strokeStyle = 'rgba(9,20,34,.42)'; ctx.lineWidth = Math.max(1, r * 0.14); ctx.beginPath(); ctx.arc(x, y, r * 0.9, 0, 7); ctx.stroke();
     ctx.restore();
   }
 
@@ -321,123 +317,118 @@
     }
     ctx.save();
     ctx.strokeStyle = col; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
-    if (kind === 'ground') { ctx.lineWidth = Math.max(1.6, f.m(0.06)); ctx.setLineDash([5, 6]); ctx.globalAlpha = 0.7; }
-    else if (kind === 'driven') { ctx.lineWidth = Math.max(2.4, f.m(0.09)); ctx.shadowColor = col; ctx.shadowBlur = 8; }
-    else if (kind === 'lofted') { ctx.lineWidth = Math.max(2, f.m(0.07)); ctx.setLineDash([2, 7]); ctx.globalAlpha = 0.85; }
-    else if (kind === 'shot') { ctx.lineWidth = Math.max(3, f.m(0.12)); ctx.shadowColor = col; ctx.shadowBlur = 12; }
+    if (kind === 'ground') { ctx.lineWidth = Math.max(1.4, f.m(0.05)); ctx.setLineDash([2, 5]); ctx.globalAlpha = 0.55; }
+    else if (kind === 'driven') { ctx.lineWidth = Math.max(1.8, f.m(0.07)); ctx.shadowColor = col; ctx.shadowBlur = 6; }
+    else if (kind === 'lofted') { ctx.lineWidth = Math.max(1.5, f.m(0.06)); ctx.setLineDash([2, 6]); ctx.globalAlpha = 0.75; }
+    else if (kind === 'shot') { ctx.lineWidth = Math.max(2.4, f.m(0.1)); ctx.shadowColor = col; ctx.shadowBlur = 9; }
     ctx.beginPath(); ctx.moveTo(A[0], A[1]);
     if (kind === 'lofted') ctx.quadraticCurveTo(cx, cy, B[0], B[1]); else ctx.lineTo(B[0], B[1]);
     ctx.stroke(); ctx.setLineDash([]); ctx.shadowBlur = 0; ctx.globalAlpha = 1;
-    // arrowhead for driven/shot
+    // OPEN arrowhead (two strokes, unfilled) for driven/shot
     if (kind === 'driven' || kind === 'shot') {
-      var hl = Math.max(9, f.m(0.7)), tip = at(1), ea = kind === 'lofted' ? ang : ang;
-      ctx.fillStyle = col; ctx.beginPath();
-      ctx.moveTo(tip[0], tip[1]);
-      ctx.lineTo(tip[0] - Math.cos(ea - 0.5) * hl, tip[1] - Math.sin(ea - 0.5) * hl);
-      ctx.lineTo(tip[0] - Math.cos(ea + 0.5) * hl, tip[1] - Math.sin(ea + 0.5) * hl);
-      ctx.closePath(); ctx.fill();
+      var hl = Math.max(7, f.m(0.7)), tip = at(1);
+      ctx.lineWidth = kind === 'shot' ? Math.max(2.4, f.m(0.1)) : Math.max(1.8, f.m(0.07));
+      ctx.beginPath();
+      ctx.moveTo(tip[0] - Math.cos(ang - 0.5) * hl, tip[1] - Math.sin(ang - 0.5) * hl);
+      ctx.lineTo(tip[0], tip[1]);
+      ctx.lineTo(tip[0] - Math.cos(ang + 0.5) * hl, tip[1] - Math.sin(ang + 0.5) * hl);
+      ctx.stroke();
     }
     // lead-ball ghost target (dashed ring where the run should meet the ball)
     if (o.ghost) {
       var gp = at(1);
-      ctx.strokeStyle = col; ctx.globalAlpha = 0.8; ctx.lineWidth = Math.max(1.4, f.m(0.05));
-      ctx.setLineDash([3, 4]); ctx.beginPath(); ctx.arc(gp[0], gp[1], f.ballR * 1.7, 0, 7); ctx.stroke(); ctx.setLineDash([]);
+      ctx.strokeStyle = col; ctx.globalAlpha = 0.85; ctx.lineWidth = Math.max(1.3, f.m(0.05));
+      ctx.setLineDash([2, 3]); ctx.beginPath(); ctx.arc(gp[0], gp[1], Math.max(5, f.m(0.95)), 0, 7); ctx.stroke(); ctx.setLineDash([]);
     }
     ctx.restore();
-    // live ball riding the path
-    if (o.progress != null) { var p = at(Math.max(0, Math.min(1, o.progress))); ball(ctx, { px: function () { return p; }, ballR: f.ballR }, 0, 0, { flight: true, r: o.ballR }); }
+    // live flat ball riding the path
+    if (o.progress != null) { var p = at(Math.max(0, Math.min(1, o.progress))); ball(ctx, { px: function () { return p; }, m: f.m, ballR: f.ballR }, 0, 0, { flight: true, r: o.ballR || Math.max(3.4, f.m(0.42)) }); }
     return at;
   }
 
   /* ---- ENGAGE RING (pulsing tap / selected target) ------------------------*/
   function engage(ctx, f, nx, ny, o) {
     o = o || {}; var P = f.px(nx, ny), x = P[0], y = P[1];
-    var base = o.r || f.r + 6, pulse = o.pulse == null ? 0 : o.pulse;
+    var base = o.r || Math.max(13, f.m(2.1)), pulse = o.pulse == null ? 0 : o.pulse;
     var col = o.color || o.accent || '#22D3EE';
     ctx.save();
-    ctx.strokeStyle = col; ctx.lineWidth = Math.max(2, f.m(0.08));
-    ctx.globalAlpha = 0.9; ctx.beginPath(); ctx.arc(x, y, base, 0, 7); ctx.stroke();
-    // expanding echo
-    ctx.globalAlpha = 0.5 * (1 - pulse); ctx.beginPath(); ctx.arc(x, y, base + pulse * 12, 0, 7); ctx.stroke();
-    // corner ticks for a "targeted" read
-    if (o.ticks !== false) {
-      ctx.globalAlpha = 0.95; ctx.lineWidth = Math.max(2, f.m(0.09));
-      var tk = base * 0.5;
-      [[-1, -1], [1, -1], [-1, 1], [1, 1]].forEach(function (s) {
-        var ox = x + s[0] * (base + 5), oy = y + s[1] * (base + 5);
-        ctx.beginPath(); ctx.moveTo(ox, oy); ctx.lineTo(ox - s[0] * tk, oy); ctx.moveTo(ox, oy); ctx.lineTo(ox, oy - s[1] * tk); ctx.stroke();
-      });
-    }
+    // square target-lock brackets
+    ctx.strokeStyle = hexA(col, 0.9); ctx.lineWidth = Math.max(1.4, f.m(0.07)); ctx.lineCap = 'round';
+    var b = base * 0.46;
+    [[1, 1], [-1, 1], [-1, -1], [1, -1]].forEach(function (s) {
+      ctx.beginPath(); ctx.moveTo(x + s[0] * base, y + s[1] * base - s[1] * b); ctx.lineTo(x + s[0] * base, y + s[1] * base); ctx.lineTo(x + s[0] * base - s[0] * b, y + s[1] * base); ctx.stroke();
+    });
+    ctx.lineCap = 'butt';
+    // expanding echo ring
+    ctx.globalAlpha = 0.5 * (1 - pulse); ctx.strokeStyle = col; ctx.lineWidth = 1.3;
+    ctx.beginPath(); ctx.arc(x, y, base * 0.5 + pulse * base * 0.7, 0, 7); ctx.stroke();
     ctx.restore();
   }
 
   /* ---- DIRECTION ARROW (choice / movement cue) ----------------------------*/
   function arrow(ctx, f, nx, ny, angle, o) {
     o = o || {}; var P = f.px(nx, ny), x = P[0], y = P[1];
-    var len = o.len || f.r * 2.2, col = o.color || o.accent || '#22D3EE';
-    var ex = x + Math.cos(angle) * len, ey = y + Math.sin(angle) * len, hl = Math.max(9, f.m(0.7));
+    var len = o.len || f.m(2.4), col = o.color || o.accent || '#22D3EE';
+    var ex = x + Math.cos(angle) * len, ey = y + Math.sin(angle) * len, hl = Math.max(6, f.m(0.6));
     ctx.save();
-    ctx.strokeStyle = col; ctx.fillStyle = col; ctx.lineCap = 'round';
-    ctx.lineWidth = Math.max(2.4, f.m(0.1)); ctx.globalAlpha = o.alpha == null ? 1 : o.alpha;
-    if (o.glow) { ctx.shadowColor = col; ctx.shadowBlur = 9; }
+    ctx.strokeStyle = col; ctx.lineCap = 'round';
+    ctx.lineWidth = Math.max(1.5, f.m(0.08)); ctx.globalAlpha = o.alpha == null ? 1 : o.alpha;
+    if (o.glow) { ctx.shadowColor = col; ctx.shadowBlur = 7; }
     ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(ex, ey); ctx.stroke(); ctx.shadowBlur = 0;
-    ctx.beginPath(); ctx.moveTo(ex, ey);
-    ctx.lineTo(ex - Math.cos(angle - 0.5) * hl, ey - Math.sin(angle - 0.5) * hl);
+    // open head
+    ctx.beginPath();
+    ctx.moveTo(ex - Math.cos(angle - 0.5) * hl, ey - Math.sin(angle - 0.5) * hl);
+    ctx.lineTo(ex, ey);
     ctx.lineTo(ex - Math.cos(angle + 0.5) * hl, ey - Math.sin(angle + 0.5) * hl);
-    ctx.closePath(); ctx.fill();
+    ctx.stroke();
     ctx.restore();
   }
 
-  /* ---- SPACE / ZONE MARKER (where to move; heat blob + crosshair) ---------*/
+  /* ---- SPACE / ZONE MARKER (faint blob + crosshair + dashed inner ring) ----*/
   function zone(ctx, f, nx, ny, o) {
     o = o || {}; var P = f.px(nx, ny), x = P[0], y = P[1];
-    var rad = o.r || f.r * 2.2, col = o.color || COL.free;
+    var rad = o.r || f.m(4), col = o.color || COL.free;
     ctx.save();
     var g = ctx.createRadialGradient(x, y, 0, x, y, rad);
-    g.addColorStop(0, hexA(col, 0.34)); g.addColorStop(1, hexA(col, 0));
+    g.addColorStop(0, hexA(col, 0.16)); g.addColorStop(1, hexA(col, 0));
     ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, rad, 0, 7); ctx.fill();
-    // crosshair
-    ctx.strokeStyle = col; ctx.globalAlpha = 0.85; ctx.lineWidth = Math.max(1.4, f.m(0.05));
-    var c = rad * 0.42;
+    ctx.strokeStyle = hexA(col, 0.7); ctx.lineWidth = Math.max(1.3, f.m(0.05)); ctx.lineCap = 'round';
+    var c = rad * 0.34;
     ctx.beginPath(); ctx.moveTo(x - c, y); ctx.lineTo(x + c, y); ctx.moveTo(x, y - c); ctx.lineTo(x, y + c); ctx.stroke();
+    ctx.setLineDash([2, 3]); ctx.globalAlpha = 0.6; ctx.beginPath(); ctx.arc(x, y, rad * 0.5, 0, 7); ctx.stroke();
     ctx.restore();
   }
 
-  /* ---- BADGE (decision chip pinned above a token: SHOOT / PASS / HOLD) ----*/
+  /* ---- BADGE (thin decision chip pinned above a token: SHOOT / PASS / HOLD)-*/
   function badge(ctx, f, nx, ny, text, o) {
     o = o || {}; var P = f.px(nx, ny), x = P[0], y = P[1] - (o.dy || f.r + 14);
     var col = o.color || o.accent || '#22D3EE';
-    var fs = o.font || Math.max(9, f.font * 0.95);
-    ctx.save(); ctx.font = "800 " + fs + "px 'IBM Plex Mono'";
-    var tw = ctx.measureText(text).width, padX = fs * 0.7, w = tw + padX * 2, h = fs + fs * 0.7;
-    var rx = x - w / 2, ry = y - h / 2, rr = h / 2;
-    // pill
-    ctx.fillStyle = o.solid ? col : 'rgba(6,10,18,.9)';
-    ctx.strokeStyle = col; ctx.lineWidth = 1.5;
+    var fs = o.font || Math.max(8.5, f.font * 0.95);
+    ctx.save(); ctx.font = "700 " + fs + "px 'IBM Plex Mono'";
+    var tw = ctx.measureText(text).width, padX = fs * 0.7, w = tw + padX * 2, h = fs + fs * 0.8;
+    var rx = x - w / 2, ry = y - h / 2, rr = h * 0.32;
+    ctx.fillStyle = o.solid ? col : 'rgba(7,13,22,.9)';
+    ctx.strokeStyle = hexA(col, 0.85); ctx.lineWidth = 1.3;
     roundRect(ctx, rx, ry, w, h, rr); ctx.fill(); ctx.stroke();
-    // pointer to the token
-    ctx.fillStyle = o.solid ? col : 'rgba(6,10,18,.9)';
+    ctx.fillStyle = o.solid ? col : 'rgba(7,13,22,.9)';
     ctx.beginPath(); ctx.moveTo(x - 4, ry + h); ctx.lineTo(x + 4, ry + h); ctx.lineTo(x, ry + h + 5); ctx.closePath(); ctx.fill();
-    // text
     ctx.fillStyle = o.solid ? '#06101a' : col; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    ctx.fillText(text, x, y); ctx.textBaseline = 'alphabetic';
+    ctx.fillText(text, x, y + 0.5); ctx.textBaseline = 'alphabetic';
     ctx.restore();
   }
 
-  /* ---- TIMING GAUGE (linear bar with a moving needle + sweet-spot band) ----*/
+  /* ---- TIMING GAUGE (thin bar with a moving needle + sweet-spot band) ------*/
   function gauge(ctx, f, x, y, w, o) {
-    o = o || {}; var h = o.h || 12, col = o.color || o.accent || '#22D3EE';
+    o = o || {}; var h = o.h || 10, col = o.color || o.accent || '#22D3EE';
     ctx.save();
-    ctx.fillStyle = 'rgba(10,16,28,.85)'; ctx.strokeStyle = 'rgba(120,140,166,.4)'; ctx.lineWidth = 1;
+    ctx.fillStyle = 'rgba(9,16,27,.7)'; ctx.strokeStyle = 'rgba(126,168,208,.3)'; ctx.lineWidth = 1;
     roundRect(ctx, x, y, w, h, h / 2); ctx.fill(); ctx.stroke();
-    // sweet-spot band
-    var s0 = (o.band ? o.band[0] : 0.62), s1 = (o.band ? o.band[1] : 0.82);
-    ctx.fillStyle = hexA(COL.free, 0.55); roundRect(ctx, x + w * s0, y, w * (s1 - s0), h, h / 3); ctx.fill();
-    // needle
+    var s0 = (o.band ? o.band[0] : 0.6), s1 = (o.band ? o.band[1] : 0.8);
+    ctx.fillStyle = hexA(COL.free, 0.4); roundRect(ctx, x + w * s0, y, w * (s1 - s0), h, h / 3); ctx.fill();
     var p = Math.max(0, Math.min(1, o.progress == null ? 0.5 : o.progress));
-    ctx.fillStyle = '#EAF2FB'; ctx.strokeStyle = col; ctx.lineWidth = 2;
-    var nx2 = x + w * p; ctx.beginPath(); ctx.moveTo(nx2, y - 3); ctx.lineTo(nx2, y + h + 3); ctx.stroke();
-    ctx.beginPath(); ctx.arc(nx2, y + h / 2, h * 0.42, 0, 7); ctx.fill();
+    var nx2 = x + w * p; ctx.strokeStyle = col; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(nx2, y - 3); ctx.lineTo(nx2, y + h + 3); ctx.stroke();
+    ctx.fillStyle = '#EAF2FB'; ctx.beginPath(); ctx.arc(nx2, y + h / 2, h * 0.38, 0, 7); ctx.fill();
     ctx.restore();
   }
 
