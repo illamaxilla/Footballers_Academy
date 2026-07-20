@@ -9,6 +9,7 @@
 <x-dc>
 <helmet>
 <link href="assets/vendor/fonts/fonts.css" rel="stylesheet">
+<script src="./fa-pitch.js"></script>
 <style>
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;background:#04060c;}
@@ -102,18 +103,7 @@
         <div style="position:relative;flex:1;min-height:340px;border-radius:16px;overflow:hidden;background:radial-gradient(130% 100% at 50% 100%,#0d1c2e 0%,#091324 52%,#050c17 100%);border:1px solid rgba(120,140,166,.18);box-shadow:inset 0 0 60px rgba(0,0,0,.45);{{ vizShake }}">
           <div style="position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.5;background:repeating-linear-gradient(90deg,rgba(140,200,220,.03) 0px,rgba(140,200,220,.03) 1px,transparent 1px,transparent 44px);"></div>
 
-          <svg viewBox="0 0 150 100" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;z-index:1;">
-            <g stroke="rgba(150,200,220,.09)" stroke-width="0.4">
-              <line x1="38" y1="12" x2="38" y2="84"/><line x1="62" y1="12" x2="62" y2="84"/><line x1="88" y1="12" x2="88" y2="84"/><line x1="112" y1="12" x2="112" y2="84"/>
-              <line x1="10" y1="36" x2="140" y2="36"/><line x1="10" y1="60" x2="140" y2="60"/>
-            </g>
-            <rect x="10" y="12" width="130" height="72" fill="none" stroke="rgba(150,200,220,.24)" stroke-width="0.5"/>
-            <rect x="42" y="52" width="66" height="34" fill="none" stroke="rgba(150,200,220,.26)" stroke-width="0.5"/>
-            <line x1="55" y1="88" x2="95" y2="88" stroke="#7fdfe9" stroke-width="1.1" stroke-linecap="round"/>
-            <line x1="55" y1="84" x2="55" y2="88" stroke="#7fdfe9" stroke-width="0.9"/>
-            <line x1="95" y1="84" x2="95" y2="88" stroke="#7fdfe9" stroke-width="0.9"/>
-            <path d="M52,52 A24,20 0 0 1 98,52" fill="none" stroke="rgba(150,200,220,.16)" stroke-width="0.5"/>
-          </svg>
+          <canvas ref="{{ canvasRef }}" style="position:absolute;inset:0;width:100%;height:100%;display:block;z-index:1;"></canvas>
 
           <div style="position:absolute;top:9px;left:9px;width:13px;height:13px;border-top:1.5px solid color-mix(in srgb,var(--accent,#22D3EE) 45%,transparent);border-left:1.5px solid color-mix(in srgb,var(--accent,#22D3EE) 45%,transparent);z-index:2;pointer-events:none;"></div>
           <div style="position:absolute;top:9px;right:9px;width:13px;height:13px;border-top:1.5px solid color-mix(in srgb,var(--accent,#22D3EE) 45%,transparent);border-right:1.5px solid color-mix(in srgb,var(--accent,#22D3EE) 45%,transparent);z-index:2;pointer-events:none;"></div>
@@ -124,30 +114,6 @@
             <span style="width:6px;height:6px;border-radius:50%;background:var(--accent,#22D3EE);box-shadow:0 0 8px var(--accent,#22D3EE);animation:fa-blink 1.6s ease-in-out infinite;"></span>{{ cam }}
           </div>
           </sc-if>
-
-          <!-- bodies -->
-          <sc-for list="{{ bodies }}" as="b" hint-placeholder-count="4">
-            <div style="position:absolute;transform:translate(-50%,-50%);z-index:3;width:17px;height:17px;border-radius:50%;{{ b.look }}{{ b.pos }}"></div>
-          </sc-for>
-
-          <!-- target ring (timing) -->
-          <sc-if value="{{ timing }}" hint-placeholder-val="{{ false }}">
-            <div style="position:absolute;z-index:6;transform:translate(-50%,-50%);width:72px;height:72px;border-radius:50%;border:2px solid var(--accent,#22D3EE);box-shadow:0 0 20px color-mix(in srgb,var(--accent,#22D3EE) 45%,transparent);transition:transform {{ contactMs }}ms linear;{{ ringPos }}{{ ringScale }}"></div>
-            <div style="position:absolute;z-index:6;transform:translate(-50%,-50%);width:18px;height:18px;border-radius:50%;border:1.5px dashed color-mix(in srgb,var(--accent,#22D3EE) 60%,transparent);{{ ringPos }}"></div>
-          </sc-if>
-
-          <!-- interception marker (resolved) -->
-          <sc-if value="{{ resolved }}" hint-placeholder-val="{{ false }}">
-            <div style="position:absolute;z-index:6;transform:translate(-50%,-50%);display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:{{ markBg }};border:1.5px solid {{ markBorder }};{{ ringPos }};animation:fa-pop .38s cubic-bezier(.2,.7,.2,1) both;">
-              <span style="font:800 8px 'IBM Plex Mono';color:{{ markColor }};letter-spacing:.04em;">{{ markText }}</span>
-            </div>
-          </sc-if>
-
-          <!-- ball -->
-          <div style="position:absolute;z-index:5;transform:translate(-50%,-50%);width:14px;height:14px;border-radius:50%;background:radial-gradient(circle at 34% 30%,#fff,#bcc9d4);box-shadow:0 0 10px rgba(255,255,255,.55),0 2px 5px rgba(0,0,0,.45);transition:{{ ballTransition }};{{ ballStyle }}"></div>
-
-          <!-- keeper -->
-          <div style="position:absolute;transform:translate(-50%,-50%);z-index:5;display:grid;place-items:center;width:38px;height:38px;border-radius:11px;background:linear-gradient(180deg,#EAFBFF,#8fd8e6);color:#04202a;font:800 11px 'Archivo';letter-spacing:.04em;box-shadow:0 6px 20px rgba(0,0,0,.5),0 0 0 2px rgba(255,255,255,.18),0 0 18px color-mix(in srgb,var(--accent,#22D3EE) 45%,transparent);transition:left .4s cubic-bezier(.34,.8,.3,1),top .4s cubic-bezier(.34,.8,.3,1),transform .4s cubic-bezier(.2,.85,.3,1);{{ keeperStyle }}">GK</div>
 
           <!-- outcome -->
           <sc-if value="{{ resolved }}" hint-placeholder-val="{{ false }}">
@@ -310,7 +276,90 @@ class Component extends DCLogic {
 
   _now(){ return (typeof performance!=='undefined'&&performance.now)?performance.now():Date.now(); }
   _clear(){ clearTimeout(this._to); clearTimeout(this._tk); clearTimeout(this._fx); if(this._raf) cancelAnimationFrame(this._raf); this._raf=null; }
-  componentWillUnmount(){ this._clear(); }
+  componentWillUnmount(){ this._clear(); this._stopLoop(); }
+
+  /* ---- canvas scene (top-down six-yard cam, goal at bottom) ---- */
+  _P(o){ return { x: 0.6 + (o.y / 100) * 0.42, y: o.x / 100 }; }
+  _cvRef(el){ if (el === this._canvas) return; this._canvas = el; if (el) requestAnimationFrame(() => { this._resize(); this._startLoop(); }); }
+  _resize(){ const cv=this._canvas; if(!cv) return; const r=cv.getBoundingClientRect(); if(!r.width) return; const dpr=Math.min(2,window.devicePixelRatio||1); const w=Math.max(2,Math.round(r.width*dpr)),h=Math.max(2,Math.round(r.height*dpr)); if(cv.width!==w||cv.height!==h){cv.width=w;cv.height=h;} this._dpr=dpr; this._W=r.width; this._H=r.height; }
+  _startLoop(){ if(this._loopOn) return; this._loopOn=true; const step=()=>{ if(!this._loopOn) return; this._loopRaf=requestAnimationFrame(step); if((!this._W||!this._H)&&this._canvas) this._resize(); this._draw(); }; this._loopRaf=requestAnimationFrame(step); }
+  _stopLoop(){ this._loopOn=false; if(this._loopRaf) cancelAnimationFrame(this._loopRaf); this._loopRaf=null; }
+
+  _draw(){
+    const cv=this._canvas; if(!cv) return;
+    const FP=window.FAPitch; if(!FP) return;
+    const ctx=cv.getContext('2d'); if(!ctx) return;
+    const W=this._W, H=this._H, dpr=this._dpr||1; if(!W||!H) return;
+    ctx.setTransform(dpr,0,0,dpr,0,0); ctx.clearRect(0,0,W,H);
+    const P=(o)=>this._P(o);
+    const acc=this.props.accent ?? '#22D3EE';
+    const reduce=!(this.props.motion ?? true);
+    const now=this._now();
+    const s=this.state, sc=this.SCN[s.si]||this.SCN[0];
+    const phase = this.props.embedded && s.view!=='drill' ? s.phase : s.phase;
+    const deciding=phase==='decide', timing=phase==='timing', resolved=phase==='resolved';
+    const o=s.outcome, good=o&&o.good;
+
+    const fit=FP.fit(W,H,{ cropRect:[0.70,1.05,0.03,0.97], orient:'ns', attackDir:'rtl', inset:0.02 }); this._fit=fit;
+    FP.pitch(ctx,fit);
+    FP.goal(ctx,fit,1);
+    FP.fieldHUD(ctx,fit,{ accent:acc, brackets:false });
+
+    // phase-change bookkeeping (reset eased positions + timers)
+    const key=phase+':'+s.si;
+    if(this._pkey!==key){ this._pkey=key; this._pt0=now; this._rk=null; }
+    const pt=now-(this._pt0||now);
+
+    const wing = sc.wing==='L' ? {x:7,y:44} : {x:93,y:44};
+    const target = sc.target, home = this.KEEPER;
+
+    // crowd context — attackers as open red chevrons, defenders as faint rings
+    const seed=[ {x:target.x-9,y:target.y+7,att:true},{x:target.x+9,y:target.y+5,att:false},{x:target.x+3,y:target.y+12,att:true},{x:target.x-6,y:target.y-5,att:false} ];
+    seed.slice(0,(sc.crowd||1)+1).forEach(b=>{ const p=P(b);
+      if(b.att) FP.chevron(ctx,fit,p.x,p.y,{ scale:0.8 });
+      else FP.token(ctx,fit,p.x,p.y,{ role:'', fill:'#24374f', scale:0.72 });
+    });
+
+    // cross flight path
+    if(timing||resolved) FP.trajectory(ctx,fit,P(wing),P(target),{ kind:'lofted', color:'rgba(120,200,230,.42)' });
+
+    // keeper eased toward its target
+    let kG;
+    if(resolved && s.action!=='stay' && (good || sc.best!=='stay')) kG={x:target.x,y:Math.min(86,target.y+4)};
+    else kG=home;
+    const kT=P(kG);
+    if(!this._rk) this._rk={...kT};
+    const ez=reduce?1:0.16;
+    this._rk.x+=(kT.x-this._rk.x)*ez; this._rk.y+=(kT.y-this._rk.y)*ez;
+
+    if(deciding||timing) FP.coverage(ctx,fit,this._rk.x,this._rk.y,{ accent:acc, pulse: deciding&&!reduce ? (0.5+0.5*Math.sin(now/360)) : 0.5 });
+
+    // timing reticle contracts onto the contact point
+    if(timing){
+      const prog=Math.min(1,pt/this.CONTACT_MS), tp=P(target);
+      FP.reticle(ctx,fit,tp.x,tp.y,{ accent:acc, rot: reduce?0:(now/1400)%(Math.PI*2), r: Math.max(11,fit.m(1.5))*(1.95-1.5*prog) });
+    }
+
+    const kScale = resolved ? (good?1.12:0.95) : 1;
+    FP.keeperToken(ctx,fit,this._rk.x,this._rk.y,{ accent:acc, scale:kScale });
+
+    // ball
+    let bG, lift=0;
+    if(deciding) bG=wing;
+    else if(timing){ const prog=Math.min(1,pt/this.CONTACT_MS); bG={ x:wing.x+(target.x-wing.x)*prog, y:wing.y+(target.y-wing.y)*prog }; lift=Math.sin(prog*Math.PI)*fit.m(1.7); }
+    else if(s.action==='stay'||good) bG=target;
+    else bG={ x:target.x-3, y:90 };
+    const bn=P(bG), bpix=fit.px(bn.x,bn.y);
+    FP.ballFlat(ctx,{ px:()=>[bpix[0],bpix[1]-lift], m:fit.m }, 0,0, { r:Math.max(3.4,fit.m(0.5)), flight: timing });
+
+    // resolution burst
+    if(resolved && o && s.action!=='stay'){
+      const life=Math.min(1,pt/640), ip=P(good?target:{x:target.x-3,y:88});
+      if(good && s.action==='claim') FP.catchBurst(ctx,fit,ip.x,ip.y,{ accent:acc, life });
+      else if(good) FP.impactBurst(ctx,fit,ip.x,ip.y,{ accent:acc, kind:'save', life });
+      else FP.impactBurst(ctx,fit,ip.x,ip.y,{ accent:acc, kind:'goal', life });
+    }
+  }
   componentDidMount(){
     let soundOn = true; try { if (localStorage.getItem('fa_sound') === '0') soundOn = false; } catch(e) {}
     if (soundOn !== this.state.soundOn) this.setState({ soundOn });
@@ -581,6 +630,7 @@ class Component extends DCLogic {
       score, scoreText, scoreNote, leadLabel, breakdown,
       begin:()=>this._begin(), next:()=>this._next(), retake:()=>this._retake(),
       back:()=>{ window.location.href='Assessment.dc.html'; },
+      canvasRef: this._cvRefFn || (this._cvRefFn = (el) => this._cvRef(el)),
     };
   }
 }

@@ -156,12 +156,12 @@
             </sc-if>
           </svg>
 
-          <!-- shooter -->
+          <!-- shooter (open HUD chevron pointing at goal) -->
           <div style="position:absolute;z-index:4;transform:translate(-50%,-50%);pointer-events:none;{{ attackerStyle }}">
-            <div style="width:0;height:0;border-left:8px solid transparent;border-right:8px solid transparent;border-bottom:13px solid #FF5A6E;filter:drop-shadow(0 0 8px rgba(255,90,110,.55));"></div>
+            <svg width="17" height="15" viewBox="0 0 17 15" fill="none" style="filter:drop-shadow(0 0 6px rgba(255,96,118,.5));"><path d="M8.5 14 L15.5 2 L8.5 6 L1.5 2 Z" fill="rgba(255,96,118,.08)" stroke="#FF6076" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/></svg>
           </div>
-          <!-- ball -->
-          <div style="position:absolute;z-index:4;transform:translate(-50%,-50%);pointer-events:none;width:12px;height:12px;border-radius:50%;background:radial-gradient(circle at 34% 30%,#fff,#bcc9d4);box-shadow:0 0 10px rgba(255,255,255,.5),0 2px 4px rgba(0,0,0,.4);{{ ballStyle }}"></div>
+          <!-- ball (flat HUD disc) -->
+          <div style="position:absolute;z-index:4;transform:translate(-50%,-50%);pointer-events:none;width:11px;height:11px;border-radius:50%;background:#EEF5FC;box-shadow:0 0 6px rgba(220,240,255,.45);border:1px solid rgba(9,20,34,.32);{{ ballStyle }}"></div>
 
           <!-- reveal ghosts -->
           <sc-if value="{{ showReveal }}" hint-placeholder-val="{{ false }}">

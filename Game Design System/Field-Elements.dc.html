@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="assets/vendor/fonts/fonts.css" rel="stylesheet">
+<script src="./fa-pitch.js"></script>
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:#04060c;}
+  @keyframes fa-rise{0%{transform:translateY(14px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  .fa-in{opacity:0;animation:fa-rise .5s cubic-bezier(.2,.7,.2,1) forwards;}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;}.fa-in{opacity:1!important;transform:none!important;}}
+</style>
+</helmet>
+<div style="position:relative;min-height:100dvh;width:100%;background:radial-gradient(120% 90% at 50% 6%,#0e1a2d 0%,#080e1a 44%,#04060c 100%);color:#EAF2FB;font-family:'Archivo',system-ui,sans-serif;--accent:{{ accent }};padding:34px clamp(20px,3.4vw,56px) 70px;">
+  <div style="position:absolute;inset:0;pointer-events:none;opacity:.4;background:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0px,rgba(255,255,255,.02) 1px,transparent 1px,transparent 4px);"></div>
+
+  <header style="position:relative;display:flex;align-items:center;gap:11px;margin-bottom:6px;">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" style="stroke:var(--accent,#22D3EE);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18"/></svg>
+    <span style="font:800 14px 'Archivo';letter-spacing:.05em;">FIELD <span style="color:var(--accent,#22D3EE);">ELEMENTS</span></span>
+    <span style="margin-left:8px;font:600 10px 'IBM Plex Mono';letter-spacing:.14em;color:#61748c;">SHARED RENDERER · fa-pitch.js</span>
+  </header>
+  <p style="position:relative;max-width:760px;margin:0 0 28px;font:400 14px/1.6 'Archivo';color:#9FB0C5;">Every on-field element, isolated on its own swatch. All drawn by the shared renderer so games stay identical. Live pieces animate.</p>
+
+  <sc-for list="{{ groups }}" as="g" hint-placeholder-count="5">
+    <section style="position:relative;margin-bottom:34px;">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+        <span style="font:800 12px 'IBM Plex Mono';letter-spacing:.18em;color:var(--accent,#22D3EE);">{{ g.tag }}</span>
+        <span style="font:700 17px 'Archivo';letter-spacing:-0.01em;">{{ g.title }}</span>
+        <div style="flex:1;height:1px;background:linear-gradient(90deg,rgba(120,140,166,.28),transparent);"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;">
+        <sc-for list="{{ g.items }}" as="it" hint-placeholder-count="4">
+          <div class="fa-in" style="border-radius:15px;border:1px solid rgba(120,140,166,.22);background:rgba(10,16,28,.5);overflow:hidden;">
+            <div style="position:relative;aspect-ratio:4/3;">
+              <canvas data-el="{{ it.key }}" style="display:block;width:100%;height:100%;"></canvas>
+            </div>
+            <div style="padding:11px 14px 14px;border-top:1px solid rgba(120,140,166,.14);">
+              <div style="font:800 13px 'Archivo';">{{ it.name }}</div>
+              <div style="font:400 11.5px/1.45 'Archivo';color:#7688a0;margin-top:3px;">{{ it.note }}</div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+  </sc-for>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1200,&quot;height&quot;:900},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#22D3EE&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#22D3EE&quot;,&quot;#C6FF3A&quot;,&quot;#FF7A45&quot;,&quot;#FF4D8D&quot;]}}">
+class Component extends DCLogic {
+  GROUPS = [
+    { tag:'01', title:'The ball', items:[
+      { key:'ball-rest',   name:'At rest',        note:'White radial dot at a player\u2019s foot.' },
+      { key:'ball-flight', name:'In flight',      note:'Same dot with a white glow while travelling.' },
+      { key:'ball-trail',  name:'Motion trail',   note:'Fading echo behind a fast-moving ball.' }
+    ]},
+    { tag:'02', title:'Ball trajectory', items:[
+      { key:'traj-ground', name:'Ground pass',    note:'Dashed lane \u2014 a passing option.' },
+      { key:'traj-driven', name:'Driven pass',    note:'Solid, glowing, arrowhead \u2014 the intended ball.' },
+      { key:'traj-lofted', name:'Lofted / cross', note:'Curved arc for a chip or cross.' },
+      { key:'traj-shot',   name:'Shot',           note:'Bold amber line into the goal.' },
+      { key:'traj-ghost',  name:'Lead the run',   note:'Ghost target ring where a run meets the ball.' }
+    ]},
+    { tag:'03', title:'Players', items:[
+      { key:'ply-us',      name:'My team',        note:'HUD chip \u2014 rounded square, translucent fill, glowing outline + brackets.' },
+      { key:'ply-carrier', name:'Ball carrier',   note:'Accent HUD chip \u2014 who has it.' },
+      { key:'ply-them',    name:'Opponent',       note:'Red chevron, translucent + glow, pointing at our goal.' },
+      { key:'ply-free',    name:'Free man',       note:'Pulsing green square halo \u2014 the open teammate.' },
+      { key:'ply-best',    name:'Best target',    note:'Accent-lit chip \u2014 the correct receiver.' },
+      { key:'ply-danger',  name:'Danger / marked',note:'Red-ringed \u2014 pressured or a threat.' }
+    ]},
+    { tag:'04', title:'Action indicators', items:[
+      { key:'ind-engage',  name:'Engage / tap',   note:'Pulsing ring + corner ticks \u2014 tap this player.' },
+      { key:'ind-arrows',  name:'Choice arrows',  note:'Directional cues for a movement decision.' },
+      { key:'ind-zone',    name:'Space marker',   note:'Heat blob + crosshair \u2014 move into here.' },
+      { key:'ind-badge',   name:'Decision chip',  note:'SHOOT / PASS / HOLD pinned to a token.' },
+      { key:'ind-gauge',   name:'Timing gauge',   note:'Needle + sweet-spot band \u2014 tap in the window.' }
+    ]},
+    { tag:'05', title:'Space & pressure', items:[
+      { key:'sp-cover',    name:'Cover shadow',   note:'The lane a defender cuts off.' },
+      { key:'sp-pressure', name:'Under pressure', note:'Tightening rings \u2014 how urgent the moment is.' },
+      { key:'sp-blocked',  name:'Lane cut off',   note:'Dashed red + X where the pass is intercepted.' },
+      { key:'sp-read',     name:'The read',       note:'Shadows close two lanes; the free man is the answer.' }
+    ]},
+    { tag:'06', title:'Motion & depth', items:[
+      { key:'mo-run',      name:'Off-ball run',   note:'Chevron trail \u2014 a player\u2019s movement, not a pass.' },
+      { key:'mo-overlap',  name:'Overlapping run',note:'Curved run path around the carrier.' },
+      { key:'mo-facing',   name:'Body orientation',note:'Which way a player is facing (scan / half-turn).' },
+      { key:'de-high',     name:'Ball in the air',note:'Detached ground shadow shows real height.' },
+      { key:'de-cross',    name:'Cross with height',note:'Lofted flight + a ball that rises and drops.' }
+    ]},
+    { tag:'07', title:'Time & judgment', items:[
+      { key:'tj-countdown',name:'Decision clock', note:'Radial timer \u2014 turns red as it runs out.' },
+      { key:'tj-correct',  name:'Correct',        note:'Green check \u2014 right call.' },
+      { key:'tj-wrong',    name:'Wrong',          note:'Red cross \u2014 wrong call.' },
+      { key:'tj-missed',   name:'Missed / should-have',note:'Amber ghost \u2014 the option you passed up.' },
+      { key:'tj-compare',  name:'You vs elite',   note:'Your line solid; the elite line as a ghost.' }
+    ]},
+    { tag:'08', title:'Positional reference', items:[
+      { key:'pr-channels', name:'Channels',       note:'Five lanes / halfspaces across the width.' },
+      { key:'pr-thirds',   name:'Thirds',         note:'Defensive / middle / attacking bands.' },
+      { key:'pr-zone14',   name:'Zone 14',        note:'The creative pocket outside the D.' }
+    ]},
+    { tag:'09', title:'Goalkeeper', items:[
+      { key:'gk-angle',    name:'Narrow the angle',note:'Cone to both posts; keeper on the bisector.' },
+      { key:'gk-reach',    name:'Dive reach',     note:'The area the keeper can get to.' },
+      { key:'gk-claim',    name:'Command area',   note:'Cross-claim radius \u2014 what the keeper owns.' },
+      { key:'gk-face',     name:'Goal & zones',   note:'Front-on goal, target zones, keeper set.' },
+      { key:'gk-save',     name:'The save',       note:'Shot to a corner; keeper dives that way.' }
+    ]},
+    { tag:'10', title:'Defending', items:[
+      { key:'df-line',     name:'Back line',      note:'The unit held as one shape.' },
+      { key:'df-offside',  name:'Offside line',   note:'Amber line; the runner beyond it.' },
+      { key:'df-mark',     name:'Marking',        note:'Tether from defender to the man.' },
+      { key:'df-block',    name:'Defensive block',note:'The compact shape / pressing trap.' },
+      { key:'df-gap',      name:'Gap / distance', note:'Space between defenders, measured.' },
+      { key:'df-recovery', name:'Recovery run',   note:'Sprint back toward our own goal.' }
+    ]}
+  ];
+
+  componentDidMount(){ this._boot(0); }
+  componentWillUnmount(){ this._running=false; if(this._raf) cancelAnimationFrame(this._raf); }
+  _boot(t){ if(!window.FAPitch){ if(t<40) setTimeout(()=>this._boot(t+1),60); return; } this._running=true; this._loop(); }
+  _loop(){ if(!this._running) return; this._raf=requestAnimationFrame(()=>this._loop()); this._drawAll(performance.now()); }
+
+  _resize(cv){ const r=cv.getBoundingClientRect(); const dpr=Math.min(2,window.devicePixelRatio||1); cv.width=Math.max(2,Math.round(r.width*dpr)); cv.height=Math.max(2,Math.round(r.height*dpr)); return {w:r.width,h:r.height,dpr}; }
+
+  _drawAll(now){
+    const FP=window.FAPitch; if(!FP) return;
+    const acc=this.props.accent??'#22D3EE';
+    const cvs=document.querySelectorAll('canvas[data-el]');
+    const pulse=0.5+0.5*Math.sin(now/420);
+    const loop=(now%2600)/2600;           // 0..1 travel loop
+    cvs.forEach(cv=>{
+      const {w,h,dpr}=this._resize(cv); if(!w||!h) return;
+      const ctx=cv.getContext('2d'); ctx.save(); ctx.scale(dpr,dpr); ctx.clearRect(0,0,w,h);
+      // each swatch is a tiny slice of pitch for context
+      const fit=FP.fit(w,h,{crop:'full',orient:'ew',inset:0.12});
+      FP.pitch(ctx,fit,{});
+      this._drawEl(FP,ctx,fit,cv.getAttribute('data-el'),{acc,pulse,loop,now,w,h});
+      ctx.restore();
+    });
+  }
+
+  _drawEl(FP,ctx,f,key,s){
+    const acc=s.acc, C=0.5;                // centre of swatch in scene coords
+    const A={x:0.26,y:0.62}, B={x:0.74,y:0.38};
+    switch(key){
+      case 'ball-rest':   FP.token(ctx,f,0.44,0.5,{role:'AM',kind:'carrier',accent:acc}); FP.ball(ctx,f,0.5,0.54,{}); break;
+      case 'ball-flight': FP.ball(ctx,f,0.5,0.5,{flight:true}); break;
+      case 'ball-trail':  { const bx=0.32+0.42*s.loop; FP.ball(ctx,f,bx,0.5,{flight:true,trail:true,dir:[1,0]}); break; }
+
+      case 'traj-ground': FP.trajectory(ctx,f,A,B,{kind:'ground',accent:acc}); FP.token(ctx,f,A.x,A.y,{role:'CM',kind:'carrier',accent:acc}); FP.token(ctx,f,B.x,B.y,{role:'RW',accent:acc}); FP.ball(ctx,f,A.x+0.02,A.y+0.02,{}); break;
+      case 'traj-driven': FP.trajectory(ctx,f,A,B,{kind:'driven',accent:acc,progress:s.loop}); FP.token(ctx,f,A.x,A.y,{role:'CM',kind:'carrier',accent:acc}); FP.token(ctx,f,B.x,B.y,{role:'ST',best:true,accent:acc}); break;
+      case 'traj-lofted': FP.trajectory(ctx,f,A,B,{kind:'lofted',accent:acc,progress:s.loop}); FP.token(ctx,f,A.x,A.y,{role:'LW',kind:'carrier',accent:acc}); FP.token(ctx,f,B.x,B.y,{role:'ST',accent:acc}); break;
+      case 'traj-shot':   { const G={x:0.96,y:0.5}; FP.trajectory(ctx,f,{x:0.64,y:0.5},G,{kind:'shot',progress:s.loop}); FP.token(ctx,f,0.62,0.5,{role:'ST',kind:'carrier',accent:acc}); break; }
+      case 'traj-ghost':  { const run={x:0.72,y:0.3}; FP.trajectory(ctx,f,A,run,{kind:'driven',accent:acc,ghost:true}); FP.arrow(ctx,f,0.58,0.5,-0.6,{accent:acc,len:26,glow:true}); FP.token(ctx,f,A.x,A.y,{role:'AM',kind:'carrier',accent:acc}); FP.token(ctx,f,0.58,0.5,{role:'ST',accent:acc,alpha:.85}); break; }
+
+      case 'ply-us':      FP.token(ctx,f,C,0.5,{role:'CB',accent:acc}); break;
+      case 'ply-carrier': FP.token(ctx,f,C,0.5,{role:'AM',kind:'carrier',accent:acc}); FP.ball(ctx,f,C+0.06,0.56,{}); break;
+      case 'ply-them':    FP.chevron(ctx,f,C,0.46,{role:'CB'}); break;
+      case 'ply-free':    FP.token(ctx,f,C,0.5,{role:'RW',free:true,pulse:s.pulse,accent:acc}); break;
+      case 'ply-best':    FP.token(ctx,f,C,0.5,{role:'ST',best:true,accent:acc}); break;
+      case 'ply-danger':  FP.token(ctx,f,C,0.5,{role:'CM',accent:acc,fill:'#3aa8c4'}); { const P=f.px(C,0.5); ctx.strokeStyle='#FF5A6E'; ctx.lineWidth=Math.max(2.2,f.m(0.09)); ctx.beginPath(); ctx.arc(P[0],P[1]-f.r*0.14,f.r+5,0,7); ctx.stroke(); } FP.chevron(ctx,f,C+0.16,0.42,{role:''}); break;
+
+      case 'ind-engage':  FP.token(ctx,f,C,0.5,{role:'AM',accent:acc}); FP.engage(ctx,f,C,0.5-0.02,{accent:acc,pulse:s.loop}); break;
+      case 'ind-arrows':  FP.token(ctx,f,C,0.5,{role:'AM',kind:'carrier',accent:acc}); [-0.9,0,0.9].forEach(a=>FP.arrow(ctx,f,C,0.5,a,{accent:acc,len:30,alpha:.9})); break;
+      case 'ind-zone':    FP.zone(ctx,f,0.66,0.4,{r:f.r*2.6}); FP.token(ctx,f,0.34,0.6,{role:'LW',kind:'carrier',accent:acc}); FP.arrow(ctx,f,0.4,0.56,-0.5,{color:FP.COL.free,len:34,glow:true}); break;
+      case 'ind-badge':   FP.token(ctx,f,C,0.56,{role:'ST',kind:'carrier',accent:acc}); FP.badge(ctx,f,C,0.56,'SHOOT',{color:'#FFB020',solid:true}); break;
+      case 'ind-gauge':   { const P0=f.px(0.22,0.5),P1=f.px(0.78,0.5); FP.gauge(ctx,f,P0[0],P0[1]-6,P1[0]-P0[0],{accent:acc,progress:s.loop,band:[0.6,0.8]}); break; }
+
+      case 'sp-cover':    { const D={x:0.6,y:0.42}; FP.coverShadow(ctx,f,D.x,D.y,{reach:0.28,spread:0.5}); FP.token(ctx,f,0.28,0.55,{role:'AM',kind:'carrier',accent:acc}); FP.chevron(ctx,f,D.x,D.y,{role:'CB'}); break; }
+      case 'sp-pressure': { FP.pressure(ctx,f,C,0.5,{intensity:0.4+0.5*s.pulse,dy:f.r*0.14}); FP.token(ctx,f,C,0.5,{role:'CM',kind:'carrier',accent:acc}); FP.chevron(ctx,f,C+0.13,0.44,{role:''}); break; }
+      case 'sp-blocked':  { const A2={x:0.28,y:0.6},B2={x:0.72,y:0.4}; FP.laneBlocked(ctx,f,A2,B2,{at:0.52}); FP.chevron(ctx,f,0.5,0.5,{role:'DM'}); FP.token(ctx,f,A2.x,A2.y,{role:'CM',kind:'carrier',accent:acc}); FP.token(ctx,f,B2.x,B2.y,{role:'ST',accent:acc,alpha:.8}); break; }
+      case 'sp-read':     { const car={x:0.26,y:0.5},d1={x:0.54,y:0.36},d2={x:0.56,y:0.64},open={x:0.74,y:0.5}; FP.coverShadow(ctx,f,d1.x,d1.y,{reach:0.2,spread:0.5}); FP.coverShadow(ctx,f,d2.x,d2.y,{reach:0.2,spread:0.5}); FP.trajectory(ctx,f,car,open,{kind:'driven',color:FP.COL.free}); FP.chevron(ctx,f,d1.x,d1.y,{role:''}); FP.chevron(ctx,f,d2.x,d2.y,{role:''}); FP.token(ctx,f,car.x,car.y,{role:'AM',kind:'carrier',accent:acc}); FP.token(ctx,f,open.x,open.y,{role:'ST',free:true,pulse:s.pulse,accent:acc}); break; }
+
+      case 'mo-run':      { const A3={x:0.34,y:0.62},B3={x:0.7,y:0.34}; FP.run(ctx,f,A3,B3,{}); FP.token(ctx,f,A3.x,A3.y,{role:'LW',accent:acc}); break; }
+      case 'mo-overlap':  { const A3={x:0.32,y:0.52},B3={x:0.76,y:0.3}; FP.run(ctx,f,A3,B3,{curve:0.28}); FP.token(ctx,f,0.5,0.46,{role:'LW',kind:'carrier',accent:acc}); FP.token(ctx,f,A3.x,A3.y,{role:'LB',accent:acc}); break; }
+      case 'mo-facing':   { const a=-0.5+0.5*Math.sin(s.now/700); FP.arrow(ctx,f,C,0.5,a,{accent:acc,len:22,alpha:.5}); FP.token(ctx,f,C,0.5,{role:'CM',kind:'carrier',accent:acc,facing:a}); break; }
+      case 'de-high':     { FP.ballHigh(ctx,f,C,0.5,{height:0.5+0.5*Math.sin(s.now/520)}); break; }
+      case 'de-cross':    { const A4={x:0.3,y:0.7},B4={x:0.78,y:0.42}; FP.trajectory(ctx,f,A4,B4,{kind:'lofted',accent:acc}); FP.token(ctx,f,A4.x,A4.y,{role:'RW',kind:'carrier',accent:acc}); FP.token(ctx,f,B4.x,B4.y,{role:'ST',accent:acc}); const px=A4.x+(B4.x-A4.x)*s.loop,py=A4.y+(B4.y-A4.y)*s.loop; FP.ballHigh(ctx,f,px,py,{height:Math.sin(Math.PI*s.loop)}); break; }
+
+      case 'tj-countdown':{ FP.countdown(ctx,f,C,0.5,{progress:1-s.loop,accent:acc,r:f.r+10}); FP.token(ctx,f,C,0.5,{role:'AM',kind:'carrier',accent:acc}); FP.ball(ctx,f,C+0.05,0.55,{}); break; }
+      case 'tj-correct':  { FP.token(ctx,f,C,0.5,{role:'ST',accent:acc}); FP.verdict(ctx,f,C,0.5-f.r*0.003,{kind:'correct'}); break; }
+      case 'tj-wrong':    { FP.token(ctx,f,C,0.5,{role:'ST',accent:acc}); FP.verdict(ctx,f,C,0.5-f.r*0.003,{kind:'wrong'}); break; }
+      case 'tj-missed':   { const car={x:0.3,y:0.5},should={x:0.72,y:0.36}; FP.trajectory(ctx,f,car,should,{kind:'driven',color:'#FFB020',ghost:true}); FP.token(ctx,f,car.x,car.y,{role:'AM',kind:'carrier',accent:acc}); FP.token(ctx,f,should.x,should.y,{role:'RW',accent:acc,alpha:.55}); FP.verdict(ctx,f,should.x,should.y,{kind:'missed'}); break; }
+      case 'tj-compare':  { const car={x:0.26,y:0.5},yours={x:0.62,y:0.68},elite={x:0.76,y:0.32}; FP.trajectory(ctx,f,car,elite,{kind:'ground',color:FP.COL.free}); FP.trajectory(ctx,f,car,yours,{kind:'driven',accent:acc}); FP.token(ctx,f,car.x,car.y,{role:'AM',kind:'carrier',accent:acc}); break; }
+
+      case 'pr-channels': FP.grid(ctx,f,{channels:true}); break;
+      case 'pr-thirds':   FP.grid(ctx,f,{thirds:true}); break;
+      case 'pr-zone14':   FP.grid(ctx,f,{zone14:true,accent:acc}); break;
+
+      case 'gk-angle':    { const gf=FP.fit(s.w,s.h,{crop:'gk',orient:'ns',attackDir:'rtl',inset:0.1}); FP.pitch(ctx,gf); const b={x:0.86,y:0.4},t=0.72,opt={x:b.x+(1-b.x)*t,y:b.y+(0.5-b.y)*t}; FP.angleCone(ctx,gf,b,{end:1,optimal:t}); FP.chevron(ctx,gf,b.x,b.y,{role:''}); FP.token(ctx,gf,opt.x,opt.y,{kind:'keeper',role:'GK'}); FP.ball(ctx,gf,b.x-0.03,b.y+0.02,{}); break; }
+      case 'gk-reach':    { const gf=FP.fit(s.w,s.h,{crop:'gk',orient:'ns',attackDir:'rtl',inset:0.1}); FP.pitch(ctx,gf); const k={x:0.9,y:0.5}; FP.keeperReach(ctx,gf,k.x,k.y,{reach:0.07}); FP.token(ctx,gf,k.x,k.y,{kind:'keeper',role:'GK'}); break; }
+      case 'gk-claim':    { const gf=FP.fit(s.w,s.h,{crop:'gk-18',orient:'ns',attackDir:'rtl',inset:0.1}); FP.pitch(ctx,gf); const k={x:0.93,y:0.5}; FP.trajectory(ctx,gf,{x:0.8,y:0.14},{x:0.9,y:0.5},{kind:'lofted',color:'#22D3EE'}); FP.radius(ctx,gf,k.x,k.y,{reach:0.11,color:'#22D3EE'}); FP.token(ctx,gf,k.x,k.y,{kind:'keeper',role:'GK'}); FP.ballHigh(ctx,gf,0.85+0.03*Math.sin(s.now/500),0.3,{height:0.65}); break; }
+      case 'gk-face':     { const gw=s.w*0.64,gh=gw/3,box={x:(s.w-gw)/2,y:s.h*0.32,w:gw,h:gh}; FP.goalFace(ctx,box,{cols:3,rows:2}); FP.keeperFront(ctx,box.x+box.w*0.5,box.y+box.h,box.h,{dive:0}); break; }
+      case 'gk-save':     { const gw=s.w*0.64,gh=gw/3,box={x:(s.w-gw)/2,y:s.h*0.32,w:gw,h:gh}; FP.goalFace(ctx,box,{cols:3,rows:2,zone:0,zoneColor:'#FFB020'}); FP.keeperFront(ctx,box.x+box.w*0.5,box.y+box.h,box.h,{dive:-1}); const tx=box.x+box.w/6,ty=box.y+box.h/4; ctx.save(); ctx.strokeStyle='#FFB020'; ctx.lineWidth=3; ctx.shadowColor='#FFB020'; ctx.shadowBlur=10; ctx.beginPath(); ctx.moveTo(box.x+box.w*0.5,box.y+box.h+gh*0.15); ctx.lineTo(tx,ty); ctx.stroke(); ctx.restore(); FP.ball(ctx,{px:()=>[tx,ty],ballR:Math.max(5,gh*0.09)},0,0,{flight:true,r:Math.max(5,gh*0.09)}); break; }
+
+      case 'df-line':     { const bl=[{x:0.28,y:0.18},{x:0.3,y:0.4},{x:0.3,y:0.6},{x:0.28,y:0.82}]; FP.line(ctx,f,bl,{}); bl.forEach((p,i)=>FP.token(ctx,f,p.x,p.y,{role:['LB','CB','CB','RB'][i],accent:acc})); break; }
+      case 'df-offside':  { const ol=0.6; FP.line(ctx,f,[{x:ol,y:0.05},{x:ol,y:0.95}],{offside:true}); [0.3,0.5,0.7].forEach(y=>FP.token(ctx,f,0.57,y,{role:'CB',accent:acc})); FP.chevron(ctx,f,0.7,0.5,{role:''}); break; }
+      case 'df-mark':     { const att={x:0.66,y:0.42},def={x:0.55,y:0.46}; FP.marking(ctx,f,def,att,{}); FP.chevron(ctx,f,att.x,att.y,{role:''}); FP.token(ctx,f,def.x,def.y,{role:'CB',accent:acc,facing:0.2}); break; }
+      case 'df-block':    { const pts=[{x:0.3,y:0.26},{x:0.34,y:0.5},{x:0.3,y:0.74},{x:0.5,y:0.64},{x:0.52,y:0.36}]; FP.block(ctx,f,pts,{}); pts.forEach(p=>FP.token(ctx,f,p.x,p.y,{role:'',accent:acc,r:f.r*0.82})); FP.chevron(ctx,f,0.66,0.5,{role:''}); break; }
+      case 'df-gap':      { const a={x:0.4,y:0.36},b={x:0.42,y:0.66}; FP.gap(ctx,f,a,b,{label:'12m'}); FP.token(ctx,f,a.x,a.y,{role:'CB',accent:acc}); FP.token(ctx,f,b.x,b.y,{role:'RB',accent:acc}); FP.chevron(ctx,f,0.56,0.52,{role:''}); break; }
+      case 'df-recovery': { const from={x:0.62,y:0.4},to={x:0.34,y:0.5}; FP.run(ctx,f,from,to,{color:acc}); FP.token(ctx,f,from.x,from.y,{role:'CB',accent:acc,facing:Math.PI}); break; }
+    }
+  }
+
+  renderVals(){
+    const acc=this.props.accent??'#22D3EE';
+    return { accent:acc, groups:this.GROUPS };
+  }
+}
+</script>
+</body>
+</html>
