@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;} html,body{margin:0;padding:0;background:#04060c;}
+  a{color:var(--accent,#22D3EE);text-decoration:none;} a:hover{opacity:.92;}
+  @keyframes fa-blink{0%,100%{opacity:1;}50%{opacity:.25;}}
+  @keyframes fa-rise{0%{transform:translateY(16px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-rise-sm{0%{transform:translateY(10px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-bar{from{transform:scaleX(0);}to{transform:scaleX(1);}}
+  @keyframes fa-pop{0%{transform:scale(.7);opacity:0;}60%{transform:scale(1.06);}100%{transform:scale(1);opacity:1;}}
+  .fa-in{opacity:0;animation:fa-rise .7s cubic-bezier(.2,.7,.2,1) forwards;}
+  .fa-in-sm{opacity:0;animation:fa-rise-sm .5s cubic-bezier(.2,.7,.2,1) forwards;}
+  @media (prefers-reduced-motion:reduce){*{animation-duration:.001s!important;}.fa-in,.fa-in-sm{opacity:1!important;transform:none!important;}}
+</style>
+</helmet>
+<div data-screen-label="Archetype Draft" style="position:relative;display:flex;flex-direction:column;min-height:100dvh;width:100%;overflow:hidden;background:radial-gradient(120% 90% at 50% 6%,#0e1a2d 0%,#080e1a 44%,#04060c 100%);color:#EAF2FB;font-family:'Archivo',system-ui,sans-serif;--accent:{{ accent }};">
+
+  <div style="position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.4;background:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0px,rgba(255,255,255,.02) 1px,transparent 1px,transparent 4px);"></div>
+  <div style="position:absolute;top:20px;left:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;top:20px;right:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;left:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;right:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+
+  <header style="position:relative;z-index:6;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px clamp(26px,3.4vw,58px);">
+    <div style="min-width:120px;display:flex;"><a href="Assessment.dc.html" style="display:inline-flex;align-items:center;gap:8px;color:#8EA1B8;font:600 12.5px 'Archivo';" style-hover="color:#EAF2FB;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M15 5l-7 7 7 7"/></svg>Back to the scan</a></div>
+    <div style="display:flex;align-items:center;gap:11px;"><svg width="22" height="22" viewBox="0 0 32 32" fill="none"><path d="M16 2 28 9v14L16 30 4 23V9z" style="stroke:var(--accent,#22D3EE);stroke-width:1.5;fill:color-mix(in srgb,var(--accent,#22D3EE) 12%,transparent);"/><circle cx="16" cy="11" r="2.4" style="fill:var(--accent,#22D3EE);"/><circle cx="11" cy="20" r="2.4" style="fill:var(--accent,#22D3EE);"/><circle cx="21" cy="20" r="2.4" style="fill:var(--accent,#22D3EE);"/><path d="M16 11 11 20M16 11l5 9M11 20h10" style="stroke:var(--accent,#22D3EE);stroke-width:1.1;opacity:.5;"/></svg><span style="font:800 13px 'Archivo';letter-spacing:.05em;">ARCHETYPE <span style="color:var(--accent,#22D3EE);">DRAFT</span></span></div>
+    <div style="min-width:120px;display:flex;justify-content:flex-end;">
+      <button onClick="{{ toggleSound }}" title="{{ soundTitle }}" style="display:grid;place-items:center;width:28px;height:28px;border-radius:8px;border:1px solid rgba(120,140,166,.24);background:rgba(10,16,28,.5);cursor:pointer;color:{{ soundColor }};" style-hover="border-color:color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);">
+        <sc-if value="{{ soundOn }}" hint-placeholder-val="{{ true }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg></sc-if>
+        <sc-if value="{{ soundOff }}" hint-placeholder-val="{{ false }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M22 9l-6 6M16 9l6 6"/></svg></sc-if>
+      </button>
+    </div>
+  </header>
+
+  <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:6px clamp(20px,3vw,50px) 44px;">
+    <div style="width:100%;max-width:760px;">
+
+      <div class="fa-in" style="text-align:center;margin-bottom:6px;font:600 11px 'IBM Plex Mono';letter-spacing:.34em;color:var(--accent,#22D3EE);">BUILD A MIDFIELD THREE</div>
+      <h1 class="fa-in" style="margin:0 0 6px;text-align:center;font:800 clamp(26px,4vw,44px)/1.02 'Archivo';letter-spacing:-0.02em;animation-delay:.05s;">Pick three. See what breaks.</h1>
+      <p class="fa-in" style="margin:0 auto 22px;max-width:520px;text-align:center;font:400 13.5px/1.5 'Archivo';color:#9FB0C5;animation-delay:.1s;">No archetype is the best one. A midfield is only as good as the phases it covers &mdash; and the ones it forgets.</p>
+
+      <!-- slots -->
+      <div class="fa-in" style="display:flex;gap:10px;justify-content:center;margin-bottom:18px;animation-delay:.14s;">
+        <sc-for list="{{ slots }}" as="s" hint-placeholder-count="3">
+          <button onClick="{{ s.onClear }}" style="flex:1;max-width:180px;aspect-ratio:3/3.4;border-radius:16px;border:1.5px {{ s.borderStyle }} {{ s.border }};background:{{ s.bg }};display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;cursor:{{ s.cursor }};transition:border-color .15s,background .15s;padding:10px;" style-hover="{{ s.hover }}">
+            <sc-if value="{{ s.filled }}" hint-placeholder-val="{{ false }}">
+              <div style="font-size:34px;line-height:1;animation:fa-pop .25s ease both;">{{ s.emoji }}</div>
+              <div style="font:800 13px 'Archivo';color:{{ s.color }};">{{ s.name }}</div>
+              <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.12em;color:#7688a0;">{{ s.role }}</div>
+              <div style="font:500 8px 'IBM Plex Mono';letter-spacing:.14em;color:#4f627a;margin-top:2px;">TAP TO REMOVE</div>
+            </sc-if>
+            <sc-if value="{{ s.empty }}" hint-placeholder-val="{{ true }}">
+              <div style="width:34px;height:34px;border-radius:50%;border:1.5px dashed rgba(120,140,166,.4);display:grid;place-items:center;color:#61748c;font:800 20px 'Archivo';">+</div>
+              <div style="font:600 10px 'IBM Plex Mono';letter-spacing:.14em;color:#4f627a;">SLOT {{ s.num }}</div>
+            </sc-if>
+          </button>
+        </sc-for>
+      </div>
+
+      <!-- card tray -->
+      <div class="fa-in" style="margin-bottom:16px;animation-delay:.18s;">
+        <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:#61748c;margin-bottom:9px;text-align:center;">TAP TO ADD</div>
+        <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;">
+          <sc-for list="{{ cards }}" as="c" hint-placeholder-count="5">
+            <button onClick="{{ c.onAdd }}" style="border-radius:13px;border:1px solid {{ c.border }};background:{{ c.bg }};padding:12px 6px;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:{{ c.cursor }};opacity:{{ c.opacity }};transition:transform .12s,border-color .15s;" style-hover="transform:translateY(-3px);border-color:{{ c.hoverBorder }};">
+              <div style="font-size:26px;line-height:1;">{{ c.emoji }}</div>
+              <div style="font:800 11.5px 'Archivo';color:{{ c.color }};text-align:center;line-height:1.1;">{{ c.name }}</div>
+              <div style="font:600 8px 'IBM Plex Mono';letter-spacing:.1em;color:#7688a0;">{{ c.role }}</div>
+            </button>
+          </sc-for>
+        </div>
+      </div>
+
+      <!-- presets -->
+      <div class="fa-in" style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:18px;animation-delay:.22s;">
+        <span style="font:600 9px 'IBM Plex Mono';letter-spacing:.16em;color:#4f627a;align-self:center;">TRY:</span>
+        <sc-for list="{{ presets }}" as="p" hint-placeholder-count="3"><button onClick="{{ p.onPick }}" style="padding:8px 13px;border-radius:9px;border:1px solid rgba(120,140,166,.24);background:rgba(10,16,28,.4);color:#B4C2D4;font:600 11.5px 'Archivo';cursor:pointer;" style-hover="border-color:color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);color:#EAF2FB;">{{ p.label }}</button></sc-for>
+      </div>
+
+      <!-- verdict -->
+      <sc-if value="{{ hasVerdict }}" hint-placeholder-val="{{ false }}">
+        <div key="{{ verdictKey }}" class="fa-in-sm" style="width:100%;border-radius:18px;border:1px solid color-mix(in srgb,{{ gradeColor }} 34%,transparent);background:color-mix(in srgb,{{ gradeColor }} 7%,transparent);padding:22px 22px 20px;margin-bottom:16px;">
+          <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px;">
+            <div style="flex:0 0 auto;width:52px;height:52px;border-radius:14px;display:grid;place-items:center;background:color-mix(in srgb,{{ gradeColor }} 18%,transparent);border:1px solid color-mix(in srgb,{{ gradeColor }} 45%,transparent);font:900 24px 'Archivo';color:{{ gradeColor }};">{{ grade }}</div>
+            <div><div style="font:800 clamp(17px,2.2vw,22px) 'Archivo';letter-spacing:-0.01em;color:#F2F8FE;">{{ verdictTitle }}</div><div style="font:600 10px 'IBM Plex Mono';letter-spacing:.14em;color:#7688a0;margin-top:2px;">{{ trioLabel }}</div></div>
+          </div>
+          <p style="margin:0 0 16px;font:400 14px/1.6 'Archivo';color:#C6D3E2;text-wrap:pretty;">{{ verdictBody }}</p>
+          <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:#61748c;margin-bottom:10px;">PHASE COVERAGE</div>
+          <div style="display:flex;flex-direction:column;gap:9px;">
+            <sc-for list="{{ coverage }}" as="cv" hint-placeholder-count="5">
+              <div style="display:flex;align-items:center;gap:10px;"><span style="width:96px;font:600 11px 'Archivo';color:#C6D3E2;">{{ cv.label }}</span><div style="flex:1;height:8px;border-radius:99px;background:rgba(120,140,166,.14);overflow:hidden;"><div class="fa-bar" style="height:100%;border-radius:99px;transform-origin:left;animation:fa-bar .7s cubic-bezier(.3,.8,.3,1) both;width:{{ cv.barW }};background:{{ cv.barBg }};"></div></div><span style="width:56px;text-align:right;font:600 9px 'IBM Plex Mono';letter-spacing:.06em;color:{{ cv.tagColor }};">{{ cv.tag }}</span></div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ noVerdict }}" hint-placeholder-val="{{ true }}">
+        <div class="fa-in-sm" style="width:100%;border-radius:16px;border:1px dashed rgba(120,140,166,.24);padding:22px;text-align:center;font:500 13px 'Archivo';color:#61748c;">Fill all three slots to see what your midfield covers &mdash; and what it forgets.</div>
+      </sc-if>
+
+    </div>
+  </main>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:960,&quot;height&quot;:760},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#22D3EE&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#22D3EE&quot;,&quot;#A78BFA&quot;,&quot;#C6FF3A&quot;,&quot;#FF7A45&quot;,&quot;#FF4D8D&quot;]}}">
+class Component extends DCLogic {
+  ORDER = ['conductor','maestro','carrier','engine','destroyer'];
+  ARCH = {
+    conductor:{ name:'Conductor', role:'tempo', emoji:'\uD83C\uDFBC', color:'#D9A521' },
+    maestro:{ name:'Maestro', role:'the pass', emoji:'\uD83C\uDFAF', color:'#7C5CE0' },
+    carrier:{ name:'Carrier', role:'the carry', emoji:'\uD83C\uDFC3', color:'#2E9BE8' },
+    engine:{ name:'Engine', role:'the legs', emoji:'\u2699\uFE0F', color:'#1FB588' },
+    destroyer:{ name:'Destroyer', role:'the stop', emoji:'\uD83D\uDEE1\uFE0F', color:'#E0413C' },
+  };
+  TRAITS = ['control','creation','progression','intensity','duel'];
+  TRAITLABEL = { control:'Control', creation:'Creation', progression:'Progression', intensity:'Work rate', duel:'Ball-winning' };
+  CONTRIB = {
+    conductor:{control:100,creation:40,progression:20,intensity:25,duel:35},
+    maestro:{control:45,creation:100,progression:35,intensity:15,duel:10},
+    carrier:{control:30,creation:40,progression:100,intensity:55,duel:25},
+    engine:{control:25,creation:25,progression:55,intensity:100,duel:50},
+    destroyer:{control:35,creation:10,progression:25,intensity:55,duel:100},
+  };
+  PRESETS = [
+    { label:'The classic', trio:['conductor','maestro','destroyer'] },
+    { label:'All runners', trio:['engine','carrier','destroyer'] },
+    { label:'Three creators', trio:['maestro','maestro','conductor'] },
+  ];
+  GAP_LINE = {
+    control:'No one to set the tempo. This midfield will play at everyone else\u2019s speed \u2014 it\u2019ll be chaos, and chaos favours the better team.',
+    creation:'Plenty of energy, but who unlocks a deep block? Against a team that sits in, this three will run into a wall all afternoon.',
+    progression:'You can keep it and you can win it \u2014 but you\u2019ll pass it in front of them, never through them. Nobody drives the team up the pitch.',
+    intensity:'Lovely on the ball, but they\u2019ll out-run you. In the last twenty minutes this midfield gets over-run and the game gets away.',
+    duel:'Nobody wins it back. The moment you lose the ball, there\u2019s no one to stop the counter \u2014 this three gets picked apart in transition.',
+  };
+
+  state = { view:'build', picks:[], res:null, verdictKey:0 };
+
+  componentDidMount(){ try { this._soundOn=localStorage.getItem('fa_sound')!=='0'; } catch(e){ this._soundOn=true; } this.forceUpdate(); }
+
+  _audio(){ if(this._actx===undefined){ try{ this._actx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ this._actx=null; } } if(this._actx&&this._actx.state==='suspended') this._actx.resume(); return this._actx; }
+  _tone(f,d,t,g){ const c=this._audio(); if(!c||this._soundOn===false) return; const o=c.createOscillator(),a=c.createGain(); o.type=t||'sine'; o.frequency.value=f; o.connect(a); a.connect(c.destination); const n=c.currentTime; a.gain.setValueAtTime(0,n); a.gain.linearRampToValueAtTime(g||0.05,n+0.01); a.gain.exponentialRampToValueAtTime(0.0001,n+d); o.start(n); o.stop(n+d); }
+  _sfx(k){ if(this._soundOn===false) return; if(k==='add'){ this._tone(560,0.09,'triangle',0.05); setTimeout(()=>this._tone(760,0.1,'triangle',0.04),45);} else if(k==='remove') this._tone(320,0.1,'sine',0.04); else if(k==='verdict'){ this._tone(520,0.13,'triangle',0.05); setTimeout(()=>this._tone(700,0.14,'triangle',0.05),110); setTimeout(()=>this._tone(940,0.22,'triangle',0.05),230);} }
+  _toggleSound(){ const on=this._soundOn===false; this._soundOn=on; try{ localStorage.setItem('fa_sound', on?'1':'0'); }catch(e){} if(on){ this._audio(); this._tone(560,0.1,'triangle',0.05);} this.forceUpdate(); }
+
+  _add(a){ if(this.state.picks.length>=3) return; this._sfx('add'); const picks=this.state.picks.concat([a]); this._commit(picks); }
+  _clearSlot(i){ if(i>=this.state.picks.length) return; this._sfx('remove'); const picks=this.state.picks.slice(); picks.splice(i,1); this._commit(picks); }
+  _preset(trio){ this._sfx('add'); this._commit(trio.slice()); }
+
+  _commit(picks){
+    let res=null;
+    if(picks.length===3){
+      const cov={}; this.TRAITS.forEach(t=>{ cov[t]=picks.reduce((s,a)=>s+this.CONTRIB[a][t],0); });
+      // normalise each trait: 3 picks, max meaningful ~ 3*100=300; scale so a single elite (100)+support reads well. use /2.4 cap 100
+      const pct={}; this.TRAITS.forEach(t=>{ pct[t]=Math.min(100, Math.round(cov[t]/2.4)); });
+      const min=this.TRAITS.reduce((m,t)=>pct[t]<pct[m]?t:m, this.TRAITS[0]);
+      const max=this.TRAITS.reduce((m,t)=>pct[t]>pct[m]?t:m, this.TRAITS[0]);
+      const mono = picks[0]===picks[1] && picks[1]===picks[2];
+      const distinct=new Set(picks).size;
+      res={ pct, min, max, mono, distinct, minVal:pct[min] };
+      this._sfx('verdict');
+    }
+    this.setState({ picks, res, verdictKey:this.state.verdictKey+1 });
+    try{ const st=JSON.parse(localStorage.getItem('fa_cm_draft'))||{builds:0}; st.builds=(st.builds||0)+(picks.length===3?1:0); localStorage.setItem('fa_cm_draft', JSON.stringify(st)); }catch(e){}
+  }
+
+  renderVals(){
+    const accent=this.props.accent ?? '#22D3EE';
+    const soundOn=this._soundOn!==false;
+    const picks=this.state.picks;
+    const base={
+      accent, soundOn, soundOff:!soundOn, soundColor:soundOn?accent:'#61748c', soundTitle:soundOn?'Sound on':'Sound off',
+      toggleSound:()=>this._toggleSound(),
+    };
+    base.slots=[0,1,2].map(i=>{
+      const a=picks[i];
+      if(a){ const d=this.ARCH[a]; return { filled:true, empty:false, num:i+1, emoji:d.emoji, name:d.name, role:d.role, color:d.color, onClear:()=>this._clearSlot(i), cursor:'pointer', borderStyle:'solid', border:'color-mix(in srgb,'+d.color+' 55%,transparent)', bg:'color-mix(in srgb,'+d.color+' 10%,transparent)', hover:'border-color:'+d.color+';' }; }
+      return { filled:false, empty:true, num:i+1, emoji:'', name:'', role:'', color:'#61748c', onClear:()=>{}, cursor:'default', borderStyle:'dashed', border:'rgba(120,140,166,.28)', bg:'rgba(10,16,28,.4)', hover:'' };
+    });
+    const full=picks.length>=3;
+    base.cards=this.ORDER.map(a=>{ const d=this.ARCH[a]; return { emoji:d.emoji, name:d.name, role:d.role, color:d.color, onAdd:()=>this._add(a), cursor:full?'not-allowed':'pointer', opacity:full?'.45':'1', border:'color-mix(in srgb,'+d.color+' 30%,transparent)', hoverBorder:d.color, bg:'color-mix(in srgb,'+d.color+' 8%,transparent)' }; });
+    base.presets=this.PRESETS.map(p=>({ label:p.label, onPick:()=>this._preset(p.trio) }));
+
+    const r=this.state.res;
+    base.hasVerdict=!!r; base.noVerdict=!r; base.verdictKey='v'+this.state.verdictKey;
+    Object.assign(base,{ grade:'', gradeColor:accent, verdictTitle:'', trioLabel:'', verdictBody:'', coverage:[] });
+    if(r){
+      const gradeFor=(v)=> v>=58?['A','#7CFFB0']: v>=44?['B','#D9A521']: v>=30?['C','#FFB020']:['D','#FF5A6E'];
+      let g;
+      if(r.mono){ g=['D','#FF5A6E']; } else g=gradeFor(r.minVal);
+      base.grade=g[0]; base.gradeColor=g[1];
+      base.trioLabel=picks.map(a=>this.ARCH[a].name).join(' · ');
+      const maxName=this.ARCH[undefined]; // placeholder
+      const strongTrait=this.TRAITLABEL[r.max].toLowerCase();
+      if(r.mono){
+        const a=picks[0];
+        const monoLine={ conductor:'Three Conductors: all tempo, no end product. Beautiful to watch, nil-nil forever \u2014 and nobody wins it back.', maestro:'Three Maestros: everyone wants the killer pass, nobody wins it back or does the running. Gorgeous, and it loses 4\u20133.', carrier:'Three Carriers: everyone drives, nobody sets the picture or holds the fort. Thrilling chaos that leaks goals.', engine:'Three Engines: they\u2019ll run all day and press you to death \u2014 but who actually creates a chance?', destroyer:'Three Destroyers: nothing gets past them and nothing gets created either. You\u2019ll win it back all game with nowhere to play it.' };
+        base.verdictTitle='A mono midfield.'; base.verdictBody=monoLine[a]+' The whole point of the five: they\u2019re superior in combination, not alone.';
+      } else if(r.minVal<38){
+        base.verdictTitle='One phase is missing.'; base.verdictBody=this.GAP_LINE[r.min]+' Your strength is '+strongTrait+' \u2014 now cover the gap.';
+      } else if(r.minVal>=58){
+        base.verdictTitle='A complete three.'; base.verdictBody='This midfield has an answer for every phase \u2014 it can set the tempo, create, carry, run, and win it back. Balanced beats brilliant-but-lopsided almost every time. Best phase: '+strongTrait+'.';
+      } else {
+        base.verdictTitle='A working three.'; base.verdictBody='No glaring hole, and a clear strength in '+strongTrait+'. It\u2019ll function \u2014 tighten the weakest phase ('+this.TRAITLABEL[r.min].toLowerCase()+') and it goes from good to serious.';
+      }
+      base.coverage=this.TRAITS.map(t=>{
+        const v=r.pct[t]; const isMin=t===r.min && v<58; const isMax=t===r.max;
+        const col= v>=58?'#7CFFB0': v>=38?'#D9A521':'#FF5A6E';
+        return { label:this.TRAITLABEL[t], barW:v+'%', barBg:'linear-gradient(90deg,'+col+',color-mix(in srgb,'+col+' 45%,transparent))',
+          tag: v>=58?'STRONG':(v>=38?'OK':'GAP'), tagColor:col };
+      });
+    }
+    return base;
+  }
+}
+</script>
+</body>
+</html>

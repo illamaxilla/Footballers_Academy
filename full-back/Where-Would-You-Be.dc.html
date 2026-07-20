@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:#04060c;}
+  a{color:var(--accent,#FF6B1A);text-decoration:none;}
+  a:hover{opacity:.92;}
+  @keyframes fa-blink{0%,100%{opacity:1;}50%{opacity:.25;}}
+  @keyframes fa-rise{0%{transform:translateY(16px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-rise-sm{0%{transform:translateY(10px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-bar{from{transform:scaleX(0);}to{transform:scaleX(1);}}
+  @keyframes fa-pop{0%{transform:translate(-50%,-50%) scale(0);}60%{transform:translate(-50%,-50%) scale(1.25);}100%{transform:translate(-50%,-50%) scale(1);}}
+  .fa-in{opacity:0;animation:fa-rise .6s cubic-bezier(.2,.7,.2,1) forwards;}
+  .fa-in-sm{opacity:0;animation:fa-rise-sm .5s cubic-bezier(.2,.7,.2,1) forwards;}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;}.fa-in,.fa-in-sm{opacity:1!important;transform:none!important;}}
+</style>
+</helmet>
+<div data-screen-label="Where Would You Be" style="position:relative;display:flex;flex-direction:column;min-height:100dvh;width:100%;overflow:hidden;background:radial-gradient(120% 90% at 50% 6%,#0e1a2d 0%,#080e1a 44%,#04060c 100%);color:#EAF2FB;font-family:'Archivo',system-ui,sans-serif;--accent:{{ accent }};">
+
+  <div style="position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.4;background:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0px,rgba(255,255,255,.02) 1px,transparent 1px,transparent 4px);"></div>
+  <div style="position:absolute;top:20px;left:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#FF6B1A) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#FF6B1A) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;top:20px;right:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#FF6B1A) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#FF6B1A) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;left:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#FF6B1A) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#FF6B1A) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;right:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#FF6B1A) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#FF6B1A) 50%,transparent);z-index:4;pointer-events:none;"></div>
+
+  <sc-if value="{{ showChrome }}" hint-placeholder-val="{{ true }}">
+    <header style="position:relative;z-index:6;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px clamp(24px,3.4vw,54px);">
+      <div style="min-width:110px;display:flex;"><a href="Assessment.dc.html" style="display:inline-flex;align-items:center;gap:8px;color:#8EA1B8;font:600 12.5px 'Archivo';"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M15 5l-7 7 7 7"/></svg>Back to the scan</a></div>
+      <div style="display:flex;align-items:center;gap:11px;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" style="stroke:var(--accent,#FF6B1A);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg><span style="font:800 13px 'Archivo';letter-spacing:.05em;">WHERE WOULD <span style="color:var(--accent,#FF6B1A);">YOU BE?</span></span></div>
+      <div style="display:flex;align-items:center;gap:12px;min-width:110px;justify-content:flex-end;">
+        <button onClick="{{ toggleSound }}" title="{{ soundTitle }}" style="display:grid;place-items:center;width:28px;height:28px;border-radius:8px;border:1px solid rgba(120,140,166,.24);background:rgba(10,16,28,.5);cursor:pointer;color:{{ soundColor }};">
+          <sc-if value="{{ soundOn }}" hint-placeholder-val="{{ true }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></sc-if>
+          <sc-if value="{{ soundOff }}" hint-placeholder-val="{{ false }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M22 9l-6 6M16 9l6 6"/></svg></sc-if>
+        </button>
+      </div>
+    </header>
+  </sc-if>
+
+  <!-- INTRO -->
+  <sc-if value="{{ isIntro }}" hint-placeholder-val="{{ true }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;text-align:center;padding:14px clamp(24px,4vw,54px) 54px;">
+      <div class="fa-in" style="display:inline-flex;align-items:center;gap:10px;margin-bottom:18px;font:600 12px 'IBM Plex Mono';letter-spacing:.4em;color:var(--accent,#FF6B1A);"><span style="width:6px;height:6px;border-radius:50%;background:var(--accent,#FF6B1A);box-shadow:0 0 8px var(--accent,#FF6B1A);animation:fa-blink 1.6s ease-in-out infinite;"></span>READ THE PICTURE</div>
+      <h1 class="fa-in" style="margin:0 0 14px;font:800 clamp(34px,5.2vw,68px)/0.98 'Archivo';letter-spacing:-0.03em;text-wrap:balance;max-width:760px;animation-delay:.05s;">The play stops. Where do you stand?</h1>
+      <p class="fa-in" style="margin:0 0 26px;max-width:560px;font:400 clamp(14px,1.25vw,17px)/1.6 'Archivo';color:#9FB0C5;text-wrap:pretty;animation-delay:.1s;">You&rsquo;re the left back. Each moment freezes the pitch. Tap the exact spot you&rsquo;d take up &mdash; high and wide, tucked inside, or deep and safe. Where you choose to stand, over and over, is the truest tell of the full back you are.</p>
+      <button onClick="{{ start }}" class="fa-in" style="display:inline-flex;align-items:center;gap:12px;padding:17px 42px;border-radius:13px;border:0;background:var(--accent,#FF6B1A);color:#04121a;font:700 16px 'Archivo';cursor:pointer;box-shadow:0 14px 44px color-mix(in srgb,var(--accent,#FF6B1A) 42%,transparent);transition:transform .16s ease;animation-delay:.22s;" style-hover="transform:translateY(-2px);">Take the pitch<svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12h13M12 6l6 6-6 6"/></svg></button>
+      <div class="fa-in" style="margin-top:16px;font:500 10px 'IBM Plex Mono';letter-spacing:.14em;color:#61748C;animation-delay:.3s;">8 MOMENTS &middot; TAP TO POSITION &middot; JUST FOR FUN</div>
+    </main>
+  </sc-if>
+
+  <!-- PLAY -->
+  <sc-if value="{{ isPlay }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:6px clamp(18px,3.5vw,54px) 34px;">
+      <div style="width:100%;max-width:640px;margin:0 auto;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+          <span style="font:600 9.5px 'IBM Plex Mono';letter-spacing:.2em;color:var(--accent,#FF6B1A);">MOMENT {{ momentLabel }}</span>
+          <span style="flex:1;height:1px;background:rgba(120,140,166,.16);"></span>
+          <span style="font:600 9.5px 'IBM Plex Mono';letter-spacing:.14em;color:#7688A0;">{{ phaseLabel }}</span>
+        </div>
+
+        <div style="padding:12px 14px;border-radius:12px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);margin-bottom:12px;">
+          <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.2em;color:var(--accent,#FF6B1A);margin-bottom:5px;">{{ situKicker }}</div>
+          <p style="margin:0;font:600 15px/1.35 'Archivo';color:#EAF2FB;text-wrap:pretty;">{{ situDesc }}</p>
+        </div>
+
+        <!-- full pitch, attacking UP -->
+        <div onClick="{{ onPitchTap }}" style="position:relative;width:100%;height:min(64vh,540px);border-radius:16px;overflow:hidden;border:1px solid rgba(120,140,166,.2);background:linear-gradient(180deg,#0d1c2e80,#0a1524,#091324);cursor:{{ pitchCursor }};touch-action:manipulation;">
+          <!-- stripes -->
+          <div style="position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(255,255,255,.012) 0 26px,transparent 26px 52px);pointer-events:none;"></div>
+          <!-- markings -->
+          <div style="position:absolute;left:5%;right:5%;top:50%;height:1px;background:rgba(90,150,190,.14);pointer-events:none;"></div>
+          <div style="position:absolute;left:50%;top:50%;width:66px;height:66px;border:1px solid rgba(90,150,190,.14);border-radius:50%;transform:translate(-50%,-50%);pointer-events:none;"></div>
+          <div style="position:absolute;left:26%;right:26%;top:0;height:16%;border:1px solid rgba(90,150,190,.16);border-top:0;pointer-events:none;"></div>
+          <div style="position:absolute;left:38%;right:38%;top:0;height:6%;border:1px solid rgba(90,150,190,.18);border-top:0;pointer-events:none;"></div>
+          <div style="position:absolute;left:26%;right:26%;bottom:0;height:16%;border:1px solid rgba(90,150,190,.16);border-bottom:0;pointer-events:none;"></div>
+          <div style="position:absolute;left:38%;right:38%;bottom:0;height:6%;border:1px solid rgba(90,150,190,.18);border-bottom:0;pointer-events:none;"></div>
+          <div style="position:absolute;left:6px;top:6px;font:600 8px 'IBM Plex Mono';letter-spacing:.14em;color:rgba(150,180,210,.4);pointer-events:none;">THEIR GOAL &uarr;</div>
+          <div style="position:absolute;left:6px;bottom:6px;font:600 8px 'IBM Plex Mono';letter-spacing:.14em;color:rgba(150,180,210,.4);pointer-events:none;">&darr; YOUR GOAL</div>
+
+          <!-- ball -->
+          <div style="position:absolute;left:{{ ballX }};top:{{ ballY }};transform:translate(-50%,-50%);width:12px;height:12px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,#c9d6e2);box-shadow:0 0 10px rgba(255,255,255,.85);pointer-events:none;z-index:3;"></div>
+
+          <!-- anchors (reveal) -->
+          <sc-for list="{{ anchors }}" as="an" hint-placeholder-count="0">
+            <div style="position:absolute;left:{{ an.x }};top:{{ an.y }};transform:translate(-50%,-50%);pointer-events:none;z-index:4;display:flex;flex-direction:column;align-items:center;gap:2px;">
+              <div style="width:22px;height:22px;border-radius:50%;border:2px solid {{ an.color }};background:color-mix(in srgb,{{ an.color }} 20%,transparent);display:grid;place-items:center;font-size:11px;">{{ an.emoji }}</div>
+              <span style="font:700 7.5px 'IBM Plex Mono';color:{{ an.color }};background:rgba(4,7,12,.55);padding:1px 4px;border-radius:4px;">{{ an.name }}</span>
+            </div>
+          </sc-for>
+
+          <!-- your tap -->
+          <sc-if value="{{ hasTap }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;left:{{ tapX }};top:{{ tapY }};transform:translate(-50%,-50%);z-index:5;pointer-events:none;animation:fa-pop .35s cubic-bezier(.3,.8,.3,1);">
+              <div style="width:20px;height:20px;border-radius:5px;background:linear-gradient(180deg,#EAF2FB,{{ accent }});box-shadow:0 0 14px color-mix(in srgb,{{ accent }} 70%,transparent);border:2px solid #fff;"></div>
+            </div>
+          </sc-if>
+        </div>
+
+        <sc-if value="{{ awaiting }}" hint-placeholder-val="{{ true }}">
+          <div style="text-align:center;margin-top:12px;font:600 11px 'IBM Plex Mono';letter-spacing:.14em;color:#7688A0;">TAP THE PITCH WHERE YOU&rsquo;D STAND</div>
+        </sc-if>
+
+        <sc-if value="{{ revealed }}" hint-placeholder-val="{{ false }}">
+          <div class="fa-in-sm" style="margin-top:12px;padding:14px 16px;border-radius:13px;border:1px solid {{ fbBorder }};background:{{ fbBg }};">
+            <div style="font:700 13px 'Archivo';color:{{ fbColor }};margin-bottom:5px;">Closest to: {{ fbName }}</div>
+            <div style="font:400 13px/1.45 'Archivo';color:#C6D3E2;">{{ fbNote }}</div>
+          </div>
+          <button onClick="{{ next }}" class="fa-in-sm" style="width:100%;margin-top:12px;padding:15px;border-radius:13px;border:0;background:var(--accent,#FF6B1A);color:#04121a;font:700 15px 'Archivo';cursor:pointer;box-shadow:0 12px 34px color-mix(in srgb,var(--accent,#FF6B1A) 38%,transparent);transition:transform .16s ease;animation-delay:.08s;" style-hover="transform:translateY(-2px);">{{ nextLabel }}</button>
+        </sc-if>
+      </div>
+    </main>
+  </sc-if>
+
+  <!-- RESULT -->
+  <sc-if value="{{ isResult }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:10px clamp(20px,4vw,54px) 64px;">
+      <div style="width:100%;max-width:620px;">
+        <div class="fa-in" style="text-align:center;margin-bottom:22px;">
+          <div style="font:600 11px 'IBM Plex Mono';letter-spacing:.4em;color:#7E90A8;margin-bottom:12px;">YOUR MAP</div>
+          <div style="font:900 clamp(38px,7vw,72px)/0.95 'Archivo';letter-spacing:-0.02em;color:var(--accent,#FF6B1A);text-shadow:0 0 42px color-mix(in srgb,var(--accent,#FF6B1A) 45%,transparent);">{{ leanBig }}</div>
+          <div style="margin-top:8px;font:600 clamp(14px,1.6vw,18px) 'Archivo';color:#C9D6E2;">{{ resultHeadline }}</div>
+        </div>
+
+        <div class="fa-in" style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:22px;animation-delay:.06s;">
+          <div style="padding:15px 12px;border-radius:13px;border:1px solid rgba(120,140,166,.18);background:rgba(10,16,28,.45);text-align:center;"><div style="font:800 20px 'Archivo';color:var(--accent,#FF6B1A);">{{ widthLabel }}</div><div style="font:600 8px 'IBM Plex Mono';letter-spacing:.1em;color:#7688A0;margin-top:4px;">AVERAGE WIDTH</div></div>
+          <div style="padding:15px 12px;border-radius:13px;border:1px solid rgba(120,140,166,.18);background:rgba(10,16,28,.45);text-align:center;"><div style="font:800 20px 'Archivo';color:#5B9BD5;">{{ heightLabel }}</div><div style="font:600 8px 'IBM Plex Mono';letter-spacing:.1em;color:#7688A0;margin-top:4px;">AVERAGE HEIGHT</div></div>
+        </div>
+
+        <div class="fa-in" style="width:100%;padding:20px 22px;border-radius:16px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);margin-bottom:22px;animation-delay:.1s;">
+          <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:#7688A0;margin-bottom:14px;">WHERE YOU LIVED</div>
+          <div style="display:flex;flex-direction:column;gap:11px;">
+            <sc-for list="{{ fpBars }}" as="s" hint-placeholder-count="4">
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <div style="display:flex;align-items:baseline;justify-content:space-between;">
+                  <span style="font:700 12.5px 'Archivo';color:{{ s.labelColor }};">{{ s.emoji }} {{ s.label }}</span>
+                  <span style="font:800 12px 'IBM Plex Mono';color:{{ s.numColor }};">{{ s.pct }}</span>
+                </div>
+                <div style="height:8px;border-radius:99px;background:rgba(120,140,166,.14);overflow:hidden;"><div style="height:100%;border-radius:99px;transform-origin:left;animation:fa-bar .8s cubic-bezier(.3,.8,.3,1) both;width:{{ s.barW }};{{ s.barLook }}"></div></div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div class="fa-in" style="padding-left:16px;border-left:3px solid var(--accent,#FF6B1A);margin-bottom:24px;animation-delay:.16s;">
+          <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:#7688A0;margin-bottom:7px;">A SOFT READ</div>
+          <p style="margin:0;font:500 clamp(15px,1.7vw,18px)/1.5 'Archivo';color:#EAF2FB;text-wrap:pretty;">{{ softRead }}</p>
+        </div>
+
+        <div class="fa-in" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:12px;animation-delay:.22s;">
+          <button onClick="{{ again }}" style="display:inline-flex;align-items:center;gap:10px;padding:15px 30px;border-radius:12px;border:0;background:var(--accent,#FF6B1A);color:#04121a;font:700 15px 'Archivo';cursor:pointer;box-shadow:0 12px 36px color-mix(in srgb,var(--accent,#FF6B1A) 40%,transparent);transition:transform .16s ease;" style-hover="transform:translateY(-2px);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:#04121a;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>Go again</button>
+          <a href="Assessment.dc.html" style="display:inline-flex;align-items:center;gap:9px;padding:15px 24px;border-radius:12px;border:1px solid rgba(157,176,198,.28);background:rgba(12,18,30,.4);color:#C6D3E2;font:600 14px 'Archivo';" style-hover="border-color:color-mix(in srgb,var(--accent,#FF6B1A) 55%,transparent);color:#EAF2FB;">Back to the scan</a>
+        </div>
+      </div>
+    </main>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:900,&quot;height&quot;:860},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#FF6B1A&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#FF6B1A&quot;,&quot;#E5197F&quot;,&quot;#5B9BD5&quot;,&quot;#22D3EE&quot;]},&quot;motion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;embedded&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  ORDER=['warrior','winger','sentinel','architect'];
+  ARCH={ warrior:{name:'Warrior',emoji:'\u2699\uFE0F',color:'#FF6B1A'}, winger:{name:'Winger',emoji:'\uD83C\uDFAF',color:'#E5197F'}, sentinel:{name:'Sentinel',emoji:'\uD83D\uDEE1\uFE0F',color:'#5B9BD5'}, architect:{name:'Architect',emoji:'\uD83E\uDDED',color:'#22D3EE'} };
+  // LEFT back. x:8(touchline)..92, y: top=their goal (attack up), bottom=own goal.
+  NOTE={ winger:'high and wide \u2014 the Winger stays on the touchline, stretching the pitch and ready to attack.',
+    warrior:'wide and busy \u2014 the Warrior takes a two-way position, ready to go either direction.',
+    sentinel:'deep and safe \u2014 the Sentinel prioritises the defensive picture before anything else.',
+    architect:'tucked inside \u2014 the Architect steps into midfield to control the ball and the tempo.' };
+  SC=[
+    { k:'BUILD-UP', desc:'Your keeper has the ball. The team is playing out from the back.', ball:{x:'50%',y:'86%'},
+      A:{ winger:{x:14,y:36}, warrior:{x:17,y:58}, sentinel:{x:22,y:74}, architect:{x:36,y:60} } },
+    { k:'SUSTAINED ATTACK', desc:'Your team is camped in their half, ball on the far side.', ball:{x:'74%',y:'30%'},
+      A:{ winger:{x:15,y:22}, warrior:{x:22,y:34}, sentinel:{x:26,y:52}, architect:{x:40,y:40} } },
+    { k:'DEFENSIVE TRANSITION', desc:'You&rsquo;ve just lost the ball in midfield. They look to break.', ball:{x:'52%',y:'46%'},
+      A:{ winger:{x:18,y:48}, warrior:{x:24,y:60}, sentinel:{x:22,y:74}, architect:{x:38,y:64} } },
+    { k:'LOW BLOCK', desc:'They&rsquo;re on top. Your team defends deep in a compact block.', ball:{x:'56%',y:'22%'},
+      A:{ winger:{x:16,y:66}, warrior:{x:23,y:78}, sentinel:{x:27,y:84}, architect:{x:35,y:80} } },
+    { k:'PLAYING OUT UNDER PRESS', desc:'You&rsquo;re building, but their front line is pressing hard.', ball:{x:'40%',y:'78%'},
+      A:{ winger:{x:12,y:44}, warrior:{x:18,y:60}, sentinel:{x:23,y:74}, architect:{x:40,y:58} } },
+    { k:'WINGER 1v1', desc:'Your winger has the ball 1v1, just ahead of you on the line.', ball:{x:'18%',y:'30%'},
+      A:{ winger:{x:14,y:20}, warrior:{x:21,y:38}, sentinel:{x:26,y:54}, architect:{x:37,y:46} } },
+    { k:'ATTACKING THROW', desc:'Your team has a throw-in deep in their half.', ball:{x:'12%',y:'26%'},
+      A:{ winger:{x:16,y:20}, warrior:{x:23,y:34}, sentinel:{x:28,y:54}, architect:{x:39,y:42} } },
+    { k:'THEY COUNTER YOUR SIDE', desc:'They break at speed straight down your flank.', ball:{x:'30%',y:'40%'},
+      A:{ winger:{x:18,y:50}, warrior:{x:25,y:62}, sentinel:{x:21,y:76}, architect:{x:35,y:66} } },
+  ];
+
+  state={ view:'intro', idx:0, phase:'await', tap:null, chosen:null, picks:[] };
+
+  componentDidMount(){ try{ this._soundOn=localStorage.getItem('fa_sound')!=='0'; }catch(e){ this._soundOn=true; } this._embedded=this.props.embedded===true; if(this._embedded) this._begin(); else this.forceUpdate(); }
+
+  _audio(){ if(this._actx===undefined){ try{ this._actx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ this._actx=null; } } if(this._actx&&this._actx.state==='suspended') this._actx.resume(); return this._actx; }
+  _tone(f,d,t,g){ const c=this._audio(); if(!c||this._soundOn===false) return; const o=c.createOscillator(),a=c.createGain(); o.type=t||'sine'; o.frequency.value=f; o.connect(a); a.connect(c.destination); const n=c.currentTime; a.gain.setValueAtTime(0,n); a.gain.linearRampToValueAtTime(g||0.05,n+0.01); a.gain.exponentialRampToValueAtTime(0.0001,n+d); o.start(n); o.stop(n+d); }
+  _sfx(k){ if(this._soundOn===false) return; if(k==='tap'){ this._tone(520,0.09,'triangle',0.05); setTimeout(()=>this._tone(720,0.1,'triangle',0.04),50);} else if(k==='whistle') this._tone(900,0.16,'sine',0.05); else if(k==='end'){ this._tone(520,0.14,'triangle',0.05); setTimeout(()=>this._tone(720,0.14,'triangle',0.05),120); setTimeout(()=>this._tone(940,0.26,'triangle',0.05),240);} else this._tone(430,0.08,'sine',0.04); }
+  _toggleSound(){ const on=this._soundOn===false; this._soundOn=on; try{ localStorage.setItem('fa_sound', on?'1':'0'); }catch(e){} if(on){ this._audio(); this._sfx('click'); } this.forceUpdate(); }
+
+  _begin(){ this._sfx('whistle'); this._order=this.SC.map((s,i)=>i); for(let i=this._order.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [this._order[i],this._order[j]]=[this._order[j],this._order[i]]; } this.setState({ view:'play', idx:0, phase:'await', tap:null, chosen:null, picks:[] }); }
+  _cur(){ return this.SC[this._order[this.state.idx]]; }
+
+  _tap(e){
+    if(this.state.phase!=='await') return;
+    const r=e.currentTarget.getBoundingClientRect();
+    const cx=(e.clientX!=null?e.clientX:(e.touches&&e.touches[0]?e.touches[0].clientX:0));
+    const cy=(e.clientY!=null?e.clientY:(e.touches&&e.touches[0]?e.touches[0].clientY:0));
+    let x=(cx-r.left)/r.width*100, y=(cy-r.top)/r.height*100;
+    x=Math.max(2,Math.min(98,x)); y=Math.max(2,Math.min(98,y));
+    const s=this._cur(); let best=null,bd=1e9;
+    this.ORDER.forEach(a=>{ const p=s.A[a]; const d=(p.x-x)*(p.x-x)+(p.y-y)*(p.y-y); if(d<bd){ bd=d; best=a; } });
+    this._sfx('tap');
+    const picks=this.state.picks.concat([{ a:best, x, y }]);
+    this.setState({ phase:'revealed', tap:{x,y}, chosen:best, picks });
+  }
+  _next(){ const nx=this.state.idx+1; if(nx>=this.SC.length){ this._end(); return; } this._sfx('click'); this.setState({ idx:nx, phase:'await', tap:null, chosen:null }); }
+
+  _end(){
+    this._sfx('end');
+    const picks=this.state.picks;
+    const counts={}; this.ORDER.forEach(a=>counts[a]=0); picks.forEach(p=>counts[p.a]++);
+    const avgX=picks.reduce((s,p)=>s+p.x,0)/(picks.length||1); // low=wide(touchline), high=inside
+    const avgY=picks.reduce((s,p)=>s+p.y,0)/(picks.length||1); // low=high up, high=deep
+    this._meta={ counts, avgX, avgY };
+    if(!this._embedded){ try{ localStorage.setItem('fa_fb_where', JSON.stringify({ counts, avgX:Math.round(avgX), avgY:Math.round(avgY), at:new Date().toISOString(), weight:0 })); }catch(e){} }
+    this.setState({ view:'result' });
+    if(this._embedded && typeof this.props.onDone==='function'){ this.props.onDone(counts, this._meta); }
+  }
+  _again(){ this._begin(); }
+
+  renderVals(){
+    const accent=this.props.accent ?? '#FF6B1A';
+    const V=this.state.view; const soundOn=this._soundOn!==false;
+    const base={ accent, showChrome:!this._embedded && V!=='play',
+      isIntro:V==='intro', isPlay:V==='play', isResult:V==='result',
+      soundOn, soundOff:!soundOn, soundColor:soundOn?accent:'#7688A0', soundTitle:soundOn?'Sound on':'Sound off',
+      toggleSound:()=>this._toggleSound(), start:()=>this._begin(), again:()=>this._again(),
+      onPitchTap:(e)=>this._tap(e), next:()=>this._next() };
+
+    const s=(V==='play' && this._order)?this._cur():this.SC[0];
+    base.momentLabel=(this.state.idx+1)+' / '+this.SC.length;
+    base.phaseLabel=this.state.phase==='await'?'YOUR CALL':'REVEALED';
+    base.situKicker=s.k; base.situDesc=s.desc;
+    base.ballX=s.ball.x; base.ballY=s.ball.y;
+    base.pitchCursor=this.state.phase==='await'?'crosshair':'default';
+    base.awaiting=this.state.phase==='await'; base.revealed=this.state.phase==='revealed';
+    base.hasTap=!!this.state.tap;
+    base.tapX=this.state.tap?this.state.tap.x+'%':'50%'; base.tapY=this.state.tap?this.state.tap.y+'%':'50%';
+    base.anchors = this.state.phase==='revealed' ? this.ORDER.map(a=>({ x:s.A[a].x+'%', y:s.A[a].y+'%', color:this.ARCH[a].color, emoji:this.ARCH[a].emoji, name:this.ARCH[a].name })) : [];
+    if(this.state.chosen){ const c=this.state.chosen;
+      base.fbName=this.ARCH[c].name; base.fbColor=this.ARCH[c].color;
+      base.fbBg='color-mix(in srgb,'+this.ARCH[c].color+' 10%,transparent)'; base.fbBorder='color-mix(in srgb,'+this.ARCH[c].color+' 34%,transparent)';
+      base.fbNote='You stood '+this.NOTE[c]; base.nextLabel=(this.state.idx+1>=this.SC.length)?'See your map':'Next moment';
+    } else { base.fbName=''; base.fbColor=accent; base.fbBg='transparent'; base.fbBorder='transparent'; base.fbNote=''; base.nextLabel='Next'; }
+
+    // result
+    Object.assign(base,{ leanBig:'', resultHeadline:'', widthLabel:'\u2013', heightLabel:'\u2013', fpBars:[], softRead:'' });
+    const m=this._meta;
+    if(m){
+      const entries=this.ORDER.map(k=>[k,m.counts[k]]).sort((a,b)=>b[1]-a[1]);
+      const top=entries[0][0];
+      base.leanBig=this.ARCH[top].name;
+      base.resultHeadline={ winger:'You live high and wide.', warrior:'You cover every part of the flank.', sentinel:'You hold deep and stay safe.', architect:'You keep drifting inside.' }[top];
+      base.widthLabel= m.avgX>=30?'Inside':m.avgX>=20?'Half & half':'Touchline';
+      base.heightLabel= m.avgY<=45?'High':m.avgY<=62?'Middle':'Deep';
+      const tot=this.ORDER.reduce((a,k)=>a+m.counts[k],0)||1;
+      const maxV=Math.max(...entries.map(e=>e[1]),1);
+      base.fpBars=entries.map(([id,v])=>{ const col=this.ARCH[id].color; const isTop=id===top&&v>0;
+        return { emoji:this.ARCH[id].emoji, label:this.ARCH[id].name, labelColor:isTop?'#F2F8FE':'#9FB0C5', numColor:isTop?col:'#9FB0C5',
+          pct:Math.round(v/tot*100)+'%', barW:Math.round(v/maxV*100)+'%',
+          barLook:isTop?('background:linear-gradient(90deg,'+col+',color-mix(in srgb,'+col+' 45%,transparent));box-shadow:0 0 12px color-mix(in srgb,'+col+' 55%,transparent);'):'background:rgba(130,150,176,.4);' }; });
+      let read;
+      if(top==='architect') read="You kept stepping inside off the touchline \u2014 the inverted, possession-first instinct that defines the Architect. It\u2019s the hardest full-back trait to spot, and you showed it repeatedly. An observation, not a verdict.";
+      else if(top==='winger') read="You lived high and wide, hunting the attacking position at every chance \u2014 the Winger\u2019s home. Just watch the space behind you. A tendency, not your archetype.";
+      else if(top==='sentinel') read="You chose the safe, deep position again and again \u2014 the Sentinel\u2019s security-first map. Nothing got in behind. What that becomes is what the scan decides.";
+      else read="You spread yourself across the whole flank \u2014 high one moment, deep the next \u2014 the two-way Warrior map. Covering everything is a strength; a standout habit would make you elite.";
+      base.softRead=read;
+    }
+    return base;
+  }
+}
+</script>
+</body>
+</html>

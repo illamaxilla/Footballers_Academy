@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="./scenes.js"></script>
+<script src="./fa-pitch.js"></script>
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:#04060c;}
+  a{color:var(--accent,#22D3EE);text-decoration:none;}
+  a:hover{opacity:.92;}
+  @keyframes fa-blink{0%,100%{opacity:1;}50%{opacity:.25;}}
+  @keyframes fa-rise{0%{transform:translateY(14px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  .fa-in{opacity:0;animation:fa-rise .6s cubic-bezier(.2,.7,.2,1) forwards;}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;}.fa-in{opacity:1!important;transform:none!important;}}
+</style>
+</helmet>
+<div data-screen-label="Scene Lab" style="position:relative;display:flex;flex-direction:column;min-height:100dvh;width:100%;overflow:hidden;background:radial-gradient(120% 90% at 50% 6%,#0e1a2d 0%,#080e1a 44%,#04060c 100%);color:#EAF2FB;font-family:'Archivo',system-ui,sans-serif;--accent:{{ accent }};">
+
+  <div style="position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.4;background:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0px,rgba(255,255,255,.02) 1px,transparent 1px,transparent 4px);"></div>
+  <div style="position:absolute;top:20px;left:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;top:20px;right:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;left:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;right:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+
+  <!-- TOP BAR -->
+  <header style="position:relative;z-index:6;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px clamp(26px,3.4vw,58px);">
+    <a href="Assessment.dc.html" style="min-width:120px;display:inline-flex;align-items:center;gap:8px;color:#8EA1B8;font:600 12.5px 'Archivo';">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M15 5l-7 7 7 7"/></svg>Back
+    </a>
+    <div style="display:flex;align-items:center;gap:11px;">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" style="stroke:var(--accent,#22D3EE);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;"><rect x="3" y="4" width="18" height="16" rx="1.5"/><path d="M3 12h18M12 4v16"/><circle cx="12" cy="12" r="2.4"/></svg>
+      <span style="font:800 13px 'Archivo';letter-spacing:.05em;">SCENE <span style="color:var(--accent,#22D3EE);">LAB</span></span>
+    </div>
+    <div style="min-width:120px;display:flex;justify-content:flex-end;font:600 10px 'IBM Plex Mono';letter-spacing:.14em;color:{{ validColor }};">{{ validLabel }}</div>
+  </header>
+
+  <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-wrap:wrap;align-items:stretch;gap:18px;padding:4px clamp(20px,3vw,52px) 30px;">
+
+    <!-- PITCH -->
+    <section style="flex:1 1 460px;min-width:0;min-height:340px;display:flex;flex-direction:column;gap:12px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <button onClick="{{ prev }}" style="display:grid;place-items:center;width:34px;height:34px;border-radius:10px;border:1px solid rgba(120,140,166,.24);background:rgba(10,16,28,.5);cursor:pointer;color:#C6D3E2;" style-hover="border-color:color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M15 5l-7 7 7 7"/></svg></button>
+          <div style="text-align:left;">
+            <div style="font:800 16px 'IBM Plex Mono';color:var(--accent,#22D3EE);line-height:1;">{{ sceneId }}</div>
+            <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.16em;color:#61748c;margin-top:3px;">{{ sceneCount }}</div>
+          </div>
+          <button onClick="{{ next }}" style="display:grid;place-items:center;width:34px;height:34px;border-radius:10px;border:1px solid rgba(120,140,166,.24);background:rgba(10,16,28,.5);cursor:pointer;color:#C6D3E2;" style-hover="border-color:color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M9 5l7 7-7 7"/></svg></button>
+        </div>
+        <div style="display:inline-flex;padding:3px;border-radius:11px;border:1px solid rgba(120,140,166,.22);background:rgba(10,16,28,.5);">
+          <button onClick="{{ showStructured }}" style="padding:8px 14px;border-radius:8px;border:0;cursor:pointer;font:700 12px 'Archivo';background:{{ structBg }};color:{{ structColor }};transition:background .15s ease,color .15s ease;">Structured</button>
+          <button onClick="{{ showScrambled }}" style="padding:8px 14px;border-radius:8px;border:0;cursor:pointer;font:700 12px 'Archivo';background:{{ scramBg }};color:{{ scramColor }};transition:background .15s ease,color .15s ease;">Scrambled</button>
+        </div>
+      </div>
+      <div style="position:relative;flex:1;min-height:300px;border-radius:18px;overflow:hidden;border:1px solid rgba(120,140,166,.22);">
+        <canvas ref="{{ canvasRef }}" style="display:block;width:100%;height:100%;"></canvas>
+        <div style="position:absolute;left:14px;bottom:12px;font:600 9px 'IBM Plex Mono';letter-spacing:.2em;color:rgba(200,215,232,.45);pointer-events:none;">ATTACK →</div>
+      </div>
+    </section>
+
+    <!-- PANEL -->
+    <aside style="flex:0 1 340px;min-width:280px;display:flex;flex-direction:column;gap:14px;">
+      <div class="fa-in" style="padding:18px 20px;border-radius:16px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.55);">
+        <div style="font:800 19px 'Archivo';letter-spacing:-0.01em;margin-bottom:6px;">{{ sceneName }}</div>
+        <div style="font:400 13px/1.55 'Archivo';color:#9FB0C5;">{{ sceneBrief }}</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;">
+          <span style="display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border-radius:8px;border:1px solid rgba(120,140,166,.24);background:rgba(10,16,28,.5);font:700 10.5px 'IBM Plex Mono';letter-spacing:.08em;color:#C6D3E2;">{{ shapeLabel }}</span>
+          <span style="display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border-radius:8px;border:1px solid {{ outcomeBorder }};background:{{ outcomeBg }};font:700 10.5px 'IBM Plex Mono';letter-spacing:.08em;color:{{ outcomeColor }};">{{ outcomeLabel }}</span>
+        </div>
+      </div>
+
+      <div class="fa-in" style="padding:18px 20px;border-radius:16px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.55);animation-delay:.05s;">
+        <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.2em;color:#7688a0;margin-bottom:14px;">GROUND-TRUTH OVERLAYS</div>
+        <div style="display:flex;flex-direction:column;gap:9px;">
+          <sc-for list="{{ toggles }}" as="t" hint-placeholder-count="3">
+            <button onClick="{{ t.toggle }}" style="display:flex;align-items:center;gap:11px;width:100%;text-align:left;padding:11px 13px;border-radius:11px;border:1px solid {{ t.border }};background:{{ t.bg }};cursor:{{ t.cursor }};opacity:{{ t.opacity }};transition:border-color .15s ease;">
+              <span style="flex:0 0 auto;width:16px;height:16px;border-radius:5px;border:1.5px solid {{ t.dot }};background:{{ t.fill }};display:grid;place-items:center;"></span>
+              <span style="flex:1;font:700 12.5px 'Archivo';color:#EAF2FB;">{{ t.name }}</span>
+              <span style="width:16px;height:4px;border-radius:99px;background:{{ t.swatch }};"></span>
+            </button>
+          </sc-for>
+        </div>
+      </div>
+
+      <div class="fa-in" style="padding:18px 20px;border-radius:16px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.55);animation-delay:.1s;">
+        <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.2em;color:#7688a0;margin-bottom:14px;">READOUT</div>
+        <sc-if value="{{ hasTruth }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <div>
+              <div style="display:flex;justify-content:space-between;font:600 10px 'IBM Plex Mono';color:#9FB0C5;margin-bottom:5px;"><span>xG · SHOOT NOW</span><span style="color:#EAF2FB;">{{ xgShootTxt }}</span></div>
+              <div style="height:6px;border-radius:99px;background:rgba(120,140,166,.16);overflow:hidden;"><div style="height:100%;border-radius:99px;background:#7688a0;width:{{ xgShootW }};"></div></div>
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;font:600 10px 'IBM Plex Mono';color:#9FB0C5;margin-bottom:5px;"><span>xG · BEST PASS</span><span style="color:var(--accent,#22D3EE);">{{ xgPassTxt }}</span></div>
+              <div style="height:6px;border-radius:99px;background:rgba(120,140,166,.16);overflow:hidden;"><div style="height:100%;border-radius:99px;background:var(--accent,#22D3EE);box-shadow:0 0 10px color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);width:{{ xgPassW }};"></div></div>
+            </div>
+            <div style="display:flex;gap:10px;margin-top:2px;">
+              <div style="flex:1;padding:10px 12px;border-radius:10px;background:rgba(120,140,166,.08);"><div style="font:600 8.5px 'IBM Plex Mono';letter-spacing:.12em;color:#7688a0;">BEST PASS</div><div style="font:800 14px 'Archivo';color:var(--accent,#22D3EE);margin-top:3px;">{{ bestPassRole }}</div></div>
+              <div style="flex:1;padding:10px 12px;border-radius:10px;background:rgba(120,140,166,.08);"><div style="font:600 8.5px 'IBM Plex Mono';letter-spacing:.12em;color:#7688a0;">FREE MAN</div><div style="font:800 14px 'Archivo';color:#3BE07A;margin-top:3px;">{{ freeManRole }}</div></div>
+            </div>
+          </div>
+        </sc-if>
+        <sc-if value="{{ noTruth }}" hint-placeholder-val="{{ false }}">
+          <div style="font:400 13px/1.55 'Archivo';color:#9FB0C5;">Scrambled scene — no tactical ground truth. Used only to measure whether football structure aids recall (The Chunk Test).</div>
+        </sc-if>
+        <div style="display:flex;gap:16px;margin-top:14px;padding-top:14px;border-top:1px solid rgba(120,140,166,.14);">
+          <div><div style="font:800 15px 'IBM Plex Mono';color:#EAF2FB;">{{ usCount }}</div><div style="font:600 8.5px 'IBM Plex Mono';letter-spacing:.1em;color:#61748c;">TEAMMATES</div></div>
+          <div><div style="font:800 15px 'IBM Plex Mono';color:#EAF2FB;">{{ themCount }}</div><div style="font:600 8.5px 'IBM Plex Mono';letter-spacing:.1em;color:#61748c;">OPPONENTS</div></div>
+          <div><div style="font:800 15px 'IBM Plex Mono';color:#EAF2FB;">{{ lanesCount }}</div><div style="font:600 8.5px 'IBM Plex Mono';letter-spacing:.1em;color:#61748c;">VIABLE LANES</div></div>
+        </div>
+      </div>
+    </aside>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1200,&quot;height&quot;:800},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#22D3EE&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#22D3EE&quot;,&quot;#A78BFA&quot;,&quot;#C6FF3A&quot;,&quot;#FF7A45&quot;,&quot;#FF4D8D&quot;]},&quot;motion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  state = { idx:0, scrambled:false, oBest:true, oLanes:true, oFree:true, ready:false };
+
+  componentDidMount(){
+    this._boot(0);
+    this._onResize=()=>this._resize();
+    window.addEventListener('resize', this._onResize);
+  }
+  componentWillUnmount(){ window.removeEventListener('resize', this._onResize); this._stop(); }
+
+  _boot(tries){
+    const API = window.AMScenes;
+    if(!API){ if(tries<40){ setTimeout(()=>this._boot(tries+1), 60); } return; }
+    this._API = API;
+    this._errs = API.validate();
+    this.setState({ ready:true }, ()=>{ this._resize(); this._start(); });
+  }
+
+  _base(){ return (this._API&&this._API.SCENES[this.state.idx]) || null; }
+  _current(){ const b=this._base(); if(!b) return null; return this.state.scrambled ? this._API.scramble(b) : b; }
+
+  // ---------- canvas plumbing ----------
+  _resize(){ const cv=this._canvas; if(!cv) return; const r=cv.getBoundingClientRect(); const dpr=Math.min(2,window.devicePixelRatio||1); cv.width=Math.max(2,Math.round(r.width*dpr)); cv.height=Math.max(2,Math.round(r.height*dpr)); this._dpr=dpr; this._W=r.width; this._H=r.height; }
+  _cvRef(el){ this._canvas=el; if(el){ requestAnimationFrame(()=>this._resize()); } }
+  _start(){ this._running=true; this._raf=requestAnimationFrame((t)=>this._loop(t)); }
+  _stop(){ this._running=false; if(this._raf) cancelAnimationFrame(this._raf); }
+  _loop(t){ if(!this._running) return; this._raf=requestAnimationFrame((tt)=>this._loop(tt)); if((!this._W||!this._H)&&this._canvas) this._resize(); this._draw(t); }
+
+  // ---------- geometry (shared renderer) ----------
+  _draw(now){
+    const ctx=this._canvas&&this._canvas.getContext('2d'); if(!ctx) return;
+    const W=this._W, H=this._H, dpr=this._dpr||1; if(!W||!H||!isFinite(W)) return;
+    const acc=this._accent || '#22D3EE';
+    const FP=window.FAPitch; if(!FP){ return; }
+    ctx.save(); ctx.scale(dpr,dpr); ctx.clearRect(0,0,W,H);
+    const fit=FP.fit(W,H,{crop:'full',orient:'ew'}); this._fit=fit;
+    FP.pitch(ctx,fit);
+
+    const scr = this.state.scrambled;
+    const sc=this._current(); if(!sc){ ctx.restore(); return; }
+    const gt = sc.groundTruth;
+    const carrier=sc.ball.carrier; const cp=sc.players[carrier];
+
+    // ---- overlays (structured only) ----
+    if(!scr && gt){
+      if(this.state.oLanes){
+        (gt.allViableLanes||[]).forEach(ix=>{ if(ix===gt.bestPass) return; FP.passLane(ctx,fit,cp,sc.players[ix],{}); });
+      }
+      if(this.state.oBest){ FP.passLane(ctx,fit,cp,sc.players[gt.bestPass],{best:true,accent:acc}); }
+    }
+
+    // ---- tokens ----
+    const pulse = this.state.oFree && !scr && gt ? (0.5+0.5*Math.sin(now/320)) : 0;
+    sc.players.forEach((p,i)=>{
+      if(p.team==='them'){ FP.chevron(ctx,fit,p.x,p.y,{role:p.role}); return; }
+      const isCarrier=i===carrier;
+      const isFree = !scr && gt && i===gt.freeMan;
+      const isBest = !scr && gt && i===gt.bestPass;
+      FP.token(ctx,fit,p.x,p.y,{ role:p.role, kind:isCarrier?'carrier':'us', free:isFree, best:isBest, pulse, accent:acc });
+    });
+    // draw carrier ball offset to the foot
+    if(sc.players[carrier]){ const cpp=sc.players[carrier]; const off=fit.orient==='ew'?[0.012,0.02]:[0.02,0.012]; FP.ball(ctx,fit,cpp.x+off[0],cpp.y+off[1],{}); }
+
+    // scrambled banner
+    if(scr){ ctx.fillStyle='rgba(255,176,32,.9)'; ctx.textAlign='center'; ctx.font="800 "+Math.max(12,W*0.02)+"px 'Archivo'"; ctx.fillText('SCRAMBLED — STRUCTURE REMOVED', W/2, 26); }
+    ctx.restore();
+  }
+
+  // ---------- controls ----------
+  _prev(){ if(!this._API) return; const n=this._API.SCENES.length; this.setState(s=>({ idx:(s.idx-1+n)%n })); }
+  _next(){ if(!this._API) return; const n=this._API.SCENES.length; this.setState(s=>({ idx:(s.idx+1)%n })); }
+  _mode(scr){ this.setState({ scrambled:scr }); }
+  _tog(k){ this.setState(s=>{ const o={}; o[k]=!s[k]; return o; }); }
+
+  renderVals(){
+    const accent=this.props.accent ?? '#22D3EE'; this._accent=accent;
+    const S=this.state;
+    const base={ accent, canvasRef:(el)=>this._cvRef(el),
+      prev:()=>this._prev(), next:()=>this._next(),
+      showStructured:()=>this._mode(false), showScrambled:()=>this._mode(true) };
+
+    const errs=this._errs||[];
+    base.validLabel = this._API ? (errs.length? (errs.length+' SCENE ERRORS') : (this._API.SCENES.length+' SCENES · VALID')) : 'LOADING…';
+    base.validColor = errs.length? '#FF7A8A' : (this._API? '#3BE07A' : '#7688a0');
+
+    const b=this._base(); const sc=this._current();
+    const scr=S.scrambled;
+    base.sceneId = b? b.id : '—';
+    base.sceneCount = this._API? ((S.idx+1)+' / '+this._API.SCENES.length) : '—';
+    base.sceneName = sc? sc.name : 'Loading scenes…';
+    base.sceneBrief = sc? sc.brief : '';
+
+    base.structBg = scr? 'transparent' : accent; base.structColor = scr? '#9FB0C5' : '#0b0518';
+    base.scramBg = scr? accent : 'transparent'; base.scramColor = scr? '#0b0518' : '#9FB0C5';
+
+    const shape = sc? sc.defensiveShape : '';
+    base.shapeLabel = shape? shape.toUpperCase().replace('-',' ') : '—';
+    const gt = (b && !scr) ? b.groundTruth : null;
+    base.hasTruth = !!gt; base.noTruth = !gt;
+
+    const oc = gt? gt.outcome : null;
+    const ocMap = { goal:['GOAL','#3BE07A','rgba(59,224,122,.12)','rgba(59,224,122,.4)'], chance:['CHANCE','#FFB020','rgba(255,176,32,.12)','rgba(255,176,32,.4)'], lost:['LOST','#FF7A8A','rgba(255,90,110,.12)','rgba(255,90,110,.4)'] };
+    const ocv = oc? ocMap[oc] : ['SCRAMBLED','#9FB0C5','rgba(120,140,166,.1)','rgba(120,140,166,.3)'];
+    base.outcomeLabel=ocv[0]; base.outcomeColor=ocv[1]; base.outcomeBg=ocv[2]; base.outcomeBorder=ocv[3];
+
+    // overlay toggles
+    const tdef=[ {k:'oBest',name:'Best pass',sw:accent}, {k:'oLanes',name:'Viable lanes',sw:'#9FB0C5'}, {k:'oFree',name:'Free man',sw:'#3BE07A'} ];
+    base.toggles=tdef.map(t=>{ const on=S[t.k]; const dis=scr; return {
+      name:t.name, toggle: dis? (()=>{}) : (()=>this._tog(t.k)),
+      swatch:t.sw, cursor:dis?'default':'pointer', opacity:dis?'0.4':'1',
+      border: on&&!dis? ('color-mix(in srgb,'+t.sw+' 55%,transparent)') : 'rgba(120,140,166,.22)',
+      bg: on&&!dis? ('color-mix(in srgb,'+t.sw+' 10%,transparent)') : 'rgba(10,16,28,.4)',
+      dot: on&&!dis? t.sw : 'rgba(120,140,166,.4)',
+      fill: on&&!dis? t.sw : 'transparent' };
+    });
+
+    // readout
+    if(gt){
+      base.xgShootTxt=gt.xgShoot.toFixed(2); base.xgPassTxt=gt.xgBestPass.toFixed(2);
+      base.xgShootW=Math.round(Math.min(1,gt.xgShoot/0.6)*100)+'%';
+      base.xgPassW=Math.round(Math.min(1,gt.xgBestPass/0.6)*100)+'%';
+      base.bestPassRole=b.players[gt.bestPass].role;
+      base.freeManRole=b.players[gt.freeMan].role;
+      base.lanesCount=(gt.allViableLanes||[]).length+'';
+    } else { base.xgShootTxt='—'; base.xgPassTxt='—'; base.xgShootW='0%'; base.xgPassW='0%'; base.bestPassRole='—'; base.freeManRole='—'; base.lanesCount='—'; }
+
+    if(sc){ base.usCount=sc.players.filter(p=>p.team==='us').length+''; base.themCount=sc.players.filter(p=>p.team==='them').length+''; }
+    else { base.usCount='—'; base.themCount='—'; }
+
+    return base;
+  }
+}
+</script>
+</body>
+</html>

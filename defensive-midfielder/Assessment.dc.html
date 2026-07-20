@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:#04060c;}
+  a{color:var(--accent,#E0413C);text-decoration:none;}
+  a:hover{opacity:.92;}
+  @keyframes fa-blink{0%,100%{opacity:1;}50%{opacity:.25;}}
+  @keyframes fa-rise{0%{transform:translateY(16px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-rise-sm{0%{transform:translateY(10px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-spin{to{transform:rotate(360deg);}}
+  @keyframes fa-spin-r{to{transform:rotate(-360deg);}}
+  @keyframes fa-pulse{0%,100%{transform:scale(1);opacity:.5;}50%{transform:scale(1.14);opacity:1;}}
+  @keyframes fa-indet{0%{left:-42%;}100%{left:100%;}}
+  @keyframes fa-bar{from{transform:scaleX(0);}to{transform:scaleX(1);}}
+  @keyframes fa-seg{from{width:0;}}
+  .fa-in{opacity:0;animation:fa-rise .7s cubic-bezier(.2,.7,.2,1) forwards;}
+  .fa-in-sm{opacity:0;animation:fa-rise-sm .55s cubic-bezier(.2,.7,.2,1) forwards;}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;}.fa-in,.fa-in-sm{opacity:1!important;transform:none!important;}}
+</style>
+</helmet>
+<div data-screen-label="DM Assessment" style="position:relative;display:flex;flex-direction:column;min-height:100dvh;width:100%;overflow:hidden;background:radial-gradient(120% 90% at 50% 6%,#0e1a2d 0%,#080e1a 44%,#04060c 100%);color:#EAF2FB;font-family:'Archivo',system-ui,sans-serif;--accent:{{ accent }};">
+
+  <div style="position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.4;background:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0px,rgba(255,255,255,.02) 1px,transparent 1px,transparent 4px);"></div>
+  <div style="position:absolute;top:20px;left:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#E0413C) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#E0413C) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;top:20px;right:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#E0413C) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#E0413C) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;left:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#E0413C) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#E0413C) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;right:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#E0413C) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#E0413C) 50%,transparent);z-index:4;pointer-events:none;"></div>
+
+  <!-- ============ TOP BAR ============ -->
+  <header style="position:relative;z-index:6;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px clamp(26px,3.4vw,58px);">
+    <div style="min-width:120px;display:flex;">
+      <sc-if value="{{ showBack }}" hint-placeholder-val="{{ false }}">
+        <button onClick="{{ back }}" style="display:inline-flex;align-items:center;gap:8px;background:none;border:0;cursor:pointer;color:#8EA1B8;font:600 12.5px 'Archivo';padding:0;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M15 5l-7 7 7 7"/></svg>Back
+        </button>
+      </sc-if>
+    </div>
+    <div style="display:flex;align-items:center;gap:11px;">
+      <svg width="22" height="22" viewBox="0 0 32 32" fill="none"><path d="M16 2 28 9v14L16 30 4 23V9z" style="stroke:var(--accent,#E0413C);stroke-width:1.5;fill:color-mix(in srgb,var(--accent,#E0413C) 12%,transparent);"/><path d="M16 4.5v23" style="stroke:var(--accent,#E0413C);stroke-width:1.3;opacity:.5;"/><circle cx="16" cy="16" r="5" style="stroke:var(--accent,#E0413C);stroke-width:1.5;fill:none;"/><circle cx="16" cy="16" r="1.6" style="fill:var(--accent,#E0413C);"/></svg>
+      <span style="font:800 13px 'Archivo';letter-spacing:.05em;">DEFENSIVE MID <span style="color:var(--accent,#E0413C);">SCAN</span></span>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;min-width:120px;justify-content:flex-end;">
+      <button onClick="{{ toggleSound }}" title="{{ soundTitle }}" style="display:grid;place-items:center;width:28px;height:28px;border-radius:8px;border:1px solid rgba(120,140,166,.24);background:rgba(10,16,28,.5);cursor:pointer;color:{{ soundColor }};transition:color .16s ease,border-color .16s ease;" style-hover="border-color:color-mix(in srgb,var(--accent,#E0413C) 55%,transparent);">
+        <sc-if value="{{ soundOn }}" hint-placeholder-val="{{ true }}">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>
+        </sc-if>
+        <sc-if value="{{ soundOff }}" hint-placeholder-val="{{ false }}">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M22 9l-6 6M16 9l6 6"/></svg>
+        </sc-if>
+      </button>
+      <div style="width:88px;height:4px;border-radius:99px;background:rgba(120,140,166,.18);overflow:hidden;">
+        <div style="height:100%;border-radius:99px;background:var(--accent,#E0413C);box-shadow:0 0 10px var(--accent,#E0413C);width:{{ scanPct }};transition:width .5s cubic-bezier(.3,.8,.3,1);"></div>
+      </div>
+      <span style="font:600 10px 'IBM Plex Mono';letter-spacing:.14em;color:color-mix(in srgb,var(--accent,#E0413C) 80%,#fff);white-space:nowrap;">{{ scanPct }}</span>
+    </div>
+  </header>
+
+  <!-- ============ INTRO ============ -->
+  <sc-if value="{{ isIntro }}" hint-placeholder-val="{{ true }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;text-align:center;padding:20px clamp(26px,4vw,58px) 60px;">
+      <div class="fa-in" style="display:inline-flex;align-items:center;gap:10px;margin-bottom:20px;font:600 12px 'IBM Plex Mono';letter-spacing:.4em;color:var(--accent,#E0413C);">
+        <span style="width:6px;height:6px;border-radius:50%;background:var(--accent,#E0413C);box-shadow:0 0 8px var(--accent,#E0413C);animation:fa-blink 1.6s ease-in-out infinite;"></span>THE MIDFIELD SCAN
+      </div>
+      <h1 class="fa-in" style="margin:0 0 16px;font:800 clamp(38px,5.6vw,76px)/0.98 'Archivo';letter-spacing:-0.03em;text-wrap:balance;max-width:860px;animation-delay:.06s;">What kind of defensive midfielder are you?</h1>
+      <p class="fa-in" style="margin:0 0 38px;max-width:600px;font:400 clamp(15px,1.3vw,18px)/1.6 'Archivo';color:#9FB0C5;text-wrap:pretty;animation-delay:.12s;">Twelve questions. No right answers &mdash; only the honest one. We map your instincts and match the shape to your archetype: the Destroyer, the Sentinel, the Architect, or the Warrior.</p>
+      <button onClick="{{ begin }}" class="fa-in" style="display:inline-flex;align-items:center;gap:12px;padding:18px 44px;border-radius:13px;border:0;background:var(--accent,#E0413C);color:#0b0507;font:700 16px 'Archivo';cursor:pointer;box-shadow:0 14px 46px color-mix(in srgb,var(--accent,#E0413C) 42%,transparent);transition:transform .16s ease,box-shadow .16s ease;animation-delay:.18s;" style-hover="transform:translateY(-2px);">
+        Begin the scan
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12h13M12 6l6 6-6 6"/></svg>
+      </button>
+      <div class="fa-in" style="margin-top:20px;font:500 10px 'IBM Plex Mono';letter-spacing:.14em;color:#4f627a;animation-delay:.3s;">~3 MINUTES · 12 QUESTIONS · 3 CHAPTERS</div>
+    </main>
+  </sc-if>
+
+  <!-- ============ CHAPTER DIVIDER ============ -->
+  <sc-if value="{{ isChapter }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;text-align:center;padding:20px clamp(26px,4vw,58px) 60px;">
+      <div class="fa-in" style="font:800 clamp(90px,16vw,180px)/0.9 'Archivo';letter-spacing:-0.04em;color:color-mix(in srgb,var(--accent,#E0413C) 16%,transparent);text-shadow:0 0 60px color-mix(in srgb,var(--accent,#E0413C) 18%,transparent);">{{ chNum }}</div>
+      <div class="fa-in" style="margin-top:6px;font:600 11px 'IBM Plex Mono';letter-spacing:.42em;color:var(--accent,#E0413C);animation-delay:.06s;">CHAPTER {{ chNum }}</div>
+      <h1 class="fa-in" style="margin:10px 0 14px;font:800 clamp(32px,4.6vw,58px)/1.0 'Archivo';letter-spacing:-0.02em;text-wrap:balance;animation-delay:.1s;">{{ chTitle }}</h1>
+      <p class="fa-in" style="margin:0 0 36px;max-width:520px;font:400 clamp(14px,1.2vw,17px)/1.6 'Archivo';color:#9FB0C5;text-wrap:pretty;animation-delay:.16s;">{{ chSub }}</p>
+      <button onClick="{{ chapterGo }}" class="fa-in" style="display:inline-flex;align-items:center;gap:11px;padding:16px 36px;border-radius:12px;border:0;background:var(--accent,#E0413C);color:#0b0507;font:700 15px 'Archivo';cursor:pointer;box-shadow:0 14px 40px color-mix(in srgb,var(--accent,#E0413C) 40%,transparent);transition:transform .16s ease;animation-delay:.22s;" style-hover="transform:translateY(-2px);">
+        {{ chapterCta }}
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" style="stroke:#0b0507;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12h13M12 6l6 6-6 6"/></svg>
+      </button>
+    </main>
+  </sc-if>
+
+  <!-- ============ QUESTION ============ -->
+  <sc-if value="{{ isQuestion }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:12px clamp(26px,4vw,58px) 54px;">
+      <div style="width:100%;max-width:680px;">
+        <div class="fa-in-sm" style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+          <span style="font:600 10px 'IBM Plex Mono';letter-spacing:.24em;color:var(--accent,#E0413C);">{{ chapterKicker }}</span>
+          <span style="flex:1;height:1px;background:rgba(120,140,166,.18);"></span>
+          <span style="font:600 10px 'IBM Plex Mono';letter-spacing:.16em;color:#61748c;">{{ qNumLabel }}</span>
+        </div>
+        <sc-if value="{{ isAspiration }}" hint-placeholder-val="{{ false }}">
+          <div class="fa-in-sm" style="display:inline-flex;align-items:center;gap:8px;margin-bottom:14px;padding:6px 12px;border-radius:99px;border:1px solid color-mix(in srgb,var(--accent,#E0413C) 34%,transparent);background:color-mix(in srgb,var(--accent,#E0413C) 8%,transparent);font:600 9px 'IBM Plex Mono';letter-spacing:.2em;color:var(--accent,#E0413C);">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M12 2v4M12 18v4M2 12h4M18 12h4M5 5l3 3M16 16l3 3M19 5l-3 3M8 16l-3 3"/></svg>
+            LOOK FORWARD &middot; THIS ONE DOESN&rsquo;T SCORE
+          </div>
+        </sc-if>
+        <h1 class="fa-in-sm" style="margin:0 0 26px;font:800 clamp(23px,3vw,37px)/1.16 'Archivo';letter-spacing:-0.02em;text-wrap:pretty;animation-delay:.05s;">{{ qPrompt }}</h1>
+        <div style="display:flex;flex-direction:column;gap:11px;">
+          <sc-for list="{{ options }}" as="opt" hint-placeholder-count="4">
+            <button onClick="{{ opt.onPick }}" class="fa-in-sm" style="display:flex;align-items:center;gap:15px;width:100%;text-align:left;padding:17px 19px;border-radius:14px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);color:#EAF2FB;font:600 15px/1.4 'Archivo';cursor:pointer;transition:border-color .16s ease,background .16s ease,transform .16s ease;animation-delay:{{ opt.delay }};" style-hover="border-color:color-mix(in srgb,var(--accent,#E0413C) 58%,transparent);background:rgba(16,20,37,.8);transform:translateY(-2px);">
+              <span style="flex:0 0 auto;width:30px;height:30px;border-radius:8px;display:grid;place-items:center;border:1px solid rgba(120,140,166,.28);font:700 12px 'IBM Plex Mono';color:#9FB0C5;">{{ opt.letter }}</span>
+              <span style="flex:1;">{{ opt.text }}</span>
+            </button>
+          </sc-for>
+        </div>
+      </div>
+    </main>
+  </sc-if>
+
+  <!-- ============ ANALYSING ============ -->
+  <sc-if value="{{ isAnalysing }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;text-align:center;padding:20px clamp(26px,4vw,58px) 70px;">
+      <div style="position:relative;width:168px;height:168px;margin-bottom:40px;">
+        <div style="position:absolute;inset:0;border-radius:50%;border:1.5px dashed color-mix(in srgb,var(--accent,#E0413C) 55%,transparent);animation:fa-spin 9s linear infinite;"></div>
+        <div style="position:absolute;inset:22px;border-radius:50%;border:1px solid color-mix(in srgb,var(--accent,#E0413C) 30%,transparent);animation:fa-spin-r 14s linear infinite;"></div>
+        <div style="position:absolute;inset:46px;border-radius:50%;border:1.5px solid color-mix(in srgb,var(--accent,#E0413C) 50%,transparent);background:color-mix(in srgb,var(--accent,#E0413C) 8%,transparent);animation:fa-pulse 1.5s ease-in-out infinite;"></div>
+        <div style="position:absolute;top:50%;left:50%;width:14px;height:14px;transform:translate(-50%,-50%);border-radius:50%;background:var(--accent,#E0413C);box-shadow:0 0 24px var(--accent,#E0413C);animation:fa-pulse 1.5s ease-in-out infinite;"></div>
+      </div>
+      <div style="font:600 11px 'IBM Plex Mono';letter-spacing:.42em;color:#7688a0;margin-bottom:16px;">FOUR ARCHETYPES · ONE DNA</div>
+      <h2 style="margin:0;font:800 clamp(26px,3.6vw,44px)/1.1 'Archivo';letter-spacing:-0.02em;color:#F2F8FE;">{{ antLabel }}<span style="color:var(--accent,#E0413C);">…</span></h2>
+      <div style="position:relative;margin-top:34px;width:min(320px,74vw);height:3px;border-radius:99px;background:rgba(120,140,166,.16);overflow:hidden;">
+        <div style="position:absolute;top:0;width:42%;height:100%;border-radius:99px;background:linear-gradient(90deg,transparent,var(--accent,#E0413C),transparent);animation:fa-indet 1.1s cubic-bezier(.4,0,.6,1) infinite;"></div>
+      </div>
+    </main>
+  </sc-if>
+
+  <!-- ============ REVEAL ============ -->
+  <sc-if value="{{ isReveal }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:14px clamp(20px,4vw,58px) 72px;">
+      <div style="width:100%;max-width:720px;">
+
+        <!-- hero -->
+        <div class="fa-in" style="text-align:center;margin-bottom:8px;">
+          <div style="font:600 11px 'IBM Plex Mono';letter-spacing:.42em;color:#7688a0;margin-bottom:14px;">{{ revKicker }}</div>
+          <div style="font-size:clamp(52px,9vw,88px);line-height:1;margin-bottom:6px;filter:drop-shadow(0 6px 30px {{ archGlow }});">{{ archEmoji }}</div>
+          <h1 style="margin:0;font:900 clamp(40px,6.4vw,84px)/0.95 'Archivo';letter-spacing:-0.035em;color:{{ archColor }};text-shadow:0 0 48px {{ archGlow }};">{{ archName }}</h1>
+          <div style="margin-top:8px;font:600 clamp(14px,1.5vw,19px) 'Archivo';letter-spacing:.02em;color:#C6D3E2;">{{ archIdentity }}</div>
+        </div>
+
+        <!-- clarity band -->
+        <div class="fa-in" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px;margin:16px 0 24px;animation-delay:.08s;">
+          <span style="display:inline-flex;align-items:center;gap:7px;padding:7px 14px;border-radius:999px;border:1px solid color-mix(in srgb,{{ archColor }} 34%,transparent);background:color-mix(in srgb,{{ archColor }} 10%,transparent);font:600 10px 'IBM Plex Mono';letter-spacing:.14em;color:{{ archColor }};"><span style="width:6px;height:6px;border-radius:50%;background:{{ archColor }};box-shadow:0 0 8px {{ archColor }};"></span>{{ clarityLabel }}</span>
+        </div>
+
+        <!-- hybrid callout -->
+        <sc-if value="{{ isHybrid }}" hint-placeholder-val="{{ false }}">
+          <div class="fa-in" style="margin:0 auto 24px;max-width:600px;padding:14px 18px;border-radius:14px;border:1px solid color-mix(in srgb,{{ secondaryColor }} 34%,transparent);background:color-mix(in srgb,{{ secondaryColor }} 8%,transparent);animation-delay:.1s;">
+            <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:{{ secondaryColor }};margin-bottom:7px;">GENUINE HYBRID &middot; RARE AND VALUABLE</div>
+            <p style="margin:0;font:500 14.5px/1.5 'Archivo';color:#D6DFEA;text-wrap:pretty;">{{ hybridLine }}</p>
+          </div>
+        </sc-if>
+
+        <!-- DM-DNA spread -->
+        <div class="fa-in" style="width:100%;padding:22px 24px;border-radius:18px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.55);margin-bottom:24px;animation-delay:.14s;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+            <span style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:#61748c;">YOUR DM-DNA · 4 ARCHETYPES</span>
+            <span style="font:600 9px 'IBM Plex Mono';letter-spacing:.14em;color:#61748c;">SELF-REPORT</span>
+          </div>
+          <div style="display:flex;width:100%;height:16px;border-radius:99px;overflow:hidden;background:rgba(120,140,166,.14);margin-bottom:18px;">
+            <sc-for list="{{ dnaSegments }}" as="seg" hint-placeholder-count="4">
+              <div style="height:100%;width:{{ seg.w }};background:{{ seg.color }};animation:fa-seg .9s cubic-bezier(.3,.8,.3,1) both;"></div>
+            </sc-for>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <sc-for list="{{ spreadBars }}" as="s" hint-placeholder-count="4">
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <div style="display:flex;align-items:baseline;justify-content:space-between;">
+                  <span style="font:700 12.5px 'Archivo';color:{{ s.labelColor }};">{{ s.emoji }} {{ s.label }}</span>
+                  <span style="font:800 13px 'IBM Plex Mono';color:{{ s.numColor }};">{{ s.pct }}</span>
+                </div>
+                <div style="height:9px;border-radius:99px;background:rgba(120,140,166,.14);overflow:hidden;"><div style="height:100%;border-radius:99px;transform-origin:left;animation:fa-bar .8s cubic-bezier(.3,.8,.3,1) both;width:{{ s.barW }};{{ s.barLook }}"></div></div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <!-- why this fits you -->
+        <div class="fa-in" style="margin-bottom:24px;padding:18px 20px;border-radius:14px;border:1px solid color-mix(in srgb,{{ archColor }} 26%,transparent);background:color-mix(in srgb,{{ archColor }} 6%,transparent);animation-delay:.18s;">
+          <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:{{ archColor }};margin-bottom:9px;">WHY THIS FITS YOU</div>
+          <p style="margin:0;font:500 clamp(15px,1.5vw,17px)/1.6 'Archivo';color:#EAF2FB;text-wrap:pretty;">{{ whyText }}</p>
+        </div>
+
+        <!-- reflect-back -->
+        <div class="fa-in" style="margin-bottom:24px;padding-left:18px;border-left:3px solid {{ archColor }};animation-delay:.22s;">
+          <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:#61748c;margin-bottom:8px;">THE MIRROR</div>
+          <p style="margin:0;font:500 clamp(17px,2vw,22px)/1.45 'Archivo';color:#EAF2FB;text-wrap:pretty;">&ldquo;{{ archReflect }}&rdquo;</p>
+        </div>
+
+        <!-- full sections -->
+        <div class="fa-in" style="animation-delay:.26s;">
+          <p style="margin:0 0 24px;font:400 clamp(15px,1.4vw,17px)/1.66 'Archivo';color:#B4C2D4;text-wrap:pretty;">{{ archIsYou }}</p>
+
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-bottom:24px;">
+            <div style="padding:18px 20px;border-radius:15px;border:1px solid rgba(120,140,166,.18);background:rgba(10,16,28,.4);">
+              <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:#61748c;margin-bottom:12px;">SIGNATURE STRENGTHS</div>
+              <div style="display:flex;flex-wrap:wrap;gap:8px;">
+                <sc-for list="{{ strengths }}" as="st" hint-placeholder-count="3">
+                  <span style="padding:7px 12px;border-radius:9px;border:1px solid color-mix(in srgb,{{ archColor }} 24%,transparent);background:color-mix(in srgb,{{ archColor }} 8%,transparent);font:600 12px 'Archivo';color:#E4EDF7;">{{ st.text }}</span>
+                </sc-for>
+              </div>
+            </div>
+            <div style="padding:18px 20px;border-radius:15px;border:1px solid rgba(120,140,166,.18);background:rgba(10,16,28,.4);">
+              <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:#61748c;margin-bottom:12px;">YOU PLAY LIKE</div>
+              <div style="font:600 14px/1.7 'Archivo';color:#E4EDF7;">{{ archPlayLike }}</div>
+            </div>
+          </div>
+
+          <div style="padding:20px 22px;border-radius:15px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.4);margin-bottom:16px;">
+            <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:{{ archColor }};margin-bottom:10px;">YOUR EDGE — THE HONEST ONE</div>
+            <p style="margin:0;font:400 14.5px/1.62 'Archivo';color:#C6D3E2;text-wrap:pretty;">{{ archEdge }}</p>
+          </div>
+        </div>
+
+        <!-- first step -->
+        <div class="fa-in" style="padding:20px 22px;border-radius:15px;border:1px solid color-mix(in srgb,{{ archColor }} 30%,transparent);background:color-mix(in srgb,{{ archColor }} 9%,transparent);margin-bottom:24px;animation-delay:.3s;">
+          <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:{{ archColor }};margin-bottom:10px;">FIRST STEP THIS WEEK</div>
+          <p style="margin:0;font:500 15px/1.6 'Archivo';color:#EAF2FB;text-wrap:pretty;">{{ archFirstStep }}</p>
+        </div>
+
+        <!-- aspiration bridge -->
+        <div class="fa-in" style="padding:22px 24px;border-radius:16px;border:1px solid color-mix(in srgb,{{ aspColor }} 34%,transparent);background:linear-gradient(135deg,color-mix(in srgb,{{ archColor }} 8%,transparent),color-mix(in srgb,{{ aspColor }} 10%,transparent));margin-bottom:26px;animation-delay:.34s;">
+          <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:{{ aspColor }};margin-bottom:11px;">THE BRIDGE — WHO YOU WANT TO BECOME</div>
+          <p style="margin:0 0 14px;font:500 clamp(15px,1.6vw,18px)/1.55 'Archivo';color:#EAF2FB;text-wrap:pretty;">{{ aspText }}</p>
+          <button onClick="{{ bridgeGo }}" style="display:inline-flex;align-items:center;gap:9px;padding:12px 20px;border-radius:11px;border:1px solid color-mix(in srgb,{{ aspColor }} 45%,transparent);background:color-mix(in srgb,{{ aspColor }} 14%,transparent);color:{{ aspColor }};font:700 13.5px 'Archivo';cursor:pointer;transition:transform .16s ease;" style-hover="transform:translateY(-2px);">
+            {{ aspCta }}
+          </button>
+        </div>
+
+        <!-- share + actions -->
+        <div class="fa-in" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:13px;animation-delay:.4s;">
+          <button onClick="{{ copyShare }}" style="display:inline-flex;align-items:center;gap:11px;padding:16px 30px;border-radius:12px;border:0;background:{{ archColor }};color:#04060c;font:700 15px 'Archivo';cursor:pointer;box-shadow:0 12px 38px {{ archGlow }};transition:transform .16s ease;" style-hover="transform:translateY(-2px);">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:#04060c;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>
+            {{ shareLabel }}
+          </button>
+          <button onClick="{{ retake }}" style="display:inline-flex;align-items:center;gap:9px;padding:16px 24px;border-radius:12px;border:1px solid rgba(157,176,198,.28);background:rgba(12,18,30,.4);color:#C6D3E2;font:600 14px 'Archivo';cursor:pointer;transition:border-color .16s ease,color .16s ease;" style-hover="border-color:color-mix(in srgb,var(--accent,#E0413C) 55%,transparent);color:#EAF2FB;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
+            Retake
+          </button>
+        </div>
+        <div class="fa-in" style="margin-top:22px;text-align:center;font:500 10px 'IBM Plex Mono';letter-spacing:.14em;color:#4f627a;animation-delay:.46s;">{{ dataLine }}</div>
+        <p class="fa-in" style="margin:14px auto 0;max-width:520px;text-align:center;font:400 11.5px/1.55 'Archivo';color:#5c6e85;animation-delay:.5s;">This is how you <em>say</em> you play. Log your matches later and we&rsquo;ll check it against what your game actually <em>shows</em>.</p>
+
+      </div>
+    </main>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1200,&quot;height&quot;:840},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#E0413C&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#E0413C&quot;,&quot;#D9A521&quot;,&quot;#22D3EE&quot;,&quot;#FF7A2F&quot;]},&quot;motion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  // ---------- model ----------
+  ORDER = ['destroyer','sentinel','architect','warrior'];
+  ARCH = {
+    destroyer:{ name:'The Destroyer', identity:'The Ball-Winner', emoji:'\uD83D\uDCA5', color:'#E0413C',
+      reflect:"You want to win the ball back and dominate the midfield battle \u2014 the enforcer.",
+      isYou:"The enforcer. Aggressive, physical, relentless, you break up attacks and win possession for your team. Where there\u2019s a battle, you\u2019re winning it.",
+      strengths:['Tackling & ball-winning','Physical duels','Disruption'],
+      playLike:'Casemiro \u00b7 N\u2019Golo Kant\u00e9 \u00b7 Claude Mak\u00e9l\u00e9l\u00e9',
+      edge:"Passing and composure on the ball, so winning it turns cleanly into keeping it. The gap between a good ball-winner and an elite one is what you do in the six seconds after you win it.",
+      firstStep:"Win your duels and tackles first \u2014 then make a clean, simple pass every time you win it back. Count how many survive.",
+      cta:'Your Destroyer path starts with winning the midfield battle \u2192',
+      share:'I\u2019m The Destroyer \u26bd \u2014 I win the ball back. Which midfielder are you?' },
+    sentinel:{ name:'The Sentinel', identity:'The Positioning Master', emoji:'\uD83D\uDEE1\uFE0F', color:'#D9A521',
+      reflect:"You read the game and cut out danger before it builds \u2014 you defend with your brain.",
+      isYou:"The shield. You anticipate, position perfectly, and snuff out attacks before they become chances. You rarely need to tackle because you\u2019re already there.",
+      strengths:['Anticipation & interceptions','Positioning','Defensive organization'],
+      playLike:'Sergio Busquets \u00b7 Rodri \u00b7 Fabinho',
+      edge:"Physical presence in duels, so you can win it when reading alone isn\u2019t enough. The best readers still have to survive the moments the game gets physical.",
+      firstStep:"Before each opposition attack, predict the pass and step to intercept \u2014 count how many you cut out.",
+      cta:'Your Sentinel path starts with reading the game \u2192',
+      share:'I\u2019m The Sentinel \u26bd \u2014 I read danger before it builds. Which midfielder are you?' },
+    architect:{ name:'The Architect', identity:'The Deep-Lying Playmaker', emoji:'\uD83C\uDFBC', color:'#22D3EE',
+      reflect:"You want the ball and to dictate the tempo \u2014 the regista everything flows through.",
+      isYou:"The metronome. From deep, you control the game with your passing range, vision, and tempo. Every attack starts with you.",
+      strengths:['Passing range & vision','Tempo control','Progressive distribution'],
+      playLike:'Andrea Pirlo \u00b7 Xabi Alonso \u00b7 Toni Kroos',
+      edge:"The defensive side \u2014 screening and duels \u2014 so you can dictate without being a target to bypass. A playmaker who can\u2019t defend gets pressed out of the game.",
+      firstStep:"Get on the ball as often as you can and look for one progressive, line-breaking pass every possession.",
+      cta:'Your Architect path starts with dictating the tempo \u2192',
+      share:'I\u2019m The Architect \u26bd \u2014 the game flows through me. Which midfielder are you?' },
+    warrior:{ name:'The Warrior', identity:'The Complete Midfielder', emoji:'\u2699\uFE0F', color:'#FF7A2F',
+      reflect:"You want to do everything and cover every area \u2014 the complete box-to-box midfielder.",
+      isYou:"The all-rounder. You defend, carry, pass, and cover \u2014 everywhere, all game. No single label fits because you do all of it at a high level.",
+      strengths:['Versatility','Work rate & endurance','All-phase contribution'],
+      playLike:'Declan Rice \u00b7 Aur\u00e9lien Tchouam\u00e9ni \u00b7 Yaya Tour\u00e9',
+      edge:"One standout weapon \u2014 sharpen your ball-winning or your passing so you\u2019re elite at something, not just good at everything. Work rate gets you in at one level and out at the next.",
+      firstStep:"In one session, deliberately contribute in every phase \u2014 win it, carry it, pass it, cover \u2014 and notice how often you\u2019re involved.",
+      cta:'Your Warrior path starts with covering every phase \u2192',
+      share:'I\u2019m The Warrior \u26bd \u2014 I do everything in midfield. Which midfielder are you?' },
+  };
+
+  CHAPTERS = [
+    { num:'01', title:'Winning the Ball', sub:'Observed behaviour under pressure \u2014 how you actually react, not how you\u2019d describe it. Four moments.', cta:'Start Chapter 01' },
+    { num:'02', title:'On the Ball',      sub:'You\u2019ve got possession in front of your defence. What\u2019s your first instinct?',           cta:'Continue' },
+    { num:'03', title:'Your Identity',    sub:'Who you are, and who you want to become. Four honest reads.',                                cta:'Continue' },
+  ];
+
+  // 12 questions x 4 options. {t,a,ev}. Q11 (index 10) is aspiration: {asp:true}, opts map to aspiration archetype (no score/evidence).
+  Q = [
+    { ch:0, prompt:'The opposition is building through midfield. You\u2026', opts:[
+      { t:'Step in aggressively and win it with a tackle.', a:'destroyer', ev:'you stepped in and won it with a tackle' },
+      { t:'Read the pass and intercept it before it arrives.', a:'sentinel', ev:'you read the pass and cut it out before it arrived' },
+      { t:'Win it cleanly, then turn and launch our attack from the steal.', a:'architect', ev:'you won it clean and turned it straight into attack' },
+      { t:'Press, track, and cover wherever the danger goes.', a:'warrior', ev:'you pressed, tracked and covered the danger everywhere' } ] },
+    { ch:0, prompt:'A runner breaks through your midfield line. You\u2026', opts:[
+      { t:'Hunt him down and put in a strong challenge.', a:'destroyer', ev:'you hunted him down and threw in a strong challenge' },
+      { t:'You anticipated it \u2014 already across to cut it out.', a:'sentinel', ev:'you\u2019d anticipated it and were already across to cut it out' },
+      { t:'Nick the ball off him and release a forward pass before he can set.', a:'architect', ev:'you nicked it off him and sprung us forward' },
+      { t:'Sprint back and cover the space yourself.', a:'warrior', ev:'you sprinted back and covered the space yourself' } ] },
+    { ch:0, prompt:'Your team needs to stop a counter-attack. You\u2026', opts:[
+      { t:'Make a tactical foul if you have to \u2014 stop it at all costs.', a:'destroyer', ev:'you stopped it at all costs \u2014 tactical foul and all' },
+      { t:'Position early to block the killer pass.', a:'sentinel', ev:'you were positioned early to block the killer pass' },
+      { t:'Drop into the passing lane, intercept, and immediately restart our possession.', a:'architect', ev:'you turned their counter into our possession' },
+      { t:'Chase back and make the recovery tackle.', a:'warrior', ev:'you chased back and made the recovery tackle' } ] },
+    { ch:0, prompt:'In training you enjoy most\u2026', opts:[
+      { t:'Tackling, duels, and pressing drills.', a:'destroyer', ev:'you love the tackling, duels and pressing drills' },
+      { t:'Positioning and reading-the-game work.', a:'sentinel', ev:'you love the positioning and reading-the-game work' },
+      { t:'Passing patterns and dictating tempo.', a:'architect', ev:'you love passing patterns and dictating tempo' },
+      { t:'Box-to-box conditioning and all-phase games.', a:'warrior', ev:'you love box-to-box conditioning and all-phase games' } ] },
+
+    { ch:1, prompt:'You win possession in front of your defence. You\u2026', opts:[
+      { t:'Give it simple and safe \u2014 your job\u2019s the dirty work.', a:'destroyer', ev:'you kept it simple and safe \u2014 the dirty work\u2019s your job' },
+      { t:'Pick the calm pass that keeps our shape.', a:'sentinel', ev:'you picked the calm pass that kept our shape' },
+      { t:'Turn and spray a progressive pass to switch play.', a:'architect', ev:'you turned and sprayed a progressive pass to switch play' },
+      { t:'Drive forward and join the attack.', a:'warrior', ev:'you drove forward and joined the attack' } ] },
+    { ch:1, prompt:'Your team wants to control the tempo. You\u2026', opts:[
+      { t:'Keep it simple and let the creators create.', a:'destroyer', ev:'you kept it simple and let the creators create' },
+      { t:'Sit in front of the back four and recycle safely.', a:'sentinel', ev:'you sat in front of the back four and recycled safely' },
+      { t:'Dictate it yourself \u2014 every attack goes through you.', a:'architect', ev:'you dictated it yourself \u2014 every attack went through you' },
+      { t:'Get everywhere to give options across the pitch.', a:'warrior', ev:'you got everywhere to give options across the pitch' } ] },
+    { ch:1, prompt:'Under pressure deep in your own half, you\u2026', opts:[
+      { t:'Clear it \u2014 no risks in front of your own goal.', a:'destroyer', ev:'you cleared it \u2014 no risks in front of your own goal' },
+      { t:'Move it first-time to the free man.', a:'sentinel', ev:'you moved it first-time to the free man' },
+      { t:'Take a touch, ride the press, and pass through it.', a:'architect', ev:'you rode the press and passed straight through it' },
+      { t:'Carry it out of trouble with determination.', a:'warrior', ev:'you carried it out of trouble yourself' } ] },
+    { ch:1, prompt:'Your manager\u2019s main instruction for you\u2026', opts:[
+      { t:'Break up everything and protect the back four.', a:'destroyer', ev:'your job was to break up everything and protect the back four' },
+      { t:'Read the game and be the defensive brain.', a:'sentinel', ev:'your job was to read the game and be the defensive brain' },
+      { t:'Dictate our play \u2014 be the deep playmaker.', a:'architect', ev:'your job was to dictate play as the deep playmaker' },
+      { t:'Cover every blade of grass and do a bit of everything.', a:'warrior', ev:'your job was to cover every blade of grass' } ] },
+
+    { ch:2, prompt:'Teammates describe you as\u2026', opts:[
+      { t:'The enforcer \u2014 you win the ball back for us.', a:'destroyer', ev:'your teammates call you the enforcer' },
+      { t:'The shield \u2014 always in the right spot, reading danger.', a:'sentinel', ev:'your teammates call you the shield' },
+      { t:'The metronome \u2014 everything flows through your passing.', a:'architect', ev:'your teammates call you the metronome' },
+      { t:'The engine \u2014 box to box, all game.', a:'warrior', ev:'your teammates call you the engine' } ] },
+    { ch:2, prompt:'The compliment that means the most\u2026', opts:[
+      { t:'\u201cYou won every battle in midfield.\u201d', a:'destroyer', ev:'the compliment you treasure is winning every midfield battle' },
+      { t:'\u201cYou read the whole game and killed their attacks.\u201d', a:'sentinel', ev:'the compliment you treasure is reading the whole game' },
+      { t:'\u201cYou dictated the tempo \u2014 we played through you.\u201d', a:'architect', ev:'the compliment you treasure is dictating the tempo' },
+      { t:'\u201cYou were everywhere \u2014 attack and defence both.\u201d', a:'warrior', ev:'the compliment you treasure is being everywhere' } ] },
+    { ch:2, asp:true, prompt:'Which midfielder do you most want to become?', opts:[
+      { t:'A ball-winning enforcer.', a:'destroyer' },
+      { t:'A positional master who intercepts everything.', a:'sentinel' },
+      { t:'A deep-lying playmaker who dictates the game.', a:'architect' },
+      { t:'A complete box-to-box midfielder.', a:'warrior' } ] },
+    { ch:2, prompt:'What frustrates you most?', opts:[
+      { t:'Losing a midfield battle or a duel.', a:'destroyer', ev:'nothing frustrates you like losing a duel' },
+      { t:'Getting pulled out of position and exposing the defence.', a:'sentinel', ev:'nothing frustrates you like being pulled out of position' },
+      { t:'A system that won\u2019t let you get on the ball and dictate.', a:'architect', ev:'nothing frustrates you like not being allowed on the ball' },
+      { t:'Feeling like you didn\u2019t influence both ends of the pitch.', a:'warrior', ev:'nothing frustrates you like not influencing both ends' } ] },
+  ];
+
+  ANT = ['COUNTING YOUR CHOICES','WEIGHING EACH ARCHETYPE','BUILDING YOUR DNA','FINDING YOUR SHAPE'];
+
+  state = { view:'intro', chIndex:0, qIndex:0, ans:new Array(12).fill(null), antPhrase:0, copied:false };
+
+  componentDidMount(){
+    const shuf=(arr)=>{ const a=arr.map((o,i)=>({...o,origIdx:i})); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; };
+    this._qopts=this.Q.map(q=>shuf(q.opts));
+    try { this._soundOn=localStorage.getItem('fa_sound')!=='0'; } catch(e){ this._soundOn=true; }
+    this._qStart=Date.now();
+    this.forceUpdate();
+  }
+  componentWillUnmount(){ clearTimeout(this._to); clearInterval(this._antTimer); }
+
+  // ---------- sound ----------
+  _audio(){ if(this._actx===undefined){ try{ this._actx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ this._actx=null; } } if(this._actx&&this._actx.state==='suspended') this._actx.resume(); return this._actx; }
+  _tone(f,d,t,g){ const c=this._audio(); if(!c||this._soundOn===false) return; const o=c.createOscillator(),a=c.createGain(); o.type=t||'sine'; o.frequency.value=f; o.connect(a); a.connect(c.destination); const n=c.currentTime; a.gain.setValueAtTime(0,n); a.gain.linearRampToValueAtTime(g||0.05,n+0.01); a.gain.exponentialRampToValueAtTime(0.0001,n+d); o.start(n); o.stop(n+d); }
+  _sfx(k){ if(this._soundOn===false) return; if(k==='click') this._tone(430,0.09,'sine',0.04); else if(k==='select'){ this._tone(560,0.1,'triangle',0.05); setTimeout(()=>this._tone(760,0.12,'triangle',0.045),55); } else if(k==='whistle'){ this._tone(900,0.16,'sine',0.05); } else if(k==='complete'){ this._tone(520,0.14,'triangle',0.05); setTimeout(()=>this._tone(700,0.14,'triangle',0.05),110); setTimeout(()=>this._tone(940,0.26,'triangle',0.05),230); } }
+  _toggleSound(){ const on=this._soundOn===false; this._soundOn=on; try{ localStorage.setItem('fa_sound', on?'1':'0'); }catch(e){} if(on){ this._audio(); this._sfx('click'); } this.forceUpdate(); }
+
+  // ---------- scoring (DM-DNA spread, flat +1) ----------
+  _score(ans){
+    const scoring=ans.filter(a=>a&&!a.asp);
+    const pts={}; this.ORDER.forEach(a=>pts[a]=0);
+    const ch1={}; this.ORDER.forEach(a=>ch1[a]=0);
+    const firstIdx={}; this.ORDER.forEach(a=>firstIdx[a]=99);
+    scoring.forEach((a,i)=>{ pts[a.arch]+=1; if(a.ch===0) ch1[a.arch]+=1; if(firstIdx[a.arch]===99) firstIdx[a.arch]=a.qi; });
+    const total=scoring.length||11;
+    const spread={}; this.ORDER.forEach(a=>spread[a]=Math.round(pts[a]/total*100));
+    const ranked=[...this.ORDER].sort((x,y)=> (pts[y]-pts[x]) || (ch1[y]-ch1[x]) || (firstIdx[x]-firstIdx[y]));
+    const primary=ranked[0], secondary=ranked[1];
+    const gap=pts[primary]-pts[secondary];
+    const short=(id)=>this.ARCH[id].name.replace('The ','');
+    let clarityLabel;
+    if(gap>=3) clarityLabel='Defined '+short(primary);
+    else if(gap>=1) clarityLabel=short(primary)+', shading '+short(secondary);
+    else clarityLabel=short(primary)+'\u2013'+short(secondary)+' Hybrid';
+    return { pts, ch1, spread, ranked, primary, secondary, gap, isHybrid:gap===0, clarityLabel };
+  }
+
+  _whyFragments(ans, primary, secondary){
+    const evs=(arch)=> ans.filter(a=>a&&!a.asp&&a.arch===arch).map(a=>a.ev).filter(Boolean);
+    let frags=evs(primary).slice(0,3);
+    if(frags.length<2) frags=frags.concat(evs(secondary)).slice(0,3);
+    return frags;
+  }
+  _composeWhy(name, frags){
+    if(!frags.length) return '';
+    let body;
+    if(frags.length===1) body=frags[0];
+    else body=frags.slice(0,-1).join(', ')+', and '+frags[frags.length-1];
+    return 'You\u2019re '+name+' because '+body+'.';
+  }
+
+  // ---------- flow ----------
+  _begin(){ this._sfx('whistle'); this.setState({ view:'chapter', chIndex:0 }); }
+  _chapterGo(){ this._sfx('click'); const first=this.state.chIndex*4; this._qStart=Date.now(); this.setState({ view:'question', qIndex:first }); }
+
+  _answer(opt){
+    this._sfx('select');
+    const qi=this.state.qIndex, q=this.Q[qi];
+    const ans=this.state.ans.slice();
+    ans[qi]={ q:'Q'+(qi+1), qi, ch:q.ch, arch:opt.a, ev:opt.ev, asp:!!q.asp, optionIndex:opt.origIdx, latencyMs:Date.now()-this._qStart };
+    const next=qi+1;
+    if(next>11){ this.setState({ ans }, ()=>this._commit()); return; }
+    if(next%4===0){ this.setState({ ans, view:'chapter', chIndex:next/4 }); return; }
+    this._qStart=Date.now();
+    this.setState({ ans, qIndex:next });
+  }
+
+  _commit(){
+    const ans=this.state.ans;
+    const r=this._score(ans);
+    const aspAns=ans[10];
+    const aspiration=aspAns?aspAns.arch:null;
+    const frags=this._whyFragments(ans, r.primary, r.secondary);
+    const result={
+      assessmentVersion:'dm-1.1', position:'dm', completedAt:new Date().toISOString(),
+      selections:ans.filter(Boolean).map(a=>({ q:a.q, ch:a.ch, archetypeId:a.arch, isAspiration:a.asp, optionIndex:a.optionIndex, latencyMs:a.latencyMs })),
+      points:r.pts, spread:r.spread, primary:r.primary, secondary:r.secondary,
+      primaryName:this.ARCH[r.primary].name, secondaryName:this.ARCH[r.secondary].name,
+      gap:r.gap, isHybrid:r.isHybrid, clarityLabel:r.clarityLabel,
+      aspiration, whyFragments:frags,
+    };
+    try{ localStorage.setItem('fa_dm_result', JSON.stringify(result)); }catch(e){}
+    this._result=result;
+    this.setState({ view:'analysing', antPhrase:0, copied:false });
+    clearInterval(this._antTimer);
+    const motion=this.props.motion??true;
+    this._antTimer=setInterval(()=>this.setState(s=>({ antPhrase:Math.min(s.antPhrase+1,this.ANT.length-1) })), motion?460:120);
+    clearTimeout(this._to);
+    this._to=setTimeout(()=>{ clearInterval(this._antTimer); this._sfx('complete'); this.setState({ view:'reveal' }); }, motion?2100:350);
+  }
+
+  _copyShare(){
+    const r=this._result; if(!r) return;
+    const txt=this.ARCH[r.primary].share;
+    try{ if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(txt); }catch(e){}
+    this._sfx('click');
+    this.setState({ copied:true });
+    clearTimeout(this._copyTo); this._copyTo=setTimeout(()=>this.setState({ copied:false }), 1900);
+  }
+  _bridgeGo(){ this._sfx('click'); }
+  _retake(){
+    try{ localStorage.removeItem('fa_dm_result'); }catch(e){}
+    clearTimeout(this._to); clearInterval(this._antTimer);
+    this._result=null; this._qStart=Date.now();
+    this.setState({ view:'intro', chIndex:0, qIndex:0, ans:new Array(12).fill(null), antPhrase:0, copied:false });
+  }
+  _back(){
+    this._sfx('click');
+    const { view, qIndex, chIndex }=this.state;
+    if(view==='chapter'){ if(chIndex===0){ this.setState({ view:'intro' }); } else { this._qStart=Date.now(); this.setState({ view:'question', qIndex:chIndex*4-1 }); } }
+    else if(view==='question'){ if(qIndex%4===0){ this.setState({ view:'chapter', chIndex:qIndex/4 }); } else { this._qStart=Date.now(); this.setState({ qIndex:qIndex-1 }); } }
+  }
+
+  // ---------- render ----------
+  renderVals(){
+    const accent=this.props.accent ?? '#E0413C';
+    const V=this.state.view;
+    const answered=this.state.ans.filter(Boolean).length;
+    const scanPct=Math.round((answered/12)*100)+'%';
+    const soundOn=this._soundOn!==false;
+
+    const base={
+      accent,
+      isIntro:V==='intro', isChapter:V==='chapter', isQuestion:V==='question',
+      isAnalysing:V==='analysing', isReveal:V==='reveal',
+      showBack: V==='chapter'||V==='question',
+      scanPct,
+      soundOn, soundOff:!soundOn, soundColor:soundOn?accent:'#61748c', soundTitle:soundOn?'Sound on':'Sound off',
+      toggleSound:()=>this._toggleSound(), back:()=>this._back(), retake:()=>this._retake(),
+      begin:()=>this._begin(), chapterGo:()=>this._chapterGo(), copyShare:()=>this._copyShare(), bridgeGo:()=>this._bridgeGo(),
+      antLabel:this.ANT[Math.min(this.state.antPhrase,this.ANT.length-1)],
+    };
+
+    // chapter
+    const ch=this.CHAPTERS[this.state.chIndex]||this.CHAPTERS[0];
+    base.chNum=ch.num; base.chTitle=ch.title; base.chSub=ch.sub; base.chapterCta=ch.cta;
+
+    // question
+    const qi=this.state.qIndex, q=this.Q[qi]||this.Q[0];
+    base.chapterKicker='CH '+this.CHAPTERS[q.ch].num+' \u00b7 '+this.CHAPTERS[q.ch].title.toUpperCase();
+    base.qNumLabel='Q'+(qi+1)+' / 12';
+    base.qPrompt=q.prompt;
+    base.isAspiration=!!q.asp;
+    const optSrc=(this._qopts&&this._qopts[qi])||q.opts.map((o,i)=>({...o,origIdx:i}));
+    base.options=optSrc.map((o,di)=>({ letter:'ABCD'[di], text:o.t, delay:(0.06+di*0.05).toFixed(2)+'s', onPick:()=>this._answer(o) }));
+
+    // reveal defaults (placeholder-safe)
+    Object.assign(base,{
+      revKicker:'YOUR MIDFIELD DNA', archEmoji:'', archColor:accent, archGlow:'transparent',
+      archName:'', archIdentity:'', clarityLabel:'', isHybrid:false, secondaryColor:accent, hybridLine:'',
+      dnaSegments:[], spreadBars:[], whyText:'', archReflect:'', archIsYou:'', strengths:[], archPlayLike:'',
+      archEdge:'', archFirstStep:'', aspColor:accent, aspText:'', aspCta:'', shareLabel:'Share result', dataLine:'',
+    });
+
+    const r=this._result;
+    if(r){
+      const A=this.ARCH[r.primary];
+      const archColor=A.color;
+      const archGlow='color-mix(in srgb,'+archColor+' 45%,transparent)';
+      const short=(id)=>this.ARCH[id].name.replace('The ','');
+      base.archEmoji=A.emoji; base.archColor=archColor; base.archGlow=archGlow;
+      base.archName=A.name; base.archIdentity=A.identity;
+      base.clarityLabel=r.clarityLabel;
+      base.isHybrid=r.isHybrid;
+      base.secondaryColor=this.ARCH[r.secondary].color;
+      base.hybridLine='A genuine blend of the '+short(r.primary)+' and the '+short(r.secondary)+' \u2014 the flexible, hard-to-mark profile that lets you shift role with the game.';
+
+      const entries=this.ORDER.map(k=>[k,r.spread[k]]).sort((a,b)=>b[1]-a[1]);
+      base.dnaSegments=entries.filter(([,v])=>v>0).map(([id,v])=>({ w:v+'%', color:this.ARCH[id].color }));
+      const maxV=Math.max(...entries.map(e=>e[1]),1);
+      base.spreadBars=entries.map(([id,v])=>{
+        const isP=id===r.primary; const col=this.ARCH[id].color;
+        return { emoji:this.ARCH[id].emoji, label:short(id),
+          labelColor:isP?'#F2F8FE':'#9FB0C5', numColor:isP?col:'#9FB0C5',
+          pct:v+'%', barW:Math.round((v/maxV)*100)+'%',
+          barLook:isP?('background:linear-gradient(90deg,'+col+',color-mix(in srgb,'+col+' 45%,transparent));box-shadow:0 0 12px color-mix(in srgb,'+col+' 55%,transparent);'):'background:rgba(140,160,186,.4);' };
+      });
+
+      base.whyText=this._composeWhy(A.name, r.whyFragments);
+      base.archReflect=A.reflect; base.archIsYou=A.isYou; base.archPlayLike=A.playLike; base.archEdge=A.edge;
+      base.strengths=A.strengths.map(s=>({ text:s }));
+      base.archFirstStep=A.firstStep;
+
+      // aspiration bridge
+      const asp=r.aspiration;
+      if(asp){
+        const aspA=this.ARCH[asp];
+        base.aspColor=aspA.color;
+        if(asp===r.primary){
+          base.aspText='You want to become '+aspA.name+' \u2014 and that\u2019s exactly who you already are. Now let\u2019s make it elite.';
+          base.aspCta=A.cta;
+        } else if(asp===r.secondary){
+          base.aspText='You\u2019re '+A.name+' shading '+this.ARCH[r.secondary].name+' \u2014 and the '+short(r.secondary)+' is who you want to become. You\u2019re already on the path.';
+          base.aspCta=aspA.cta;
+        } else {
+          base.aspText='You play as '+A.name+' today \u2014 but you want to become '+aspA.name+'. Your path is the bridge between them.';
+          base.aspCta=aspA.cta;
+        }
+      } else {
+        base.aspColor=archColor; base.aspText=''; base.aspCta=A.cta;
+      }
+
+      base.shareLabel=this.state.copied?'Copied to clipboard':'Share result';
+      base.dataLine='SELF-REPORTED · 11 SCORING CALLS · DEFENSIVE MID v1.1';
+    }
+
+    return base;
+  }
+}
+</script>
+</body>
+</html>

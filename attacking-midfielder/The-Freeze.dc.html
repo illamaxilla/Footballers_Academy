@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="./scenes.js"></script>
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:#04060c;}
+  a{color:var(--accent,#22D3EE);text-decoration:none;}
+  a:hover{opacity:.92;}
+  @keyframes fa-blink{0%,100%{opacity:1;}50%{opacity:.25;}}
+  @keyframes fa-rise{0%{transform:translateY(16px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-rise-sm{0%{transform:translateY(10px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-bar{from{transform:scaleX(0);}to{transform:scaleX(1);}}
+  @keyframes fa-flash{0%{opacity:0;}18%{opacity:.9;}100%{opacity:0;}}
+  .fa-in{opacity:0;animation:fa-rise .7s cubic-bezier(.2,.7,.2,1) forwards;}
+  .fa-in-sm{opacity:0;animation:fa-rise-sm .5s cubic-bezier(.2,.7,.2,1) forwards;}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;}.fa-in,.fa-in-sm{opacity:1!important;transform:none!important;}}
+</style>
+</helmet>
+<div data-screen-label="The Freeze" style="position:relative;display:flex;flex-direction:column;min-height:100dvh;width:100%;overflow:hidden;background:radial-gradient(120% 90% at 50% 6%,#0e1a2d 0%,#080e1a 44%,#04060c 100%);color:#EAF2FB;font-family:'Archivo',system-ui,sans-serif;--accent:{{ accent }};">
+
+  <div style="position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.4;background:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0px,rgba(255,255,255,.02) 1px,transparent 1px,transparent 4px);"></div>
+  <div style="position:absolute;top:20px;left:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;top:20px;right:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;left:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;right:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+
+  <!-- TOP BAR -->
+  <header style="position:relative;z-index:6;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px clamp(26px,3.4vw,58px);">
+    <div style="min-width:120px;display:flex;">
+      <sc-if value="{{ showBack }}" hint-placeholder-val="{{ true }}">
+        <button onClick="{{ back }}" style="display:inline-flex;align-items:center;gap:8px;background:none;border:0;cursor:pointer;color:#8EA1B8;font:600 12.5px 'Archivo';padding:0;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M15 5l-7 7 7 7"/></svg>Back
+        </button>
+      </sc-if>
+    </div>
+    <div style="display:flex;align-items:center;gap:11px;">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" style="stroke:var(--accent,#22D3EE);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;"><path d="M6 4v16M18 4v16M6 8h12M6 16h12"/><circle cx="12" cy="12" r="2.6"/></svg>
+      <span style="font:800 13px 'Archivo';letter-spacing:.05em;">THE <span style="color:var(--accent,#22D3EE);">FREEZE</span></span>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;min-width:120px;justify-content:flex-end;">
+      <button onClick="{{ toggleSound }}" title="{{ soundTitle }}" style="display:grid;place-items:center;width:28px;height:28px;border-radius:8px;border:1px solid rgba(120,140,166,.24);background:rgba(10,16,28,.5);cursor:pointer;color:{{ soundColor }};">
+        <sc-if value="{{ soundOn }}" hint-placeholder-val="{{ true }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></sc-if>
+        <sc-if value="{{ soundOff }}" hint-placeholder-val="{{ false }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M22 9l-6 6M16 9l6 6"/></svg></sc-if>
+      </button>
+    </div>
+  </header>
+
+  <!-- INTRO -->
+  <sc-if value="{{ isIntro }}" hint-placeholder-val="{{ true }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;text-align:center;padding:20px clamp(26px,4vw,58px) 60px;">
+      <div class="fa-in" style="display:inline-flex;align-items:center;gap:10px;margin-bottom:20px;font:600 12px 'IBM Plex Mono';letter-spacing:.4em;color:var(--accent,#22D3EE);">
+        <span style="width:6px;height:6px;border-radius:50%;background:var(--accent,#22D3EE);box-shadow:0 0 8px var(--accent,#22D3EE);animation:fa-blink 1.6s ease-in-out infinite;"></span>ANTICIPATION · WILLIAMS &amp; WARD
+      </div>
+      <h1 class="fa-in" style="margin:0 0 16px;font:800 clamp(36px,5.4vw,74px)/0.97 'Archivo';letter-spacing:-0.03em;text-wrap:balance;max-width:880px;animation-delay:.06s;">Read it before<br>the ball is struck.</h1>
+      <p class="fa-in" style="margin:0 0 26px;max-width:620px;font:400 clamp(15px,1.3vw,18px)/1.6 'Archivo';color:#9FB0C5;text-wrap:pretty;animation-delay:.12s;">A move plays out, then <strong style="color:#EAF2FB;">freezes</strong>. Tap where the ball is going. Get it right and the next freeze comes <strong style="color:#EAF2FB;">earlier</strong> — before the pass, when only the body gives it away: the hips, the plant foot, the run. Elite readers know from the cues, not the ball.</p>
+
+      <div class="fa-in" style="margin-bottom:12px;font:600 10px 'IBM Plex Mono';letter-spacing:.28em;color:#61748c;animation-delay:.2s;">CHOOSE YOUR LEVEL</div>
+      <div class="fa-in" style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;max-width:560px;margin-bottom:34px;animation-delay:.22s;">
+        <sc-for list="{{ diffs }}" as="d" hint-placeholder-count="3">
+          <button onClick="{{ d.pick }}" style="flex:1 1 150px;min-width:148px;text-align:left;padding:16px 18px;border-radius:15px;border:1px solid {{ d.border }};background:{{ d.bg }};cursor:pointer;transition:border-color .14s ease,background .14s ease;">
+            <div style="font:800 16px 'Archivo';color:{{ d.titleColor }};margin-bottom:3px;">{{ d.name }}</div>
+            <div style="font:400 11.5px/1.45 'Archivo';color:#9FB0C5;">{{ d.desc }}</div>
+          </button>
+        </sc-for>
+      </div>
+
+      <button onClick="{{ begin }}" class="fa-in" style="display:inline-flex;align-items:center;gap:12px;padding:18px 46px;border-radius:13px;border:0;background:var(--accent,#22D3EE);color:#0b0518;font:700 16px 'Archivo';cursor:pointer;box-shadow:0 14px 46px color-mix(in srgb,var(--accent,#22D3EE) 42%,transparent);transition:transform .16s ease;animation-delay:.3s;" style-hover="transform:translateY(-2px);">
+        Watch the first move
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12h13M12 6l6 6-6 6"/></svg>
+      </button>
+      <div class="fa-in" style="margin-top:18px;font:500 10px 'IBM Plex Mono';letter-spacing:.14em;color:#4f627a;animation-delay:.36s;">{{ bestLine }}</div>
+    </main>
+  </sc-if>
+
+  <!-- PLAY -->
+  <sc-if value="{{ isPlay }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow:hidden;padding:0 clamp(16px,2.4vw,42px) 20px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;width:100%;max-width:760px;margin-bottom:10px;">
+        <div style="text-align:left;min-width:110px;">
+          <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.2em;color:#61748c;">TRIAL</div>
+          <div style="font:800 24px 'IBM Plex Mono';color:#F2F8FE;line-height:1.05;">{{ trialLabel }}</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="font:800 15px 'Archivo';letter-spacing:.02em;color:{{ phaseColor }};transition:color .2s ease;">{{ phaseTitle }}</div>
+          <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.14em;color:#7688a0;margin-top:2px;">{{ phaseSub }}</div>
+        </div>
+        <div style="text-align:right;min-width:110px;">
+          <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.2em;color:#61748c;">FROZEN AT</div>
+          <div style="font:800 24px 'IBM Plex Mono';color:{{ occColor }};line-height:1.05;">{{ occLabel }}</div>
+        </div>
+      </div>
+      <div style="position:relative;width:100%;max-width:760px;flex:1;min-height:0;border-radius:18px;overflow:hidden;border:1px solid rgba(120,140,166,.22);touch-action:none;">
+        <canvas ref="{{ canvasRef }}" onPointerDown="{{ onTap }}" style="display:block;width:100%;height:100%;cursor:{{ pitchCursor }};"></canvas>
+        <div ref="{{ flashRef }}" style="position:absolute;inset:0;pointer-events:none;opacity:0;"></div>
+        <div style="position:absolute;left:0;right:0;bottom:12px;text-align:center;pointer-events:none;font:600 10px 'IBM Plex Mono';letter-spacing:.2em;color:rgba(200,215,232,.55);">{{ pitchHint }}</div>
+      </div>
+    </main>
+  </sc-if>
+
+  <!-- OVER -->
+  <sc-if value="{{ isOver }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;text-align:center;padding:20px clamp(26px,4vw,58px) 70px;">
+      <div class="fa-in" style="display:inline-flex;align-items:center;gap:9px;margin-bottom:16px;padding:6px 14px;border:1px solid color-mix(in srgb,var(--accent,#22D3EE) 32%,transparent);border-radius:999px;font:600 10px 'IBM Plex Mono';letter-spacing:.28em;color:var(--accent,#22D3EE);">READING REPORT</div>
+      <div class="fa-in" style="font:600 10px 'IBM Plex Mono';letter-spacing:.24em;color:#7688a0;margin-bottom:6px;animation-delay:.05s;">YOU READ IT</div>
+      <h1 class="fa-in" style="margin:0 0 2px;font:800 clamp(44px,8vw,92px)/0.9 'IBM Plex Mono';letter-spacing:-0.02em;color:{{ threshColor }};animation-delay:.08s;">{{ threshValue }}</h1>
+      <div class="fa-in" style="font:600 11px 'IBM Plex Mono';letter-spacing:.2em;color:#7688a0;margin-bottom:8px;animation-delay:.09s;">{{ threshUnit }}</div>
+      <div class="fa-in" style="font:700 13px 'Archivo';color:#B4C2D4;margin-bottom:8px;animation-delay:.1s;">{{ threshVerdict }}</div>
+
+      <!-- occlusion scale -->
+      <div class="fa-in" style="width:100%;max-width:480px;margin:14px auto 26px;animation-delay:.16s;">
+        <div style="position:relative;height:8px;border-radius:99px;background:linear-gradient(90deg,#7688a0 0%,#7688a0 30%,#FFB020 55%,#3BE07A 80%,#3BE07A 100%);">
+          <div style="position:absolute;top:-4px;width:3px;height:16px;border-radius:2px;background:#EAF2FB;box-shadow:0 0 8px rgba(255,255,255,.8);left:{{ threshPos }};transition:left .6s cubic-bezier(.3,.8,.3,1);"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-top:7px;font:600 8.5px 'IBM Plex Mono';letter-spacing:.08em;color:#61748c;"><span>BALL IN FLIGHT</span><span>AT CONTACT</span><span style="color:#3BE07A;">EARLY CUES</span></div>
+      </div>
+
+      <div class="fa-in" style="display:flex;flex-wrap:wrap;gap:22px;justify-content:center;margin-bottom:26px;animation-delay:.2s;">
+        <div style="text-align:center;"><div style="font:800 26px 'IBM Plex Mono';color:#EAF2FB;">{{ correctCount }}</div><div style="font:600 9px 'IBM Plex Mono';letter-spacing:.12em;color:#61748c;margin-top:3px;">READS CORRECT</div></div>
+        <div style="width:1px;background:rgba(120,140,166,.2);"></div>
+        <div style="text-align:center;"><div style="font:800 26px 'IBM Plex Mono';color:#EAF2FB;">{{ avgError }}</div><div style="font:600 9px 'IBM Plex Mono';letter-spacing:.12em;color:#61748c;margin-top:3px;">AVG MISS DISTANCE</div></div>
+      </div>
+
+      <div class="fa-in" style="max-width:600px;margin-bottom:20px;padding:18px 22px;border-radius:14px;border:1px dashed rgba(120,140,166,.3);background:rgba(10,16,28,.4);text-align:left;animation-delay:.26s;">
+        <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.2em;color:#7688a0;margin-bottom:8px;">WHAT WE ACTUALLY MEASURED</div>
+        <div style="font:500 14px/1.6 'Archivo';color:#C6D3E2;">{{ whatRead }}</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;">
+          <sc-for list="{{ traitChips }}" as="c" hint-placeholder-count="2">
+            <span style="display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border-radius:8px;border:1px solid color-mix(in srgb,var(--accent,#22D3EE) 30%,transparent);background:color-mix(in srgb,var(--accent,#22D3EE) 8%,transparent);font:700 11px 'IBM Plex Mono';letter-spacing:.06em;color:#C6D3E2;"><span style="font-weight:800;color:var(--accent,#22D3EE);">{{ c.key }}</span>{{ c.label }}</span>
+          </sc-for>
+        </div>
+      </div>
+
+      <div class="fa-in" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:14px;animation-delay:.32s;">
+        <button onClick="{{ retake }}" style="display:inline-flex;align-items:center;gap:11px;padding:18px 44px;border-radius:13px;border:0;background:var(--accent,#22D3EE);color:#0b0518;font:700 16px 'Archivo';cursor:pointer;box-shadow:0 14px 46px color-mix(in srgb,var(--accent,#22D3EE) 42%,transparent);transition:transform .16s ease;" style-hover="transform:translateY(-2px);">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" style="stroke:#0b0518;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
+          Read again
+        </button>
+        <a href="Assessment.dc.html" style="display:inline-flex;align-items:center;gap:9px;padding:18px 26px;border-radius:13px;border:1px solid rgba(157,176,198,.28);background:rgba(12,18,30,.4);color:#C6D3E2;font:600 15px 'Archivo';" style-hover="border-color:color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);color:#EAF2FB;">Back to the scan</a>
+      </div>
+      <div class="fa-in" style="margin-top:20px;font:500 10px 'IBM Plex Mono';letter-spacing:.14em;color:#4f627a;animation-delay:.38s;">{{ dataLine }}</div>
+    </main>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1100,&quot;height&quot;:820},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#22D3EE&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#22D3EE&quot;,&quot;#A78BFA&quot;,&quot;#C6FF3A&quot;,&quot;#FF7A45&quot;,&quot;#FF4D8D&quot;]},&quot;motion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  N_TRIALS = 8;
+  // occlusion staircase: ms relative to CONTACT (negative = after contact / ball in flight, positive = before)
+  OCC = [-180, 0, 180, 340, 500];
+  ACC_RADIUS = 0.17;   // normalised pitch distance counted as a correct read
+  DIFFS = {
+    academy: { name:'Academy', desc:'The move plays slowly. Time to read the picture.', windMs:960, flightMs:620 },
+    pro:     { name:'Pro',     desc:'Game speed. A fair test of anticipation.',          windMs:720, flightMs:500 },
+    elite:   { name:'Elite',   desc:'Snap decisions. The cues flash by.',                windMs:560, flightMs:420 },
+  };
+  ORDER = ['academy','pro','elite'];
+
+  state = { view:'intro', diff:'pro', trial:0, phase:'watch', occIdx:1 };
+
+  componentDidMount(){
+    try { this._soundOn = localStorage.getItem('fa_sound') !== '0'; } catch(e){ this._soundOn=true; }
+    try { this._best = parseInt(localStorage.getItem('fa_am_freeze_best')||'0',10)||0; } catch(e){ this._best=0; }
+    this._boot(0);
+    this._onResize=()=>this._resize(); window.addEventListener('resize', this._onResize);
+  }
+  componentWillUnmount(){ window.removeEventListener('resize', this._onResize); this._stop(); }
+  _boot(t){ if(window.AMScenes){ this._API=window.AMScenes; return; } if(t<40) setTimeout(()=>this._boot(t+1),60); }
+
+  // ---------- audio ----------
+  _audio(){ if(this._actx===undefined){ try{ this._actx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ this._actx=null; } } if(this._actx&&this._actx.state==='suspended') this._actx.resume(); return this._actx; }
+  _tone(f,d,t,g,slide){ const c=this._audio(); if(!c||this._soundOn===false) return; const o=c.createOscillator(),a=c.createGain(); o.type=t||'sine'; o.frequency.setValueAtTime(f,c.currentTime); if(slide) o.frequency.exponentialRampToValueAtTime(Math.max(20,slide),c.currentTime+d); o.connect(a); a.connect(c.destination); const n=c.currentTime; a.gain.setValueAtTime(0.0001,n); a.gain.exponentialRampToValueAtTime(g||0.05,n+0.008); a.gain.exponentialRampToValueAtTime(0.0001,n+d); o.start(n); o.stop(n+d+0.02); }
+  _haptic(ms){ try{ if(navigator.vibrate) navigator.vibrate(ms||8); }catch(e){} }
+  _sfx(k){ if(this._soundOn===false) return;
+    if(k==='freeze'){ this._tone(880,0.12,'sine',0.05,300); }
+    else if(k==='right'){ this._tone(620,0.09,'triangle',0.055); setTimeout(()=>this._tone(940,0.13,'triangle',0.05),55); setTimeout(()=>this._tone(1260,0.15,'sine',0.045),120); }
+    else if(k==='wrong'){ this._tone(240,0.26,'sawtooth',0.055,120); }
+    else if(k==='play'){ this._tone(430,0.09,'sine',0.045,600); }
+    else if(k==='whistle'){ this._tone(900,0.16,'sine',0.05,1200); }
+    else if(k==='tap'){ this._tone(520,0.05,'square',0.03); }
+  }
+  _toggleSound(){ const on=this._soundOn===false; this._soundOn=on; try{ localStorage.setItem('fa_sound', on?'1':'0'); }catch(e){} if(on){ this._audio(); this._sfx('tap'); } this.forceUpdate(); }
+
+  // ---------- canvas ----------
+  _resize(){ const cv=this._canvas; if(!cv) return; const r=cv.getBoundingClientRect(); const dpr=Math.min(2,window.devicePixelRatio||1); cv.width=Math.max(2,Math.round(r.width*dpr)); cv.height=Math.max(2,Math.round(r.height*dpr)); this._dpr=dpr; this._W=r.width; this._H=r.height; }
+  _cvRef(el){ this._canvas=el; if(el){ requestAnimationFrame(()=>this._resize()); } }
+  _flRef(el){ this._flashEl=el; }
+  _start(){ this._running=true; this._raf=requestAnimationFrame((t)=>this._loop(t)); }
+  _stop(){ this._running=false; if(this._raf) cancelAnimationFrame(this._raf); }
+  _px(nx,ny){ const pad=Math.min(this._W,this._H)*0.075; return [ pad + nx*(this._W-2*pad), pad + ny*(this._H-2*pad) ]; }
+
+  // ---------- flow ----------
+  _pickDiff(d){ this._sfx('tap'); this.setState({ diff:d }); }
+  _begin(){
+    this._audio(); this._sfx('whistle'); this._haptic(12);
+    this._cfg=this.DIFFS[this.state.diff];
+    if(!this._API) this._boot(0);
+    const n=this._API? this._API.SCENES.length : 10;
+    const idx=[]; for(let i=0;i<n;i++) idx.push(i);
+    for(let i=idx.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [idx[i],idx[j]]=[idx[j],idx[i]]; }
+    this._pick=[]; for(let i=0;i<this.N_TRIALS;i++) this._pick.push(idx[i%idx.length]);
+    this._log=[]; this._occIdx=1; this._score=0;
+    this.setState({ view:'play', trial:0, occIdx:1 }, ()=>{ this._resize(); this._startTrial(0); this._start(); });
+  }
+
+  _lerp(a,b,t){ return a+(b-a)*t; }
+  _startTrial(i){
+    const scene=(this._API&&this._API.SCENES[this._pick[i]])||null; this._cur=scene;
+    const gt=scene.groundTruth; const carrier=scene.players[scene.ball.carrier];
+    const recv=scene.players[gt.bestPass];
+    // the receiver makes a short forward run; ball ends at the run's end point
+    const dxr=(recv.x>=carrier.x?1:-1);
+    this._recvStart={ x:recv.x, y:recv.y };
+    this._recvEnd={ x:Math.max(0.06,Math.min(0.94,recv.x+0.06*dxr)), y:Math.max(0.08,Math.min(0.92,recv.y+(Math.random()*0.05-0.025))) };
+    this._carrier={ x:carrier.x, y:carrier.y };
+    this._contact=this._cfg.windMs; this._arrive=this._cfg.windMs+this._cfg.flightMs;
+    this._occMs=this.OCC[this._occIdx];
+    this._freezeT=Math.max(120, this._contact - this._occMs);   // clock time to freeze
+    this._tap=null;
+    this._phase='watch'; this._tPhase=performance.now(); this._sfx('play');
+    this.setState({ trial:i, phase:'watch', occIdx:this._occIdx });
+  }
+
+  _loop(t){
+    if(!this._running) return; this._raf=requestAnimationFrame((tt)=>this._loop(tt));
+    if((!this._W||!this._H)&&this._canvas) this._resize();
+    const now=t; const motion=this.props.motion??true;
+    if(this._phase==='watch'){
+      const clk=(now-this._tPhase)*(motion?1:4);
+      if(clk>=this._freezeT){ this._phase='freeze'; this._frozenClk=this._freezeT; this._tPhase=now; this._sfx('freeze'); this._haptic(14); this.setState({ phase:'freeze' }); }
+    } else if(this._phase==='reveal'){
+      // animation continues to arrive during reveal (handled in draw via elapsed)
+    }
+    this._draw(now);
+  }
+
+  // positions at clock time c (ms from move start)
+  _ballAt(c){
+    if(c<=this._contact){ // small back-lift at carrier
+      const w=Math.min(1,c/this._contact); const bob=Math.sin(w*Math.PI)*0.006;
+      return [ this._carrier.x-0.012*w, this._carrier.y-bob ];
+    }
+    const f=Math.min(1,(c-this._contact)/this._cfg.flightMs);
+    const e=this._recvEnd; const s=this._carrier;
+    const arc=Math.sin(f*Math.PI)*0.02;
+    return [ this._lerp(s.x,e.x,f), this._lerp(s.y,e.y,f)-arc ];
+  }
+  _recvAt(c){ const w=Math.min(1,c/this._arrive); return [ this._lerp(this._recvStart.x,this._recvEnd.x,w), this._lerp(this._recvStart.y,this._recvEnd.y,w) ]; }
+  _facingFrac(c){ return Math.min(1, c/(this._contact*0.82)); }   // how far the carrier has turned to the target
+
+  _onTap(e){
+    if(this.state.view!=='play'||this._phase!=='freeze') return;
+    const cv=this._canvas; if(!cv) return; const r=cv.getBoundingClientRect();
+    const mx=(e.clientX-r.left)/r.width, my=(e.clientY-r.top)/r.height;
+    const pad=Math.min(this._W,this._H)*0.075,W=this._W,H=this._H;
+    const nx=Math.max(0,Math.min(1,((mx*W)-pad)/(W-2*pad)));
+    const ny=Math.max(0,Math.min(1,((my*H)-pad)/(H-2*pad)));
+    const dest=this._recvEnd; const err=Math.hypot(dest.x-nx,dest.y-ny);
+    const correct=err<=this.ACC_RADIUS;
+    this._tap={ nx, ny, correct };
+    // points reward earlier correct reads
+    let pts=0; if(correct){ pts = this._occMs>=340?150 : this._occMs>=180?110 : this._occMs>=0?70:40; this._sfx('right'); this._flash('color-mix(in srgb,'+(this._accent || '#22D3EE')+' 32%,transparent)'); }
+    else { this._sfx('wrong'); this._flash('rgba(255,74,95,.34)'); }
+    this._score+=pts;
+    this._log.push({ sceneId:this._cur.id, occMs:this._occMs, occIdx:this._occIdx, correct, err });
+    // staircase: correct -> earlier(harder), wrong -> later(easier)
+    if(correct) this._occIdx=Math.min(this.OCC.length-1,this._occIdx+1);
+    else this._occIdx=Math.max(0,this._occIdx-1);
+    this._phase='reveal'; this._tPhase=performance.now(); this._haptic(correct?18:10);
+    this.setState({ phase:'reveal' });
+    const motion=this.props.motion??true;
+    clearTimeout(this._to);
+    this._to=setTimeout(()=>{ const n=this.state.trial+1; if(n>=this.N_TRIALS){ this._gameOver(); } else { this._startTrial(n); } }, motion?1700:340);
+  }
+
+  // ---------- drawing ----------
+  _drawBall(ctx,x,y,r,glow){ if(glow){ ctx.shadowColor='rgba(255,255,255,.85)'; ctx.shadowBlur=12; } const g=ctx.createRadialGradient(x-r*0.3,y-r*0.35,r*0.15,x,y,r); g.addColorStop(0,'#ffffff'); g.addColorStop(1,'#cfe0ee'); ctx.fillStyle=g; ctx.beginPath(); ctx.arc(x,y,r,0,7); ctx.fill(); ctx.shadowBlur=0; ctx.fillStyle='rgba(20,40,60,.5)'; ctx.beginPath(); ctx.arc(x-r*0.15,y-r*0.1,r*0.26,0,7); ctx.fill(); }
+  _token(ctx,x,y,r,fill,stroke,label,labelCol,alpha){ ctx.globalAlpha=alpha==null?1:alpha; ctx.fillStyle='rgba(0,0,0,.32)'; ctx.beginPath(); ctx.ellipse(x,y+r*0.85,r*0.9,r*0.3,0,0,7); ctx.fill(); ctx.fillStyle=fill; ctx.strokeStyle=stroke||'rgba(255,255,255,.22)'; ctx.lineWidth=1.5; ctx.beginPath(); ctx.arc(x,y-r*0.16,r,0,7); ctx.fill(); ctx.stroke(); ctx.fillStyle=labelCol||'#04121a'; ctx.font="800 "+Math.max(8,this._W*0.011)+"px 'IBM Plex Mono'"; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(label,x,y-r*0.16); ctx.textBaseline='alphabetic'; ctx.globalAlpha=1; }
+  _chevron(ctx,x,y,r,col,alpha){ ctx.save(); ctx.globalAlpha=alpha==null?1:alpha; ctx.translate(x,y); ctx.fillStyle=col; ctx.beginPath(); ctx.moveTo(-r,0); ctx.lineTo(r*0.55,-r*0.85); ctx.lineTo(r*0.15,0); ctx.lineTo(r*0.55,r*0.85); ctx.closePath(); ctx.fill(); ctx.restore(); }
+
+  _draw(now){
+    const ctx=this._canvas&&this._canvas.getContext('2d'); if(!ctx) return;
+    const W=this._W,H=this._H,dpr=this._dpr||1; if(!W||!H||!isFinite(W)) return;
+    const acc=this._accent || '#22D3EE'; const motion=this.props.motion??true;
+    ctx.save(); ctx.scale(dpr,dpr); ctx.clearRect(0,0,W,H);
+    const g=ctx.createLinearGradient(0,0,W,H); g.addColorStop(0,'#0d1c2e'); g.addColorStop(0.55,'#091324'); g.addColorStop(1,'#050c17');
+    ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+    ctx.strokeStyle='rgba(90,150,190,.10)'; ctx.lineWidth=1.2;
+    const [mx0,my0]=this._px(0.5,0),[mx1,my1]=this._px(0.5,1); ctx.beginPath(); ctx.moveTo(mx0,my0); ctx.lineTo(mx1,my1); ctx.stroke();
+    const sc=this._cur; if(!sc){ ctx.restore(); return; }
+    const carrier=sc.ball.carrier; const r=Math.max(11,W*0.02);
+
+    // clock time
+    let clk;
+    if(this._phase==='watch'){ clk=Math.min(this._freezeT,(now-this._tPhase)*(motion?1:4)); }
+    else if(this._phase==='freeze'){ clk=this._frozenClk; }
+    else { clk=Math.min(this._arrive, this._freezeT + (now-this._tPhase)*(motion?1:4)); } // reveal continues to arrive
+    const frozen=this._phase==='freeze';
+
+    // other players (slight drift), static except the receiver runs
+    sc.players.forEach((p,i)=>{
+      if(i===carrier) return;
+      let x,y;
+      if(i===sc.groundTruth.bestPass){ const [rx,ry]=this._recvAt(clk); [x,y]=this._px(rx,ry); }
+      else { [x,y]=this._px(p.x,p.y); }
+      if(p.team==='them'){ this._chevron(ctx,x,y,Math.max(9,W*0.016),'#FF5A6E', frozen?0.85:1); }
+      else { this._token(ctx,x,y,r*0.9,'#3aa8c4',null,p.role,'#04121a', frozen?0.9:1); }
+    });
+
+    // carrier + facing cue + ball
+    const [cx,cy]=this._px(this._carrier.x,this._carrier.y);
+    // facing arrow (the pre-contact tell)
+    const [ex,ey]=this._px(this._recvEnd.x,this._recvEnd.y);
+    const ang=Math.atan2(ey-cy,ex-cx); const ff=this._facingFrac(clk);
+    if(clk<this._contact || frozen){
+      const len=(r+6)+ff*(r*1.4);
+      const ax=cx+Math.cos(ang)*len, ay=cy+Math.sin(ang)*len;
+      ctx.strokeStyle='color-mix(in srgb,'+acc+' '+Math.round(40+ff*50)+'%,transparent)'; ctx.lineWidth=3; ctx.lineCap='round';
+      ctx.beginPath(); ctx.moveTo(cx,cy-r*0.16); ctx.lineTo(ax,ay-r*0.16); ctx.stroke(); ctx.lineCap='butt';
+      // plant-foot dot (loads near contact)
+      if(ff>0.55){ const pf=(ff-0.55)/0.45; ctx.fillStyle='rgba(255,255,255,'+(0.3+pf*0.5)+')'; ctx.beginPath(); ctx.arc(cx-Math.cos(ang)*(r*0.7),cy-r*0.16-Math.sin(ang)*(r*0.7)+r*0.5,2.6+pf*2,0,7); ctx.fill(); }
+    }
+    this._token(ctx,cx,cy,r,acc,'rgba(255,255,255,.28)','10','#160a2e');
+    // ball
+    const [bx,by]=this._ballAt(clk); const [pbx,pby]=this._px(bx,by);
+    this._drawBall(ctx,pbx,pby,Math.max(6,W*0.011), clk>this._contact);
+
+    // freeze overlay + prompt
+    if(frozen){
+      ctx.fillStyle='rgba(4,8,14,.34)'; ctx.fillRect(0,0,W,H);
+      // scanline sweep tint
+      ctx.strokeStyle='rgba(167,139,250,.5)'; ctx.lineWidth=2; ctx.strokeRect(3,3,W-6,H-6);
+      ctx.fillStyle='#EAF2FB'; ctx.textAlign='center'; ctx.font="800 "+Math.max(15,W*0.026)+"px 'Archivo'"; ctx.fillText('WHERE DOES IT GO?', W/2, this._px(0,0.07)[1]);
+      ctx.fillStyle='rgba(159,176,197,.7)'; ctx.font="600 "+Math.max(10,W*0.014)+"px 'IBM Plex Mono'"; ctx.fillText('TAP THE BALL\u2019S DESTINATION', W/2, this._px(0,0.07)[1]+Math.max(18,W*0.026));
+      // redraw ball above dim
+      this._drawBall(ctx,pbx,pby,Math.max(6,W*0.011), clk>this._contact);
+    }
+
+    // reveal: target ring + your tap
+    if(this._phase==='reveal' && this._tap){
+      ctx.strokeStyle='#3BE07A'; ctx.lineWidth=2.4; ctx.beginPath(); ctx.arc(ex,ey,Math.max(15,W*0.026),0,7); ctx.stroke();
+      const [tx,ty]=this._px(this._tap.nx,this._tap.ny);
+      ctx.strokeStyle=this._tap.correct?'#3BE07A':'#FF5A6E'; ctx.lineWidth=2.2;
+      ctx.beginPath(); ctx.moveTo(tx-9,ty-9); ctx.lineTo(tx+9,ty+9); ctx.moveTo(tx+9,ty-9); ctx.lineTo(tx-9,ty+9); ctx.stroke();
+      ctx.textAlign='center'; ctx.fillStyle=this._tap.correct?'#3BE07A':'#FF6274'; ctx.font="800 "+Math.max(14,W*0.024)+"px 'Archivo'";
+      ctx.fillText(this._tap.correct?'READ IT':'MISREAD', W/2, this._px(0,0.07)[1]);
+    }
+    ctx.restore();
+  }
+  _flash(col){ const el=this._flashEl; if(!el) return; el.style.background='radial-gradient(circle at 50% 55%,'+col+',transparent 62%)'; el.style.animation='none'; void el.offsetWidth; el.style.animation='fa-flash .55s ease forwards'; }
+
+  // ---------- results ----------
+  _gameOver(){
+    this._stop(); this._sfx('whistle'); this._haptic(24);
+    const L=this._log;
+    const correct=L.filter(x=>x.correct);
+    const threshMs = correct.length? Math.max.apply(null, correct.map(x=>x.occMs)) : (L.length? Math.min.apply(null, L.map(x=>x.occMs)) : 0);
+    const anyCorrect=correct.length>0;
+    const avgErr=L.reduce((s,x)=>s+x.err,0)/(L.length||1);
+    const isPB=this._score>this._best; if(isPB){ this._best=this._score; try{ localStorage.setItem('fa_am_freeze_best', String(this._score)); }catch(e){} }
+    const result={ instrument:'the-freeze', version:'am-freeze-1.0', position:'am', completedAt:new Date().toISOString(),
+      difficulty:this.state.diff, trials:this.N_TRIALS, score:this._score, personalBest:this._best,
+      measures:{ anticipationThresholdMs:threshMs, anyCorrect, correctReads:correct.length, avgErrorPct:+(avgErr*100).toFixed(1) },
+      trials_log:L, maps:{ MOV:'anticipation', VIS:'cue-reading', note:'anticipation from advance cues, not reaction speed' } };
+    try{ localStorage.setItem('fa_am_freeze', JSON.stringify(result)); }catch(e){}
+    this._final={ isPB, threshMs, anyCorrect, correct:correct.length, avgErr };
+    this.setState({ view:'over' });
+  }
+  _retake(){ this._begin(); }
+  _back(){ this._sfx('tap'); if(this.state.view==='intro'){ window.location.href='Assessment.dc.html'; } else { this._stop(); this.setState({ view:'intro' }); } }
+
+  renderVals(){
+    const accent=this.props.accent ?? '#22D3EE'; this._accent=accent;
+    const V=this.state.view, S=this.state, soundOn=this._soundOn!==false;
+    const base={ accent,
+      isIntro:V==='intro', isPlay:V==='play', isOver:V==='over', showBack:V!=='over',
+      soundOn, soundOff:!soundOn, soundColor:soundOn?accent:'#61748c', soundTitle:soundOn?'Sound on':'Sound off',
+      toggleSound:()=>this._toggleSound(), back:()=>this._back(), begin:()=>this._begin(), retake:()=>this._retake(),
+      canvasRef:(el)=>this._cvRef(el), onTap:(e)=>this._onTap(e), flashRef:(el)=>this._flRef(el),
+      bestLine:(this._best>0?('YOUR BEST · '+this._best+' PTS'):'FIRST RUN · SET THE BAR') };
+    base.diffs=this.ORDER.map(id=>{ const d=this.DIFFS[id]; const sel=S.diff===id; return { name:d.name, desc:d.desc, pick:()=>this._pickDiff(id),
+      border: sel?accent:'rgba(120,140,166,.24)', bg: sel?('color-mix(in srgb,'+accent+' 14%,transparent)'):'rgba(10,16,28,.5)', titleColor: sel?accent:'#EAF2FB' }; });
+
+    base.trialLabel=(Math.min(S.trial+1,this.N_TRIALS))+' / '+this.N_TRIALS;
+    const ph=S.phase;
+    const pmap={ watch:['WATCH','the move is developing','#9FB0C5'], freeze:['FROZEN','call it now','#A78BFA'], reveal:['REVEAL','was your read right?','#3BE07A'] };
+    const pm=pmap[ph]||pmap.watch; base.phaseTitle=pm[0]; base.phaseSub=pm[1]; base.phaseColor=pm[2];
+    base.pitchCursor = ph==='freeze'?'crosshair':'default';
+    base.pitchHint = ph==='freeze'?'TAP WHERE THE BALL IS GOING' : ph==='watch'?'READ THE BODY, NOT THE BALL' : '';
+    const occ=this.OCC[S.occIdx!=null?S.occIdx:1];
+    base.occLabel = occ>0? ('-'+occ+'ms') : occ===0? 'CONTACT' : ('+'+(-occ)+'ms');
+    base.occColor = occ>=340?'#3BE07A': occ>=0?'#FFB020':'#9FB0C5';
+
+    const f=this._final||{};
+    const th=f.threshMs!=null?f.threshMs:0;
+    if(!f.anyCorrect){ base.threshValue='—'; base.threshUnit='NO CLEAN READ'; }
+    else if(th>0){ base.threshValue=th+''; base.threshUnit='MS BEFORE CONTACT'; }
+    else if(th===0){ base.threshValue='AT'; base.threshUnit='THE MOMENT OF CONTACT'; }
+    else { base.threshValue=(-th)+''; base.threshUnit='MS AFTER CONTACT · BALL IN FLIGHT'; }
+    base.threshColor = th>=340?'#3BE07A': th>=180?'#FFB020': th>=0?'#FFB020':'#FF7A8A';
+    // scale position: map occ range [-180..500] to 0..100
+    base.threshPos = Math.round(((th+180)/(500+180))*100)+'%';
+    if(!f.anyCorrect) base.threshVerdict='No clean read yet. Watch the hips and the plant foot, not the ball.';
+    else if(th>=340) base.threshVerdict='Elite anticipation. You knew before the pass was struck.';
+    else if(th>=180) base.threshVerdict='Strong. You read the intent, not just the flight.';
+    else if(th>=0) base.threshVerdict='Average — you called it around the moment of contact.';
+    else base.threshVerdict='You needed to see the ball travelling. The early cues went unread.';
+    base.correctCount=(f.correct!=null?f.correct:0)+' / '+this.N_TRIALS;
+    base.avgError=(f.avgErr!=null?Math.round(f.avgErr*100):0)+'%';
+
+    const parts=[];
+    if(f.anyCorrect && th>0) parts.push('Your earliest clean read came '+th+'ms before contact — before the ball was even struck.');
+    else if(f.anyCorrect && th<=0) parts.push('You read the play around contact or once the ball was flying.');
+    else parts.push('You did not lock a read from the advance cues this time.');
+    parts.push('You called '+(f.correct||0)+' of '+this.N_TRIALS+' destinations, missing by '+(f.avgErr!=null?Math.round(f.avgErr*100):0)+'% of the pitch on average.');
+    if(th>=340) parts.push('Reading this early leans Phantom or Maestro — you live one picture ahead.');
+    base.whatRead=parts.join(' ');
+    base.traitChips=[ {key:'MOV',label:'Movement'}, {key:'VIS',label:'Vision'} ];
+    base.dataLine='MEASURED · BEHAVIOURAL · '+this.N_TRIALS+' TRIALS · '+(S.diff||'pro').toUpperCase()+' · am-freeze-1.0';
+    return base;
+  }
+}
+</script>
+</body>
+</html>

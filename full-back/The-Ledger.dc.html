@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:#04060c;}
+  a{color:var(--accent,#FF6B1A);text-decoration:none;}
+  a:hover{opacity:.92;}
+  @keyframes fa-blink{0%,100%{opacity:1;}50%{opacity:.25;}}
+  @keyframes fa-rise{0%{transform:translateY(16px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-rise-sm{0%{transform:translateY(10px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-bar{from{transform:scaleX(0);}to{transform:scaleX(1);}}
+  .fa-in{opacity:0;animation:fa-rise .6s cubic-bezier(.2,.7,.2,1) forwards;}
+  .fa-in-sm{opacity:0;animation:fa-rise-sm .5s cubic-bezier(.2,.7,.2,1) forwards;}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;}.fa-in,.fa-in-sm{opacity:1!important;transform:none!important;}}
+</style>
+</helmet>
+<div data-screen-label="The Ledger" style="position:relative;display:flex;flex-direction:column;min-height:100dvh;width:100%;overflow:hidden;background:radial-gradient(120% 90% at 50% 6%,#0e1a2d 0%,#080e1a 44%,#04060c 100%);color:#EAF2FB;font-family:'Archivo',system-ui,sans-serif;--accent:{{ accent }};">
+
+  <div style="position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.4;background:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0px,rgba(255,255,255,.02) 1px,transparent 1px,transparent 4px);"></div>
+  <div style="position:absolute;top:20px;left:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#FF6B1A) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#FF6B1A) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;top:20px;right:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#FF6B1A) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#FF6B1A) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;left:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#FF6B1A) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#FF6B1A) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;right:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#FF6B1A) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#FF6B1A) 50%,transparent);z-index:4;pointer-events:none;"></div>
+
+  <sc-if value="{{ showChrome }}" hint-placeholder-val="{{ true }}">
+    <header style="position:relative;z-index:6;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px clamp(24px,3.4vw,54px);">
+      <div style="min-width:110px;display:flex;"><a href="Assessment.dc.html" style="display:inline-flex;align-items:center;gap:8px;color:#8EA1B8;font:600 12.5px 'Archivo';"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M15 5l-7 7 7 7"/></svg>Back to the scan</a></div>
+      <div style="display:flex;align-items:center;gap:11px;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" style="stroke:var(--accent,#FF6B1A);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M4 20V10M10 20V4M16 20v-7M20 20H2"/></svg><span style="font:800 13px 'Archivo';letter-spacing:.05em;">THE <span style="color:var(--accent,#FF6B1A);">LEDGER</span></span></div>
+      <div style="display:flex;align-items:center;gap:12px;min-width:110px;justify-content:flex-end;">
+        <button onClick="{{ toggleSound }}" title="{{ soundTitle }}" style="display:grid;place-items:center;width:28px;height:28px;border-radius:8px;border:1px solid rgba(120,140,166,.24);background:rgba(10,16,28,.5);cursor:pointer;color:{{ soundColor }};">
+          <sc-if value="{{ soundOn }}" hint-placeholder-val="{{ true }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></sc-if>
+          <sc-if value="{{ soundOff }}" hint-placeholder-val="{{ false }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M22 9l-6 6M16 9l6 6"/></svg></sc-if>
+        </button>
+      </div>
+    </header>
+  </sc-if>
+
+  <!-- INTRO -->
+  <sc-if value="{{ isIntro }}" hint-placeholder-val="{{ true }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;text-align:center;padding:14px clamp(24px,4vw,54px) 54px;">
+      <div class="fa-in" style="display:inline-flex;align-items:center;gap:10px;margin-bottom:18px;font:600 12px 'IBM Plex Mono';letter-spacing:.4em;color:var(--accent,#FF6B1A);"><span style="width:6px;height:6px;border-radius:50%;background:var(--accent,#FF6B1A);box-shadow:0 0 8px var(--accent,#FF6B1A);animation:fa-blink 1.6s ease-in-out infinite;"></span>RISK &amp; REWARD</div>
+      <h1 class="fa-in" style="margin:0 0 14px;font:800 clamp(34px,5.2vw,68px)/0.98 'Archivo';letter-spacing:-0.03em;text-wrap:balance;max-width:760px;animation-delay:.05s;">Drive the line, or keep the ball?</h1>
+      <p class="fa-in" style="margin:0 0 26px;max-width:560px;font:400 clamp(14px,1.25vw,17px)/1.6 'Archivo';color:#9FB0C5;text-wrap:pretty;animation-delay:.1s;">Play a season, one decision at a time. Each ball comes with a scoreline and a clock. Gamble and you might create &mdash; or get caught upfield. Recycle and you keep it safe &mdash; but nothing happens. There&rsquo;s no correct answer. Your pattern <em>is</em> the read.</p>
+      <button onClick="{{ start }}" class="fa-in" style="display:inline-flex;align-items:center;gap:12px;padding:17px 42px;border-radius:13px;border:0;background:var(--accent,#FF6B1A);color:#04121a;font:700 16px 'Archivo';cursor:pointer;box-shadow:0 14px 44px color-mix(in srgb,var(--accent,#FF6B1A) 42%,transparent);transition:transform .16s ease;animation-delay:.22s;" style-hover="transform:translateY(-2px);">Kick off the season<svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12h13M12 6l6 6-6 6"/></svg></button>
+      <div class="fa-in" style="margin-top:16px;font:500 10px 'IBM Plex Mono';letter-spacing:.14em;color:#61748C;animation-delay:.3s;">12 DECISIONS &middot; ~3 MINUTES &middot; JUST FOR FUN</div>
+    </main>
+  </sc-if>
+
+  <!-- PLAY -->
+  <sc-if value="{{ isPlay }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:6px clamp(18px,3.5vw,54px) 40px;">
+      <div style="width:100%;max-width:600px;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+          <span style="font:600 9.5px 'IBM Plex Mono';letter-spacing:.2em;color:var(--accent,#FF6B1A);">BALL {{ ballLabel }}</span>
+          <span style="flex:1;height:1px;background:rgba(120,140,166,.16);"></span>
+          <span style="font:600 9.5px 'IBM Plex Mono';letter-spacing:.14em;color:#7688A0;">SEASON LEDGER</span>
+        </div>
+
+        <!-- game state -->
+        <div style="display:flex;gap:10px;margin-bottom:16px;">
+          <div style="flex:1;padding:13px 14px;border-radius:12px;border:1px solid {{ scoreBorder }};background:rgba(10,16,28,.5);text-align:center;">
+            <div style="font:600 8px 'IBM Plex Mono';letter-spacing:.18em;color:#7688A0;margin-bottom:5px;">SCORE</div>
+            <div style="font:800 20px 'Archivo';color:{{ scoreColor }};">{{ scoreText }}</div>
+          </div>
+          <div style="flex:1;padding:13px 14px;border-radius:12px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);text-align:center;">
+            <div style="font:600 8px 'IBM Plex Mono';letter-spacing:.18em;color:#7688A0;margin-bottom:5px;">MINUTE</div>
+            <div style="font:800 20px 'IBM Plex Mono';color:#EAF2FB;">{{ minuteText }}&rsquo;</div>
+          </div>
+          <div style="flex:1.4;padding:13px 14px;border-radius:12px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);text-align:center;">
+            <div style="font:600 8px 'IBM Plex Mono';letter-spacing:.18em;color:#7688A0;margin-bottom:5px;">CREATED / CAUGHT</div>
+            <div style="font:800 18px 'IBM Plex Mono';"><span style="color:#22C776;">{{ createdTotal }}</span><span style="color:#61748C;"> / </span><span style="color:#FF5A6E;">{{ caughtTotal }}</span></div>
+          </div>
+        </div>
+
+        <div class="fa-in-sm" style="padding:16px 18px;border-radius:14px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);margin-bottom:16px;">
+          <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.2em;color:var(--accent,#FF6B1A);margin-bottom:8px;">{{ situKicker }}</div>
+          <p style="margin:0;font:700 clamp(17px,2.2vw,23px)/1.3 'Archivo';color:#EAF2FB;text-wrap:pretty;">{{ situPrompt }}</p>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <sc-for list="{{ choices }}" as="c" hint-placeholder-count="3">
+            <button onClick="{{ c.onPick }}" class="fa-in-sm" style="display:flex;align-items:center;gap:14px;width:100%;text-align:left;padding:15px 17px;border-radius:13px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);color:#EAF2FB;cursor:pointer;transition:border-color .16s ease,background .16s ease,transform .16s ease;animation-delay:{{ c.delay }};" style-hover="border-color:color-mix(in srgb,var(--accent,#FF6B1A) 55%,transparent);background:rgba(14,22,36,.8);transform:translateY(-2px);">
+              <span style="flex:0 0 auto;padding:5px 9px;border-radius:7px;border:1px solid {{ c.tagBorder }};font:700 8.5px 'IBM Plex Mono';letter-spacing:.1em;color:{{ c.tagColor }};">{{ c.tag }}</span>
+              <span style="flex:1;font:600 14.5px/1.35 'Archivo';">{{ c.label }}</span>
+            </button>
+          </sc-for>
+        </div>
+
+        <!-- outcome flash -->
+        <sc-if value="{{ showOutcome }}" hint-placeholder-val="{{ false }}">
+          <div class="fa-in-sm" style="margin-top:14px;padding:14px 16px;border-radius:13px;border:1px solid {{ outcomeBorder }};background:{{ outcomeBg }};">
+            <div style="font:700 13px 'Archivo';color:{{ outcomeColor }};margin-bottom:4px;">{{ outcomeHead }}</div>
+            <div style="font:400 13px/1.45 'Archivo';color:#C6D3E2;">{{ outcomeBody }}</div>
+          </div>
+        </sc-if>
+      </div>
+    </main>
+  </sc-if>
+
+  <!-- RESULT -->
+  <sc-if value="{{ isResult }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:10px clamp(20px,4vw,54px) 64px;">
+      <div style="width:100%;max-width:620px;">
+        <div class="fa-in" style="text-align:center;margin-bottom:22px;">
+          <div style="font:600 11px 'IBM Plex Mono';letter-spacing:.4em;color:#7E90A8;margin-bottom:12px;">SEASON REVIEW</div>
+          <div style="font:900 clamp(56px,12vw,104px)/0.9 'Archivo';letter-spacing:-0.03em;color:var(--accent,#FF6B1A);text-shadow:0 0 48px color-mix(in srgb,var(--accent,#FF6B1A) 45%,transparent);">{{ riskBig }}</div>
+          <div style="margin-top:4px;font:600 10px 'IBM Plex Mono';letter-spacing:.22em;color:#7688A0;">RISK APPETITE</div>
+          <div style="margin-top:10px;font:600 clamp(15px,1.7vw,20px) 'Archivo';color:#C9D6E2;">{{ resultHeadline }}</div>
+        </div>
+
+        <div class="fa-in" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px;animation-delay:.06s;">
+          <div style="padding:15px 10px;border-radius:13px;border:1px solid rgba(120,140,166,.18);background:rgba(10,16,28,.45);text-align:center;"><div style="font:800 22px 'Archivo';color:#22C776;">{{ statCreated }}</div><div style="font:600 8px 'IBM Plex Mono';letter-spacing:.1em;color:#7688A0;margin-top:4px;">CHANCES MADE</div></div>
+          <div style="padding:15px 10px;border-radius:13px;border:1px solid rgba(120,140,166,.18);background:rgba(10,16,28,.45);text-align:center;"><div style="font:800 22px 'Archivo';color:#FF5A6E;">{{ statCaught }}</div><div style="font:600 8px 'IBM Plex Mono';letter-spacing:.1em;color:#7688A0;margin-top:4px;">CAUGHT OUT</div></div>
+          <div style="padding:15px 10px;border-radius:13px;border:1px solid rgba(120,140,166,.18);background:rgba(10,16,28,.45);text-align:center;"><div style="font:800 22px 'Archivo';color:var(--accent,#FF6B1A);">{{ statContext }}</div><div style="font:600 8px 'IBM Plex Mono';letter-spacing:.1em;color:#7688A0;margin-top:4px;">GAME-STATE READ</div></div>
+        </div>
+
+        <!-- choice fingerprint -->
+        <div class="fa-in" style="width:100%;padding:20px 22px;border-radius:16px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);margin-bottom:22px;animation-delay:.1s;">
+          <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:#7688A0;margin-bottom:14px;">YOUR CHOICE FINGERPRINT</div>
+          <div style="display:flex;flex-direction:column;gap:11px;">
+            <sc-for list="{{ fpBars }}" as="s" hint-placeholder-count="4">
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <div style="display:flex;align-items:baseline;justify-content:space-between;">
+                  <span style="font:700 12.5px 'Archivo';color:{{ s.labelColor }};">{{ s.emoji }} {{ s.label }}</span>
+                  <span style="font:800 12px 'IBM Plex Mono';color:{{ s.numColor }};">{{ s.pct }}</span>
+                </div>
+                <div style="height:8px;border-radius:99px;background:rgba(120,140,166,.14);overflow:hidden;"><div style="height:100%;border-radius:99px;transform-origin:left;animation:fa-bar .8s cubic-bezier(.3,.8,.3,1) both;width:{{ s.barW }};{{ s.barLook }}"></div></div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div class="fa-in" style="padding-left:16px;border-left:3px solid var(--accent,#FF6B1A);margin-bottom:24px;animation-delay:.16s;">
+          <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:#7688A0;margin-bottom:7px;">A SOFT READ</div>
+          <p style="margin:0;font:500 clamp(15px,1.7vw,18px)/1.5 'Archivo';color:#EAF2FB;text-wrap:pretty;">{{ softRead }}</p>
+        </div>
+
+        <div class="fa-in" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:12px;animation-delay:.22s;">
+          <button onClick="{{ again }}" style="display:inline-flex;align-items:center;gap:10px;padding:15px 30px;border-radius:12px;border:0;background:var(--accent,#FF6B1A);color:#04121a;font:700 15px 'Archivo';cursor:pointer;box-shadow:0 12px 36px color-mix(in srgb,var(--accent,#FF6B1A) 40%,transparent);transition:transform .16s ease;" style-hover="transform:translateY(-2px);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:#04121a;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>New season</button>
+          <a href="Assessment.dc.html" style="display:inline-flex;align-items:center;gap:9px;padding:15px 24px;border-radius:12px;border:1px solid rgba(157,176,198,.28);background:rgba(12,18,30,.4);color:#C6D3E2;font:600 14px 'Archivo';" style-hover="border-color:color-mix(in srgb,var(--accent,#FF6B1A) 55%,transparent);color:#EAF2FB;">Back to the scan</a>
+        </div>
+      </div>
+    </main>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:940,&quot;height&quot;:760},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#FF6B1A&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#FF6B1A&quot;,&quot;#E5197F&quot;,&quot;#5B9BD5&quot;,&quot;#22D3EE&quot;]},&quot;motion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;embedded&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  // 12 situations. state: {score: -1 down / 0 level / +1 up, minute}. Each choice: risk 0..2 + archetype tag.
+  SITU = [
+    { k:'BUILD-UP \u00b7 YOUR HALF', score:0, minute:12, prompt:'0\u20130, early. You get it wide with your winger marked in front of you.', ch:[
+      { label:'Take him on and drive the line.', risk:2, a:'winger', tag:'BOLD' },
+      { label:'Overlap and get a cross in early.', risk:1, a:'warrior', tag:'MEASURED' },
+      { label:'Set it back to the centre-back, keep it.', risk:0, a:'architect', tag:'SAFE' } ] },
+    { k:'THEIR THIRD', score:0, minute:23, prompt:'Still level. Space opens ahead of you but their winger is high, ready to counter.', ch:[
+      { label:'Burst past and go to the byline.', risk:2, a:'winger', tag:'BOLD' },
+      { label:'Underlap inside and combine.', risk:1, a:'architect', tag:'MEASURED' },
+      { label:'Hold \u2014 don\u2019t get caught with him up there.', risk:0, a:'sentinel', tag:'SAFE' } ] },
+    { k:'TRANSITION', score:1, minute:34, prompt:'You\u2019re 1\u20130 up. Loose ball breaks to you halfway, one man to beat.', ch:[
+      { label:'Drive it \u2014 kill the game off.', risk:2, a:'winger', tag:'BOLD' },
+      { label:'Carry a few yards, then recycle.', risk:1, a:'warrior', tag:'MEASURED' },
+      { label:'Keep it, slow it down, protect the lead.', risk:0, a:'architect', tag:'SAFE' } ] },
+    { k:'THEIR PRESS', score:1, minute:41, prompt:'1\u20130. They press hard. The safe pass is on, the line-breaker is riskier.', ch:[
+      { label:'Ping the line-breaker over the top.', risk:2, a:'winger', tag:'BOLD' },
+      { label:'One-two out of the press.', risk:1, a:'architect', tag:'MEASURED' },
+      { label:'Back to the keeper, reset.', risk:0, a:'sentinel', tag:'SAFE' } ] },
+    { k:'SECOND HALF', score:0, minute:52, prompt:'Pegged back to 1\u20131. Their full-back is tiring on your side.', ch:[
+      { label:'Go at him again and again.', risk:2, a:'winger', tag:'BOLD' },
+      { label:'Pick your moments to overlap.', risk:1, a:'warrior', tag:'MEASURED' },
+      { label:'Stay balanced \u2014 it\u2019s a game of chess now.', risk:0, a:'sentinel', tag:'SAFE' } ] },
+    { k:'YOUR THIRD', score:-1, minute:58, prompt:'You\u2019re 1\u20132 down. You win it deep with time on the ball.', ch:[
+      { label:'Carry it 40 yards and commit them.', risk:2, a:'winger', tag:'BOLD' },
+      { label:'Progress it with a forward pass and support.', risk:1, a:'warrior', tag:'MEASURED' },
+      { label:'Keep possession, build slowly.', risk:0, a:'architect', tag:'SAFE' } ] },
+    { k:'THEIR BOX', score:-1, minute:66, prompt:'Still 1\u20132 down. You reach the byline. Bodies in the box, but a cutback is on.', ch:[
+      { label:'Whip the first-time cross in.', risk:2, a:'winger', tag:'BOLD' },
+      { label:'Cut it back to the edge for the shot.', risk:1, a:'warrior', tag:'MEASURED' },
+      { label:'Roll it back and recycle for a better ball.', risk:0, a:'architect', tag:'SAFE' } ] },
+    { k:'MIDFIELD', score:-1, minute:71, prompt:'1\u20132 down, chasing. Their winger is isolated against you high up.', ch:[
+      { label:'Leave him \u2014 I\u2019m needed in attack.', risk:2, a:'winger', tag:'BOLD' },
+      { label:'Track him but look to spring forward.', risk:1, a:'warrior', tag:'MEASURED' },
+      { label:'Do my defensive job first.', risk:0, a:'sentinel', tag:'SAFE' } ] },
+    { k:'THEIR HALF', score:0, minute:78, prompt:'Level at 2\u20132 now. Ball at your feet, the game is stretched and open.', ch:[
+      { label:'Gamble \u2014 push right up and join the front line.', risk:2, a:'winger', tag:'BOLD' },
+      { label:'Support the attack but keep one eye back.', risk:1, a:'warrior', tag:'MEASURED' },
+      { label:'Sit \u2014 a draw is fine, don\u2019t lose it here.', risk:0, a:'sentinel', tag:'SAFE' } ] },
+    { k:'LATE ON', score:1, minute:84, prompt:'You\u2019ve nicked it, 3\u20132 up. Six minutes left. You get it wide with space.', ch:[
+      { label:'Go again \u2014 a fourth kills it.', risk:2, a:'winger', tag:'BOLD' },
+      { label:'Take it to the corner and waste time.', risk:1, a:'warrior', tag:'MEASURED' },
+      { label:'Recycle, keep it, see the game out.', risk:0, a:'architect', tag:'SAFE' } ] },
+    { k:'THE DEATH', score:1, minute:89, prompt:'3\u20132, 89th minute. You win a throw deep in their half.', ch:[
+      { label:'Quick throw, go for the kill.', risk:2, a:'winger', tag:'BOLD' },
+      { label:'Keep it in the corner, draw the foul.', risk:1, a:'sentinel', tag:'MEASURED' },
+      { label:'Long throw, then drop and defend.', risk:0, a:'sentinel', tag:'SAFE' } ] },
+    { k:'STOPPAGE', score:1, minute:93, prompt:'3\u20132, 93rd. They throw everyone forward. You clear it and it drops to you.', ch:[
+      { label:'Break and try to make it four.', risk:2, a:'winger', tag:'BOLD' },
+      { label:'Carry it into the corner and hold it.', risk:1, a:'warrior', tag:'MEASURED' },
+      { label:'Row Z. See it out. No risks.', risk:0, a:'sentinel', tag:'SAFE' } ] },
+  ];
+  ORDER=['warrior','winger','sentinel','architect'];
+  ARCH={ warrior:{name:'Warrior',emoji:'\u2699\uFE0F',color:'#FF6B1A'}, winger:{name:'Winger',emoji:'\uD83C\uDFAF',color:'#E5197F'}, sentinel:{name:'Sentinel',emoji:'\uD83D\uDEE1\uFE0F',color:'#5B9BD5'}, architect:{name:'Architect',emoji:'\uD83E\uDDED',color:'#22D3EE'} };
+
+  state={ view:'intro', idx:0, picks:[], created:0, caught:0, showOutcome:false, outcomeHead:'', outcomeBody:'', outcomeColor:'#22C776', outcomeBg:'rgba(34,199,118,.12)', outcomeBorder:'rgba(34,199,118,.3)' };
+
+  componentDidMount(){ try{ this._soundOn=localStorage.getItem('fa_sound')!=='0'; }catch(e){ this._soundOn=true; } this._embedded=this.props.embedded===true; if(this._embedded) this._begin(); else this.forceUpdate(); }
+  componentWillUnmount(){ clearTimeout(this._to); }
+
+  _audio(){ if(this._actx===undefined){ try{ this._actx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ this._actx=null; } } if(this._actx&&this._actx.state==='suspended') this._actx.resume(); return this._actx; }
+  _tone(f,d,t,g){ const c=this._audio(); if(!c||this._soundOn===false) return; const o=c.createOscillator(),a=c.createGain(); o.type=t||'sine'; o.frequency.value=f; o.connect(a); a.connect(c.destination); const n=c.currentTime; a.gain.setValueAtTime(0,n); a.gain.linearRampToValueAtTime(g||0.05,n+0.01); a.gain.exponentialRampToValueAtTime(0.0001,n+d); o.start(n); o.stop(n+d); }
+  _sfx(k){ if(this._soundOn===false) return; if(k==='good'){ this._tone(560,0.1,'triangle',0.05); setTimeout(()=>this._tone(780,0.12,'triangle',0.045),55);} else if(k==='bad') this._tone(200,0.2,'sawtooth',0.05); else if(k==='safe') this._tone(440,0.08,'sine',0.04); else if(k==='whistle') this._tone(900,0.16,'sine',0.05); else if(k==='end'){ this._tone(520,0.14,'triangle',0.05); setTimeout(()=>this._tone(720,0.14,'triangle',0.05),120); setTimeout(()=>this._tone(940,0.26,'triangle',0.05),240);} else this._tone(430,0.08,'sine',0.04); }
+  _toggleSound(){ const on=this._soundOn===false; this._soundOn=on; try{ localStorage.setItem('fa_sound', on?'1':'0'); }catch(e){} if(on){ this._audio(); this._sfx('click'); } this.forceUpdate(); }
+
+  _begin(){ this._sfx('whistle'); this.setState({ view:'play', idx:0, picks:[], created:0, caught:0, showOutcome:false }); }
+
+  _pick(ch){
+    if(this.state.showOutcome) return;
+    const s=this.SITU[this.state.idx];
+    // outcome: bold pays off ~55% (more when chasing), backfires otherwise; measured mostly fine; safe never hurts
+    let created=this.state.created, caught=this.state.caught, head, body, color, bg, border;
+    if(ch.risk===2){
+      const payoff = Math.random() < (s.score<0?0.6:0.48);
+      if(payoff){ created++; this._sfx('good'); head='CHANCE CREATED'; body='The gamble came off \u2014 you got in behind and made something happen.'; color='#22C776'; bg='rgba(34,199,118,.12)'; border='rgba(34,199,118,.3)'; }
+      else { caught++; this._sfx('bad'); head='CAUGHT UPFIELD'; body='They won it and broke into the space you left. That\u2019s the cost of the gamble.'; color='#FF5A6E'; bg='rgba(255,90,110,.12)'; border='rgba(255,90,110,.3)'; }
+    } else if(ch.risk===1){
+      const payoff = Math.random()<0.45;
+      if(payoff){ created++; this._sfx('good'); head='HALF A CHANCE'; body='Balanced and effective \u2014 you progressed the play and kept your shape.'; color='#22C776'; bg='rgba(34,199,118,.12)'; border='rgba(34,199,118,.3)'; }
+      else { this._sfx('safe'); head='SOLID'; body='Nothing came of it, but you kept the ball and stayed protected. No harm done.'; color='#9FB0C5'; bg='rgba(120,140,166,.1)'; border='rgba(120,140,166,.28)'; }
+    } else {
+      this._sfx('safe'); head='KEPT IT'; body='Safe and secure. The move slows, but you\u2019re never exposed.'; color='#9FB0C5'; bg='rgba(120,140,166,.1)'; border='rgba(120,140,166,.28)';
+    }
+    const picks=this.state.picks.concat([{ risk:ch.risk, a:ch.a, score:s.score }]);
+    this.setState({ picks, created, caught, showOutcome:true, outcomeHead:head, outcomeBody:body, outcomeColor:color, outcomeBg:bg, outcomeBorder:border });
+    clearTimeout(this._to);
+    this._to=setTimeout(()=>{
+      const next=this.state.idx+1;
+      if(next>=this.SITU.length){ this._end(); return; }
+      this.setState({ idx:next, showOutcome:false });
+    }, 1450);
+  }
+
+  _end(){
+    this._sfx('end');
+    const picks=this.state.picks;
+    const n=picks.length||1;
+    const riskAppetite=Math.round(picks.reduce((s,p)=>s+p.risk,0)/(n*2)*100);
+    // context sensitivity: avg risk when chasing (score<0) vs protecting (score>0)
+    const chasing=picks.filter(p=>p.score<0), leading=picks.filter(p=>p.score>0);
+    const avg=(arr)=> arr.length? arr.reduce((s,p)=>s+p.risk,0)/arr.length : null;
+    const cAvg=avg(chasing), lAvg=avg(leading);
+    let contextLabel='\u2014', contextRead='steady';
+    if(cAvg!=null && lAvg!=null){ const d=cAvg-lAvg; if(d>=0.7){ contextLabel='HIGH'; contextRead='sharp'; } else if(d>=0.25){ contextLabel='SOME'; contextRead='some'; } else if(d<=-0.25){ contextLabel='INVERTED'; contextRead='inverted'; } else { contextLabel='FLAT'; contextRead='flat'; } }
+    const counts={}; this.ORDER.forEach(a=>counts[a]=0); picks.forEach(p=>counts[p.a]++);
+    this._meta={ riskAppetite, contextLabel, contextRead, created:this.state.created, caught:this.state.caught, counts, cAvg, lAvg };
+    if(!this._embedded){ try{ localStorage.setItem('fa_fb_ledger', JSON.stringify({ riskAppetite, contextRead, counts, at:new Date().toISOString(), weight:0 })); }catch(e){} }
+    this.setState({ view:'result' });
+    if(this._embedded && typeof this.props.onDone==='function'){ this.props.onDone(counts, this._meta); }
+  }
+  _again(){ this._begin(); }
+
+  renderVals(){
+    const accent=this.props.accent ?? '#FF6B1A';
+    const V=this.state.view; const soundOn=this._soundOn!==false;
+    const base={ accent, showChrome:!this._embedded && V!=='play',
+      isIntro:V==='intro', isPlay:V==='play', isResult:V==='result',
+      soundOn, soundOff:!soundOn, soundColor:soundOn?accent:'#7688A0', soundTitle:soundOn?'Sound on':'Sound off',
+      toggleSound:()=>this._toggleSound(), start:()=>this._begin(), again:()=>this._again() };
+
+    const s=this.SITU[this.state.idx]||this.SITU[0];
+    base.ballLabel=(this.state.idx+1)+' / '+this.SITU.length;
+    base.situKicker=s.k; base.situPrompt=s.prompt;
+    base.minuteText=s.minute;
+    base.scoreText= s.score>0?'You lead':s.score<0?'You trail':'Level';
+    base.scoreColor= s.score>0?'#22C776':s.score<0?'#FF5A6E':'#EAF2FB';
+    base.scoreBorder= s.score>0?'rgba(34,199,118,.3)':s.score<0?'rgba(255,90,110,.3)':'rgba(120,140,166,.2)';
+    base.createdTotal=this.state.created; base.caughtTotal=this.state.caught;
+    const tagColors={ BOLD:'#E5197F', MEASURED:'#FF6B1A', SAFE:'#5B9BD5' };
+    base.choices=(s.ch||[]).map((c,i)=>({ label:c.label, tag:c.tag,
+      tagColor:tagColors[c.tag]||'#9FB0C5', tagBorder:'color-mix(in srgb,'+(tagColors[c.tag]||'#9FB0C5')+' 40%,transparent)',
+      delay:(0.05+i*0.05).toFixed(2)+'s', onPick:()=>this._pick(c) }));
+    base.showOutcome=this.state.showOutcome; base.outcomeHead=this.state.outcomeHead; base.outcomeBody=this.state.outcomeBody;
+    base.outcomeColor=this.state.outcomeColor; base.outcomeBg=this.state.outcomeBg; base.outcomeBorder=this.state.outcomeBorder;
+
+    // result defaults
+    Object.assign(base,{ riskBig:'0%', resultHeadline:'', statCreated:0, statCaught:0, statContext:'\u2014', fpBars:[], softRead:'' });
+    const m=this._meta;
+    if(m){
+      base.riskBig=m.riskAppetite+'%';
+      base.resultHeadline= m.riskAppetite>=66?'You back yourself to make things happen.': m.riskAppetite>=40?'You pick your moments.':'Security first \u2014 you keep the door shut.';
+      base.statCreated=m.created; base.statCaught=m.caught; base.statContext=m.contextLabel;
+      const tot=this.ORDER.reduce((a,k)=>a+m.counts[k],0)||1;
+      const entries=this.ORDER.map(k=>[k,m.counts[k]]).sort((a,b)=>b[1]-a[1]);
+      const maxV=Math.max(...entries.map(e=>e[1]),1);
+      base.fpBars=entries.map(([id,v])=>{ const col=this.ARCH[id].color; const isTop=v===entries[0][1]&&v>0;
+        return { emoji:this.ARCH[id].emoji, label:this.ARCH[id].name, labelColor:isTop?'#F2F8FE':'#9FB0C5', numColor:isTop?col:'#9FB0C5',
+          pct:Math.round(v/tot*100)+'%', barW:Math.round(v/maxV*100)+'%',
+          barLook:isTop?('background:linear-gradient(90deg,'+col+',color-mix(in srgb,'+col+' 45%,transparent));box-shadow:0 0 12px color-mix(in srgb,'+col+' 55%,transparent);'):'background:rgba(130,150,176,.4);' }; });
+      let read;
+      if(m.contextRead==='sharp') read="You gambled hard when chasing and shut up shop when leading \u2014 that game-state awareness is the Warrior\u2019s calling card. Reading when to risk is rarer than the risk itself.";
+      else if(m.riskAppetite>=66) read="You go for it whatever the scoreline \u2014 the front-foot instinct of the attacking Winger. Thrilling, but the \u2018caught out\u2019 column is the price. A tendency, not a verdict.";
+      else if(m.riskAppetite<=38) read="You kept it safe throughout \u2014 the Sentinel\u2019s security-first instinct. Nothing got in behind you, but the bold ball stayed in the locker. An observation, not your archetype.";
+      else read="You balanced risk and safety and read the moment reasonably well \u2014 a measured profile. Whether that becomes Warrior control or Architect patience is what the scan is for.";
+      base.softRead=read;
+    }
+    return base;
+  }
+}
+</script>
+</body>
+</html>

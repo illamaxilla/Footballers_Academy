@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="./scenes.js"></script>
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:#04060c;}
+  a{color:var(--accent,#22D3EE);text-decoration:none;}
+  a:hover{opacity:.92;}
+  @keyframes fa-blink{0%,100%{opacity:1;}50%{opacity:.25;}}
+  @keyframes fa-rise{0%{transform:translateY(16px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-rise-sm{0%{transform:translateY(10px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-flash{0%{opacity:0;}18%{opacity:.9;}100%{opacity:0;}}
+  @keyframes fa-pulse{0%,100%{opacity:1;}50%{opacity:.5;}}
+  .fa-in{opacity:0;animation:fa-rise .7s cubic-bezier(.2,.7,.2,1) forwards;}
+  .fa-in-sm{opacity:0;animation:fa-rise-sm .5s cubic-bezier(.2,.7,.2,1) forwards;}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;}.fa-in,.fa-in-sm{opacity:1!important;transform:none!important;}}
+</style>
+</helmet>
+<div data-screen-label="The Panic Clock" style="position:relative;display:flex;flex-direction:column;min-height:100dvh;width:100%;overflow:hidden;background:radial-gradient(120% 90% at 50% 6%,#0e1a2d 0%,#080e1a 44%,#04060c 100%);color:#EAF2FB;font-family:'Archivo',system-ui,sans-serif;--accent:{{ accent }};">
+
+  <div style="position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.4;background:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0px,rgba(255,255,255,.02) 1px,transparent 1px,transparent 4px);"></div>
+  <div ref="{{ tintRef }}" style="position:absolute;inset:0;z-index:1;pointer-events:none;opacity:0;transition:opacity .25s ease;background:radial-gradient(120% 100% at 50% 50%,transparent 40%,rgba(255,74,95,.16) 100%);"></div>
+  <div style="position:absolute;top:20px;left:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;top:20px;right:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;left:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;right:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+
+  <!-- TOP BAR -->
+  <header style="position:relative;z-index:6;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px clamp(26px,3.4vw,58px);">
+    <div style="min-width:120px;display:flex;">
+      <sc-if value="{{ showBack }}" hint-placeholder-val="{{ true }}">
+        <button onClick="{{ back }}" style="display:inline-flex;align-items:center;gap:8px;background:none;border:0;cursor:pointer;color:#8EA1B8;font:600 12.5px 'Archivo';padding:0;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M15 5l-7 7 7 7"/></svg>Back
+        </button>
+      </sc-if>
+    </div>
+    <div style="display:flex;align-items:center;gap:11px;">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" style="stroke:var(--accent,#22D3EE);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;"><circle cx="12" cy="13" r="8"/><path d="M12 13V9M12 5V2M9 2h6"/></svg>
+      <span style="font:800 13px 'Archivo';letter-spacing:.05em;">THE PANIC <span style="color:var(--accent,#22D3EE);">CLOCK</span></span>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;min-width:120px;justify-content:flex-end;">
+      <button onClick="{{ toggleSound }}" title="{{ soundTitle }}" style="display:grid;place-items:center;width:28px;height:28px;border-radius:8px;border:1px solid rgba(120,140,166,.24);background:rgba(10,16,28,.5);cursor:pointer;color:{{ soundColor }};">
+        <sc-if value="{{ soundOn }}" hint-placeholder-val="{{ true }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></sc-if>
+        <sc-if value="{{ soundOff }}" hint-placeholder-val="{{ false }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M22 9l-6 6M16 9l6 6"/></svg></sc-if>
+      </button>
+    </div>
+  </header>
+
+  <!-- INTRO -->
+  <sc-if value="{{ isIntro }}" hint-placeholder-val="{{ true }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;text-align:center;padding:20px clamp(26px,4vw,58px) 60px;">
+      <div class="fa-in" style="display:inline-flex;align-items:center;gap:10px;margin-bottom:20px;font:600 12px 'IBM Plex Mono';letter-spacing:.4em;color:var(--accent,#22D3EE);">
+        <span style="width:6px;height:6px;border-radius:50%;background:var(--accent,#22D3EE);box-shadow:0 0 8px var(--accent,#22D3EE);animation:fa-blink 1.6s ease-in-out infinite;"></span>COMPOSURE · THE SHRINKING CLOCK
+      </div>
+      <h1 class="fa-in" style="margin:0 0 16px;font:800 clamp(36px,5.4vw,74px)/0.97 'Archivo';letter-spacing:-0.03em;text-wrap:balance;max-width:900px;animation-delay:.06s;">Same picture.<br>Less and less time.</h1>
+      <p class="fa-in" style="margin:0 0 26px;max-width:640px;font:400 clamp(15px,1.3vw,18px)/1.6 'Archivo';color:#9FB0C5;text-wrap:pretty;animation-delay:.12s;">Find the best ball and tap the player. Simple — except the clock keeps shrinking: <strong style="color:#3BE07A;">five seconds</strong>, then three, then a second and a half, then almost none. Anyone reads it with time. We're measuring what your decisions do when the time runs out — <strong style="color:#EAF2FB;">the slope of your composure.</strong></p>
+
+      <div class="fa-in" style="margin-bottom:12px;font:600 10px 'IBM Plex Mono';letter-spacing:.28em;color:#61748c;animation-delay:.2s;">CHOOSE YOUR LEVEL</div>
+      <div class="fa-in" style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;max-width:560px;margin-bottom:34px;animation-delay:.22s;">
+        <sc-for list="{{ diffs }}" as="d" hint-placeholder-count="3">
+          <button onClick="{{ d.pick }}" style="flex:1 1 150px;min-width:148px;text-align:left;padding:16px 18px;border-radius:15px;border:1px solid {{ d.border }};background:{{ d.bg }};cursor:pointer;transition:border-color .14s ease,background .14s ease;">
+            <div style="font:800 16px 'Archivo';color:{{ d.titleColor }};margin-bottom:3px;">{{ d.name }}</div>
+            <div style="font:400 11.5px/1.45 'Archivo';color:#9FB0C5;">{{ d.desc }}</div>
+          </button>
+        </sc-for>
+      </div>
+
+      <button onClick="{{ begin }}" class="fa-in" style="display:inline-flex;align-items:center;gap:12px;padding:18px 46px;border-radius:13px;border:0;background:var(--accent,#22D3EE);color:#0b0518;font:700 16px 'Archivo';cursor:pointer;box-shadow:0 14px 46px color-mix(in srgb,var(--accent,#22D3EE) 42%,transparent);transition:transform .16s ease;animation-delay:.3s;" style-hover="transform:translateY(-2px);">
+        Start with time to spare
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12h13M12 6l6 6-6 6"/></svg>
+      </button>
+      <div class="fa-in" style="margin-top:18px;font:500 10px 'IBM Plex Mono';letter-spacing:.14em;color:#4f627a;animation-delay:.36s;">{{ bestLine }}</div>
+    </main>
+  </sc-if>
+
+  <!-- PLAY -->
+  <sc-if value="{{ isPlay }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow:hidden;gap:12px;padding:0 clamp(16px,2.4vw,42px) 20px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;width:100%;max-width:760px;">
+        <div style="text-align:left;min-width:110px;">
+          <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.2em;color:#61748c;">READ</div>
+          <div style="font:800 24px 'IBM Plex Mono';color:#F2F8FE;line-height:1.05;">{{ trialLabel }}</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="font:800 15px 'Archivo';letter-spacing:.02em;color:{{ phaseColor }};transition:color .2s ease;">{{ phaseTitle }}</div>
+          <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.14em;color:#7688a0;margin-top:2px;">{{ phaseSub }}</div>
+        </div>
+        <div style="text-align:right;min-width:110px;">
+          <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.2em;color:#61748c;">ON THE CLOCK</div>
+          <div style="font:800 24px 'IBM Plex Mono';color:{{ bandColor }};line-height:1.05;">{{ bandLabel }}</div>
+        </div>
+      </div>
+
+      <!-- shrinking timer bar -->
+      <div style="width:100%;max-width:760px;height:10px;border-radius:99px;background:rgba(120,140,166,.14);overflow:hidden;">
+        <div ref="{{ barRef }}" style="height:100%;width:100%;border-radius:99px;background:#3BE07A;transform-origin:left;"></div>
+      </div>
+
+      <div style="position:relative;width:100%;max-width:760px;flex:1;min-height:0;border-radius:18px;overflow:hidden;border:1px solid rgba(120,140,166,.22);touch-action:none;">
+        <canvas ref="{{ canvasRef }}" onPointerDown="{{ onTap }}" style="display:block;width:100%;height:100%;cursor:{{ pitchCursor }};"></canvas>
+        <div ref="{{ flashRef }}" style="position:absolute;inset:0;pointer-events:none;opacity:0;"></div>
+        <div style="position:absolute;left:0;right:0;bottom:12px;text-align:center;pointer-events:none;font:600 10px 'IBM Plex Mono';letter-spacing:.2em;color:rgba(200,215,232,.55);">{{ pitchHint }}</div>
+      </div>
+    </main>
+  </sc-if>
+
+  <!-- OVER -->
+  <sc-if value="{{ isOver }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;text-align:center;padding:20px clamp(26px,4vw,58px) 70px;">
+      <div class="fa-in" style="display:inline-flex;align-items:center;gap:9px;margin-bottom:16px;padding:6px 14px;border:1px solid color-mix(in srgb,var(--accent,#22D3EE) 32%,transparent);border-radius:999px;font:600 10px 'IBM Plex Mono';letter-spacing:.28em;color:var(--accent,#22D3EE);">COMPOSURE REPORT</div>
+      <div class="fa-in" style="font:600 10px 'IBM Plex Mono';letter-spacing:.24em;color:#7688a0;margin-bottom:6px;animation-delay:.05s;">SHARPNESS KEPT UNDER THE CLOCK</div>
+      <h1 class="fa-in" style="margin:0 0 2px;font:800 clamp(46px,8vw,96px)/0.9 'IBM Plex Mono';letter-spacing:-0.02em;color:{{ compColor }};animation-delay:.08s;">{{ compValue }}</h1>
+      <div class="fa-in" style="font:600 11px 'IBM Plex Mono';letter-spacing:.2em;color:#7688a0;margin-bottom:8px;animation-delay:.09s;">OF YOUR CALM-CLOCK ACCURACY, HELD LATE</div>
+      <div class="fa-in" style="font:700 13px 'Archivo';color:#B4C2D4;margin-bottom:18px;max-width:560px;text-wrap:pretty;animation-delay:.1s;">{{ compVerdict }}</div>
+
+      <!-- decay curve -->
+      <div class="fa-in" style="width:100%;max-width:520px;margin:0 auto 22px;animation-delay:.16s;">
+        <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.2em;color:#7688a0;margin-bottom:9px;text-align:left;">YOUR DECAY CURVE · ACCURACY AS TIME SHRANK</div>
+        <div style="position:relative;height:150px;border-radius:12px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.4);padding:12px 12px 24px;">
+          <svg viewBox="0 0 100 60" preserveAspectRatio="none" style="width:100%;height:100%;overflow:visible;">
+            <line x1="0" y1="0" x2="100" y2="0" stroke="rgba(120,140,166,.14)" stroke-width="0.4"/>
+            <line x1="0" y1="30" x2="100" y2="30" stroke="rgba(120,140,166,.14)" stroke-width="0.4"/>
+            <line x1="0" y1="60" x2="100" y2="60" stroke="rgba(120,140,166,.22)" stroke-width="0.4"/>
+            <polyline points="{{ curvePoints }}" fill="none" stroke="{{ compColor }}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>
+            <sc-for list="{{ curveDots }}" as="p" hint-placeholder-count="4">
+              <circle cx="{{ p.x }}" cy="{{ p.y }}" r="1.8" fill="{{ p.color }}" vector-effect="non-scaling-stroke"/>
+            </sc-for>
+          </svg>
+          <div style="display:flex;justify-content:space-between;margin-top:6px;font:600 8.5px 'IBM Plex Mono';letter-spacing:.06em;color:#61748c;">
+            <sc-for list="{{ bandTicks }}" as="t" hint-placeholder-count="4"><span style="color:{{ t.color }};">{{ t.label }}</span></sc-for>
+          </div>
+        </div>
+      </div>
+
+      <div class="fa-in" style="display:flex;flex-wrap:wrap;gap:22px;justify-content:center;margin-bottom:24px;animation-delay:.2s;">
+        <div style="text-align:center;"><div style="font:800 26px 'IBM Plex Mono';color:#EAF2FB;">{{ overallAcc }}</div><div style="font:600 9px 'IBM Plex Mono';letter-spacing:.12em;color:#61748c;margin-top:3px;">READS FOUND</div></div>
+        <div style="width:1px;background:rgba(120,140,166,.2);"></div>
+        <div style="text-align:center;"><div style="font:800 26px 'IBM Plex Mono';color:{{ panicColor }};">{{ panicValue }}</div><div style="font:600 9px 'IBM Plex Mono';letter-spacing:.12em;color:#61748c;margin-top:3px;">PANIC THRESHOLD</div></div>
+      </div>
+
+      <div class="fa-in" style="max-width:600px;margin-bottom:20px;padding:18px 22px;border-radius:14px;border:1px dashed rgba(120,140,166,.3);background:rgba(10,16,28,.4);text-align:left;animation-delay:.26s;">
+        <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.2em;color:#7688a0;margin-bottom:8px;">WHAT THIS LEANS TOWARD</div>
+        <div style="font:500 14px/1.6 'Archivo';color:#C6D3E2;">{{ softRead }}</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;">
+          <sc-for list="{{ traitChips }}" as="c" hint-placeholder-count="2">
+            <span style="display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border-radius:8px;border:1px solid color-mix(in srgb,var(--accent,#22D3EE) 30%,transparent);background:color-mix(in srgb,var(--accent,#22D3EE) 8%,transparent);font:700 11px 'IBM Plex Mono';letter-spacing:.06em;color:#C6D3E2;"><span style="font-weight:800;color:var(--accent,#22D3EE);">{{ c.key }}</span>{{ c.label }}</span>
+          </sc-for>
+        </div>
+        <div style="margin-top:12px;font:500 11px/1.5 'Archivo';color:#7688a0;text-wrap:pretty;">We score the <strong style="color:#9FB0C5;">shape</strong> of your decay, not raw speed — device lag cancels out when we compare your calm clock to your panic clock.</div>
+      </div>
+
+      <div class="fa-in" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:14px;animation-delay:.32s;">
+        <button onClick="{{ retake }}" style="display:inline-flex;align-items:center;gap:11px;padding:18px 44px;border-radius:13px;border:0;background:var(--accent,#22D3EE);color:#0b0518;font:700 16px 'Archivo';cursor:pointer;box-shadow:0 14px 46px color-mix(in srgb,var(--accent,#22D3EE) 42%,transparent);transition:transform .16s ease;" style-hover="transform:translateY(-2px);">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" style="stroke:#0b0518;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
+          Hold your nerve again
+        </button>
+        <a href="Assessment.dc.html" style="display:inline-flex;align-items:center;gap:9px;padding:18px 26px;border-radius:13px;border:1px solid rgba(157,176,198,.28);background:rgba(12,18,30,.4);color:#C6D3E2;font:600 15px 'Archivo';" style-hover="border-color:color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);color:#EAF2FB;">Back to the scan</a>
+      </div>
+      <div class="fa-in" style="margin-top:20px;font:500 10px 'IBM Plex Mono';letter-spacing:.14em;color:#4f627a;animation-delay:.38s;">{{ dataLine }}</div>
+    </main>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1100,&quot;height&quot;:820},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#22D3EE&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#22D3EE&quot;,&quot;#A78BFA&quot;,&quot;#C6FF3A&quot;,&quot;#FF7A45&quot;,&quot;#FF4D8D&quot;]},&quot;motion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;embedded&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;onDone&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;(counts:any, meta:any)=&gt;void&quot;}}">
+class Component extends DCLogic {
+  PER_BAND = 3;
+  BANDS = [ {key:'5s',color:'#3BE07A'}, {key:'3s',color:'#8FE04A'}, {key:'1.5s',color:'#FFB020'}, {key:'0.8s',color:'#FF7A45'} ];
+  ACC_RADIUS = 0.13;
+  DIFFS = {
+    academy: { name:'Academy', desc:'A softer clock. Room to breathe.', win:[6000,4200,2600,1400] },
+    pro:     { name:'Pro',     desc:'The real thing: 5 · 3 · 1.5 · 0.8s.', win:[5000,3000,1500,800] },
+    elite:   { name:'Elite',   desc:'Merciless. Barely a heartbeat late.', win:[3800,2200,1100,650] },
+  };
+  ORDER = ['academy','pro','elite'];
+
+  state = { view:'intro', diff:'pro', trial:0, band:0, phase:'read' };
+
+  componentDidMount(){
+    try { this._soundOn = localStorage.getItem('fa_sound') !== '0'; } catch(e){ this._soundOn=true; }
+    try { const p=JSON.parse(localStorage.getItem('fa_am_panic')||'null'); this._bestC = p&&p.measures? p.measures.composurePct : null; } catch(e){ this._bestC=null; }
+    this._boot(0);
+    this._onResize=()=>{ this._resize(); this._draw(); }; window.addEventListener('resize', this._onResize);
+  }
+  componentWillUnmount(){ window.removeEventListener('resize', this._onResize); clearTimeout(this._to); }
+  _boot(t){ if(window.AMScenes){ this._API=window.AMScenes; return; } if(t<40) setTimeout(()=>this._boot(t+1),60); }
+
+  // ---------- audio ----------
+  _audio(){ if(this._actx===undefined){ try{ this._actx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ this._actx=null; } } if(this._actx&&this._actx.state==='suspended') this._actx.resume(); return this._actx; }
+  _tone(f,d,t,g,slide){ const c=this._audio(); if(!c||this._soundOn===false) return; const o=c.createOscillator(),a=c.createGain(); o.type=t||'sine'; o.frequency.setValueAtTime(f,c.currentTime); if(slide) o.frequency.exponentialRampToValueAtTime(Math.max(20,slide),c.currentTime+d); o.connect(a); a.connect(c.destination); const n=c.currentTime; a.gain.setValueAtTime(0.0001,n); a.gain.exponentialRampToValueAtTime(g||0.05,n+0.008); a.gain.exponentialRampToValueAtTime(0.0001,n+d); o.start(n); o.stop(n+d+0.02); }
+  _haptic(ms){ try{ if(navigator.vibrate) navigator.vibrate(ms||8); }catch(e){} }
+  _tick(fast){ if(this._soundOn===false) return; this._tone(fast?1050:760,0.04,'square',0.028); }
+  _sfx(k){ if(this._soundOn===false) return;
+    if(k==='right'){ this._tone(660,0.09,'triangle',0.055); setTimeout(()=>this._tone(990,0.13,'sine',0.045),55); setTimeout(()=>this._tone(1320,0.15,'sine',0.04),120); }
+    else if(k==='wrong'){ this._tone(240,0.26,'sawtooth',0.055,120); }
+    else if(k==='timeout'){ this._tone(180,0.34,'sawtooth',0.055,90); }
+    else if(k==='whistle'){ this._tone(900,0.16,'sine',0.05,1200); }
+    else if(k==='tap'){ this._tone(520,0.05,'square',0.03); }
+  }
+  _toggleSound(){ const on=this._soundOn===false; this._soundOn=on; try{ localStorage.setItem('fa_sound', on?'1':'0'); }catch(e){} if(on){ this._audio(); this._sfx('tap'); } this.forceUpdate(); }
+
+  // ---------- canvas ----------
+  _resize(){ const cv=this._canvas; if(!cv) return; const r=cv.getBoundingClientRect(); const dpr=Math.min(2,window.devicePixelRatio||1); cv.width=Math.max(2,Math.round(r.width*dpr)); cv.height=Math.max(2,Math.round(r.height*dpr)); this._dpr=dpr; this._W=r.width; this._H=r.height; }
+  _cvRef(el){ this._canvas=el; if(el){ requestAnimationFrame(()=>{ this._resize(); this._draw(); }); } }
+  _flRef(el){ this._flashEl=el; }
+  _barRef(el){ this._barEl=el; }
+  _tintRef(el){ this._tintEl=el; }
+  _px(nx,ny){ const pad=Math.min(this._W,this._H)*0.08; return [ pad + nx*(this._W-2*pad), pad + ny*(this._H-2*pad) ]; }
+
+  // ---------- flow ----------
+  _pickDiff(d){ this._sfx('tap'); this.setState({ diff:d }); }
+  _begin(){
+    this._audio(); this._sfx('whistle'); this._haptic(12);
+    this._cfg=this.DIFFS[this.state.diff];
+    // build trial list: PER_BAND scenes per band, escalating pressure
+    const n=this._API? this._API.SCENES.length : 10;
+    const bag=[]; const refill=()=>{ const a=[]; for(let i=0;i<n;i++)a.push(i); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; };
+    let pool=refill();
+    this._trials=[];
+    for(let b=0;b<this.BANDS.length;b++){ for(let k=0;k<this.PER_BAND;k++){ if(!pool.length) pool=refill(); this._trials.push({ scene:pool.pop(), band:b }); } }
+    this._log=[];
+    this.setState({ view:'play', trial:0, band:0, phase:'read' }, ()=>{ this._resize(); this._startTrial(0); });
+  }
+
+  _startTrial(i){
+    const T=this._trials[i]; const sc=this._API? this._API.SCENES[T.scene] : null; this._cur=sc; this._band=T.band;
+    const win=this._cfg.win[T.band];
+    this._answered=false; this._tStart=performance.now();
+    this.setState({ trial:i, band:T.band, phase:'read' }, ()=>{
+      this._draw();
+      const bar=this._barEl; if(bar){ bar.style.transition='none'; bar.style.transform='scaleX(1)'; bar.style.background=this.BANDS[T.band].color; void bar.offsetWidth; bar.style.transition='transform '+win+'ms linear'; bar.style.transform='scaleX(0)'; }
+      if(this._tintEl) this._tintEl.style.opacity = T.band>=2? (T.band>=3?'1':'0.6') : '0';
+      clearTimeout(this._to); clearInterval(this._tickIv);
+      const fast=T.band>=2; const tickMs=fast?180:360;
+      this._tickIv=setInterval(()=>{ if(!this._answered) this._tick(fast); }, tickMs);
+      this._to=setTimeout(()=>{ if(!this._answered) this._resolve(null,0,win); }, win);
+    });
+  }
+
+  _onTap(e){
+    if(this.state.view!=='play'||this._answered) return;
+    const sc=this._cur; if(!sc) return;
+    const cv=this._canvas; const r=cv.getBoundingClientRect();
+    const mx=(e.clientX-r.left)/r.width, my=(e.clientY-r.top)/r.height;
+    const pad=Math.min(this._W,this._H)*0.08,W=this._W,H=this._H;
+    const nx=Math.max(0,Math.min(1,((mx*W)-pad)/(W-2*pad)));
+    const ny=Math.max(0,Math.min(1,((my*H)-pad)/(H-2*pad)));
+    // nearest teammate token (not carrier)
+    let bi=-1,bd=1e9; sc.players.forEach((p,ix)=>{ if(p.team!=='us'||ix===sc.ball.carrier) return; const d=Math.hypot(p.x-nx,p.y-ny); if(d<bd){ bd=d; bi=ix; } });
+    if(bi<0||bd>this.ACC_RADIUS){ return; } // ignore taps on empty grass
+    const gt=sc.groundTruth; let credit=0;
+    if(bi===gt.bestPass) credit=1; else if((gt.allViableLanes||[]).indexOf(bi)>=0) credit=0.55;
+    const rt=Math.round(performance.now()-this._tStart);
+    this._resolve(bi,credit,this._cfg.win[this._band],rt);
+  }
+
+  _resolve(picked,credit,win,rt){
+    this._answered=true; clearTimeout(this._to); clearInterval(this._tickIv);
+    const bar=this._barEl; if(bar){ const cs=getComputedStyle(bar); bar.style.transition='none'; bar.style.transform=cs.transform; }
+    this._pick=picked; this._credit=credit;
+    const timedOut = picked===null;
+    if(timedOut){ this._sfx('timeout'); this._flash('rgba(255,74,95,.3)'); this._haptic(10); }
+    else if(credit>=1){ this._sfx('right'); this._flash('color-mix(in srgb,'+(this._accent||'#22D3EE')+' 32%,transparent)'); this._haptic(16); }
+    else if(credit>0){ this._flash('rgba(255,176,32,.24)'); this._haptic(10); }
+    else { this._sfx('wrong'); this._flash('rgba(255,74,95,.28)'); this._haptic(9); }
+    this._log.push({ scene:this._cur.id, band:this._band, credit, timedOut, rtMs:rt||win, winMs:win });
+    this.setState({ phase:'reveal' }, ()=>this._draw());
+    clearTimeout(this._nx);
+    this._nx=setTimeout(()=>{ const n=this.state.trial+1; if(n>=this._trials.length) this._gameOver(); else this._startTrial(n); }, 1150);
+  }
+
+  // ---------- drawing ----------
+  _drawBall(ctx,x,y,r){ const g=ctx.createRadialGradient(x-r*0.3,y-r*0.35,r*0.15,x,y,r); g.addColorStop(0,'#ffffff'); g.addColorStop(1,'#cfe0ee'); ctx.fillStyle=g; ctx.beginPath(); ctx.arc(x,y,r,0,7); ctx.fill(); ctx.fillStyle='rgba(20,40,60,.5)'; ctx.beginPath(); ctx.arc(x-r*0.15,y-r*0.1,r*0.26,0,7); ctx.fill(); }
+  _token(ctx,x,y,r,fill,stroke,label,labelCol,alpha){ ctx.globalAlpha=alpha==null?1:alpha; ctx.fillStyle='rgba(0,0,0,.32)'; ctx.beginPath(); ctx.ellipse(x,y+r*0.85,r*0.9,r*0.3,0,0,7); ctx.fill(); ctx.fillStyle=fill; ctx.strokeStyle=stroke||'rgba(255,255,255,.22)'; ctx.lineWidth=1.5; ctx.beginPath(); ctx.arc(x,y-r*0.16,r,0,7); ctx.fill(); ctx.stroke(); ctx.fillStyle=labelCol||'#04121a'; ctx.font="800 "+Math.max(8,this._W*0.011)+"px 'IBM Plex Mono'"; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(label,x,y-r*0.16); ctx.textBaseline='alphabetic'; ctx.globalAlpha=1; }
+  _chevron(ctx,x,y,r,col,alpha){ ctx.save(); ctx.globalAlpha=alpha==null?1:alpha; ctx.translate(x,y); ctx.fillStyle=col; ctx.beginPath(); ctx.moveTo(-r,0); ctx.lineTo(r*0.55,-r*0.85); ctx.lineTo(r*0.15,0); ctx.lineTo(r*0.55,r*0.85); ctx.closePath(); ctx.fill(); ctx.restore(); }
+
+  _draw(){
+    const ctx=this._canvas&&this._canvas.getContext('2d'); if(!ctx) return;
+    const W=this._W,H=this._H,dpr=this._dpr||1; if(!W||!H||!isFinite(W)) return;
+    const acc=this._accent||'#22D3EE'; const sc=this._cur;
+    ctx.save(); ctx.scale(dpr,dpr); ctx.clearRect(0,0,W,H);
+    const g=ctx.createLinearGradient(0,0,W,H); g.addColorStop(0,'#0d1c2e'); g.addColorStop(0.55,'#091324'); g.addColorStop(1,'#050c17'); ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+    ctx.strokeStyle='rgba(90,150,190,.10)'; ctx.lineWidth=1.2; const [mx0,my0]=this._px(0.5,0),[mx1,my1]=this._px(0.5,1); ctx.beginPath(); ctx.moveTo(mx0,my0); ctx.lineTo(mx1,my1); ctx.stroke();
+    if(!sc){ ctx.restore(); return; }
+    const reveal=this.state.phase==='reveal'; const gt=sc.groundTruth; const carrier=sc.ball.carrier; const r=Math.max(11,W*0.02);
+    const [cx,cy]=this._px(sc.players[carrier].x,sc.players[carrier].y);
+
+    // reveal: draw pass line to best option
+    if(reveal){ const bp=sc.players[gt.bestPass]; const [bx,by]=this._px(bp.x,bp.y); ctx.save(); ctx.strokeStyle='#3BE07A'; ctx.lineWidth=2.4; ctx.setLineDash([7,6]); ctx.beginPath(); ctx.moveTo(cx,cy-r*0.16); ctx.lineTo(bx,by-r*0.16); ctx.stroke(); ctx.setLineDash([]); ctx.restore(); }
+
+    sc.players.forEach((p,i)=>{
+      if(i===carrier) return; const [x,y]=this._px(p.x,p.y);
+      if(p.team==='them'){ this._chevron(ctx,x,y,Math.max(9,W*0.016),'#FF5A6E',0.9); return; }
+      const isBest=i===gt.bestPass, isPicked=reveal&&i===this._pick;
+      if(reveal&&isBest){ ctx.save(); ctx.strokeStyle='#3BE07A'; ctx.lineWidth=2.6; ctx.beginPath(); ctx.arc(x,y-r*0.16,r*1.55,0,7); ctx.stroke(); ctx.restore(); }
+      if(isPicked&&!isBest){ ctx.save(); ctx.strokeStyle='#FF5A6E'; ctx.lineWidth=2.4; ctx.beginPath(); ctx.moveTo(x-9,y-9-r*0.16); ctx.lineTo(x+9,y+9-r*0.16); ctx.moveTo(x+9,y-9-r*0.16); ctx.lineTo(x-9,y+9-r*0.16); ctx.stroke(); ctx.restore(); }
+      this._token(ctx,x,y,r*0.9,'#3aa8c4',null,p.role,'#04121a', reveal&&!isBest&&!isPicked?0.7:1);
+    });
+    this._token(ctx,cx,cy,r,acc,'rgba(255,255,255,.28)','10','#160a2e');
+    this._drawBall(ctx,cx+r*0.5,cy+r*0.4,Math.max(6,W*0.011));
+    ctx.restore();
+  }
+  _flash(col){ const el=this._flashEl; if(!el) return; el.style.background='radial-gradient(circle at 50% 55%,'+col+',transparent 62%)'; el.style.animation='none'; void el.offsetWidth; el.style.animation='fa-flash .55s ease forwards'; }
+
+  // ---------- results ----------
+  _gameOver(){
+    clearTimeout(this._to); clearInterval(this._tickIv); if(this._tintEl) this._tintEl.style.opacity='0';
+    this._sfx('whistle'); this._haptic(24);
+    const L=this._log; const nb=this.BANDS.length;
+    const acc=[]; for(let b=0;b<nb;b++){ const rows=L.filter(x=>x.band===b); acc.push(rows.length? rows.reduce((s,x)=>s+x.credit,0)/rows.length : 0); }
+    const slow=(acc[0]+acc[1])/2, fast=(acc[2]+acc[3])/2;
+    let comp = slow>0? Math.round(Math.min(1,fast/slow)*100) : (fast>0?100:0);
+    const overall=Math.round(L.reduce((s,x)=>s+x.credit,0)/(L.length||1)*100);
+    // panic threshold: last band before accuracy first falls below 0.5
+    let panicIdx=nb; for(let b=0;b<nb;b++){ if(acc[b]<0.5){ panicIdx=b; break; } }
+    const panicLabel = panicIdx>=nb? 'None' : (panicIdx===0? '>'+this.BANDS[0].key : this.BANDS[panicIdx].key);
+    let lean='mid';
+    if(comp>=82) lean='hold'; else if(comp<58) lean='rush';
+    const isPB=this._bestC==null||comp>this._bestC; if(isPB) this._bestC=comp;
+    const result={ instrument:'the-panic-clock', version:'am-panic-1.0', position:'am', completedAt:new Date().toISOString(),
+      difficulty:this.state.diff, trialsPerBand:this.PER_BAND,
+      measures:{ composurePct:comp, overallAccPct:overall, accByBand:acc.map(a=>+(a*100).toFixed(0)), panicThreshold:panicLabel, lean },
+      trials_log:L, maps:{ CMP:'composure under time', VIS:'read', note:'slope of decision accuracy as the clock shrinks — within-person, device-robust' } };
+    try{ localStorage.setItem('fa_am_panic', JSON.stringify(result)); }catch(e){}
+    this._final={ comp, overall, acc, panicLabel, panicIdx, lean, isPB };
+    if(this.props.embedded && typeof this.props.onDone==='function'){ try{ this.props.onDone({ composure:comp }, result); }catch(e){} }
+    this.setState({ view:'over' });
+  }
+  _retake(){ this._begin(); }
+  _back(){ this._sfx('tap'); if(this.state.view==='intro'){ window.location.href='Assessment.dc.html'; } else { clearTimeout(this._to); clearInterval(this._tickIv); clearTimeout(this._nx); this.setState({ view:'intro' }); } }
+
+  renderVals(){
+    const accent=this.props.accent ?? '#22D3EE'; this._accent=accent;
+    const V=this.state.view, S=this.state, soundOn=this._soundOn!==false;
+    const base={ accent,
+      isIntro:V==='intro', isPlay:V==='play', isOver:V==='over', showBack:V!=='over',
+      soundOn, soundOff:!soundOn, soundColor:soundOn?accent:'#61748c', soundTitle:soundOn?'Sound on':'Sound off',
+      toggleSound:()=>this._toggleSound(), back:()=>this._back(), begin:()=>this._begin(), retake:()=>this._retake(),
+      canvasRef:(el)=>this._cvRef(el), flashRef:(el)=>this._flRef(el), barRef:(el)=>this._barRef(el), tintRef:(el)=>this._tintRef(el), onTap:(e)=>this._onTap(e),
+      bestLine:(this._bestC!=null?('YOUR BEST · '+this._bestC+'% COMPOSURE'):'FIRST RUN · SET THE BAR') };
+    base.diffs=this.ORDER.map(id=>{ const d=this.DIFFS[id]; const sel=S.diff===id; return { name:d.name, desc:d.desc, pick:()=>this._pickDiff(id),
+      border: sel?accent:'rgba(120,140,166,.24)', bg: sel?('color-mix(in srgb,'+accent+' 14%,transparent)'):'rgba(10,16,28,.5)', titleColor: sel?accent:'#EAF2FB' }; });
+
+    const total=(this._trials?this._trials.length:this.PER_BAND*4);
+    base.trialLabel=(Math.min(S.trial+1,total))+' / '+total;
+    const ph=S.phase;
+    const pmap={ read:['FIND THE BALL','tap the best pass','#EAF2FB'], reveal:['THE READ','the green ring was the ball','#3BE07A'] };
+    const pm=pmap[ph]||pmap.read; base.phaseTitle=pm[0]; base.phaseSub=pm[1]; base.phaseColor=pm[2];
+    const bd=this.BANDS[S.band]||this.BANDS[0]; base.bandLabel=bd.key; base.bandColor=bd.color;
+    base.pitchCursor = ph==='read'?'crosshair':'default';
+    base.pitchHint = ph==='read'?'TAP THE PLAYER YOU\u2019D PASS TO':'';
+
+    const f=this._final||{};
+    base.compValue=(f.comp!=null?f.comp:0)+'%';
+    base.compColor = f.comp>=82?'#3BE07A': f.comp>=64?'#FFB020':'#FF7A8A';
+    if(f.comp>=86) base.compVerdict='Ice. Your reads barely dipped when the clock disappeared — that is elite composure.';
+    else if(f.comp>=70) base.compVerdict='Strong. You lost a little sharpness under pressure, but you held the picture.';
+    else if(f.comp>=52) base.compVerdict='You read it well with time and rushed it without. Composure is the trainable gap.';
+    else base.compVerdict='The clock got to you. Your decisions fell apart as the time ran out — the classic panic curve.';
+    base.overallAcc=(f.overall!=null?f.overall:0)+'%';
+    base.panicValue=f.panicLabel||'\u2014';
+    base.panicColor = (f.panicIdx>=this.BANDS.length)?'#3BE07A': (f.panicIdx<=1?'#FF7A8A':'#FFB020');
+
+    // decay curve: x 0..100 across 4 bands, y 0(top)=100% acc .. 60(bottom)=0%
+    const a=f.acc||[0,0,0,0]; const xs=[6,36,66,94];
+    base.curvePoints = a.map((v,i)=>xs[i]+','+ (60-Math.max(0,Math.min(1,v))*60).toFixed(1)).join(' ');
+    base.curveDots = a.map((v,i)=>({ x:xs[i], y:+(60-Math.max(0,Math.min(1,v))*60).toFixed(1), color:this.BANDS[i].color }));
+    base.bandTicks = this.BANDS.map(b=>({ label:b.key, color:b.color }));
+
+    const reads={ hold:['Your accuracy stayed almost flat as the clock vanished. That is the Architect and the Phantom — the calm decision when everyone else rushes.', [{key:'CMP',label:'Composure'},{key:'VIS',label:'Read'}]],
+      mid:['You read it cleanly with time and simplified when it got tight — a one-touch release rather than a panic. Maestro tempo.', [{key:'CMP',label:'Composure'},{key:'PAS',label:'Release'}]],
+      rush:['Your reads dropped sharply once the time ran out — decisions got forced. The Maverick lives here: brilliant with a beat, rushed without one.', [{key:'CMP',label:'Composure'},{key:'RSK',label:'Rush'}]] };
+    const rd=reads[f.lean||'mid']||reads.mid; base.softRead=rd[0]; base.traitChips=rd[1];
+    base.dataLine='MEASURED \u00B7 WITHIN-PERSON SLOPE \u00B7 '+total+' READS \u00B7 '+(S.diff||'pro').toUpperCase()+' \u00B7 am-panic-1.0';
+    return base;
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="./scenes.js"></script>
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:#04060c;}
+  a{color:var(--accent,#22D3EE);text-decoration:none;}
+  a:hover{opacity:.92;}
+  @keyframes fa-blink{0%,100%{opacity:1;}50%{opacity:.25;}}
+  @keyframes fa-rise{0%{transform:translateY(16px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-rise-sm{0%{transform:translateY(10px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-flash{0%{opacity:0;}18%{opacity:.9;}100%{opacity:0;}}
+  .fa-in{opacity:0;animation:fa-rise .7s cubic-bezier(.2,.7,.2,1) forwards;}
+  .fa-in-sm{opacity:0;animation:fa-rise-sm .5s cubic-bezier(.2,.7,.2,1) forwards;}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;}.fa-in,.fa-in-sm{opacity:1!important;transform:none!important;}}
+</style>
+</helmet>
+<div data-screen-label="Vision Ladder" style="position:relative;display:flex;flex-direction:column;min-height:100dvh;width:100%;overflow:hidden;background:radial-gradient(120% 90% at 50% 6%,#0e1a2d 0%,#080e1a 44%,#04060c 100%);color:#EAF2FB;font-family:'Archivo',system-ui,sans-serif;--accent:{{ accent }};">
+
+  <div style="position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.4;background:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0px,rgba(255,255,255,.02) 1px,transparent 1px,transparent 4px);"></div>
+  <div style="position:absolute;top:20px;left:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;top:20px;right:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;left:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;right:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+
+  <!-- TOP BAR -->
+  <header style="position:relative;z-index:6;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px clamp(26px,3.4vw,58px);">
+    <div style="min-width:120px;display:flex;">
+      <sc-if value="{{ showBack }}" hint-placeholder-val="{{ true }}">
+        <button onClick="{{ back }}" style="display:inline-flex;align-items:center;gap:8px;background:none;border:0;cursor:pointer;color:#8EA1B8;font:600 12.5px 'Archivo';padding:0;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M15 5l-7 7 7 7"/></svg>Back
+        </button>
+      </sc-if>
+    </div>
+    <div style="display:flex;align-items:center;gap:11px;">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" style="stroke:var(--accent,#22D3EE);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;"><path d="M4 20h16M7 20v-5M12 20V9M17 20V4"/></svg>
+      <span style="font:800 13px 'Archivo';letter-spacing:.05em;">VISION <span style="color:var(--accent,#22D3EE);">LADDER</span></span>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;min-width:120px;justify-content:flex-end;">
+      <button onClick="{{ toggleSound }}" title="{{ soundTitle }}" style="display:grid;place-items:center;width:28px;height:28px;border-radius:8px;border:1px solid rgba(120,140,166,.24);background:rgba(10,16,28,.5);cursor:pointer;color:{{ soundColor }};">
+        <sc-if value="{{ soundOn }}" hint-placeholder-val="{{ true }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></sc-if>
+        <sc-if value="{{ soundOff }}" hint-placeholder-val="{{ false }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M22 9l-6 6M16 9l6 6"/></svg></sc-if>
+      </button>
+    </div>
+  </header>
+
+  <!-- INTRO -->
+  <sc-if value="{{ isIntro }}" hint-placeholder-val="{{ true }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;text-align:center;padding:20px clamp(26px,4vw,58px) 60px;">
+      <div class="fa-in" style="display:inline-flex;align-items:center;gap:10px;margin-bottom:20px;font:600 12px 'IBM Plex Mono';letter-spacing:.4em;color:var(--accent,#22D3EE);">
+        <span style="width:6px;height:6px;border-radius:50%;background:var(--accent,#22D3EE);box-shadow:0 0 8px var(--accent,#22D3EE);animation:fa-blink 1.6s ease-in-out infinite;"></span>DECISION SPEED · THE LADDER
+      </div>
+      <h1 class="fa-in" style="margin:0 0 16px;font:800 clamp(36px,5.4vw,74px)/0.97 'Archivo';letter-spacing:-0.03em;text-wrap:balance;max-width:860px;animation-delay:.06s;">Find the best pass.<br>Before the clock dies.</h1>
+      <p class="fa-in" style="margin:0 0 30px;max-width:600px;font:400 clamp(15px,1.3vw,18px)/1.6 'Archivo';color:#9FB0C5;text-wrap:pretty;animation-delay:.12s;">A live picture, a handful of lit-up options — <strong style="color:#EAF2FB;">tap the best ball.</strong> Get it right and you climb: the clock shrinks, the pitch gets busier. One wrong read ends the run. <strong style="color:#EAF2FB;">How high can you climb?</strong></p>
+
+      <button onClick="{{ begin }}" class="fa-in" style="display:inline-flex;align-items:center;gap:12px;padding:18px 46px;border-radius:13px;border:0;background:var(--accent,#22D3EE);color:#0b0518;font:700 16px 'Archivo';cursor:pointer;box-shadow:0 14px 46px color-mix(in srgb,var(--accent,#22D3EE) 42%,transparent);transition:transform .16s ease;animation-delay:.24s;" style-hover="transform:translateY(-2px);">
+        Start climbing
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12h13M12 6l6 6-6 6"/></svg>
+      </button>
+      <div class="fa-in" style="margin-top:18px;font:500 10px 'IBM Plex Mono';letter-spacing:.14em;color:#4f627a;animation-delay:.3s;">{{ bestLine }}</div>
+    </main>
+  </sc-if>
+
+  <!-- PLAY -->
+  <sc-if value="{{ isPlay }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow:hidden;padding:0 clamp(16px,2.4vw,42px) 20px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;width:100%;max-width:760px;margin-bottom:8px;">
+        <div style="text-align:left;min-width:96px;">
+          <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.2em;color:#61748c;">LEVEL</div>
+          <div style="font:800 26px 'IBM Plex Mono';color:var(--accent,#22D3EE);line-height:1;">{{ levelLabel }}</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="font:800 15px 'Archivo';letter-spacing:.02em;color:#EAF2FB;">FIND THE BEST BALL</div>
+          <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.14em;color:#7688a0;margin-top:2px;">{{ shapeLabel }}</div>
+        </div>
+        <div style="text-align:right;min-width:96px;">
+          <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.2em;color:#61748c;">BEST</div>
+          <div style="font:800 20px 'IBM Plex Mono';color:#9FB0C5;line-height:1;">{{ bestShown }}</div>
+        </div>
+      </div>
+      <!-- timer bar -->
+      <div style="width:100%;max-width:760px;height:6px;border-radius:99px;background:rgba(120,140,166,.16);overflow:hidden;margin-bottom:10px;">
+        <div ref="{{ timerRef }}" style="height:100%;border-radius:99px;background:var(--accent,#22D3EE);box-shadow:0 0 10px var(--accent,#22D3EE);width:100%;transform-origin:left;"></div>
+      </div>
+      <div style="position:relative;width:100%;max-width:760px;flex:1;min-height:0;border-radius:18px;overflow:hidden;border:1px solid rgba(120,140,166,.22);touch-action:none;">
+        <canvas ref="{{ canvasRef }}" onPointerDown="{{ onTap }}" style="display:block;width:100%;height:100%;cursor:pointer;"></canvas>
+        <div ref="{{ flashRef }}" style="position:absolute;inset:0;pointer-events:none;opacity:0;"></div>
+        <div style="position:absolute;left:0;right:0;bottom:12px;text-align:center;pointer-events:none;font:600 10px 'IBM Plex Mono';letter-spacing:.2em;color:rgba(200,215,232,.55);">TAP THE HIGHLIGHTED OPTION THAT BREAKS THE MOST LINES</div>
+      </div>
+    </main>
+  </sc-if>
+
+  <!-- OVER -->
+  <sc-if value="{{ isOver }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;text-align:center;padding:20px clamp(26px,4vw,58px) 70px;">
+      <div class="fa-in" style="display:inline-flex;align-items:center;gap:9px;margin-bottom:16px;padding:6px 14px;border:1px solid color-mix(in srgb,var(--accent,#22D3EE) 32%,transparent);border-radius:999px;font:600 10px 'IBM Plex Mono';letter-spacing:.28em;color:var(--accent,#22D3EE);">RUN OVER</div>
+      <div class="fa-in" style="font:600 10px 'IBM Plex Mono';letter-spacing:.24em;color:#7688a0;margin-bottom:6px;animation-delay:.05s;">{{ pbFlag }}</div>
+      <h1 class="fa-in" style="margin:0 0 4px;font:800 clamp(46px,8vw,96px)/0.9 'IBM Plex Mono';letter-spacing:-0.02em;color:#F2F8FE;animation-delay:.08s;">LVL {{ finalLevel }}</h1>
+      <div class="fa-in" style="font:700 13px 'Archivo';color:#B4C2D4;margin-bottom:8px;animation-delay:.1s;">{{ overSub }}</div>
+
+      <div class="fa-in" style="display:flex;flex-wrap:wrap;gap:22px;justify-content:center;margin:16px 0 26px;animation-delay:.2s;">
+        <div style="text-align:center;"><div style="font:800 26px 'IBM Plex Mono';color:#EAF2FB;">{{ cleared }}</div><div style="font:600 9px 'IBM Plex Mono';letter-spacing:.12em;color:#61748c;margin-top:3px;">READS CLEARED</div></div>
+        <div style="width:1px;background:rgba(120,140,166,.2);"></div>
+        <div style="text-align:center;"><div style="font:800 26px 'IBM Plex Mono';color:#EAF2FB;">{{ fastest }}</div><div style="font:600 9px 'IBM Plex Mono';letter-spacing:.12em;color:#61748c;margin-top:3px;">FASTEST READ</div></div>
+        <div style="width:1px;background:rgba(120,140,166,.2);"></div>
+        <div style="text-align:center;"><div style="font:800 26px 'IBM Plex Mono';color:{{ endColor }};">{{ endReason }}</div><div style="font:600 9px 'IBM Plex Mono';letter-spacing:.12em;color:#61748c;margin-top:3px;">WHAT ENDED IT</div></div>
+      </div>
+
+      <div class="fa-in" style="max-width:600px;margin-bottom:20px;padding:18px 22px;border-radius:14px;border:1px dashed rgba(120,140,166,.3);background:rgba(10,16,28,.4);text-align:left;animation-delay:.26s;">
+        <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.2em;color:#7688a0;margin-bottom:8px;">WHAT WE ACTUALLY MEASURED</div>
+        <div style="font:500 14px/1.6 'Archivo';color:#C6D3E2;">{{ whatRead }}</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;">
+          <sc-for list="{{ traitChips }}" as="c" hint-placeholder-count="2">
+            <span style="display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border-radius:8px;border:1px solid color-mix(in srgb,var(--accent,#22D3EE) 30%,transparent);background:color-mix(in srgb,var(--accent,#22D3EE) 8%,transparent);font:700 11px 'IBM Plex Mono';letter-spacing:.06em;color:#C6D3E2;"><span style="font-weight:800;color:var(--accent,#22D3EE);">{{ c.key }}</span>{{ c.label }}</span>
+          </sc-for>
+        </div>
+      </div>
+
+      <div class="fa-in" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:14px;animation-delay:.32s;">
+        <button onClick="{{ retake }}" style="display:inline-flex;align-items:center;gap:11px;padding:18px 44px;border-radius:13px;border:0;background:var(--accent,#22D3EE);color:#0b0518;font:700 16px 'Archivo';cursor:pointer;box-shadow:0 14px 46px color-mix(in srgb,var(--accent,#22D3EE) 42%,transparent);transition:transform .16s ease;" style-hover="transform:translateY(-2px);">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" style="stroke:#0b0518;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
+          Climb again
+        </button>
+        <a href="Assessment.dc.html" style="display:inline-flex;align-items:center;gap:9px;padding:18px 26px;border-radius:13px;border:1px solid rgba(157,176,198,.28);background:rgba(12,18,30,.4);color:#C6D3E2;font:600 15px 'Archivo';" style-hover="border-color:color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);color:#EAF2FB;">Back to the scan</a>
+      </div>
+      <div class="fa-in" style="margin-top:20px;font:500 10px 'IBM Plex Mono';letter-spacing:.14em;color:#4f627a;animation-delay:.38s;">{{ dataLine }}</div>
+    </main>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1100,&quot;height&quot;:820},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#22D3EE&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#22D3EE&quot;,&quot;#A78BFA&quot;,&quot;#C6FF3A&quot;,&quot;#FF7A45&quot;,&quot;#FF4D8D&quot;]},&quot;motion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  START_MS = 5000; STEP_MS = 340; FLOOR_MS = 800;
+  state = { view:'intro', level:1, best:0 };
+
+  componentDidMount(){
+    try { this._soundOn = localStorage.getItem('fa_sound') !== '0'; } catch(e){ this._soundOn=true; }
+    try { this._best = parseInt(localStorage.getItem('fa_am_ladder_best')||'0',10)||0; } catch(e){ this._best=0; }
+    this.setState({ best:this._best });
+    this._boot(0);
+    this._onResize=()=>this._resize(); window.addEventListener('resize', this._onResize);
+  }
+  componentWillUnmount(){ window.removeEventListener('resize', this._onResize); this._stop(); }
+  _boot(t){ if(window.AMScenes){ this._API=window.AMScenes; return; } if(t<40) setTimeout(()=>this._boot(t+1),60); }
+
+  // ---------- audio ----------
+  _audio(){ if(this._actx===undefined){ try{ this._actx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ this._actx=null; } } if(this._actx&&this._actx.state==='suspended') this._actx.resume(); return this._actx; }
+  _tone(f,d,t,g,slide){ const c=this._audio(); if(!c||this._soundOn===false) return; const o=c.createOscillator(),a=c.createGain(); o.type=t||'sine'; o.frequency.setValueAtTime(f,c.currentTime); if(slide) o.frequency.exponentialRampToValueAtTime(Math.max(20,slide),c.currentTime+d); o.connect(a); a.connect(c.destination); const n=c.currentTime; a.gain.setValueAtTime(0.0001,n); a.gain.exponentialRampToValueAtTime(g||0.05,n+0.008); a.gain.exponentialRampToValueAtTime(0.0001,n+d); o.start(n); o.stop(n+d+0.02); }
+  _haptic(ms){ try{ if(navigator.vibrate) navigator.vibrate(ms||8); }catch(e){} }
+  _sfx(k){ if(this._soundOn===false) return;
+    if(k==='right'){ this._tone(620,0.08,'triangle',0.05); setTimeout(()=>this._tone(940,0.12,'triangle',0.05),50); }
+    else if(k==='climb'){ this._tone(760,0.09,'triangle',0.05,1140); }
+    else if(k==='wrong'){ this._tone(240,0.28,'sawtooth',0.06,110); }
+    else if(k==='timeout'){ this._tone(200,0.3,'sawtooth',0.06,90); }
+    else if(k==='go'){ this._tone(880,0.14,'sine',0.05,1200); }
+    else if(k==='tap'){ this._tone(520,0.05,'square',0.03); }
+  }
+  _toggleSound(){ const on=this._soundOn===false; this._soundOn=on; try{ localStorage.setItem('fa_sound', on?'1':'0'); }catch(e){} if(on){ this._audio(); this._sfx('tap'); } this.forceUpdate(); }
+
+  // ---------- canvas ----------
+  _resize(){ const cv=this._canvas; if(!cv) return; const r=cv.getBoundingClientRect(); const dpr=Math.min(2,window.devicePixelRatio||1); cv.width=Math.max(2,Math.round(r.width*dpr)); cv.height=Math.max(2,Math.round(r.height*dpr)); this._dpr=dpr; this._W=r.width; this._H=r.height; }
+  _cvRef(el){ this._canvas=el; if(el){ requestAnimationFrame(()=>this._resize()); } }
+  _flRef(el){ this._flashEl=el; }
+  _tmRef(el){ this._timerEl=el; }
+  _start(){ this._running=true; this._raf=requestAnimationFrame((t)=>this._loop(t)); }
+  _stop(){ this._running=false; if(this._raf) cancelAnimationFrame(this._raf); }
+  _px(nx,ny){ const pad=Math.min(this._W,this._H)*0.075; return [ pad + nx*(this._W-2*pad), pad + ny*(this._H-2*pad) ]; }
+
+  // ---------- flow ----------
+  _begin(){
+    this._audio(); this._sfx('go'); this._haptic(12);
+    if(!this._API) this._boot(0);
+    this._deck=[]; this._cleared=0; this._reacts=[]; this._end=null;
+    this.setState({ view:'play', level:1 }, ()=>{ this._resize(); this._level=1; this._startLevel(); this._start(); });
+  }
+  _nextScene(){
+    if(!this._API) return null;
+    if(!this._deck || !this._deck.length){ this._deck=this._API.SCENES.map((_,i)=>i); for(let i=this._deck.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [this._deck[i],this._deck[j]]=[this._deck[j],this._deck[i]]; } }
+    return this._API.SCENES[this._deck.pop()];
+  }
+  _candCount(){ const L=this._level; return L<3?3 : L<7?4 : 5; }
+  _timerMs(){ return Math.max(this.FLOOR_MS, this.START_MS-(this._level-1)*this.STEP_MS); }
+
+  _startLevel(){
+    const sc=this._nextScene(); if(!sc){ this._gameOver('error'); return; }
+    this._cur=sc; const gt=sc.groundTruth;
+    // candidates: bestPass + viable + fillers, capped to candCount
+    const teammates=[]; sc.players.forEach((p,i)=>{ if(p.team==='us'&&i!==sc.ball.carrier) teammates.push(i); });
+    const want=Math.min(this._candCount(), teammates.length);
+    const set=[gt.bestPass];
+    (gt.allViableLanes||[]).forEach(ix=>{ if(ix!==gt.bestPass && set.length<want && teammates.indexOf(ix)>=0) set.push(ix); });
+    const fillers=teammates.filter(ix=>set.indexOf(ix)<0);
+    for(let i=fillers.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [fillers[i],fillers[j]]=[fillers[j],fillers[i]]; }
+    while(set.length<want && fillers.length) set.push(fillers.pop());
+    for(let i=set.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [set[i],set[j]]=[set[j],set[i]]; }
+    this._cands=set; this._answered=false;
+    this._levelDur=this._timerMs(); this._tLevel=performance.now();
+    this.setState({ level:this._level });
+  }
+
+  _loop(t){
+    if(!this._running) return; this._raf=requestAnimationFrame((tt)=>this._loop(tt));
+    if((!this._W||!this._H)&&this._canvas) this._resize();
+    const now=t;
+    if(!this._answered && this.state.view==='play' && this._tLevel){
+      const rem=1-Math.min(1,(now-this._tLevel)/this._levelDur);
+      if(this._timerEl){ this._timerEl.style.transform='scaleX('+rem+')'; this._timerEl.style.background = rem<0.28? '#FF5A6E' : (rem<0.55?'#FFB020':(this._accent || '#22D3EE')); }
+      if(rem<=0){ this._answered=true; this._fail('timeout'); }
+    }
+    this._draw(now);
+  }
+
+  _onTap(e){
+    if(this.state.view!=='play'||this._answered||!this._cur) return;
+    const cv=this._canvas; if(!cv) return; const r=cv.getBoundingClientRect();
+    const mx=(e.clientX-r.left)/r.width*this._W, my=(e.clientY-r.top)/r.height*this._H;
+    let best=-1,bd=1e9; this._cands.forEach(ix=>{ const p=this._cur.players[ix]; const [x,y]=this._px(p.x,p.y); const d=Math.hypot(x-mx,y-my); if(d<bd){bd=d;best=ix;} });
+    const hitR=Math.max(26,this._W*0.05); if(best<0||bd>hitR) return;
+    this._answered=true;
+    const react=performance.now()-this._tLevel; this._reacts.push(react);
+    this._chosen=best;
+    if(best===this._cur.groundTruth.bestPass){
+      this._sfx('right'); this._flash('color-mix(in srgb,'+(this._accent || '#22D3EE')+' 32%,transparent)'); this._haptic(12);
+      this._cleared++; this._showResultTint='ok';
+      clearTimeout(this._to); this._to=setTimeout(()=>{ this._level++; this._sfx('climb'); this._startLevel(); }, 460);
+    } else {
+      this._fail('misread');
+    }
+  }
+
+  _fail(reason){
+    this._end=reason; this._sfx(reason==='timeout'?'timeout':'wrong'); this._flash('rgba(255,74,95,.36)'); this._haptic(26);
+    this._showResultTint='bad';
+    clearTimeout(this._to); this._to=setTimeout(()=>this._gameOver(reason), 900);
+  }
+
+  // ---------- draw ----------
+  _token(ctx,x,y,r,fill,stroke,label,labelCol,alpha){ ctx.globalAlpha=alpha==null?1:alpha; ctx.fillStyle='rgba(0,0,0,.32)'; ctx.beginPath(); ctx.ellipse(x,y+r*0.85,r*0.9,r*0.3,0,0,7); ctx.fill(); ctx.fillStyle=fill; ctx.strokeStyle=stroke||'rgba(255,255,255,.22)'; ctx.lineWidth=1.5; ctx.beginPath(); ctx.arc(x,y-r*0.16,r,0,7); ctx.fill(); ctx.stroke(); ctx.fillStyle=labelCol||'#04121a'; ctx.font="800 "+Math.max(8,this._W*0.011)+"px 'IBM Plex Mono'"; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(label,x,y-r*0.16); ctx.textBaseline='alphabetic'; ctx.globalAlpha=1; }
+  _chevron(ctx,x,y,r,col,alpha){ ctx.save(); ctx.globalAlpha=alpha==null?1:alpha; ctx.translate(x,y); ctx.fillStyle=col; ctx.beginPath(); ctx.moveTo(-r,0); ctx.lineTo(r*0.55,-r*0.85); ctx.lineTo(r*0.15,0); ctx.lineTo(r*0.55,r*0.85); ctx.closePath(); ctx.fill(); ctx.restore(); }
+
+  _draw(now){
+    const ctx=this._canvas&&this._canvas.getContext('2d'); if(!ctx) return;
+    const W=this._W,H=this._H,dpr=this._dpr||1; if(!W||!H||!isFinite(W)) return;
+    const acc=this._accent || '#22D3EE';
+    ctx.save(); ctx.scale(dpr,dpr); ctx.clearRect(0,0,W,H);
+    const g=ctx.createLinearGradient(0,0,W,H); g.addColorStop(0,'#0d1c2e'); g.addColorStop(0.55,'#091324'); g.addColorStop(1,'#050c17');
+    ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+    ctx.strokeStyle='rgba(90,150,190,.10)'; ctx.lineWidth=1.2;
+    const [mx0,my0]=this._px(0.5,0),[mx1,my1]=this._px(0.5,1); ctx.beginPath(); ctx.moveTo(mx0,my0); ctx.lineTo(mx1,my1); ctx.stroke();
+    const sc=this._cur; if(!sc){ ctx.restore(); return; }
+    const carrier=sc.ball.carrier; const r=Math.max(11,W*0.02);
+    const gt=sc.groundTruth; const reveal=this._answered;
+    const [cx,cy]=this._px(sc.players[carrier].x, sc.players[carrier].y);
+
+    // lanes from carrier to candidates (faint), and reveal lines
+    this._cands.forEach(ix=>{ const p=sc.players[ix]; const [x,y]=this._px(p.x,p.y);
+      let col='rgba(159,176,197,.28)', lw=1.6, dash=[5,6];
+      if(reveal){ if(ix===gt.bestPass){ col=acc; lw=3; dash=[]; } else if(ix===this._chosen){ col='#FF5A6E'; lw=2.4; dash=[]; } }
+      ctx.strokeStyle=col; ctx.lineWidth=lw; ctx.setLineDash(dash); ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(x,y); ctx.stroke(); ctx.setLineDash([]);
+    });
+
+    // all players
+    sc.players.forEach((p,i)=>{
+      if(i===carrier) return; const [x,y]=this._px(p.x,p.y);
+      if(p.team==='them'){ this._chevron(ctx,x,y,Math.max(9,W*0.016),'#FF5A6E',0.9); return; }
+      const isCand=this._cands.indexOf(i)>=0;
+      // candidate ring
+      if(isCand){ let ring=acc; if(reveal){ ring = i===gt.bestPass?'#3BE07A' : (i===this._chosen?'#FF5A6E':'rgba(159,176,197,.4)'); } const pulse=reveal?0:(0.5+0.5*Math.sin(now/260)); ctx.strokeStyle=ring; ctx.globalAlpha=reveal?1:(0.55+0.45*pulse); ctx.lineWidth=2.6; ctx.beginPath(); ctx.arc(x,y-r*0.16,r+7,0,7); ctx.stroke(); ctx.globalAlpha=1; }
+      this._token(ctx,x,y, isCand?r:r*0.82, isCand?'#3aa8c4':'rgba(58,168,196,.45)', null, p.role, '#04121a', isCand?1:0.7);
+    });
+
+    // carrier + ball
+    this._token(ctx,cx,cy,r,acc,'rgba(255,255,255,.28)','10','#160a2e');
+    this._drawBall(ctx,cx+r*0.95,cy+r*0.55,Math.max(5,W*0.009));
+
+    if(reveal){ ctx.textAlign='center'; const okc=this._chosen===gt.bestPass; ctx.fillStyle=okc?'#3BE07A':'#FF6274'; ctx.font="800 "+Math.max(15,W*0.026)+"px 'Archivo'"; ctx.fillText(okc?'LINE BROKEN':(this._end==='timeout'?'TOO SLOW':'NOT THE BEST BALL'), W/2, this._px(0,0.06)[1]); }
+    ctx.restore();
+  }
+  _drawBall(ctx,x,y,r){ ctx.shadowColor='rgba(255,255,255,.8)'; ctx.shadowBlur=10; const g=ctx.createRadialGradient(x-r*0.3,y-r*0.35,r*0.15,x,y,r); g.addColorStop(0,'#fff'); g.addColorStop(1,'#cfe0ee'); ctx.fillStyle=g; ctx.beginPath(); ctx.arc(x,y,r,0,7); ctx.fill(); ctx.shadowBlur=0; }
+  _flash(col){ const el=this._flashEl; if(!el) return; el.style.background='radial-gradient(circle at 50% 55%,'+col+',transparent 62%)'; el.style.animation='none'; void el.offsetWidth; el.style.animation='fa-flash .55s ease forwards'; }
+
+  // ---------- results ----------
+  _gameOver(reason){
+    this._stop(); this._haptic(24);
+    const depth=this._cleared;   // levels cleared
+    const isPB=depth>this._best; if(isPB){ this._best=depth; try{ localStorage.setItem('fa_am_ladder_best', String(depth)); }catch(e){} }
+    const fastest=this._reacts.length? Math.min.apply(null,this._reacts):null;
+    const result={ instrument:'vision-ladder', version:'am-ladder-1.0', position:'am', completedAt:new Date().toISOString(),
+      score:depth, personalBest:this._best,
+      measures:{ depth, readsCleared:this._cleared, fastestReadMs: fastest!=null?Math.round(fastest):null, endedBy:reason },
+      maps:{ VIS:'best-pass', HSP:'line-breaking', note:'speed and accuracy of reading the best available pass' } };
+    try{ localStorage.setItem('fa_am_ladder', JSON.stringify(result)); }catch(e){}
+    this._final={ isPB, depth, fastest, reason };
+    this.setState({ view:'over', best:this._best });
+  }
+  _retake(){ this._begin(); }
+  _back(){ this._sfx('tap'); if(this.state.view==='intro'){ window.location.href='Assessment.dc.html'; } else { this._stop(); this.setState({ view:'intro' }); } }
+
+  renderVals(){
+    const accent=this.props.accent ?? '#22D3EE'; this._accent=accent;
+    const V=this.state.view, S=this.state, soundOn=this._soundOn!==false;
+    const base={ accent,
+      isIntro:V==='intro', isPlay:V==='play', isOver:V==='over', showBack:V!=='over',
+      soundOn, soundOff:!soundOn, soundColor:soundOn?accent:'#61748c', soundTitle:soundOn?'Sound on':'Sound off',
+      toggleSound:()=>this._toggleSound(), back:()=>this._back(), begin:()=>this._begin(), retake:()=>this._retake(),
+      canvasRef:(el)=>this._cvRef(el), onTap:(e)=>this._onTap(e), flashRef:(el)=>this._flRef(el), timerRef:(el)=>this._tmRef(el),
+      bestLine:(this._best>0?('YOUR BEST · LEVEL '+this._best):'FIRST RUN · SET THE BAR') };
+    base.levelLabel=(S.level||1)+'';
+    base.bestShown='LVL '+(S.best||0);
+    base.shapeLabel = this._cur? this._cur.defensiveShape.toUpperCase().replace('-',' ') : '';
+
+    const f=this._final||{};
+    base.finalLevel=(f.depth!=null?f.depth:0)+'';
+    base.pbFlag=f.isPB?'★ NEW PERSONAL BEST':('BEST · LEVEL '+(this._best||0));
+    base.cleared=(f.depth!=null?f.depth:0)+'';
+    base.fastest=f.fastest!=null?Math.round(f.fastest)+'ms':'—';
+    base.endReason = f.reason==='timeout'?'CLOCK':'MISREAD';
+    base.endColor = '#FF7A8A';
+    const d=f.depth||0;
+    if(d>=10) base.overSub='Elite reading speed. You saw the best ball almost before the picture settled.';
+    else if(d>=6) base.overSub='Sharp. You climbed into the pressure zone and kept finding lines.';
+    else if(d>=3) base.overSub='A solid climb. The higher levels punish a slow first look.';
+    else base.overSub='Early exit. Scan the whole picture before you commit to a lane.';
+    const parts=[];
+    parts.push('You cleared '+d+' read'+(d===1?'':'s')+' before the '+(f.reason==='timeout'?'clock beat you':'wrong lane ended it')+'.');
+    if(f.fastest!=null) parts.push('Your quickest correct read was '+Math.round(f.fastest)+'ms.');
+    parts.push('This is how fast and how accurately you pick the line-breaking ball — not whether you can execute it.');
+    base.whatRead=parts.join(' ');
+    base.traitChips=[ {key:'VIS',label:'Vision'}, {key:'HSP',label:'Half-space'} ];
+    base.dataLine='MEASURED · BEHAVIOURAL · ENDLESS LADDER · am-ladder-1.0';
+    return base;
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:#04060c;}
+  a{color:var(--accent,#22D3EE);text-decoration:none;}
+  a:hover{opacity:.92;}
+  @keyframes fa-blink{0%,100%{opacity:1;}50%{opacity:.25;}}
+  @keyframes fa-rise{0%{transform:translateY(16px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-rise-sm{0%{transform:translateY(10px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-grow{from{transform:scaleY(0);}to{transform:scaleY(1);}}
+  .fa-in{opacity:0;animation:fa-rise .7s cubic-bezier(.2,.7,.2,1) forwards;}
+  .fa-in-sm{opacity:0;animation:fa-rise-sm .45s cubic-bezier(.2,.7,.2,1) forwards;}
+  @media (prefers-reduced-motion:reduce){*{animation-duration:.001s!important;}.fa-in,.fa-in-sm{opacity:1!important;transform:none!important;}}
+</style>
+</helmet>
+<div data-screen-label="Post-Match Log" style="position:relative;display:flex;flex-direction:column;min-height:100dvh;width:100%;overflow:hidden;background:radial-gradient(120% 90% at 50% 6%,#0e1a2d 0%,#080e1a 44%,#04060c 100%);color:#EAF2FB;font-family:'Archivo',system-ui,sans-serif;--accent:{{ accent }};">
+
+  <div style="position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.4;background:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0px,rgba(255,255,255,.02) 1px,transparent 1px,transparent 4px);"></div>
+  <div style="position:absolute;top:20px;left:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;top:20px;right:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;left:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;right:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+
+  <!-- ============ TOP BAR ============ -->
+  <header style="position:relative;z-index:6;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px clamp(26px,3.4vw,58px);">
+    <div style="min-width:120px;display:flex;">
+      <sc-if value="{{ showBack }}" hint-placeholder-val="{{ true }}">
+        <button onClick="{{ back }}" style="display:inline-flex;align-items:center;gap:8px;background:none;border:0;cursor:pointer;color:#8EA1B8;font:600 12.5px 'Archivo';padding:0;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M15 5l-7 7 7 7"/></svg>{{ backLabel }}
+        </button>
+      </sc-if>
+    </div>
+    <div style="display:flex;align-items:center;gap:11px;">
+      <svg width="20" height="20" viewBox="0 0 32 32" fill="none"><path d="M16 2 28 9v14L16 30 4 23V9z" style="stroke:var(--accent,#22D3EE);stroke-width:1.5;fill:color-mix(in srgb,var(--accent,#22D3EE) 12%,transparent);"/><path d="M10 16h12M10 12h12M10 20h8" style="stroke:var(--accent,#22D3EE);stroke-width:1.6;stroke-linecap:round;"/></svg>
+      <span style="font:800 12.5px 'Archivo';letter-spacing:.05em;">POST-MATCH LOG</span>
+      <span style="font:600 9px 'IBM Plex Mono';letter-spacing:.16em;color:#5c6e85;border:1px solid rgba(120,140,166,.24);border-radius:6px;padding:3px 6px;">HABIT</span>
+    </div>
+    <div style="min-width:120px;"></div>
+  </header>
+
+  <!-- ============ HOME ============ -->
+  <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:16px clamp(20px,4vw,58px) 60px;">
+      <div style="width:100%;max-width:600px;">
+
+        <!-- empty state -->
+        <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ true }}">
+          <div class="fa-in" style="text-align:center;">
+            <div style="display:inline-flex;align-items:center;gap:10px;margin-bottom:18px;font:600 12px 'IBM Plex Mono';letter-spacing:.32em;color:var(--accent,#22D3EE);"><span style="width:6px;height:6px;border-radius:50%;background:var(--accent,#22D3EE);box-shadow:0 0 8px var(--accent,#22D3EE);animation:fa-blink 1.6s ease-in-out infinite;"></span>SIXTY SECONDS AFTER EVERY GAME</div>
+            <h1 style="margin:0 0 16px;font:800 clamp(32px,5vw,64px)/0.99 'Archivo';letter-spacing:-0.03em;text-wrap:balance;">Six taps. No film, no coach, no vest.</h1>
+            <p style="margin:0 auto 30px;max-width:520px;font:400 clamp(15px,1.3vw,18px)/1.6 'Archivo';color:#9FB0C5;text-wrap:pretty;">Log what you did after each match. Ten games from now you&rsquo;ll have something almost nobody your age has: a real record of how you actually play &mdash; and how that&rsquo;s changing.</p>
+          </div>
+        </sc-if>
+
+        <!-- pending intent banner -->
+        <sc-if value="{{ hasPendingIntent }}" hint-placeholder-val="{{ false }}">
+          <div class="fa-in" style="margin-bottom:20px;padding:16px 20px;border-radius:14px;border:1px solid color-mix(in srgb,var(--accent,#22D3EE) 32%,transparent);background:color-mix(in srgb,var(--accent,#22D3EE) 8%,transparent);">
+            <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.22em;color:var(--accent,#22D3EE);margin-bottom:7px;">YOU SET AN INTENT LAST TIME</div>
+            <div style="font:600 15px 'Archivo';color:#EAF2FB;">&ldquo;{{ pendingIntentText }}&rdquo;</div>
+            <div style="margin-top:6px;font:400 12.5px 'Archivo';color:#9FB0C5;">You&rsquo;ll confirm whether you did it when you log this match.</div>
+          </div>
+        </sc-if>
+
+        <!-- trends -->
+        <sc-if value="{{ hasEntries }}" hint-placeholder-val="{{ false }}">
+          <div class="fa-in" style="margin-bottom:20px;">
+            <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:14px;">
+              <span style="font:800 clamp(20px,2.6vw,28px) 'Archivo';letter-spacing:-0.02em;">{{ matchesCount }} matches logged</span>
+              <span style="font:600 10px 'IBM Plex Mono';letter-spacing:.14em;color:var(--accent,#22D3EE);">{{ streakText }}</span>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;">
+              <sc-for list="{{ statCards }}" as="s" hint-placeholder-count="4">
+                <div style="padding:14px 15px;border-radius:13px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);">
+                  <div style="font:600 8.5px 'IBM Plex Mono';letter-spacing:.16em;color:#61748c;margin-bottom:7px;">{{ s.label }}</div>
+                  <div style="font:800 24px 'Archivo';color:{{ s.color }};line-height:1;">{{ s.value }}</div>
+                  <div style="margin-top:4px;font:500 10px 'Archivo';color:#8496ab;">{{ s.sub }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <!-- take-on trend bars -->
+          <div class="fa-in" style="padding:18px 20px;border-radius:15px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);margin-bottom:18px;animation-delay:.06s;">
+            <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:#61748c;margin-bottom:12px;">TAKE-ONS ATTEMPTED &middot; RECENT MATCHES</div>
+            <div style="display:flex;align-items:flex-end;gap:5px;height:64px;">
+              <sc-for list="{{ trendBars }}" as="b" hint-placeholder-count="6">
+                <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;height:100%;justify-content:flex-end;">
+                  <div style="width:100%;max-width:26px;border-radius:3px;height:{{ b.h }};background:{{ b.bg }};transform-origin:bottom;animation:fa-grow .5s cubic-bezier(.3,.8,.3,1) both;animation-delay:{{ b.delay }};"></div>
+                  <span style="font:500 8px 'IBM Plex Mono';color:#5c6e85;">{{ b.tag }}</span>
+                </div>
+              </sc-for>
+            </div>
+            <div style="margin-top:8px;font:400 11.5px/1.5 'Archivo';color:#8496ab;">{{ trendNote }}</div>
+          </div>
+
+          <sc-if value="{{ showFollowThrough }}" hint-placeholder-val="{{ false }}">
+            <div class="fa-in" style="padding:16px 20px;border-radius:14px;border:1px solid rgba(255,176,32,.28);background:rgba(255,176,32,.06);margin-bottom:20px;animation-delay:.1s;">
+              <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.22em;color:#FFC65C;margin-bottom:8px;">INTENT &rarr; ACTION</div>
+              <p style="margin:0;font:500 14px/1.55 'Archivo';color:#EAF2FB;text-wrap:pretty;">{{ followThroughCopy }}</p>
+            </div>
+          </sc-if>
+        </sc-if>
+
+        <div class="fa-in" style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:8px;animation-delay:.14s;">
+          <button onClick="{{ startLog }}" style="display:inline-flex;align-items:center;gap:11px;padding:16px 34px;border-radius:13px;border:0;background:var(--accent,#22D3EE);color:#03121a;font:700 16px 'Archivo';cursor:pointer;box-shadow:0 14px 44px color-mix(in srgb,var(--accent,#22D3EE) 40%,transparent);transition:transform .16s ease;" style-hover="transform:translateY(-2px);">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="stroke:#03121a;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M12 5v14M5 12h14"/></svg>Log a match
+          </button>
+          <button onClick="{{ startIntent }}" style="display:inline-flex;align-items:center;gap:9px;padding:16px 26px;border-radius:13px;border:1px solid rgba(157,176,198,.28);background:rgba(12,18,30,.4);color:#C6D3E2;font:600 15px 'Archivo';cursor:pointer;transition:border-color .16s ease,color .16s ease;" style-hover="border-color:color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);color:#EAF2FB;">{{ intentBtnLabel }}</button>
+        </div>
+      </div>
+    </main>
+  </sc-if>
+
+  <!-- ============ LOG A MATCH ============ -->
+  <sc-if value="{{ isLogging }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:12px clamp(20px,4vw,58px) 54px;">
+      <div style="width:100%;max-width:600px;">
+        <div class="fa-in-sm" style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
+          <span style="font:600 10px 'IBM Plex Mono';letter-spacing:.24em;color:var(--accent,#22D3EE);">AFTER THE MATCH</span>
+          <span style="flex:1;height:1px;background:rgba(120,140,166,.18);"></span>
+          <span style="font:600 10px 'IBM Plex Mono';letter-spacing:.14em;color:#61748c;">~60 SEC</span>
+        </div>
+        <h1 class="fa-in-sm" style="margin:0 0 20px;font:800 clamp(24px,3.2vw,38px)/1.1 'Archivo';letter-spacing:-0.02em;animation-delay:.04s;">How did it actually go?</h1>
+
+        <!-- intent check (if pending) -->
+        <sc-if value="{{ askIntent }}" hint-placeholder-val="{{ false }}">
+          <div class="fa-in-sm" style="margin-bottom:18px;padding:16px 18px;border-radius:14px;border:1px solid rgba(255,176,32,.3);background:rgba(255,176,32,.06);">
+            <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.2em;color:#FFC65C;margin-bottom:9px;">YOU SAID YOU&rsquo;D&hellip;</div>
+            <div style="font:700 15px 'Archivo';color:#EAF2FB;margin-bottom:12px;">&ldquo;{{ pendingIntentText }}&rdquo; &mdash; did you?</div>
+            <div style="display:flex;gap:9px;">
+              <button onClick="{{ intentYes }}" style="flex:1;padding:11px;border-radius:11px;border:1px solid {{ intentYesBorder }};background:{{ intentYesBg }};color:{{ intentYesColor }};font:700 13.5px 'Archivo';cursor:pointer;">Yes, I did it</button>
+              <button onClick="{{ intentNo }}" style="flex:1;padding:11px;border-radius:11px;border:1px solid {{ intentNoBorder }};background:{{ intentNoBg }};color:{{ intentNoColor }};font:700 13.5px 'Archivo';cursor:pointer;">Not this time</button>
+            </div>
+          </div>
+        </sc-if>
+
+        <div style="display:flex;flex-direction:column;gap:15px;">
+          <sc-for list="{{ fieldGroups }}" as="g" hint-placeholder-count="6">
+            <div class="fa-in-sm" style="animation-delay:{{ g.delay }};">
+              <div style="font:700 12.5px 'Archivo';color:#C6D3E2;margin-bottom:8px;">{{ g.label }}</div>
+              <div style="display:flex;flex-wrap:wrap;gap:8px;">
+                <sc-for list="{{ g.options }}" as="o" hint-placeholder-count="4">
+                  <button onClick="{{ o.onPick }}" style="flex:1;min-width:64px;padding:11px 10px;border-radius:11px;border:1px solid {{ o.border }};background:{{ o.bg }};color:{{ o.color }};font:600 13.5px 'Archivo';cursor:pointer;transition:border-color .14s,background .14s;" style-hover="border-color:color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);">{{ o.text }}</button>
+                </sc-for>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="margin-top:24px;display:flex;align-items:center;gap:14px;">
+          <button onClick="{{ saveMatch }}" disabled="{{ saveLocked }}" style="display:inline-flex;align-items:center;gap:10px;padding:15px 32px;border-radius:12px;border:0;background:{{ saveBg }};color:{{ saveColor }};font:700 15px 'Archivo';cursor:{{ saveCursor }};box-shadow:{{ saveShadow }};opacity:{{ saveOpacity }};transition:transform .16s ease,opacity .2s ease;" style-hover="transform:translateY(-2px);">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12.5l4.5 4.5L19 6.5"/></svg>Save match
+          </button>
+          <span style="font:500 11px 'IBM Plex Mono';color:#61748c;">{{ saveStatus }}</span>
+        </div>
+      </div>
+    </main>
+  </sc-if>
+
+  <!-- ============ SET INTENT ============ -->
+  <sc-if value="{{ isIntentSet }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:12px clamp(20px,4vw,58px) 54px;">
+      <div style="width:100%;max-width:560px;">
+        <div class="fa-in-sm" style="font:600 10px 'IBM Plex Mono';letter-spacing:.24em;color:var(--accent,#22D3EE);margin-bottom:8px;">BEFORE YOUR NEXT MATCH</div>
+        <h1 class="fa-in-sm" style="margin:0 0 8px;font:800 clamp(24px,3.2vw,38px)/1.1 'Archivo';letter-spacing:-0.02em;animation-delay:.04s;">One thing you&rsquo;ll try.</h1>
+        <p class="fa-in-sm" style="margin:0 0 22px;font:400 14px/1.55 'Archivo';color:#9FB0C5;animation-delay:.08s;">Next time you log, we&rsquo;ll ask if you did it. The gap between what you meant to do and what you did is the most honest thing about you.</p>
+        <div style="display:flex;flex-direction:column;gap:9px;margin-bottom:16px;">
+          <sc-for list="{{ intentChips }}" as="c" hint-placeholder-count="5">
+            <button onClick="{{ c.onPick }}" class="fa-in-sm" style="text-align:left;padding:14px 16px;border-radius:12px;border:1px solid {{ c.border }};background:{{ c.bg }};color:#EAF2FB;font:600 14.5px 'Archivo';cursor:pointer;transition:border-color .14s,background .14s;animation-delay:{{ c.delay }};" style-hover="border-color:color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);">{{ c.text }}</button>
+          </sc-for>
+        </div>
+        <input value="{{ intentDraft }}" onInput="{{ onIntentInput }}" placeholder="&hellip;or write your own" style="width:100%;padding:14px 16px;border-radius:12px;border:1px solid rgba(120,140,166,.28);background:rgba(10,16,28,.6);color:#EAF2FB;font:500 14px 'Archivo';outline:none;margin-bottom:18px;" />
+        <div style="display:flex;align-items:center;gap:14px;">
+          <button onClick="{{ saveIntent }}" disabled="{{ intentLocked }}" style="display:inline-flex;align-items:center;gap:10px;padding:15px 32px;border-radius:12px;border:0;background:{{ intentSaveBg }};color:{{ intentSaveColor }};font:700 15px 'Archivo';cursor:{{ intentSaveCursor }};opacity:{{ intentSaveOpacity }};transition:transform .16s ease;" style-hover="transform:translateY(-2px);">Set the intent</button>
+          <button onClick="{{ cancelIntent }}" style="background:none;border:0;color:#8496ab;font:600 13px 'Archivo';cursor:pointer;">Cancel</button>
+        </div>
+      </div>
+    </main>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:940,&quot;height&quot;:760},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#22D3EE&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#22D3EE&quot;,&quot;#A78BFA&quot;,&quot;#C6FF3A&quot;,&quot;#FF7A45&quot;,&quot;#FF4D8D&quot;]},&quot;motion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;embedded&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  KEY='fa_postmatch_log';
+  FIELDS = [
+    { key:'takeons', label:'Take-ons tried?',       opts:[['0','0',0],['1-3','1\u20133',2],['4-7','4\u20137',5.5],['8+','8+',9]] },
+    { key:'goals',   label:'Goals?',                 opts:[['0','0',0],['1','1',1],['2','2',2],['3+','3+',3]] },
+    { key:'assists', label:'Assists?',               opts:[['0','0',0],['1','1',1],['2','2',2],['3+','3+',3]] },
+    { key:'box',     label:'Times in the box?',      opts:[['0-2','0\u20132',1],['3-5','3\u20135',4],['6-9','6\u20139',7.5],['10+','10+',11]] },
+    { key:'track',   label:'Tracked back / defended?',opts:[['rare','Rarely',1],['some','Some',2],['lots','A lot',3],['const','Constantly',4]] },
+    { key:'fouls',   label:'Fouls won?',             opts:[['0','0',0],['1-2','1\u20132',1.5],['3-4','3\u20134',3.5],['5+','5+',5]] },
+  ];
+  CHIPS = [
+    'Attempt six or more take-ons',
+    'Make five runs into the box',
+    'Track back every time we lose it',
+    'Get to the byline three times',
+    'Use my weaker foot at least twice',
+  ];
+
+  state = { view:'home', log:{}, intentAns:null, intentDraft:'' };
+
+  componentDidMount(){
+    try{ this._soundOn=localStorage.getItem('fa_sound')!=='0'; }catch(e){ this._soundOn=true; }
+    this._load();
+    this.forceUpdate();
+  }
+  _load(){ try{ const raw=localStorage.getItem(this.KEY); this._data=raw?JSON.parse(raw):{ entries:[], intent:null }; }catch(e){ this._data={ entries:[], intent:null }; } if(!this._data.entries) this._data.entries=[]; }
+  _save(){ try{ localStorage.setItem(this.KEY, JSON.stringify(this._data)); }catch(e){} }
+
+  _audio(){ if(this._actx===undefined){ try{ this._actx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ this._actx=null; } } if(this._actx&&this._actx.state==='suspended') this._actx.resume(); return this._actx; }
+  _tone(f,d,t,g){ const c=this._audio(); if(!c||this._soundOn===false) return; const o=c.createOscillator(),a=c.createGain(); o.type=t||'sine'; o.frequency.value=f; o.connect(a); a.connect(c.destination); const n=c.currentTime; a.gain.setValueAtTime(0,n); a.gain.linearRampToValueAtTime(g||0.05,n+0.01); a.gain.exponentialRampToValueAtTime(0.0001,n+d); o.start(n); o.stop(n+d); }
+  _sfx(k){ if(this._soundOn===false) return; if(k==='tap') this._tone(500,0.07,'triangle',0.04); else if(k==='save'){ this._tone(560,0.12,'triangle',0.05); setTimeout(()=>this._tone(820,0.14,'triangle',0.05),70); } else if(k==='click') this._tone(430,0.08,'sine',0.04); }
+
+  _pendingIntent(){ return this._data && this._data.intent && !this._data.intent.resolved ? this._data.intent : null; }
+
+  _startLog(){ this._sfx('click'); this.setState({ view:'logging', log:{}, intentAns:null }); }
+  _startIntent(){ this._sfx('click'); this.setState({ view:'intentSet', intentDraft:'' }); }
+  _pick(key,val){ this._sfx('tap'); this.setState(st=>({ log:{ ...st.log, [key]:val } })); }
+  _intentYes(){ this._sfx('tap'); this.setState({ intentAns:true }); }
+  _intentNo(){ this._sfx('tap'); this.setState({ intentAns:false }); }
+
+  _saveMatch(){
+    const complete=this.FIELDS.every(f=>this.state.log[f.key]!=null);
+    if(!complete) return;
+    const pend=this._pendingIntent();
+    if(pend && this.state.intentAns===null) return; // must answer intent check
+    this._sfx('save');
+    const entry={ at:new Date().toISOString(), ...this.state.log };
+    if(pend){ entry.intent=pend.text; entry.intentMet=this.state.intentAns; this._data.intent={ ...pend, resolved:true, met:this.state.intentAns }; }
+    this._data.entries.push(entry);
+    this._save();
+    this.setState({ view:'home', log:{}, intentAns:null });
+    if(this.props.embedded && typeof this.props.onDone==='function'){ try{ this.props.onDone({ matches:this._data.entries.length }, { last:entry }); }catch(e){} }
+  }
+  _pickChip(text){ this._sfx('tap'); this.setState({ intentDraft:text }); }
+  _onIntentInput(e){ this.setState({ intentDraft:e.target.value }); }
+  _saveIntent(){ const t=(this.state.intentDraft||'').trim(); if(!t) return; this._sfx('save'); this._data.intent={ text:t, set:new Date().toISOString(), resolved:false }; this._save(); this.setState({ view:'home', intentDraft:'' }); }
+  _cancelIntent(){ this._sfx('click'); this.setState({ view:'home', intentDraft:'' }); }
+  _back(){ this._sfx('click'); if(this.state.view==='home'){ window.location.href='Assessment.dc.html'; } else { this.setState({ view:'home', log:{}, intentAns:null, intentDraft:'' }); } }
+
+  _val(field, code){ const o=field.opts.find(x=>x[0]===code); return o?o[2]:0; }
+
+  renderVals(){
+    const accent=this.props.accent ?? '#22D3EE';
+    const V=this.state.view;
+    const embedded=!!this.props.embedded;
+    const data=this._data||{ entries:[], intent:null };
+    const entries=data.entries||[];
+    const pend=this._pendingIntent();
+
+    const base={
+      accent,
+      isHome:V==='home', isLogging:V==='logging', isIntentSet:V==='intentSet',
+      showBack:!(embedded&&V==='home'), backLabel:V==='home'?'Back':'Home',
+      back:()=>this._back(), startLog:()=>this._startLog(), startIntent:()=>this._startIntent(),
+      saveMatch:()=>this._saveMatch(), saveIntent:()=>this._saveIntent(), cancelIntent:()=>this._cancelIntent(),
+      intentYes:()=>this._intentYes(), intentNo:()=>this._intentNo(),
+      onIntentInput:(e)=>this._onIntentInput(e), intentDraft:this.state.intentDraft,
+      isEmpty:entries.length===0, hasEntries:entries.length>0,
+      hasPendingIntent:!!pend, pendingIntentText:pend?pend.text:'',
+      intentBtnLabel:pend?'Change your intent':'Set a next-match intent',
+      matchesCount:entries.length,
+    };
+
+    // streak / recency
+    base.streakText = entries.length>=5?'ON A ROLL':entries.length>=1?'KEEP IT GOING':'';
+
+    // stat cards (averages over recent up to 10)
+    if(entries.length>0){
+      const recent=entries.slice(-10);
+      const avg=(key)=>{ const f=this.FIELDS.find(x=>x.key===key); const vals=recent.map(e=>this._val(f, e[key])).filter(v=>v!=null); return vals.length? vals.reduce((s,v)=>s+v,0)/vals.length : 0; };
+      const sum=(key)=>entries.reduce((s,e)=>{ const f=this.FIELDS.find(x=>x.key===key); return s+this._val(f,e[key]); },0);
+      base.statCards=[
+        { label:'AVG TAKE-ONS', value:avg('takeons').toFixed(1), sub:'per match', color:'#E0218A' },
+        { label:'GOALS + ASSISTS', value:String(Math.round(sum('goals')+sum('assists'))), sub:'all logged', color:'#C8CED6' },
+        { label:'AVG BOX TOUCHES', value:avg('box').toFixed(1), sub:'per match', color:'#22D3EE' },
+        { label:'AVG FOULS WON', value:avg('fouls').toFixed(1), sub:'per match', color:'#FFB020' },
+      ];
+      // trend bars (last 6, take-ons attempted)
+      const last=entries.slice(-6);
+      const f=this.FIELDS.find(x=>x.key==='takeons');
+      const maxV=Math.max(...last.map(e=>this._val(f,e.takeons)),9);
+      base.trendBars=last.map((e,i)=>{
+        const v=this._val(f,e.takeons);
+        return { h:Math.max(6,Math.round((v/maxV)*100))+'%', bg:'linear-gradient(180deg,'+accent+',color-mix(in srgb,'+accent+' 40%,transparent))', delay:(i*0.05).toFixed(2)+'s', tag:'M'+(entries.length-last.length+i+1) };
+      });
+      // trend note
+      if(entries.length>=3){
+        const f2=this.FIELDS.find(x=>x.key==='takeons');
+        const half=Math.floor(entries.length/2);
+        const early=entries.slice(0,half).map(e=>this._val(f2,e.takeons));
+        const lateA=entries.slice(-half).map(e=>this._val(f2,e.takeons));
+        const em=early.reduce((s,v)=>s+v,0)/(early.length||1), lm=lateA.reduce((s,v)=>s+v,0)/(lateA.length||1);
+        base.trendNote = lm>em+0.6? 'You\u2019re attempting more than when you started \u2014 that\u2019s the number that matters most.' : lm<em-0.6? 'Your attempts have dropped off lately. The best dribblers fail most of the time and go again \u2014 keep backing yourself.' : 'Steady. The Premier League average take-on success is 36.7% \u2014 attempting is the job.';
+      } else base.trendNote='A couple more matches and a trend appears here.';
+      // follow-through
+      const resolved=entries.filter(e=>e.intentMet!=null);
+      if(resolved.length>0){
+        base.showFollowThrough=true;
+        const met=resolved.filter(e=>e.intentMet).length;
+        const rate=Math.round((met/resolved.length)*100);
+        base.followThroughCopy = 'You followed through on '+met+' of '+resolved.length+' intents you set ('+rate+'%). '+(rate>=70?'When you say you\u2019ll try something, you do. That consistency is rarer than talent.':rate>=40?'The gap between saying and doing is normal \u2014 and it\u2019s exactly what confidence work closes.':'Intentions keep slipping. Pick one smaller, non-negotiable thing next match and just hit that.');
+      } else base.showFollowThrough=false;
+    } else { base.statCards=[]; base.trendBars=[]; base.trendNote=''; base.showFollowThrough=false; base.followThroughCopy=''; }
+
+    // logging fields
+    base.askIntent=!!pend;
+    const ans=this.state.intentAns;
+    base.intentYesBorder=ans===true?'color-mix(in srgb,'+accent+' 60%,transparent)':'rgba(120,140,166,.28)';
+    base.intentYesBg=ans===true?'color-mix(in srgb,'+accent+' 16%,transparent)':'rgba(10,16,28,.5)';
+    base.intentYesColor=ans===true?'#F2F8FE':'#B4C2D4';
+    base.intentNoBorder=ans===false?'rgba(255,176,32,.6)':'rgba(120,140,166,.28)';
+    base.intentNoBg=ans===false?'rgba(255,176,32,.12)':'rgba(10,16,28,.5)';
+    base.intentNoColor=ans===false?'#FFD48A':'#B4C2D4';
+
+    base.fieldGroups=this.FIELDS.map((f,fi)=>({ label:f.label, delay:(0.06+fi*0.04).toFixed(2)+'s',
+      options:f.opts.map(([code,text])=>{ const sel=this.state.log[f.key]===code;
+        return { text, onPick:()=>this._pick(f.key,code),
+          border:sel?'color-mix(in srgb,'+accent+' 65%,transparent)':'rgba(120,140,166,.22)',
+          bg:sel?'color-mix(in srgb,'+accent+' 15%,transparent)':'rgba(10,16,28,.5)',
+          color:sel?'#F2F8FE':'#B4C2D4' }; }) }));
+    const complete=this.FIELDS.every(f=>this.state.log[f.key]!=null) && (!pend || ans!==null);
+    base.saveLocked=!complete;
+    base.saveBg=complete?accent:'rgba(120,140,166,.16)'; base.saveColor=complete?'#03121a':'#61748c';
+    base.saveCursor=complete?'pointer':'not-allowed'; base.saveShadow=complete?'0 12px 36px color-mix(in srgb,'+accent+' 38%,transparent)':'none'; base.saveOpacity=complete?'1':'.6';
+    const missing=this.FIELDS.filter(f=>this.state.log[f.key]==null).length + ((pend&&ans===null)?1:0);
+    base.saveStatus=complete?'Ready':missing+' to go';
+
+    // intent set
+    base.intentChips=this.CHIPS.map((t,i)=>{ const sel=this.state.intentDraft===t;
+      return { text:t, onPick:()=>this._pickChip(t), delay:(0.06+i*0.04).toFixed(2)+'s',
+        border:sel?'color-mix(in srgb,'+accent+' 60%,transparent)':'rgba(120,140,166,.22)',
+        bg:sel?'color-mix(in srgb,'+accent+' 12%,transparent)':'rgba(10,16,28,.5)' }; });
+    const iOk=(this.state.intentDraft||'').trim().length>0;
+    base.intentLocked=!iOk; base.intentSaveBg=iOk?accent:'rgba(120,140,166,.16)'; base.intentSaveColor=iOk?'#03121a':'#61748c';
+    base.intentSaveCursor=iOk?'pointer':'not-allowed'; base.intentSaveOpacity=iOk?'1':'.6';
+
+    return base;
+  }
+}
+</script>
+</body>
+</html>

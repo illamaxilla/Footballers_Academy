@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:#04060c;}
+  a{color:var(--accent,#E0413C);text-decoration:none;}
+  a:hover{opacity:.92;}
+  @keyframes fa-blink{0%,100%{opacity:1;}50%{opacity:.25;}}
+  @keyframes fa-rise{0%{transform:translateY(16px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-rise-sm{0%{transform:translateY(10px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-bar{from{transform:scaleX(0);}to{transform:scaleX(1);}}
+  @keyframes fa-ring{from{stroke-dashoffset:0;}to{stroke-dashoffset:132;}}
+  @keyframes fa-sweep{0%{transform:translateY(-100%);}100%{transform:translateY(400%);}}
+  @keyframes fa-ballpulse{0%,100%{box-shadow:0 0 8px rgba(255,255,255,.6);}50%{box-shadow:0 0 16px rgba(255,255,255,.95);}}
+  .fa-in{opacity:0;animation:fa-rise .7s cubic-bezier(.2,.7,.2,1) forwards;}
+  .fa-in-sm{opacity:0;animation:fa-rise-sm .5s cubic-bezier(.2,.7,.2,1) forwards;}
+  @media (prefers-reduced-motion:reduce){*{animation-duration:.001s!important;}.fa-in,.fa-in-sm{opacity:1!important;transform:none!important;}}
+</style>
+</helmet>
+<div data-screen-label="The Daily Freeze" style="position:relative;display:flex;flex-direction:column;min-height:100dvh;width:100%;overflow:hidden;background:radial-gradient(120% 90% at 50% 6%,#0e1a2d 0%,#080e1a 44%,#04060c 100%);color:#EAF2FB;font-family:'Archivo',system-ui,sans-serif;--accent:{{ accent }};">
+
+  <div style="position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.4;background:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0px,rgba(255,255,255,.02) 1px,transparent 1px,transparent 4px);"></div>
+  <div style="position:absolute;top:20px;left:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#E0413C) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#E0413C) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;top:20px;right:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#E0413C) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#E0413C) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;left:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#E0413C) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#E0413C) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;right:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#E0413C) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#E0413C) 50%,transparent);z-index:4;pointer-events:none;"></div>
+
+  <header style="position:relative;z-index:6;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px clamp(26px,3.4vw,58px);">
+    <div style="min-width:140px;display:flex;">
+      <a href="Assessment.dc.html" style="display:inline-flex;align-items:center;gap:8px;color:#8EA1B8;font:600 12.5px 'Archivo';" style-hover="color:#EAF2FB;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M15 5l-7 7 7 7"/></svg>Back to the scan
+      </a>
+    </div>
+    <div style="display:flex;align-items:center;gap:11px;">
+      <svg width="22" height="22" viewBox="0 0 32 32" fill="none"><path d="M16 2 28 9v14L16 30 4 23V9z" style="stroke:var(--accent,#E0413C);stroke-width:1.5;fill:color-mix(in srgb,var(--accent,#E0413C) 12%,transparent);"/><path d="M11 16h10M16 11v10" style="stroke:var(--accent,#E0413C);stroke-width:1.6;stroke-linecap:round;"/></svg>
+      <span style="font:800 13px 'Archivo';letter-spacing:.05em;">DAILY <span style="color:var(--accent,#E0413C);">FREEZE</span></span>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;min-width:140px;justify-content:flex-end;">
+      <button onClick="{{ toggleSound }}" title="{{ soundTitle }}" style="display:grid;place-items:center;width:28px;height:28px;border-radius:8px;border:1px solid rgba(120,140,166,.24);background:rgba(10,16,28,.5);cursor:pointer;color:{{ soundColor }};" style-hover="border-color:color-mix(in srgb,var(--accent,#E0413C) 55%,transparent);">
+        <sc-if value="{{ soundOn }}" hint-placeholder-val="{{ true }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg></sc-if>
+        <sc-if value="{{ soundOff }}" hint-placeholder-val="{{ false }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M22 9l-6 6M16 9l6 6"/></svg></sc-if>
+      </button>
+      <div style="display:inline-flex;align-items:center;gap:7px;padding:6px 12px;border-radius:99px;border:1px solid color-mix(in srgb,var(--accent,#E0413C) 30%,transparent);background:color-mix(in srgb,var(--accent,#E0413C) 8%,transparent);">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" style="stroke:var(--accent,#E0413C);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M12 3s5 4 5 9a5 5 0 0 1-10 0c0-1 .5-2 .5-2S9 12 9 14a3 3 0 0 0 3 3c2 0 3-1.5 3-3.5C15 9 12 3 12 3z"/></svg>
+        <span style="font:700 11px 'IBM Plex Mono';letter-spacing:.08em;color:var(--accent,#E0413C);">{{ streakLabel }}</span>
+      </div>
+    </div>
+  </header>
+
+  <sc-if value="{{ isDecide }}" hint-placeholder-val="{{ true }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:6px clamp(18px,3vw,50px) 40px;gap:16px;">
+      <div style="width:100%;max-width:1120px;display:flex;flex-direction:column;gap:14px;flex:1;min-height:0;justify-content:center;">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <span style="font:600 10px 'IBM Plex Mono';letter-spacing:.2em;color:var(--accent,#E0413C);">TODAY&rsquo;S FREEZE</span>
+          <span style="flex:1;height:1px;background:rgba(120,140,166,.18);"></span>
+          <span style="display:inline-flex;align-items:center;gap:7px;font:600 10px 'IBM Plex Mono';letter-spacing:.14em;color:{{ condColor }};"><span style="width:6px;height:6px;border-radius:50%;background:{{ condColor }};box-shadow:0 0 8px {{ condColor }};"></span>{{ condLabel }}</span>
+        </div>
+
+        <div style="position:relative;height:min(60vh,560px);aspect-ratio:16/9;max-width:100%;margin:0 auto;align-self:center;border-radius:16px;overflow:hidden;border:1px solid rgba(120,140,166,.2);background:radial-gradient(130% 100% at 50% 0%,#0d1c2e,#091324 60%,#050c17);">
+          <svg viewBox="0 0 160 90" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;" fill="none" stroke="rgba(120,180,210,.16)" stroke-width="0.5">
+            <rect x="3" y="3" width="154" height="84"></rect><line x1="80" y1="3" x2="80" y2="87"></line><circle cx="80" cy="45" r="13"></circle>
+            <rect x="3" y="22" width="22" height="46"></rect><rect x="135" y="22" width="22" height="46"></rect><rect x="3" y="33" width="8" height="24"></rect><rect x="149" y="33" width="8" height="24"></rect>
+          </svg>
+          <div style="position:absolute;left:0;right:0;height:40%;background:linear-gradient(180deg,transparent,color-mix(in srgb,var(--accent,#E0413C) 10%,transparent),transparent);animation:fa-sweep 3.4s linear infinite;pointer-events:none;"></div>
+          <sc-for list="{{ foes }}" as="f" hint-placeholder-count="4"><div style="position:absolute;left:{{ f.left }};top:{{ f.top }};width:18px;height:18px;margin:-9px 0 0 -9px;"><div style="width:100%;height:100%;background:linear-gradient(135deg,#ff9a9a,#c0322f);clip-path:polygon(0 50%,100% 8%,100% 92%);filter:drop-shadow(0 1.5px 2px rgba(0,0,0,.55)) drop-shadow(0 0 4px rgba(255,90,110,.5));"></div></div></sc-for>
+          <sc-for list="{{ mates }}" as="m" hint-placeholder-count="3"><div style="position:absolute;left:{{ m.left }};top:{{ m.top }};width:16px;height:16px;margin:-8px 0 0 -8px;border-radius:50%;background:radial-gradient(125% 125% at 34% 24%,#8fdcec,#2b8ba6);border:1.5px solid rgba(232,246,255,.9);box-shadow:0 2px 4px rgba(0,0,0,.5),0 0 8px rgba(58,168,196,.5);"></div></sc-for>
+          <div style="position:absolute;left:{{ you.left }};top:{{ you.top }};width:24px;height:24px;margin:-12px 0 0 -12px;border-radius:50%;background:radial-gradient(125% 125% at 34% 24%,color-mix(in srgb,{{ accent }} 80%,#fff),color-mix(in srgb,{{ accent }} 52%,#000));border:2px solid #fff;display:grid;place-items:center;font:800 8px 'IBM Plex Mono';color:#0b0507;box-shadow:0 0 14px color-mix(in srgb,{{ accent }} 60%,transparent);">YOU</div>
+          <div style="position:absolute;left:{{ ball.left }};top:{{ ball.top }};width:9px;height:9px;margin:-4.5px 0 0 -4.5px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,#dfe8f0);box-shadow:0 0 6px 1px rgba(255,255,255,.85),0 1px 2px rgba(0,0,0,.45);animation:fa-ballpulse 1s ease-in-out infinite;z-index:3;"></div>
+        </div>
+
+        <div style="display:flex;align-items:flex-start;gap:14px;">
+          <sc-if value="{{ isPressure }}" hint-placeholder-val="{{ false }}">
+            <div style="flex:0 0 auto;position:relative;width:46px;height:46px;">
+              <svg width="46" height="46" viewBox="0 0 46 46" style="transform:rotate(-90deg);"><circle cx="23" cy="23" r="21" fill="none" stroke="rgba(120,140,166,.2)" stroke-width="3"></circle><circle key="{{ ringKey }}" cx="23" cy="23" r="21" fill="none" stroke="{{ condColor }}" stroke-width="3" stroke-linecap="round" stroke-dasharray="132" style="stroke-dashoffset:0;animation:fa-ring 1500ms linear forwards;"></circle></svg>
+            </div>
+          </sc-if>
+          <h2 style="margin:0;font:700 clamp(18px,2.4vw,25px)/1.32 'Archivo';letter-spacing:-0.01em;text-wrap:pretty;flex:1;">{{ prompt }}</h2>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px;">
+          <sc-for list="{{ options }}" as="opt" hint-placeholder-count="4">
+            <button onClick="{{ opt.onPick }}" class="fa-in-sm" style="display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:15px 16px;border-radius:13px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);color:#EAF2FB;font:600 14px/1.35 'Archivo';cursor:pointer;transition:border-color .14s,background .14s,transform .14s;animation-delay:{{ opt.delay }};" style-hover="border-color:color-mix(in srgb,var(--accent,#E0413C) 58%,transparent);background:rgba(16,20,37,.82);transform:translateY(-2px);">
+              <span style="flex:0 0 auto;width:28px;height:28px;border-radius:8px;display:grid;place-items:center;border:1px solid rgba(120,140,166,.28);font:700 12px 'IBM Plex Mono';color:#9FB0C5;">{{ opt.letter }}</span>
+              <span style="flex:1;">{{ opt.text }}</span>
+            </button>
+          </sc-for>
+        </div>
+        <div style="text-align:center;font:500 10px 'IBM Plex Mono';letter-spacing:.14em;color:#4f627a;">NO RIGHT ANSWER · LOCK IN TO SEE THE WORLD&rsquo;S CALL</div>
+      </div>
+    </main>
+  </sc-if>
+
+  <sc-if value="{{ isReveal }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:14px clamp(20px,4vw,58px) 60px;">
+      <div style="width:100%;max-width:640px;">
+        <div class="fa-in" style="text-align:center;font:600 11px 'IBM Plex Mono';letter-spacing:.4em;color:#7688a0;margin-bottom:10px;">{{ revKicker }}</div>
+        <h1 class="fa-in" style="margin:0 0 6px;text-align:center;font:800 clamp(26px,4vw,44px)/1.02 'Archivo';letter-spacing:-0.02em;animation-delay:.05s;">{{ revHeadline }}</h1>
+        <p class="fa-in" style="margin:0 auto 24px;max-width:500px;text-align:center;font:400 14.5px/1.55 'Archivo';color:#B4C2D4;animation-delay:.1s;">{{ revPrompt }}</p>
+
+        <div class="fa-in" style="width:100%;padding:20px 22px;border-radius:18px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.55);margin-bottom:18px;animation-delay:.14s;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+            <span style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:#61748c;">HOW THE WORLD CALLED IT</span>
+            <span style="font:600 9px 'IBM Plex Mono';letter-spacing:.14em;color:#61748c;">{{ crowdNote }}</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <sc-for list="{{ crowdBars }}" as="c" hint-placeholder-count="4">
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <div style="display:flex;align-items:baseline;justify-content:space-between;">
+                  <span style="font:600 13px 'Archivo';color:{{ c.labelColor }};">{{ c.text }} <sc-if value="{{ c.mine }}" hint-placeholder-val="{{ false }}"><span style="font:700 9px 'IBM Plex Mono';letter-spacing:.1em;color:{{ c.col }};">· YOUR CALL</span></sc-if></span>
+                  <span style="font:800 12px 'IBM Plex Mono';color:{{ c.numColor }};">{{ c.pct }}</span>
+                </div>
+                <div style="height:9px;border-radius:99px;background:rgba(120,140,166,.14);overflow:hidden;"><div class="fa-bar" style="height:100%;border-radius:99px;transform-origin:left;animation:fa-bar .8s cubic-bezier(.3,.8,.3,1) both;width:{{ c.barW }};background:{{ c.barBg }};box-shadow:{{ c.glow }};"></div></div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div class="fa-in" style="display:flex;gap:12px;margin-bottom:18px;flex-wrap:wrap;animation-delay:.2s;">
+          <div style="flex:1;min-width:180px;padding:16px 18px;border-radius:14px;border:1px solid rgba(120,140,166,.18);background:rgba(10,16,28,.4);">
+            <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:#61748c;margin-bottom:8px;">IN YOUR CHANGING ROOM</div>
+            <p style="margin:0;font:500 13.5px/1.5 'Archivo';color:#C6D3E2;">{{ clubNote }}</p>
+          </div>
+          <div style="flex:1;min-width:180px;padding:16px 18px;border-radius:14px;border:1px solid color-mix(in srgb,var(--accent,#E0413C) 26%,transparent);background:color-mix(in srgb,var(--accent,#E0413C) 7%,transparent);">
+            <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:var(--accent,#E0413C);margin-bottom:8px;">WHAT THE PRO DID</div>
+            <p style="margin:0;font:500 13.5px/1.5 'Archivo';color:#EAF2FB;">{{ proNote }}</p>
+          </div>
+        </div>
+
+        <div class="fa-in" style="text-align:center;animation-delay:.26s;">
+          <div style="display:inline-flex;align-items:center;gap:10px;padding:14px 22px;border-radius:12px;border:1px solid rgba(120,140,166,.22);background:rgba(10,16,28,.4);color:#9FB0C5;font:600 13px 'Archivo';">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+            {{ comeBack }}
+          </div>
+        </div>
+        <div class="fa-in" style="margin-top:22px;text-align:center;font:500 10px 'IBM Plex Mono';letter-spacing:.14em;color:#4f627a;animation-delay:.32s;">ONE A DAY · NO STOPWATCH SCORE · YOUR CALL IS LOGGED</div>
+
+        <sc-if value="{{ showDev }}" hint-placeholder-val="{{ false }}">
+          <div class="fa-in" style="margin-top:20px;text-align:center;animation-delay:.36s;">
+            <button onClick="{{ nextDay }}" style="padding:9px 16px;border-radius:10px;border:1px dashed rgba(120,140,166,.3);background:none;color:#61748c;font:500 11px 'IBM Plex Mono';letter-spacing:.08em;cursor:pointer;" style-hover="color:#9FB0C5;">▶ preview tomorrow&rsquo;s freeze (demo)</button>
+          </div>
+        </sc-if>
+      </div>
+    </main>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:960,&quot;height&quot;:720},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#E0413C&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#E0413C&quot;,&quot;#D9A521&quot;,&quot;#22D3EE&quot;,&quot;#FF7A2F&quot;]},&quot;demoNextDay&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  ORDER = ['destroyer','sentinel','architect','warrior'];
+  ARCH = {
+    destroyer:{ short:'Destroyer', color:'#E0413C' }, sentinel:{ short:'Sentinel', color:'#D9A521' },
+    architect:{ short:'Architect', color:'#22D3EE' }, warrior:{ short:'Warrior', color:'#FF7A2F' },
+  };
+  LAY = {
+    back:{ you:[50,58], mates:[[26,40],[74,40],[50,26]], foes:[[42,48],[60,44],[50,32],[58,62]], ball:[50,58] },
+    left:{ you:[50,56], mates:[[76,40],[58,26],[30,66]], foes:[[44,48],[62,44],[52,32],[40,58]], ball:[50,56] },
+    right:{ you:[50,56], mates:[[24,40],[42,26],[70,66]], foes:[[56,48],[38,44],[48,32],[60,58]], ball:[50,56] },
+    loose:{ you:[50,52], mates:[[30,36],[70,40],[52,22]], foes:[[46,42],[58,50],[42,60],[54,34]], ball:[54,44] },
+    press:{ you:[52,44], mates:[[30,58],[72,56],[50,68]], foes:[[50,32],[64,28],[38,30],[56,46]], ball:[52,44] },
+  };
+  FREEZES = [
+    { lay:'back',  prompt:'You get it on the half-turn in the pocket. Your winger\u2019s run is on; your centre-back is free behind you.', opts:{ architect:'Clip it in behind for the winger.', sentinel:'Reset it and keep the shape.', warrior:'Drive past the man stepping.', destroyer:'Shield it, take the foul, reset.' }, crowd:{architect:38,sentinel:28,warrior:18,destroyer:16}, pro:{a:'architect', note:'No hesitation \u2014 first-time in behind, and the winger was gone.'} },
+    { lay:'right', prompt:'Pressed the instant you receive, back to goal, tight to the line.', opts:{ architect:'One touch out to the free man.', warrior:'Half-turn and carry out of it.', destroyer:'Shield it, take contact, win the foul.', sentinel:'Screen it and hold until support arrives.' }, crowd:{architect:40,warrior:22,destroyer:22,sentinel:16}, pro:{a:'architect', note:'One touch \u2014 the ball was gone before the press even landed.'} },
+    { lay:'loose', prompt:'A 50/50 drops to you in central midfield, the game stretched both ways.', opts:{ destroyer:'Get across and win the duel.', sentinel:'Read the danger, kill the counter.', warrior:'Drive into the space they left.', architect:'First-time it forward before they set.' }, crowd:{destroyer:30,sentinel:26,warrior:22,architect:22}, pro:{a:'destroyer', note:'Wanted it more \u2014 won the duel clean and set his team going.'} },
+    { lay:'press', prompt:'They build out under your press. Their pivot takes a heavy touch right near you.', opts:{ destroyer:'Pounce \u2014 win it clean off him.', sentinel:'Read the panic pass and pick it off.', warrior:'Force them long instead.', architect:'Win it and switch the point of attack.' }, crowd:{destroyer:38,warrior:24,sentinel:20,architect:18}, pro:{a:'destroyer', note:'Pounced. A turnover that high is worth three passes.'} },
+    { lay:'back',  prompt:'You get it deep with a man on your shoulder and no space to run into.', opts:{ architect:'Clip an early ball over the top.', sentinel:'Recycle, wait for the gap.', warrior:'Lay it and spin into a run.', destroyer:'Back into him, win the foul, reset.' }, crowd:{sentinel:38,architect:26,warrior:18,destroyer:18}, pro:{a:'architect', note:'Went over the top first time \u2014 broke a whole line with one ball.'} },
+    { lay:'back',  prompt:'1\u20130 up, 80th minute, they\u2019re stretched and you have it central.', opts:{ sentinel:'Slow it, keep it, make them chase.', architect:'Dictate \u2014 go for the killer second.', warrior:'Carry us up to relieve the press.', destroyer:'Sit and protect the lead.' }, crowd:{sentinel:42,destroyer:22,warrior:18,architect:18}, pro:{a:'sentinel', note:'Took the sting out and made them chase shadows.'} },
+    { lay:'press', prompt:'1\u20130 up, 88th minute. The ball comes to you under pressure in your own third.', opts:{ destroyer:'Win the duel and clear it.', sentinel:'Keep it, waste time, control it.', warrior:'Carry it out to relieve.', architect:'Play out through the press.' }, crowd:{destroyer:40,sentinel:30,warrior:16,architect:14}, pro:{a:'destroyer', note:'No risks that late \u2014 won the duel, cleared the danger.'} },
+    { lay:'press', prompt:'Their 10 turns in front of you, driving at your line. Cover behind is thin.', opts:{ sentinel:'Show him backwards, delay.', destroyer:'Get tight and take it off him.', warrior:'Track him all the way across.', architect:'Angle him inside onto the cover.' }, crowd:{sentinel:34,destroyer:34,warrior:18,architect:14}, pro:{a:'sentinel', note:'Didn\u2019t dive in \u2014 showed him back and bought the recovery.'} },
+    { lay:'press', prompt:'Counter-press: you\u2019ve just lost it high, the ball is five yards away.', opts:{ destroyer:'Slam the press, win it back now.', warrior:'Cut the outlet and hound it.', architect:'Show for it and spring the re-attack.', sentinel:'Screen the forward pass and contain.' }, crowd:{destroyer:40,warrior:28,architect:16,sentinel:16}, pro:{a:'destroyer', note:'Won it back in two seconds \u2014 the best defence is the counter-press.'} },
+    { lay:'back',  prompt:'They\u2019re set in a mid-block, no lane to carry, restart in your half.', opts:{ architect:'Break the block with a disguised pass.', sentinel:'Circulate, move them side to side.', warrior:'Run to drag a marker, then press.', destroyer:'Invite the press, win the duel, play through.' }, crowd:{sentinel:40,architect:30,warrior:16,destroyer:14}, pro:{a:'architect', note:'Disguised it and broke the block with one pass.'} },
+    { lay:'loose', prompt:'Transition \u2014 you\u2019ve half-collected in the middle third, bodies scrambling.', opts:{ warrior:'Burst forward with it at your feet.', architect:'Release the forward with one pass.', sentinel:'Take a touch, reorganise.', destroyer:'Screen it and settle it first.' }, crowd:{architect:34,warrior:28,sentinel:22,destroyer:16}, pro:{a:'warrior', note:'Backed himself \u2014 drove straight at a broken line.'} },
+    { lay:'left',  prompt:'Their winger drives infield at you. You\u2019re covering the half-space.', opts:{ sentinel:'Delay, jockey, force him wide.', destroyer:'Step in and put the tackle in.', warrior:'Track him all the way.', architect:'Angle him into the cover, screen inside.' }, crowd:{sentinel:34,destroyer:32,warrior:18,architect:16}, pro:{a:'sentinel', note:'Jockeyed, delayed, and forced the mistake without diving in.'} },
+  ];
+
+  _dayOffset = 0;
+  _store = { plays:{} };
+  state = { view:'decide', chosen:null, ringKey:1 };
+
+  componentDidMount(){
+    try { this._soundOn=localStorage.getItem('fa_sound')!=='0'; } catch(e){ this._soundOn=true; }
+    this._dayOffset=0;
+    this._load();
+    const di=this._dayIndex();
+    const played=this._store.plays[di];
+    if(played){ this.state.view='reveal'; this.state.chosen=played.arch; }
+    this.forceUpdate();
+  }
+  componentWillUnmount(){ clearTimeout(this._to); }
+
+  _dayIndex(){ return Math.floor(Date.now()/86400000)+this._dayOffset; }
+  _load(){ try{ this._store=JSON.parse(localStorage.getItem('fa_dm_freeze'))||{plays:{}}; }catch(e){ this._store={plays:{}}; } if(!this._store.plays) this._store.plays={}; }
+  _save(){ try{ localStorage.setItem('fa_dm_freeze', JSON.stringify(this._store)); }catch(e){} }
+
+  _today(){ const di=this._dayIndex(); return { di, sc:this.FREEZES[((di%this.FREEZES.length)+this.FREEZES.length)%this.FREEZES.length], pressure: di%3===0 }; }
+
+  _weekStreak(){
+    const plays=Object.keys(this._store.plays).map(Number);
+    const di=this._dayIndex();
+    const weekStart=di-((di+3)%7);
+    const thisWeek=plays.filter(d=>d>=weekStart && d<weekStart+7).length;
+    return thisWeek;
+  }
+
+  _audio(){ if(this._actx===undefined){ try{ this._actx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ this._actx=null; } } if(this._actx&&this._actx.state==='suspended') this._actx.resume(); return this._actx; }
+  _tone(f,d,t,g){ const c=this._audio(); if(!c||this._soundOn===false) return; const o=c.createOscillator(),a=c.createGain(); o.type=t||'sine'; o.frequency.value=f; o.connect(a); a.connect(c.destination); const n=c.currentTime; a.gain.setValueAtTime(0,n); a.gain.linearRampToValueAtTime(g||0.05,n+0.01); a.gain.exponentialRampToValueAtTime(0.0001,n+d); o.start(n); o.stop(n+d); }
+  _sfx(k){ if(this._soundOn===false) return; if(k==='select'){ this._tone(560,0.1,'triangle',0.05); this._to=setTimeout(()=>this._tone(820,0.14,'triangle',0.05),60); } else if(k==='lock'){ this._tone(300,0.16,'sawtooth',0.04); setTimeout(()=>this._tone(660,0.2,'triangle',0.05),120); } }
+  _toggleSound(){ const on=this._soundOn===false; this._soundOn=on; try{ localStorage.setItem('fa_sound', on?'1':'0'); }catch(e){} if(on){ this._audio(); this._tone(560,0.1,'triangle',0.05); } this.forceUpdate(); }
+
+  _lock(arch){
+    if(this.state.view!=='decide') return;
+    this._sfx('lock');
+    const di=this._dayIndex();
+    this._store.plays[di]={ arch, ts:Date.now() }; this._save();
+    this.setState({ view:'reveal', chosen:arch });
+  }
+  _nextDay(){ this._dayOffset+=1; const di=this._dayIndex(); const played=this._store.plays[di]; this._sfx('select'); this.setState({ view: played?'reveal':'decide', chosen: played?played.arch:null, ringKey:this.state.ringKey+1 }); }
+
+  renderVals(){
+    const accent=this.props.accent ?? '#E0413C';
+    const soundOn=this._soundOn!==false;
+    const t=this._today ? this._today() : { di:0, sc:this.FREEZES[0], pressure:false };
+    const sc=t.sc; const lay=this.LAY[sc.lay];
+    const pos=(p)=>({ left:p[1]+'%', top:p[0]+'%' });
+    const archs=Object.keys(sc.opts);
+    const week=this._store?this._weekStreak():0;
+
+    const base={
+      accent, soundOn, soundOff:!soundOn, soundColor:soundOn?accent:'#61748c', soundTitle:soundOn?'Sound on':'Sound off',
+      toggleSound:()=>this._toggleSound(),
+      isDecide:this.state.view==='decide', isReveal:this.state.view==='reveal',
+      streakLabel: week+' this wk',
+      condLabel: t.pressure?'ON THE CLOCK':'NO CLOCK', condColor: t.pressure?'#FF5A6E':'#1FB588',
+      isPressure:t.pressure, ringKey:'r'+this.state.ringKey,
+      mates:lay.mates.map(pos), foes:lay.foes.map(pos), you:pos(lay.you), ball:pos(lay.ball),
+      prompt:sc.prompt,
+      options: archs.map((a,i)=>({ letter:'ABCD'[i], text:sc.opts[a], delay:(0.04+i*0.05).toFixed(2)+'s', onPick:()=>this._lock(a) })),
+      showDev: this.props.demoNextDay===true,
+      nextDay:()=>this._nextDay(),
+    };
+
+    const chosen=this.state.chosen;
+    const total=archs.reduce((s,a)=>s+(sc.crowd[a]||0),0)||1;
+    const maxc=Math.max(...archs.map(a=>sc.crowd[a]||0),1);
+    base.revKicker='LOCKED IN';
+    const chosenPct=chosen?Math.round((sc.crowd[chosen]||0)/total*100):0;
+    base.revHeadline = chosen ? (chosenPct>=maxc/total*100-1? 'You went with the crowd.' : (chosenPct<=22? 'You saw it differently.' : 'A call worth defending.')) : 'No call today.';
+    base.revPrompt=sc.prompt;
+    base.crowdNote='WORLDWIDE · TODAY';
+    base.crowdBars=[...archs].sort((a,b)=>(sc.crowd[b]||0)-(sc.crowd[a]||0)).map(a=>{
+      const pc=Math.round((sc.crowd[a]||0)/total*100);
+      const mine=a===chosen; const col=this.ARCH[a].color;
+      return { text:sc.opts[a], mine, col, labelColor:mine?'#F2F8FE':'#9FB0C5', numColor:mine?col:'#9FB0C5',
+        pct:pc+'%', barW:Math.round((sc.crowd[a]||0)/maxc*100)+'%',
+        barBg: mine?('linear-gradient(90deg,'+col+',color-mix(in srgb,'+col+' 45%,transparent))'):'rgba(140,160,186,.32)',
+        glow: mine?('0 0 10px color-mix(in srgb,'+col+' 50%,transparent)'):'none' };
+    });
+    const clubN = chosen? (2+ (t.di % 4)) : 0;
+    base.clubNote = chosen? (clubN+' of your teammates made the same call as you today. '+(clubN>=3?'You\u2019re the consensus in that dressing room.':'You\u2019re in the minority at your club.')) : 'You didn\u2019t get a call in before the whistle.';
+    base.proNote = sc.pro.note + (chosen===sc.pro.a? ' \u2014 same as you.' : '');
+    base.comeBack='Come back tomorrow for the next one.';
+    return base;
+  }
+}
+</script>
+</body>
+</html>

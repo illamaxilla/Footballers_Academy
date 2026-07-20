@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="./scenes.js"></script>
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:#04060c;}
+  a{color:var(--accent,#22D3EE);text-decoration:none;}
+  a:hover{opacity:.92;}
+  @keyframes fa-blink{0%,100%{opacity:1;}50%{opacity:.25;}}
+  @keyframes fa-rise{0%{transform:translateY(16px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-rise-sm{0%{transform:translateY(10px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-flash{0%{opacity:0;}18%{opacity:.9;}100%{opacity:0;}}
+  @keyframes fa-grow{from{transform:scaleX(0);}to{transform:scaleX(1);}}
+  .fa-in{opacity:0;animation:fa-rise .7s cubic-bezier(.2,.7,.2,1) forwards;}
+  .fa-in-sm{opacity:0;animation:fa-rise-sm .5s cubic-bezier(.2,.7,.2,1) forwards;}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;}.fa-in,.fa-in-sm{opacity:1!important;transform:none!important;}}
+</style>
+</helmet>
+<div data-screen-label="The xG Dilemma" style="position:relative;display:flex;flex-direction:column;min-height:100dvh;width:100%;overflow:hidden;background:radial-gradient(120% 90% at 50% 6%,#0e1a2d 0%,#080e1a 44%,#04060c 100%);color:#EAF2FB;font-family:'Archivo',system-ui,sans-serif;--accent:{{ accent }};">
+
+  <div style="position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.4;background:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0px,rgba(255,255,255,.02) 1px,transparent 1px,transparent 4px);"></div>
+  <div style="position:absolute;top:20px;left:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;top:20px;right:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;left:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;right:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+
+  <!-- TOP BAR -->
+  <header style="position:relative;z-index:6;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px clamp(26px,3.4vw,58px);">
+    <div style="min-width:120px;display:flex;">
+      <sc-if value="{{ showBack }}" hint-placeholder-val="{{ true }}">
+        <button onClick="{{ back }}" style="display:inline-flex;align-items:center;gap:8px;background:none;border:0;cursor:pointer;color:#8EA1B8;font:600 12.5px 'Archivo';padding:0;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M15 5l-7 7 7 7"/></svg>Back
+        </button>
+      </sc-if>
+    </div>
+    <div style="display:flex;align-items:center;gap:11px;">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" style="stroke:var(--accent,#22D3EE);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;"><path d="M12 3v4M12 17v4M3 12h4M17 12h4"/><circle cx="12" cy="12" r="4.4"/></svg>
+      <span style="font:800 13px 'Archivo';letter-spacing:.05em;">THE xG <span style="color:var(--accent,#22D3EE);">DILEMMA</span></span>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;min-width:120px;justify-content:flex-end;">
+      <button onClick="{{ toggleSound }}" title="{{ soundTitle }}" style="display:grid;place-items:center;width:28px;height:28px;border-radius:8px;border:1px solid rgba(120,140,166,.24);background:rgba(10,16,28,.5);cursor:pointer;color:{{ soundColor }};">
+        <sc-if value="{{ soundOn }}" hint-placeholder-val="{{ true }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></sc-if>
+        <sc-if value="{{ soundOff }}" hint-placeholder-val="{{ false }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M22 9l-6 6M16 9l6 6"/></svg></sc-if>
+      </button>
+    </div>
+  </header>
+
+  <!-- INTRO -->
+  <sc-if value="{{ isIntro }}" hint-placeholder-val="{{ true }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;text-align:center;padding:20px clamp(26px,4vw,58px) 60px;">
+      <div class="fa-in" style="display:inline-flex;align-items:center;gap:10px;margin-bottom:20px;font:600 12px 'IBM Plex Mono';letter-spacing:.4em;color:var(--accent,#22D3EE);">
+        <span style="width:6px;height:6px;border-radius:50%;background:var(--accent,#22D3EE);box-shadow:0 0 8px var(--accent,#22D3EE);animation:fa-blink 1.6s ease-in-out infinite;"></span>DISPOSITION · SHOT / PASS / CARRY
+      </div>
+      <h1 class="fa-in" style="margin:0 0 16px;font:800 clamp(36px,5.4vw,74px)/0.97 'Archivo';letter-spacing:-0.03em;text-wrap:balance;max-width:900px;animation-delay:.06s;">Shoot it,<br>or make the goal?</h1>
+      <p class="fa-in" style="margin:0 0 26px;max-width:640px;font:400 clamp(15px,1.3vw,18px)/1.6 'Archivo';color:#9FB0C5;text-wrap:pretty;animation-delay:.12s;">Ten moments in the final third. Every one gives you three ways out — <strong style="color:#FF9A5A;">shoot</strong>, <strong style="color:var(--accent,#22D3EE);">square it</strong>, or <strong style="color:#B79BFF;">drive at them</strong>. Read the picture and call it before the clock runs. The numbers stay hidden until you choose — then we show you the chance each one was really worth.</p>
+
+      <div class="fa-in" style="margin-bottom:12px;font:600 10px 'IBM Plex Mono';letter-spacing:.28em;color:#61748c;animation-delay:.2s;">CHOOSE YOUR LEVEL</div>
+      <div class="fa-in" style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;max-width:560px;margin-bottom:34px;animation-delay:.22s;">
+        <sc-for list="{{ diffs }}" as="d" hint-placeholder-count="3">
+          <button onClick="{{ d.pick }}" style="flex:1 1 150px;min-width:148px;text-align:left;padding:16px 18px;border-radius:15px;border:1px solid {{ d.border }};background:{{ d.bg }};cursor:pointer;transition:border-color .14s ease,background .14s ease;">
+            <div style="font:800 16px 'Archivo';color:{{ d.titleColor }};margin-bottom:3px;">{{ d.name }}</div>
+            <div style="font:400 11.5px/1.45 'Archivo';color:#9FB0C5;">{{ d.desc }}</div>
+          </button>
+        </sc-for>
+      </div>
+
+      <button onClick="{{ begin }}" class="fa-in" style="display:inline-flex;align-items:center;gap:12px;padding:18px 46px;border-radius:13px;border:0;background:var(--accent,#22D3EE);color:#0b0518;font:700 16px 'Archivo';cursor:pointer;box-shadow:0 14px 46px color-mix(in srgb,var(--accent,#22D3EE) 42%,transparent);transition:transform .16s ease;animation-delay:.3s;" style-hover="transform:translateY(-2px);">
+        Play the first ball
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12h13M12 6l6 6-6 6"/></svg>
+      </button>
+      <div class="fa-in" style="margin-top:18px;font:500 10px 'IBM Plex Mono';letter-spacing:.14em;color:#4f627a;animation-delay:.36s;">{{ bestLine }}</div>
+    </main>
+  </sc-if>
+
+  <!-- PLAY -->
+  <sc-if value="{{ isPlay }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;gap:14px;padding:0 clamp(16px,2.4vw,42px) 24px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;width:100%;max-width:780px;">
+        <div style="text-align:left;min-width:96px;">
+          <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.2em;color:#61748c;">MOMENT</div>
+          <div style="font:800 24px 'IBM Plex Mono';color:#F2F8FE;line-height:1.05;">{{ trialLabel }}</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="font:800 15px 'Archivo';letter-spacing:.02em;color:{{ phaseColor }};transition:color .2s ease;">{{ phaseTitle }}</div>
+          <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.14em;color:#7688a0;margin-top:2px;">{{ phaseSub }}</div>
+        </div>
+        <div style="min-width:96px;display:flex;justify-content:flex-end;">
+          <div style="position:relative;width:44px;height:44px;">
+            <svg width="44" height="44" viewBox="0 0 44 44" style="transform:rotate(-90deg);"><circle cx="22" cy="22" r="18" fill="none" stroke="rgba(120,140,166,.2)" stroke-width="4"/><circle ref="{{ ringRef }}" cx="22" cy="22" r="18" fill="none" stroke="{{ ringColor }}" stroke-width="4" stroke-linecap="round" stroke-dasharray="113.1" stroke-dashoffset="0"/></svg>
+            <div style="position:absolute;inset:0;display:grid;place-items:center;font:800 11px 'IBM Plex Mono';color:{{ ringColor }};">{{ ringGlyph }}</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="position:relative;width:100%;max-width:780px;flex:0 1 auto;aspect-ratio:16/9;min-height:0;border-radius:18px;overflow:hidden;border:1px solid rgba(120,140,166,.22);">
+        <canvas ref="{{ canvasRef }}" style="display:block;width:100%;height:100%;"></canvas>
+        <div ref="{{ flashRef }}" style="position:absolute;inset:0;pointer-events:none;opacity:0;"></div>
+        <div style="position:absolute;left:0;right:0;bottom:10px;text-align:center;pointer-events:none;font:600 10px 'IBM Plex Mono';letter-spacing:.2em;color:rgba(200,215,232,.55);">{{ pitchHint }}</div>
+      </div>
+
+      <!-- DECIDE: three actions -->
+      <sc-if value="{{ isDecide }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;flex-wrap:wrap;gap:12px;width:100%;max-width:780px;">
+          <sc-for list="{{ actions }}" as="a" hint-placeholder-count="3">
+            <button onClick="{{ a.pick }}" style="flex:1 1 210px;min-width:170px;display:flex;align-items:center;gap:13px;text-align:left;padding:15px 18px;border-radius:15px;border:1px solid {{ a.border }};background:{{ a.bg }};cursor:pointer;transition:transform .12s ease,border-color .14s ease;" style-hover="transform:translateY(-2px);">
+              <span style="display:grid;place-items:center;width:40px;height:40px;border-radius:11px;background:color-mix(in srgb,{{ a.color }} 16%,transparent);color:{{ a.color }};flex-shrink:0;" innerHTML="{{ a.icon }}"></span>
+              <span>
+                <span style="display:block;font:800 16px 'Archivo';color:{{ a.color }};letter-spacing:.01em;">{{ a.name }}</span>
+                <span style="display:block;font:500 11.5px/1.35 'Archivo';color:#9FB0C5;margin-top:1px;">{{ a.sub }}</span>
+              </span>
+            </button>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <!-- REVEAL: the three real values -->
+      <sc-if value="{{ isReveal }}" hint-placeholder-val="{{ false }}">
+        <div style="width:100%;max-width:780px;display:flex;flex-direction:column;gap:9px;">
+          <sc-for list="{{ bars }}" as="b" hint-placeholder-count="3">
+            <div style="display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:12px;border:1px solid {{ b.border }};background:{{ b.bg }};">
+              <span style="width:66px;flex-shrink:0;font:800 13px 'Archivo';color:{{ b.color }};letter-spacing:.02em;">{{ b.name }}</span>
+              <span style="flex:1;height:12px;border-radius:99px;background:rgba(120,140,166,.14);overflow:hidden;"><span style="display:block;height:100%;width:{{ b.width }};border-radius:99px;background:{{ b.color }};transform-origin:left;animation:fa-grow .55s cubic-bezier(.3,.8,.3,1) both;"></span></span>
+              <span style="width:52px;flex-shrink:0;text-align:right;font:800 14px 'IBM Plex Mono';color:{{ b.color }};">{{ b.val }}</span>
+              <span style="width:78px;flex-shrink:0;text-align:right;font:700 9px 'IBM Plex Mono';letter-spacing:.1em;color:{{ b.tagColor }};">{{ b.tag }}</span>
+            </div>
+          </sc-for>
+          <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin-top:4px;">
+            <div style="font:600 12.5px/1.5 'Archivo';color:#C6D3E2;max-width:520px;text-wrap:pretty;">{{ verdict }}</div>
+            <button onClick="{{ next }}" style="display:inline-flex;align-items:center;gap:10px;padding:13px 30px;border-radius:12px;border:0;background:var(--accent,#22D3EE);color:#0b0518;font:700 14px 'Archivo';cursor:pointer;flex-shrink:0;" style-hover="transform:translateY(-2px);">
+              {{ nextLabel }}
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12h13M12 6l6 6-6 6"/></svg>
+            </button>
+          </div>
+        </div>
+      </sc-if>
+    </main>
+  </sc-if>
+
+  <!-- OVER -->
+  <sc-if value="{{ isOver }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;text-align:center;padding:20px clamp(26px,4vw,58px) 70px;">
+      <div class="fa-in" style="display:inline-flex;align-items:center;gap:9px;margin-bottom:16px;padding:6px 14px;border:1px solid color-mix(in srgb,var(--accent,#22D3EE) 32%,transparent);border-radius:999px;font:600 10px 'IBM Plex Mono';letter-spacing:.28em;color:var(--accent,#22D3EE);">DECISION REPORT</div>
+      <div class="fa-in" style="font:600 10px 'IBM Plex Mono';letter-spacing:.24em;color:#7688a0;margin-bottom:6px;animation-delay:.05s;">CHANCE QUALITY YOU CAPTURED</div>
+      <h1 class="fa-in" style="margin:0 0 2px;font:800 clamp(46px,8vw,96px)/0.9 'IBM Plex Mono';letter-spacing:-0.02em;color:{{ qualColor }};animation-delay:.08s;">{{ qualValue }}</h1>
+      <div class="fa-in" style="font:600 11px 'IBM Plex Mono';letter-spacing:.2em;color:#7688a0;margin-bottom:8px;animation-delay:.09s;">OF THE BEST AVAILABLE, ON AVERAGE</div>
+      <div class="fa-in" style="font:700 13px 'Archivo';color:#B4C2D4;margin-bottom:18px;max-width:560px;text-wrap:pretty;animation-delay:.1s;">{{ qualVerdict }}</div>
+
+      <!-- fingerprint -->
+      <div class="fa-in" style="width:100%;max-width:520px;margin:0 auto 22px;animation-delay:.16s;">
+        <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.2em;color:#7688a0;margin-bottom:9px;text-align:left;">YOUR CHOICE FINGERPRINT</div>
+        <div style="display:flex;height:26px;border-radius:8px;overflow:hidden;border:1px solid rgba(120,140,166,.2);">
+          <sc-for list="{{ mix }}" as="m" hint-placeholder-count="3">
+            <div style="width:{{ m.width }};background:{{ m.color }};display:grid;place-items:center;font:800 10px 'IBM Plex Mono';color:#0b0518;transition:width .5s ease;">{{ m.pct }}</div>
+          </sc-for>
+        </div>
+        <div style="display:flex;gap:16px;justify-content:center;margin-top:9px;flex-wrap:wrap;">
+          <sc-for list="{{ mix }}" as="m" hint-placeholder-count="3">
+            <span style="display:inline-flex;align-items:center;gap:6px;font:700 10px 'IBM Plex Mono';letter-spacing:.06em;color:#9FB0C5;"><span style="width:9px;height:9px;border-radius:2px;background:{{ m.color }};"></span>{{ m.name }}</span>
+          </sc-for>
+        </div>
+      </div>
+
+      <div class="fa-in" style="display:flex;flex-wrap:wrap;gap:22px;justify-content:center;margin-bottom:24px;animation-delay:.2s;">
+        <div style="text-align:center;"><div style="font:800 26px 'IBM Plex Mono';color:#EAF2FB;">{{ optimalCount }}</div><div style="font:600 9px 'IBM Plex Mono';letter-spacing:.12em;color:#61748c;margin-top:3px;">BEST CALL PICKED</div></div>
+        <div style="width:1px;background:rgba(120,140,166,.2);"></div>
+        <div style="text-align:center;"><div style="font:800 26px 'IBM Plex Mono';color:{{ frozeColor }};">{{ frozeCount }}</div><div style="font:600 9px 'IBM Plex Mono';letter-spacing:.12em;color:#61748c;margin-top:3px;">RAN OUT OF TIME</div></div>
+      </div>
+
+      <div class="fa-in" style="max-width:600px;margin-bottom:20px;padding:18px 22px;border-radius:14px;border:1px dashed rgba(120,140,166,.3);background:rgba(10,16,28,.4);text-align:left;animation-delay:.26s;">
+        <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.2em;color:#7688a0;margin-bottom:8px;">WHAT THIS LEANS TOWARD</div>
+        <div style="font:500 14px/1.6 'Archivo';color:#C6D3E2;">{{ softRead }}</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;">
+          <sc-for list="{{ traitChips }}" as="c" hint-placeholder-count="2">
+            <span style="display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border-radius:8px;border:1px solid color-mix(in srgb,var(--accent,#22D3EE) 30%,transparent);background:color-mix(in srgb,var(--accent,#22D3EE) 8%,transparent);font:700 11px 'IBM Plex Mono';letter-spacing:.06em;color:#C6D3E2;"><span style="font-weight:800;color:var(--accent,#22D3EE);">{{ c.key }}</span>{{ c.label }}</span>
+          </sc-for>
+        </div>
+        <div style="margin-top:12px;font:500 11px/1.5 'Archivo';color:#7688a0;text-wrap:pretty;">This reads your <strong style="color:#9FB0C5;">disposition</strong> — where you look for the goal — not your finishing. A great shot appetite still needs a great strike.</div>
+      </div>
+
+      <div class="fa-in" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:14px;animation-delay:.32s;">
+        <button onClick="{{ retake }}" style="display:inline-flex;align-items:center;gap:11px;padding:18px 44px;border-radius:13px;border:0;background:var(--accent,#22D3EE);color:#0b0518;font:700 16px 'Archivo';cursor:pointer;box-shadow:0 14px 46px color-mix(in srgb,var(--accent,#22D3EE) 42%,transparent);transition:transform .16s ease;" style-hover="transform:translateY(-2px);">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" style="stroke:#0b0518;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
+          Play again
+        </button>
+        <a href="Assessment.dc.html" style="display:inline-flex;align-items:center;gap:9px;padding:18px 26px;border-radius:13px;border:1px solid rgba(157,176,198,.28);background:rgba(12,18,30,.4);color:#C6D3E2;font:600 15px 'Archivo';" style-hover="border-color:color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);color:#EAF2FB;">Back to the scan</a>
+      </div>
+      <div class="fa-in" style="margin-top:20px;font:500 10px 'IBM Plex Mono';letter-spacing:.14em;color:#4f627a;animation-delay:.38s;">{{ dataLine }}</div>
+    </main>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1100,&quot;height&quot;:820},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#22D3EE&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#22D3EE&quot;,&quot;#A78BFA&quot;,&quot;#C6FF3A&quot;,&quot;#FF7A45&quot;,&quot;#FF4D8D&quot;]},&quot;motion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;embedded&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;onDone&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;(counts:any, meta:any)=&gt;void&quot;}}">
+class Component extends DCLogic {
+  N_TRIALS = 10;
+  ACT = { shoot:{ name:'SHOOT', color:'#FF9A5A', sub:'Back yourself from here.', icon:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M4 20L20 4M20 4h-6M20 4v6"/><circle cx="8" cy="16" r="3"/></svg>' },
+          pass:{ name:'SQUARE IT', color:'#22D3EE', sub:'Give it to the better chance.', icon:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M3 12h15M13 7l5 5-5 5"/><circle cx="21" cy="12" r="1.6" fill="currentColor" stroke="none"/></svg>' },
+          carry:{ name:'DRIVE AT THEM', color:'#B79BFF', sub:'Take it on yourself.', icon:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12h11M12 8l4 4-4 4"/><circle cx="20" cy="12" r="1.6"/><path d="M3 6v12"/></svg>' } };
+  // authored dilemma gradient — self xG .07..32, pass(team) xG .09..60, carry EV .10..30
+  DIL = [
+    { s:'S10', shoot:0.32, pass:0.09, carry:0.14, best:'shoot' },   // sight of goal, screen slipped
+    { s:'S06', shoot:0.08, pass:0.55, carry:0.10, best:'pass'  },   // cut-back to arriving man
+    { s:'S08', shoot:0.10, pass:0.12, carry:0.28, best:'carry' },   // isolated, grass to attack
+    { s:'S05', shoot:0.22, pass:0.26, carry:0.12, best:'pass'  },   // half-space seam, marginal
+    { s:'S07', shoot:0.28, pass:0.24, carry:0.11, best:'shoot' },   // your strike, marginal
+    { s:'S03', shoot:0.15, pass:0.48, carry:0.13, best:'pass'  },   // counter, striker clean — square it
+    { s:'S02', shoot:0.07, pass:0.18, carry:0.27, best:'carry' },   // between lines, channel to drive
+    { s:'S08', shoot:0.12, pass:0.09, carry:0.30, best:'carry' },   // 1v1 hero ball
+    { s:'S10', shoot:0.30, pass:0.12, carry:0.16, best:'shoot' },   // top of the D, take it
+    { s:'S06', shoot:0.11, pass:0.60, carry:0.14, best:'pass'  },   // the killer square
+  ];
+  DIFFS = {
+    academy: { name:'Academy', desc:'A long look. Read it in your own time.', winMs:6500 },
+    pro:     { name:'Pro',     desc:'Game speed. A fair beat to decide.',     winMs:4200 },
+    elite:   { name:'Elite',   desc:'Snap calls. Trust the first read.',      winMs:2600 },
+  };
+  ORDER = ['academy','pro','elite'];
+
+  state = { view:'intro', diff:'pro', trial:0, phase:'decide' };
+
+  componentDidMount(){
+    try { this._soundOn = localStorage.getItem('fa_sound') !== '0'; } catch(e){ this._soundOn=true; }
+    try { const p=JSON.parse(localStorage.getItem('fa_am_xg')||'null'); this._bestQ = p&&p.measures? p.measures.decisionQualityPct : null; } catch(e){ this._bestQ=null; }
+    this._boot(0);
+    this._onResize=()=>{ this._resize(); this._draw(); }; window.addEventListener('resize', this._onResize);
+  }
+  componentWillUnmount(){ window.removeEventListener('resize', this._onResize); clearTimeout(this._to); }
+  _boot(t){ if(window.AMScenes){ this._API=window.AMScenes; return; } if(t<40) setTimeout(()=>this._boot(t+1),60); }
+
+  // ---------- audio ----------
+  _audio(){ if(this._actx===undefined){ try{ this._actx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ this._actx=null; } } if(this._actx&&this._actx.state==='suspended') this._actx.resume(); return this._actx; }
+  _tone(f,d,t,g,slide){ const c=this._audio(); if(!c||this._soundOn===false) return; const o=c.createOscillator(),a=c.createGain(); o.type=t||'sine'; o.frequency.setValueAtTime(f,c.currentTime); if(slide) o.frequency.exponentialRampToValueAtTime(Math.max(20,slide),c.currentTime+d); o.connect(a); a.connect(c.destination); const n=c.currentTime; a.gain.setValueAtTime(0.0001,n); a.gain.exponentialRampToValueAtTime(g||0.05,n+0.008); a.gain.exponentialRampToValueAtTime(0.0001,n+d); o.start(n); o.stop(n+d+0.02); }
+  _haptic(ms){ try{ if(navigator.vibrate) navigator.vibrate(ms||8); }catch(e){} }
+  _sfx(k){ if(this._soundOn===false) return;
+    if(k==='reveal'){ this._tone(620,0.09,'triangle',0.05); setTimeout(()=>this._tone(940,0.13,'triangle',0.045),55); }
+    else if(k==='good'){ this._tone(660,0.09,'triangle',0.055); setTimeout(()=>this._tone(990,0.14,'sine',0.045),60); setTimeout(()=>this._tone(1320,0.16,'sine',0.04),130); }
+    else if(k==='meh'){ this._tone(300,0.2,'sawtooth',0.05,180); }
+    else if(k==='froze'){ this._tone(200,0.3,'sawtooth',0.05,110); }
+    else if(k==='whistle'){ this._tone(900,0.16,'sine',0.05,1200); }
+    else if(k==='tap'){ this._tone(520,0.05,'square',0.03); }
+  }
+  _toggleSound(){ const on=this._soundOn===false; this._soundOn=on; try{ localStorage.setItem('fa_sound', on?'1':'0'); }catch(e){} if(on){ this._audio(); this._sfx('tap'); } this.forceUpdate(); }
+
+  // ---------- canvas ----------
+  _resize(){ const cv=this._canvas; if(!cv) return; const r=cv.getBoundingClientRect(); const dpr=Math.min(2,window.devicePixelRatio||1); cv.width=Math.max(2,Math.round(r.width*dpr)); cv.height=Math.max(2,Math.round(r.height*dpr)); this._dpr=dpr; this._W=r.width; this._H=r.height; }
+  _cvRef(el){ this._canvas=el; if(el){ requestAnimationFrame(()=>{ this._resize(); this._draw(); }); } }
+  _flRef(el){ this._flashEl=el; }
+  _ringRef(el){ this._ringEl=el; }
+  _px(nx,ny){ const pad=Math.min(this._W,this._H)*0.08; return [ pad + nx*(this._W-2*pad), pad + ny*(this._H-2*pad) ]; }
+
+  // ---------- flow ----------
+  _pickDiff(d){ this._sfx('tap'); this.setState({ diff:d }); }
+  _begin(){
+    this._audio(); this._sfx('whistle'); this._haptic(12);
+    this._cfg=this.DIFFS[this.state.diff];
+    const order=this.DIL.map((_,i)=>i);
+    for(let i=order.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [order[i],order[j]]=[order[j],order[i]]; }
+    this._order=order; this._log=[]; this._counts={shoot:0,pass:0,carry:0,froze:0};
+    this._sumChosen=0; this._sumMax=0; this._optimal=0;
+    this.setState({ view:'play', trial:0, phase:'decide' }, ()=>{ this._resize(); this._startTrial(0); });
+  }
+
+  _startTrial(i){
+    const d=this.DIL[this._order[i]]; this._d=d;
+    const sc=this._API? this._API.getScene(d.s) : null; this._cur=sc;
+    // geometry
+    if(sc){
+      const carrier=sc.players[sc.ball.carrier]; const recv=sc.players[sc.groundTruth.bestPass];
+      this._carrier={ x:carrier.x, y:carrier.y }; this._recv={ x:recv.x, y:recv.y, role:recv.role };
+      // carry lane: toward goal, into the least-crowded of two channels
+      const tx=Math.min(0.9, carrier.x+0.16);
+      const up={x:tx,y:Math.max(0.12,carrier.y-0.14)}, dn={x:tx,y:Math.min(0.88,carrier.y+0.14)};
+      const dens=(pt)=>sc.players.reduce((s,p)=>p.team==='them'? s+1/(0.02+Math.hypot(p.x-pt.x,p.y-pt.y)):s,0);
+      this._carry = dens(up)<=dens(dn)? up: dn;
+    }
+    this._chosen=null; this._maxEV=Math.max(d.shoot,d.pass,d.carry);
+    this.setState({ trial:i, phase:'decide' }, ()=>{ this._draw(); this._startRing(); });
+    this._sfx('tap');
+  }
+
+  _startRing(){
+    const el=this._ringEl; const win=this._cfg.winMs;
+    if(el){ el.style.transition='none'; el.style.strokeDashoffset='0'; void el.offsetWidth; el.style.transition='stroke-dashoffset '+win+'ms linear'; el.style.strokeDashoffset='113.1'; }
+    clearTimeout(this._to);
+    this._tStart=performance.now();
+    this._to=setTimeout(()=>{ if(this.state.phase==='decide') this._choose(null); }, win);
+  }
+
+  _choose(action){
+    if(this.state.phase!=='decide') return;
+    clearTimeout(this._to);
+    const el=this._ringEl; if(el){ const cs=getComputedStyle(el); el.style.transition='none'; el.style.strokeDashoffset=cs.strokeDashoffset; }
+    const d=this._d; const rt=Math.round(performance.now()-this._tStart);
+    const ev = action? d[action] : 0;
+    const froze = action===null;
+    if(froze){ this._counts.froze++; this._sfx('froze'); this._flash('rgba(120,140,166,.28)'); }
+    else {
+      this._counts[action]++; this._sumChosen+=ev;
+      const optimal = action===d.best;
+      if(optimal){ this._optimal++; this._sfx('good'); this._flash('color-mix(in srgb,'+(this._accent||'#22D3EE')+' 30%,transparent)'); this._haptic(16); }
+      else { this._sfx(ev>=this._maxEV*0.72?'reveal':'meh'); this._flash(ev>=this._maxEV*0.72?'rgba(255,176,32,.24)':'rgba(255,74,95,.26)'); this._haptic(9); }
+    }
+    this._sumMax+=this._maxEV;
+    this._chosen=action;
+    this._log.push({ dil:this._order[this.state.trial], scene:d.s, chosen:action||'froze', ev:+ev.toFixed(2), best:d.best, bestEV:+this._maxEV.toFixed(2), optimal:action===d.best, rtMs:rt });
+    this.setState({ phase:'reveal' }, ()=>this._draw());
+  }
+
+  _next(){
+    const n=this.state.trial+1;
+    if(n>=this.N_TRIALS) this._gameOver(); else this._startTrial(n);
+  }
+
+  // ---------- drawing ----------
+  _drawBall(ctx,x,y,r,glow){ if(glow){ ctx.shadowColor='rgba(255,255,255,.85)'; ctx.shadowBlur=12; } const g=ctx.createRadialGradient(x-r*0.3,y-r*0.35,r*0.15,x,y,r); g.addColorStop(0,'#ffffff'); g.addColorStop(1,'#cfe0ee'); ctx.fillStyle=g; ctx.beginPath(); ctx.arc(x,y,r,0,7); ctx.fill(); ctx.shadowBlur=0; ctx.fillStyle='rgba(20,40,60,.5)'; ctx.beginPath(); ctx.arc(x-r*0.15,y-r*0.1,r*0.26,0,7); ctx.fill(); }
+  _token(ctx,x,y,r,fill,stroke,label,labelCol,alpha){ ctx.globalAlpha=alpha==null?1:alpha; ctx.fillStyle='rgba(0,0,0,.32)'; ctx.beginPath(); ctx.ellipse(x,y+r*0.85,r*0.9,r*0.3,0,0,7); ctx.fill(); ctx.fillStyle=fill; ctx.strokeStyle=stroke||'rgba(255,255,255,.22)'; ctx.lineWidth=1.5; ctx.beginPath(); ctx.arc(x,y-r*0.16,r,0,7); ctx.fill(); ctx.stroke(); ctx.fillStyle=labelCol||'#04121a'; ctx.font="800 "+Math.max(8,this._W*0.011)+"px 'IBM Plex Mono'"; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(label,x,y-r*0.16); ctx.textBaseline='alphabetic'; ctx.globalAlpha=1; }
+  _chevron(ctx,x,y,r,col,alpha){ ctx.save(); ctx.globalAlpha=alpha==null?1:alpha; ctx.translate(x,y); ctx.fillStyle=col; ctx.beginPath(); ctx.moveTo(-r,0); ctx.lineTo(r*0.55,-r*0.85); ctx.lineTo(r*0.15,0); ctx.lineTo(r*0.55,r*0.85); ctx.closePath(); ctx.fill(); ctx.restore(); }
+  _lane(ctx,x0,y0,x1,y1,col,w,dash,alpha){ ctx.save(); ctx.globalAlpha=alpha==null?1:alpha; ctx.strokeStyle=col; ctx.lineWidth=w; ctx.lineCap='round'; if(dash) ctx.setLineDash(dash); ctx.beginPath(); ctx.moveTo(x0,y0); ctx.lineTo(x1,y1); ctx.stroke(); ctx.setLineDash([]);
+    const ang=Math.atan2(y1-y0,x1-x0); ctx.translate(x1,y1); ctx.rotate(ang); ctx.fillStyle=col; ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(-9,-5); ctx.lineTo(-9,5); ctx.closePath(); ctx.fill(); ctx.restore(); }
+
+  _draw(){
+    const ctx=this._canvas&&this._canvas.getContext('2d'); if(!ctx) return;
+    const W=this._W,H=this._H,dpr=this._dpr||1; if(!W||!H||!isFinite(W)) return;
+    const acc=this._accent||'#22D3EE'; const sc=this._cur;
+    ctx.save(); ctx.scale(dpr,dpr); ctx.clearRect(0,0,W,H);
+    const g=ctx.createLinearGradient(0,0,W,H); g.addColorStop(0,'#0d1c2e'); g.addColorStop(0.55,'#091324'); g.addColorStop(1,'#050c17'); ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+    // goal + box at right (they defend x=1)
+    ctx.strokeStyle='rgba(90,150,190,.14)'; ctx.lineWidth=1.2;
+    const [bx0,by0]=this._px(0.80,0.16),[bx1,by1]=this._px(1.0,0.84); ctx.strokeRect(bx0,by0,bx1-bx0,by1-by0);
+    const [sx0,sy0]=this._px(0.92,0.34),[sx1,sy1]=this._px(1.0,0.66); ctx.strokeRect(sx0,sy0,sx1-sx0,sy1-sy0);
+    const [gmx,gmy0]=this._px(1.0,0.40),[,gmy1]=this._px(1.0,0.60); ctx.strokeStyle='rgba(120,200,230,.5)'; ctx.lineWidth=3; ctx.beginPath(); ctx.moveTo(gmx,gmy0); ctx.lineTo(gmx,gmy1); ctx.stroke();
+    if(!sc){ ctx.restore(); return; }
+
+    const reveal=this.state.phase==='reveal'; const chosen=this._chosen;
+    const [cx,cy]=this._px(this._carrier.x,this._carrier.y);
+    const [rx,ry]=this._px(this._recv.x,this._recv.y);
+    const [yx,yy]=this._px(this._carry.x,this._carry.y);
+    const [glx,gly]=this._px(0.99,0.5);
+    const r=Math.max(11,W*0.02);
+
+    // lanes (faint during decide, chosen highlighted on reveal)
+    const la=(k)=>reveal? (chosen===k?1:0.16) : 0.5;
+    this._lane(ctx,cx,cy,glx,gly,'#FF9A5A',reveal&&chosen==='shoot'?3.4:2.2,[7,6],la('shoot'));
+    this._lane(ctx,cx,cy,rx,ry,acc,reveal&&chosen==='pass'?3.4:2.2,null,la('pass'));
+    this._lane(ctx,cx,cy,yx,yy,'#B79BFF',reveal&&chosen==='carry'?3.4:2.2,[3,7],la('carry'));
+
+    // players
+    sc.players.forEach((p,i)=>{
+      if(i===sc.ball.carrier) return;
+      const [x,y]=this._px(p.x,p.y);
+      if(p.team==='them'){ this._chevron(ctx,x,y,Math.max(9,W*0.016),'#FF5A6E',0.92); }
+      else if(i===sc.groundTruth.bestPass){ ctx.save(); ctx.strokeStyle=acc; ctx.lineWidth=2; ctx.globalAlpha=reveal&&chosen!=='pass'?0.4:0.9; ctx.beginPath(); ctx.arc(x,y-r*0.16,r*1.5,0,7); ctx.stroke(); ctx.restore(); this._token(ctx,x,y,r*0.94,'#3aa8c4',null,p.role,'#04121a'); }
+      else { this._token(ctx,x,y,r*0.86,'#2f7f96',null,p.role,'#04121a',0.85); }
+    });
+    // carry target flag
+    if(!reveal||chosen==='carry'){ ctx.fillStyle='rgba(183,155,255,'+(reveal?0.9:0.5)+')'; ctx.beginPath(); ctx.arc(yx,yy,4,0,7); ctx.fill(); }
+    // carrier + ball
+    this._token(ctx,cx,cy,r,acc,'rgba(255,255,255,.28)','10','#160a2e');
+    this._drawBall(ctx,cx+r*0.5,cy+r*0.4,Math.max(6,W*0.011),false);
+    ctx.restore();
+  }
+  _flash(col){ const el=this._flashEl; if(!el) return; el.style.background='radial-gradient(circle at 50% 55%,'+col+',transparent 62%)'; el.style.animation='none'; void el.offsetWidth; el.style.animation='fa-flash .55s ease forwards'; }
+
+  // ---------- results ----------
+  _gameOver(){
+    this._sfx('whistle'); this._haptic(24);
+    const played=this._counts.shoot+this._counts.pass+this._counts.carry;
+    const qual = this._sumMax>0? Math.round((this._sumChosen/this._sumMax)*100) : 0;
+    const rates={ shoot: played?Math.round(this._counts.shoot/played*100):0, pass: played?Math.round(this._counts.pass/played*100):0, carry: played?Math.round(this._counts.carry/played*100):0 };
+    // soft archetype lean
+    let lean='balanced';
+    if(rates.shoot>=Math.max(rates.pass,rates.carry)+12) lean='shoot';
+    else if(rates.carry>=Math.max(rates.pass,rates.shoot)+12) lean='carry';
+    else if(rates.pass>=Math.max(rates.shoot,rates.carry)+12) lean='pass';
+    const isPB = this._bestQ==null || qual>this._bestQ; if(isPB) this._bestQ=qual;
+    const result={ instrument:'the-xg-dilemma', version:'am-xg-1.0', position:'am', completedAt:new Date().toISOString(),
+      difficulty:this.state.diff, trials:this.N_TRIALS,
+      measures:{ decisionQualityPct:qual, optimalCalls:this._optimal, froze:this._counts.froze, shootRatePct:rates.shoot, passRatePct:rates.pass, carryRatePct:rates.carry, lean },
+      counts:this._counts, trials_log:this._log,
+      maps:{ GOL:'shot appetite', DRB:'carry appetite', VIS:'shot selection', note:'shot/pass/carry DISPOSITION under a decision clock — not finishing ability' } };
+    try{ localStorage.setItem('fa_am_xg', JSON.stringify(result)); }catch(e){}
+    this._final={ qual, rates, lean, optimal:this._optimal, froze:this._counts.froze, isPB };
+    if(this.props.embedded && typeof this.props.onDone==='function'){ try{ this.props.onDone(this._counts, result); }catch(e){} }
+    this.setState({ view:'over' });
+  }
+  _retake(){ this._begin(); }
+  _back(){ this._sfx('tap'); if(this.state.view==='intro'){ window.location.href='Assessment.dc.html'; } else { clearTimeout(this._to); this.setState({ view:'intro' }); } }
+
+  renderVals(){
+    const accent=this.props.accent ?? '#22D3EE'; this._accent=accent;
+    const V=this.state.view, S=this.state, soundOn=this._soundOn!==false;
+    const base={ accent,
+      isIntro:V==='intro', isPlay:V==='play', isOver:V==='over', showBack:V!=='over',
+      isDecide:S.phase==='decide', isReveal:S.phase==='reveal',
+      soundOn, soundOff:!soundOn, soundColor:soundOn?accent:'#61748c', soundTitle:soundOn?'Sound on':'Sound off',
+      toggleSound:()=>this._toggleSound(), back:()=>this._back(), begin:()=>this._begin(), retake:()=>this._retake(), next:()=>this._next(),
+      canvasRef:(el)=>this._cvRef(el), flashRef:(el)=>this._flRef(el), ringRef:(el)=>this._ringRef(el),
+      bestLine:(this._bestQ!=null?('YOUR BEST · '+this._bestQ+'% CAPTURED'):'FIRST RUN · SET THE BAR') };
+    base.diffs=this.ORDER.map(id=>{ const d=this.DIFFS[id]; const sel=S.diff===id; return { name:d.name, desc:d.desc, pick:()=>this._pickDiff(id),
+      border: sel?accent:'rgba(120,140,166,.24)', bg: sel?('color-mix(in srgb,'+accent+' 14%,transparent)'):'rgba(10,16,28,.5)', titleColor: sel?accent:'#EAF2FB' }; });
+
+    base.trialLabel=(Math.min(S.trial+1,this.N_TRIALS))+' / '+this.N_TRIALS;
+    const ph=S.phase;
+    const pmap={ decide:['CALL IT','shoot, square, or drive','#EAF2FB'], reveal:['THE NUMBERS','what each was really worth','#3BE07A'] };
+    const pm=pmap[ph]||pmap.decide; base.phaseTitle=pm[0]; base.phaseSub=pm[1]; base.phaseColor=pm[2];
+    base.ringColor = ph==='decide'? accent : '#3BE07A'; base.ringGlyph = ph==='decide'? '' : '\u2713';
+    base.pitchHint = ph==='decide'? 'READ THE PICTURE \u00B7 THE VALUES ARE HIDDEN' : '';
+
+    // decide actions
+    base.actions=['shoot','pass','carry'].map(k=>{ const a=this.ACT[k]; return { name:a.name, sub:a.sub, color:a.color, icon:a.icon, pick:()=>this._choose(k),
+      border:'color-mix(in srgb,'+a.color+' 34%,transparent)', bg:'color-mix(in srgb,'+a.color+' 8%,rgba(10,16,28,.5))' }; });
+
+    // reveal bars
+    const d=this._d||{shoot:0,pass:0,carry:0,best:'pass'}; const chosen=this._chosen;
+    const maxEV=Math.max(d.shoot,d.pass,d.carry)||1;
+    base.bars=['shoot','pass','carry'].map(k=>{ const a=this.ACT[k]; const v=d[k]; const isBest=k===d.best; const isMine=k===chosen;
+      return { name:a.name, color:a.color, val:v.toFixed(2), width:Math.round(v/maxEV*100)+'%',
+        tag: isMine? 'YOUR CALL' : (isBest?'BEST':''), tagColor: isMine? a.color : (isBest?'#3BE07A':'#61748c'),
+        border: isMine? ('color-mix(in srgb,'+a.color+' 55%,transparent)') : (isBest? 'rgba(59,224,122,.4)':'rgba(120,140,166,.16)'),
+        bg: isMine? ('color-mix(in srgb,'+a.color+' 10%,rgba(10,16,28,.4))') : 'rgba(10,16,28,.4)' }; });
+    // verdict + next
+    (function(self){ const froze=chosen===null; const optimal=chosen===d.best;
+      if(!self._d){ base.verdict=''; }
+      else if(froze) base.verdict='You hesitated and the moment was gone. The best ball was to '+self.ACT[d.best].name.toLowerCase().replace(' it','').replace(' at them','')+'.';
+      else if(optimal) base.verdict='Best call. You found the highest-value ball in the picture.';
+      else { const gap=(maxEV-d[chosen]); base.verdict = gap<=maxEV*0.28? 'Defensible — a shade below the best option ('+self.ACT[d.best].name.toLowerCase()+').' : 'You left value on the table. The '+self.ACT[d.best].name.toLowerCase()+' was the bigger chance here.'; }
+    })(this);
+    base.nextLabel = (S.trial+1>=this.N_TRIALS)? 'See your report' : 'Next moment';
+
+    // results
+    const f=this._final||{}; const rates=f.rates||{shoot:0,pass:0,carry:0};
+    base.qualValue=(f.qual!=null?f.qual:0)+'%';
+    base.qualColor = f.qual>=78?'#3BE07A': f.qual>=60?'#FFB020':'#FF7A8A';
+    if(f.qual>=82) base.qualVerdict='Ruthless selection. You almost always took the biggest chance on offer.';
+    else if(f.qual>=66) base.qualVerdict='Sound judgement. You picked the higher-value ball most of the time.';
+    else if(f.qual>=50) base.qualVerdict='Mixed. Your instinct and the best chance parted ways a fair bit.';
+    else base.qualVerdict='Your calls chased the wrong value here. Read the whole picture before you commit.';
+    base.mix=[ {name:'SHOOT',color:'#FF9A5A',pct:rates.shoot+'%',width:Math.max(rates.shoot,6)+'%'},
+               {name:'SQUARE',color:'#22D3EE',pct:rates.pass+'%',width:Math.max(rates.pass,6)+'%'},
+               {name:'DRIVE',color:'#B79BFF',pct:rates.carry+'%',width:Math.max(rates.carry,6)+'%'} ];
+    base.optimalCount=(f.optimal!=null?f.optimal:0)+' / '+this.N_TRIALS;
+    base.frozeCount=(f.froze!=null?f.froze:0)+'';
+    base.frozeColor=(f.froze>0)?'#FFB020':'#EAF2FB';
+    const reads={ shoot:['You look for your own shot before anything else — that is Phantom and Dynamo territory, the ones who back themselves to score.', [{key:'GOL',label:'Goal Threat'},{key:'VIS',label:'Selection'}]],
+      carry:['You back yourself to beat a man and drive at the goal rather than release it — the Maverick\u2019s instinct.', [{key:'DRB',label:'Take-On'},{key:'GOL',label:'Goal Threat'}]],
+      pass:['You release for the better chance more than you take it on — the Maestro / Architect creator: the assist over the shot.', [{key:'VIS',label:'Vision'},{key:'GOL',label:'Selection'}]],
+      balanced:['You spread your calls across all three exits and let the picture decide — no fixed ego, whichever ball is biggest.', [{key:'VIS',label:'Selection'},{key:'GOL',label:'Goal Threat'}]] };
+    const rd=reads[f.lean||'balanced']||reads.balanced; base.softRead=rd[0]; base.traitChips=rd[1];
+    base.dataLine='MEASURED \u00B7 DISPOSITION \u00B7 '+this.N_TRIALS+' MOMENTS \u00B7 '+(S.diff||'pro').toUpperCase()+' \u00B7 am-xg-1.0';
+    return base;
+  }
+}
+</script>
+</body>
+</html>

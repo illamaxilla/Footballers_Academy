@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:#04060c;}
+  a{color:var(--accent,#E0413C);text-decoration:none;}
+  a:hover{opacity:.92;}
+  @keyframes fa-blink{0%,100%{opacity:1;}50%{opacity:.25;}}
+  @keyframes fa-rise{0%{transform:translateY(16px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-rise-sm{0%{transform:translateY(10px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-ring{from{stroke-dashoffset:327;}to{stroke-dashoffset:var(--dashto,120);}}
+  .fa-in{opacity:0;animation:fa-rise .7s cubic-bezier(.2,.7,.2,1) forwards;}
+  .fa-in-sm{opacity:0;animation:fa-rise-sm .5s cubic-bezier(.2,.7,.2,1) forwards;}
+  @media (prefers-reduced-motion:reduce){*{animation-duration:.001s!important;}.fa-in,.fa-in-sm{opacity:1!important;transform:none!important;}}
+</style>
+</helmet>
+<div data-screen-label="Midfield Chemistry" style="position:relative;display:flex;flex-direction:column;min-height:100dvh;width:100%;overflow:hidden;background:radial-gradient(120% 90% at 50% 6%,#0e1a2d 0%,#080e1a 44%,#04060c 100%);color:#EAF2FB;font-family:'Archivo',system-ui,sans-serif;--accent:{{ accent }};">
+
+  <div style="position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.4;background:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0px,rgba(255,255,255,.02) 1px,transparent 1px,transparent 4px);"></div>
+  <div style="position:absolute;top:20px;left:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#E0413C) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#E0413C) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;top:20px;right:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#E0413C) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#E0413C) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;left:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#E0413C) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#E0413C) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;right:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#E0413C) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#E0413C) 50%,transparent);z-index:4;pointer-events:none;"></div>
+
+  <header style="position:relative;z-index:6;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px clamp(26px,3.4vw,58px);">
+    <div style="min-width:120px;display:flex;">
+      <sc-if value="{{ showBack }}" hint-placeholder-val="{{ true }}">
+        <button onClick="{{ back }}" style="display:inline-flex;align-items:center;gap:8px;background:none;border:0;cursor:pointer;color:#8EA1B8;font:600 12.5px 'Archivo';padding:0;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M15 5l-7 7 7 7"/></svg>{{ backLabel }}
+        </button>
+      </sc-if>
+    </div>
+    <div style="display:flex;align-items:center;gap:11px;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" style="stroke:var(--accent,#E0413C);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;"><circle cx="7" cy="9" r="3"/><circle cx="17" cy="9" r="3"/><path d="M2 20c0-3 2.5-5 5-5s5 2 5 5M12 20c0-3 2.5-5 5-5s5 2 5 5"/></svg>
+      <span style="font:800 12.5px 'Archivo';letter-spacing:.05em;">MIDFIELD</span>
+      <span style="font:600 9px 'IBM Plex Mono';letter-spacing:.16em;color:#5c6e85;border:1px solid rgba(120,140,166,.24);border-radius:6px;padding:3px 6px;">DOUBLE PIVOT</span>
+    </div>
+    <div style="min-width:120px;"></div>
+  </header>
+
+  <sc-if value="{{ isSelf }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:16px clamp(26px,4vw,58px) 56px;">
+      <div style="width:100%;max-width:760px;text-align:center;">
+        <h1 class="fa-in" style="margin:0 0 8px;font:800 clamp(28px,4.4vw,52px)/1.02 'Archivo';letter-spacing:-0.025em;text-wrap:balance;">First &mdash; what are you?</h1>
+        <p class="fa-in" style="margin:0 auto 26px;max-width:500px;font:400 14.5px/1.55 'Archivo';color:#9FB0C5;animation-delay:.1s;">{{ selfHint }}</p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(128px,1fr));gap:11px;">
+          <sc-for list="{{ selfChoices }}" as="a" hint-placeholder-count="4">
+            <button onClick="{{ a.pick }}" class="fa-in-sm" style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:16px 12px;border-radius:15px;border:1px solid {{ a.border }};background:rgba(10,16,28,.5);cursor:pointer;transition:border-color .16s ease,transform .16s ease;animation-delay:{{ a.delay }};" style-hover="transform:translateY(-3px);border-color:{{ a.color }};">
+              <span style="font-size:28px;line-height:1;">{{ a.emoji }}</span>
+              <span style="font:800 14px 'Archivo';color:{{ a.color }};">{{ a.name }}</span>
+              <span style="font:500 10px 'IBM Plex Mono';letter-spacing:.04em;color:#7688a0;">{{ a.role }}</span>
+            </button>
+          </sc-for>
+        </div>
+      </div>
+    </main>
+  </sc-if>
+
+  <sc-if value="{{ isPartner }}" hint-placeholder-val="{{ true }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:16px clamp(26px,4vw,58px) 56px;">
+      <div style="width:100%;max-width:760px;text-align:center;">
+        <div class="fa-in" style="display:inline-flex;align-items:center;gap:8px;margin-bottom:14px;padding:7px 14px;border-radius:99px;border:1px solid {{ youBorder }};background:rgba(10,16,28,.5);font:700 12px 'Archivo';color:{{ youColor }};">{{ youEmoji }} You&rsquo;re {{ youName }}</div>
+        <h1 class="fa-in" style="margin:0 0 8px;font:800 clamp(28px,4.4vw,52px)/1.02 'Archivo';letter-spacing:-0.025em;text-wrap:balance;animation-delay:.05s;">Who do you sit alongside?</h1>
+        <p class="fa-in" style="margin:0 auto 26px;max-width:520px;font:400 14.5px/1.55 'Archivo';color:#9FB0C5;animation-delay:.1s;">Pick your pivot partner&rsquo;s type &mdash; the other holding midfielder you share the base with &mdash; and see what you&rsquo;d be together.</p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(128px,1fr));gap:11px;">
+          <sc-for list="{{ partnerChoices }}" as="a" hint-placeholder-count="4">
+            <button onClick="{{ a.pick }}" class="fa-in-sm" style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:16px 12px;border-radius:15px;border:1px solid {{ a.border }};background:rgba(10,16,28,.5);cursor:pointer;transition:border-color .16s ease,transform .16s ease;animation-delay:{{ a.delay }};" style-hover="transform:translateY(-3px);border-color:{{ a.color }};">
+              <span style="font-size:28px;line-height:1;">{{ a.emoji }}</span>
+              <span style="font:800 14px 'Archivo';color:{{ a.color }};">{{ a.name }}</span>
+              <span style="font:500 10px 'IBM Plex Mono';letter-spacing:.04em;color:#7688a0;">{{ a.role }}</span>
+            </button>
+          </sc-for>
+        </div>
+      </div>
+    </main>
+  </sc-if>
+
+  <sc-if value="{{ isReveal }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:16px clamp(20px,4vw,58px) 72px;">
+      <div style="width:100%;max-width:600px;">
+        <div class="fa-in" style="display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px;margin-bottom:20px;">
+          <div style="text-align:center;">
+            <div style="font-size:40px;line-height:1;margin-bottom:5px;">{{ aEmoji }}</div>
+            <div style="font:800 15px 'Archivo';color:{{ aColor }};">{{ aName }}</div>
+          </div>
+          <div style="display:grid;place-items:center;width:34px;height:34px;border-radius:50%;border:1px solid rgba(120,140,166,.3);font:800 14px 'IBM Plex Mono';color:#8EA1B8;">+</div>
+          <div style="text-align:center;">
+            <div style="font-size:40px;line-height:1;margin-bottom:5px;">{{ bEmoji }}</div>
+            <div style="font:800 15px 'Archivo';color:{{ bColor }};">{{ bName }}</div>
+          </div>
+        </div>
+
+        <div class="fa-in" style="display:flex;flex-direction:column;align-items:center;margin-bottom:22px;animation-delay:.1s;">
+          <div style="position:relative;width:150px;height:150px;">
+            <svg width="150" height="150" viewBox="0 0 120 120" style="transform:rotate(-90deg);">
+              <circle cx="60" cy="60" r="52" fill="none" stroke="rgba(120,140,166,.16)" stroke-width="9"/>
+              <circle cx="60" cy="60" r="52" fill="none" stroke="{{ fitColor }}" stroke-width="9" stroke-linecap="round" stroke-dasharray="327" style="--dashto:{{ fitDash }};animation:fa-ring 1.1s cubic-bezier(.3,.8,.3,1) forwards;"/>
+            </svg>
+            <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+              <div style="font:800 40px 'IBM Plex Mono';line-height:1;color:{{ fitColor }};">{{ fitValue }}</div>
+              <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.2em;color:#7688a0;margin-top:2px;">CHEMISTRY</div>
+            </div>
+          </div>
+          <div style="margin-top:12px;font:800 15px 'Archivo';letter-spacing:.02em;color:{{ fitColor }};">{{ fitBand }}</div>
+        </div>
+
+        <div class="fa-in" style="padding:18px 22px;border-radius:16px;border:1px solid color-mix(in srgb,{{ fitColor }} 26%,transparent);background:color-mix(in srgb,{{ fitColor }} 6%,rgba(10,16,28,.5));margin-bottom:14px;text-align:center;animation-delay:.16s;">
+          <p style="margin:0;font:600 16px/1.5 'Archivo';color:#EAF2FB;text-wrap:pretty;">{{ pairLine }}</p>
+        </div>
+
+        <div class="fa-in" style="display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:14px;animation-delay:.2s;">
+          <div style="padding:14px 16px;border-radius:13px;border:1px solid rgba(59,224,122,.28);background:rgba(59,224,122,.06);">
+            <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.2em;color:#3BE07A;margin-bottom:6px;">WHAT WORKS</div>
+            <div style="font:500 13px/1.5 'Archivo';color:#C6D3E2;">{{ worksLine }}</div>
+          </div>
+          <div style="padding:14px 16px;border-radius:13px;border:1px solid rgba(255,176,32,.28);background:rgba(255,176,32,.06);">
+            <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.2em;color:#FFB020;margin-bottom:6px;">WHAT TO WATCH</div>
+            <div style="font:500 13px/1.5 'Archivo';color:#C6D3E2;">{{ watchLine }}</div>
+          </div>
+        </div>
+
+        <div class="fa-in" style="display:flex;align-items:center;gap:14px;padding:15px 18px;border-radius:16px;border:1px solid {{ thirdBorder }};background:rgba(10,16,28,.5);margin-bottom:24px;animation-delay:.24s;">
+          <div style="flex:0 0 auto;display:grid;place-items:center;width:52px;height:52px;border-radius:13px;border:1px solid {{ thirdBorder }};background:color-mix(in srgb,{{ thirdColor }} 10%,transparent);font-size:26px;">{{ thirdEmoji }}</div>
+          <div style="flex:1;text-align:left;">
+            <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.2em;color:#7688a0;margin-bottom:5px;">COMPLETE THE THREE &rarr; <span style="color:{{ thirdColor }};">{{ thirdName }}</span></div>
+            <div style="font:500 13px/1.5 'Archivo';color:#C6D3E2;">{{ thirdReason }}</div>
+          </div>
+        </div>
+
+        <div class="fa-in" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:12px;animation-delay:.28s;">
+          <button onClick="{{ copyLink }}" style="display:inline-flex;align-items:center;gap:10px;padding:16px 30px;border-radius:12px;border:0;background:var(--accent,#E0413C);color:#0b0507;font:700 15px 'Archivo';cursor:pointer;box-shadow:0 12px 38px color-mix(in srgb,var(--accent,#E0413C) 40%,transparent);transition:transform .16s ease;" style-hover="transform:translateY(-2px);">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:#0b0507;stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round;"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg>{{ copyLabel }}
+          </button>
+          <button onClick="{{ again }}" style="display:inline-flex;align-items:center;gap:9px;padding:16px 24px;border-radius:12px;border:1px solid rgba(157,176,198,.28);background:rgba(12,18,30,.4);color:#C6D3E2;font:600 14px 'Archivo';cursor:pointer;" style-hover="border-color:color-mix(in srgb,var(--accent,#E0413C) 55%,transparent);color:#EAF2FB;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M12 5v14M5 12h14"/></svg>Try another partner
+          </button>
+          <a href="Assessment.dc.html" style="display:inline-flex;align-items:center;gap:9px;padding:16px 22px;border-radius:12px;border:1px solid rgba(157,176,198,.28);background:rgba(12,18,30,.4);color:#C6D3E2;font:600 14px 'Archivo';">Back to the scan</a>
+        </div>
+        <div class="fa-in" style="margin-top:18px;text-align:center;font:500 10px 'IBM Plex Mono';letter-spacing:.14em;color:#4f627a;animation-delay:.34s;">{{ dataLine }}</div>
+      </div>
+    </main>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:940,&quot;height&quot;:800},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#E0413C&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#E0413C&quot;,&quot;#D9A521&quot;,&quot;#22D3EE&quot;,&quot;#FF7A2F&quot;]},&quot;motion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;embedded&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;onDone&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;(res:any, meta:any)=&gt;void&quot;}}">
+class Component extends DCLogic {
+  ORDER = ['destroyer','sentinel','architect','warrior'];
+  ARCH = {
+    destroyer:{ name:'Destroyer', emoji:'\uD83D\uDCA5', color:'#E0413C', role:'the stop' },
+    sentinel:{ name:'Sentinel', emoji:'\uD83D\uDEE1\uFE0F', color:'#D9A521', role:'the screen' },
+    architect:{ name:'Architect', emoji:'\uD83C\uDFBC', color:'#22D3EE', role:'the build' },
+    warrior:{ name:'Warrior', emoji:'\u2699\uFE0F', color:'#FF7A2F', role:'the legs' },
+  };
+
+  // symmetric 4x4 double-pivot matrix (10 pairs). key = ids sorted, joined by '|'.
+  CHEM = {
+    'architect|destroyer':{ fit:96, line:'The ball-winner and the builder \u2014 the truest holding pair there is. One decides whether, one decides where next.', works:'The Destroyer wins it, the Architect turns it into attack. Perfect division of labour.', watch:'Thin on legs \u2014 who covers the second wave when the Architect steps in?' },
+    'architect|sentinel':{ fit:93, line:'The reader and the regista. The Sentinel snuffs out the danger so the Architect can dictate in peace.', works:'You barely concede a chance and every attack still runs through your feet.', watch:'Both defend with the brain \u2014 who wins the ugly, physical duel when reading isn\u2019t enough?' },
+    'architect|warrior':{ fit:89, line:'The metronome and the engine. The Architect sets the rhythm; the Warrior covers every blade to sustain it.', works:'You never lose the tempo and you never stop running.', watch:'Who screens the back four when the Warrior bursts forward and the Architect drops to build?' },
+    'destroyer|sentinel':{ fit:86, line:'Two defensive minds \u2014 the tackler and the reader. Nobody is getting through the middle of you.', works:'One steps in and wins it, one is already there to cut it out. A wall.', watch:'Win it, then what? Neither of you loves building the play from the base.' },
+    'destroyer|warrior':{ fit:88, line:'Steel and legs. Two grafters \u2014 you\u2019ll win everything and give them no peace all game.', works:'Relentless. You smother midfield and turn the game over high.', watch:'Nobody\u2019s creating. Two workers need a builder to turn regains into goals.' },
+    'sentinel|warrior':{ fit:87, line:'The brain and the engine. The Sentinel reads it, the Warrior covers the ground the read demands.', works:'You anticipate the danger and you have the legs to get there. Nothing slips through.', watch:'Plenty of running and reading, light on the pass that actually hurts them.' },
+    'architect|architect':{ fit:73, line:'Two builders, twice the composure \u2014 you\u2019d keep it beautifully from deep.', works:'Nobody keeps the ball or controls the tempo like you two.', watch:'Same deep zone, no steel \u2014 who wins it back when you lose it?' },
+    'destroyer|destroyer':{ fit:74, line:'Two ball-winners \u2014 nobody\u2019s coming through the middle of you.', works:'You\u2019d smother any attack before it even starts.', watch:'Win it, then what? Neither of you is building or covering the ground.' },
+    'sentinel|sentinel':{ fit:75, line:'Two readers, double the anticipation \u2014 the danger dies before it\u2019s born.', works:'You\u2019re both always in the right spot. Attacks just fizzle out.', watch:'Same deep zone, no penetration and no legs \u2014 who drives it forward?' },
+    'warrior|warrior':{ fit:78, line:'Two engines, endless running \u2014 you\u2019ll bury a team late.', works:'Relentless. You never give a midfield a second to breathe.', watch:'Same job, same zones \u2014 someone has to sit, read, and build.' },
+  };
+
+  // who completes the three. key = pair sorted-joined. id = recommended third + why.
+  THIRD = {
+    'architect|destroyer':{ id:'warrior', reason:'You win it and build it \u2014 add a Warrior to cover the ground ahead and you\u2019ve a complete engine room.' },
+    'architect|sentinel':{ id:'destroyer', reason:'You read it and dictate it \u2014 but who wins the hard duel? A Destroyer is the steel that lets you play.' },
+    'architect|warrior':{ id:'destroyer', reason:'Tempo and legs \u2014 but someone has to win it back. A Destroyer is the ball-winner you\u2019re missing.' },
+    'destroyer|sentinel':{ id:'architect', reason:'Two defensive minds, no builder \u2014 an Architect turns everything you win into attack.' },
+    'destroyer|warrior':{ id:'architect', reason:'All steel and legs \u2014 an Architect is non-negotiable, or you\u2019ll win everything and create nothing.' },
+    'sentinel|warrior':{ id:'architect', reason:'You read it and run it \u2014 an Architect gives the anticipation and the legs a purpose with the ball.' },
+    'architect|architect':{ id:'destroyer', reason:'You\u2019ll keep it forever \u2014 but someone has to win it. A Destroyer is the missing steel.' },
+    'destroyer|destroyer':{ id:'architect', reason:'Nobody\u2019s getting through you \u2014 and nobody\u2019s creating. An Architect turns your regains into goals.' },
+    'sentinel|sentinel':{ id:'warrior', reason:'Two readers sat deep \u2014 a Warrior gives you the box-to-box legs to actually cover the ground.' },
+    'warrior|warrior':{ id:'sentinel', reason:'Two engines cover every blade \u2014 but someone has to sit and read. A Sentinel is the brain the running needs.' },
+  };
+
+  state = { view:'partner', self:null, lockPartner:null, copied:false };
+
+  componentDidMount(){
+    try{ this._soundOn=localStorage.getItem('fa_sound')!=='0'; }catch(e){ this._soundOn=true; }
+    let self=null, pair=false, partner=null;
+    try{
+      const h=(location.hash||'').replace(/^#/,''); const p=new URLSearchParams(h);
+      if(p.get('pair')==='1') pair=true;
+      const pt=p.get('partner'); if(pt && this.ARCH[pt.toLowerCase()]) partner=pt.toLowerCase();
+      const s=p.get('self'); if(s && this.ARCH[s.toLowerCase()]) self=s.toLowerCase();
+    }catch(e){}
+    if(!self){ try{ const r=localStorage.getItem('fa_dm_result'); if(r){ const j=JSON.parse(r); if(j&&j.primary&&this.ARCH[j.primary]) self=j.primary; } }catch(e){} }
+    if(pair && partner){ this.state.lockPartner=partner; this.state.self=self; this.state.view='self'; }
+    else { this.state.self=self; this.state.view = self? 'partner' : 'self'; }
+    this.forceUpdate();
+  }
+
+  _audio(){ if(this._actx===undefined){ try{ this._actx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ this._actx=null; } } if(this._actx&&this._actx.state==='suspended') this._actx.resume(); return this._actx; }
+  _tone(f,d,t,g){ const c=this._audio(); if(!c||this._soundOn===false) return; const o=c.createOscillator(),a=c.createGain(); o.type=t||'sine'; o.frequency.value=f; o.connect(a); a.connect(c.destination); const n=c.currentTime; a.gain.setValueAtTime(0,n); a.gain.linearRampToValueAtTime(g||0.05,n+0.01); a.gain.exponentialRampToValueAtTime(0.0001,n+d); o.start(n); o.stop(n+d); }
+  _sfx(k){ if(this._soundOn===false) return; if(k==='pick'){ this._tone(560,0.1,'triangle',0.05); setTimeout(()=>this._tone(760,0.12,'triangle',0.045),55); } else if(k==='reveal'){ this._tone(520,0.14,'triangle',0.05); setTimeout(()=>this._tone(700,0.14,'triangle',0.05),110); setTimeout(()=>this._tone(940,0.26,'triangle',0.05),230); } else if(k==='click'){ this._tone(430,0.08,'sine',0.04); } }
+
+  _key(a,b){ return [a,b].sort().join('|'); }
+  _pickSelf(a){ this._sfx('pick');
+    if(this.state.lockPartner){ this._compute(a, this.state.lockPartner); }
+    else { this.setState({ self:a, view:'partner' }); this._hadSelfPick=true; }
+  }
+  _pickPartner(b){ this._sfx('pick'); this._compute(this.state.self, b); }
+  _compute(a,b){
+    const e=this.CHEM[this._key(a,b)]; if(!e) return;
+    const t=this.THIRD[this._key(a,b)]||{ id:'architect', reason:'' };
+    this._pair={ a, b, fit:e.fit, line:e.line, works:e.works, watch:e.watch, third:t.id, thirdReason:t.reason };
+    try{ localStorage.setItem('fa_dm_partner', JSON.stringify({ self:a, partner:b, fit:e.fit, third:t.id, at:new Date().toISOString() })); }catch(err){}
+    this._sfx('reveal');
+    this.setState({ self:a, view:'reveal' });
+    if(this.props.embedded && typeof this.props.onDone==='function'){ try{ this.props.onDone({ fit:e.fit }, this._pair); }catch(err){} }
+  }
+  _copyLink(){
+    let link='';
+    try{ const base=(location.href||'').split('#')[0]; const me=this._pair?this._pair.a:this.state.self; link=base+'#pair=1'+(me?('&partner='+me):''); }catch(e){ link=''; }
+    try{ if(navigator.clipboard&&navigator.clipboard.writeText&&link) navigator.clipboard.writeText(link); }catch(e){}
+    this._sfx('click'); this.setState({ copied:true });
+    clearTimeout(this._ct); this._ct=setTimeout(()=>this.setState({ copied:false }), 2000);
+  }
+  _again(){ this._sfx('click'); this.setState({ view: this.state.lockPartner? 'self':'partner' }); }
+  _back(){ this._sfx('click'); const V=this.state.view;
+    if(V==='reveal'){ this.setState({ view: this.state.lockPartner?'self':'partner' }); }
+    else if(V==='partner' && !this.state.lockPartner && this._hadSelfPick){ this.setState({ view:'self' }); }
+    else { window.location.href='Assessment.dc.html'; } }
+
+  renderVals(){
+    const accent=this.props.accent ?? '#E0413C';
+    const V=this.state.view; const embedded=!!this.props.embedded;
+    const A=this.ARCH; const self=this.state.self;
+    const cardsFor=(handler)=> this.ORDER.map((id,i)=>{ const a=A[id]; return { name:a.name, emoji:a.emoji, color:a.color, role:a.role,
+      border:'color-mix(in srgb,'+a.color+' 26%,transparent)', delay:(0.04+i*0.05).toFixed(2)+'s', pick:()=>handler(id) }; });
+
+    const base={ accent,
+      isSelf:V==='self', isPartner:V==='partner', isReveal:V==='reveal',
+      showBack: !(embedded && V===(self?'partner':'self')),
+      backLabel: V==='reveal'?'Change':'Back',
+      back:()=>this._back(), copyLink:()=>this._copyLink(), again:()=>this._again(),
+      copyLabel:this.state.copied?'Link copied':'Send to a teammate',
+      selfHint: this.state.lockPartner ? ('A '+A[this.state.lockPartner].name+' wants to know your chemistry. Pick your type to find out.') : 'We didn\u2019t find a saved scan, so tell us your archetype \u2014 or run the scan first for your real one.',
+      selfChoices: cardsFor((id)=>this._pickSelf(id)),
+      partnerChoices: cardsFor((id)=>this._pickPartner(id)),
+    };
+    if(self){ const S=A[self]; base.youEmoji=S.emoji; base.youName='The '+S.name; base.youColor=S.color; base.youBorder='color-mix(in srgb,'+S.color+' 45%,transparent)'; }
+    else { base.youEmoji='\u2753'; base.youName='?'; base.youColor='#9FB0C5'; base.youBorder='rgba(120,140,166,.2)'; }
+
+    Object.assign(base,{ aEmoji:'',aName:'',aColor:accent,bEmoji:'',bName:'',bColor:accent, fitValue:'',fitColor:accent,fitDash:'120',fitBand:'',pairLine:'',worksLine:'',watchLine:'',
+      thirdEmoji:'',thirdName:'',thirdColor:accent,thirdBorder:'rgba(120,140,166,.2)',thirdReason:'',dataLine:'' });
+    if(V==='reveal' && this._pair){
+      const p=this._pair; const Aa=A[p.a], Bb=A[p.b];
+      base.aEmoji=Aa.emoji; base.aName='The '+Aa.name; base.aColor=Aa.color;
+      base.bEmoji=Bb.emoji; base.bName='The '+Bb.name; base.bColor=Bb.color;
+      base.fitValue=p.fit; const col = p.fit>=90?'#3BE07A': p.fit>=80?accent: p.fit>=74?'#8FD14F':'#FFB020';
+      base.fitColor=col; base.fitDash=Math.round(327*(1-p.fit/100))+'';
+      base.fitBand = p.fit>=93?'Dream pivot': p.fit>=88?'Elite fit': p.fit>=80?'Strong together': p.fit>=72?'Workable \u2014 with balance':'Too alike';
+      base.pairLine=p.line; base.worksLine=p.works; base.watchLine=p.watch;
+      const T=A[p.third]; base.thirdEmoji=T.emoji; base.thirdName='The '+T.name; base.thirdColor=T.color;
+      base.thirdBorder='color-mix(in srgb,'+T.color+' 34%,transparent)'; base.thirdReason=p.thirdReason;
+      base.dataLine='CODEX DM PIVOT MODEL \u00b7 '+Aa.name.toUpperCase()+' + '+Bb.name.toUpperCase()+' \u00b7 '+p.fit+'%';
+    }
+    return base;
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:#04060c;}
+  a{color:var(--accent,#22D3EE);text-decoration:none;}
+  a:hover{opacity:.92;}
+  @keyframes fa-blink{0%,100%{opacity:1;}50%{opacity:.25;}}
+  @keyframes fa-rise{0%{transform:translateY(16px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-rise-sm{0%{transform:translateY(10px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-bar{from{transform:scaleX(0);}to{transform:scaleX(1);}}
+  @keyframes fa-flash{0%{opacity:0;}18%{opacity:.9;}100%{opacity:0;}}
+  @keyframes fa-spin{to{transform:rotate(360deg);}}
+  .fa-in{opacity:0;animation:fa-rise .7s cubic-bezier(.2,.7,.2,1) forwards;}
+  .fa-in-sm{opacity:0;animation:fa-rise-sm .5s cubic-bezier(.2,.7,.2,1) forwards;}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;}.fa-in,.fa-in-sm{opacity:1!important;transform:none!important;}}
+</style>
+</helmet>
+<div data-screen-label="The Jump" style="position:relative;display:flex;flex-direction:column;min-height:100dvh;width:100%;overflow:hidden;background:radial-gradient(120% 90% at 50% 6%,#0e1a2d 0%,#080e1a 44%,#04060c 100%);color:#EAF2FB;font-family:'Archivo',system-ui,sans-serif;--accent:{{ accent }};">
+
+  <div style="position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.4;background:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0px,rgba(255,255,255,.02) 1px,transparent 1px,transparent 4px);"></div>
+  <div style="position:absolute;top:20px;left:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;top:20px;right:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;left:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;right:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+
+  <!-- TOP BAR -->
+  <header style="position:relative;z-index:6;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px clamp(26px,3.4vw,58px);">
+    <div style="min-width:120px;display:flex;">
+      <sc-if value="{{ showBack }}" hint-placeholder-val="{{ true }}">
+        <button onClick="{{ back }}" style="display:inline-flex;align-items:center;gap:8px;background:none;border:0;cursor:pointer;color:#8EA1B8;font:600 12.5px 'Archivo';padding:0;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M15 5l-7 7 7 7"/></svg>Back
+        </button>
+      </sc-if>
+    </div>
+    <div style="display:flex;align-items:center;gap:11px;">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" style="stroke:var(--accent,#22D3EE);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;"><path d="M12 3v8M8 7l4-4 4 4M6 21h12M8 21v-4h8v4"/></svg>
+      <span style="font:800 13px 'Archivo';letter-spacing:.05em;">THE <span style="color:var(--accent,#22D3EE);">JUMP</span></span>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;min-width:120px;justify-content:flex-end;">
+      <button onClick="{{ toggleSound }}" title="{{ soundTitle }}" style="display:grid;place-items:center;width:28px;height:28px;border-radius:8px;border:1px solid rgba(120,140,166,.24);background:rgba(10,16,28,.5);cursor:pointer;color:{{ soundColor }};">
+        <sc-if value="{{ soundOn }}" hint-placeholder-val="{{ true }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></sc-if>
+        <sc-if value="{{ soundOff }}" hint-placeholder-val="{{ false }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M22 9l-6 6M16 9l6 6"/></svg></sc-if>
+      </button>
+    </div>
+  </header>
+
+  <!-- INTRO -->
+  <sc-if value="{{ isIntro }}" hint-placeholder-val="{{ true }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;text-align:center;padding:20px clamp(26px,4vw,58px) 60px;">
+      <div class="fa-in" style="display:inline-flex;align-items:center;gap:10px;margin-bottom:20px;font:600 12px 'IBM Plex Mono';letter-spacing:.4em;color:var(--accent,#22D3EE);">
+        <span style="width:6px;height:6px;border-radius:50%;background:var(--accent,#22D3EE);box-shadow:0 0 8px var(--accent,#22D3EE);animation:fa-blink 1.6s ease-in-out infinite;"></span>EXPLOSIVE POWER · FLIGHT-TIME METHOD
+      </div>
+      <h1 class="fa-in" style="margin:0 0 16px;font:800 clamp(36px,5.4vw,74px)/0.97 'Archivo';letter-spacing:-0.03em;text-wrap:balance;max-width:860px;animation-delay:.06s;">Your first step,<br>measured in air.</h1>
+      <p class="fa-in" style="margin:0 0 22px;max-width:620px;font:400 clamp(15px,1.3vw,18px)/1.6 'Archivo';color:#9FB0C5;text-wrap:pretty;animation-delay:.12s;">Hang time is explosive power you can't fake. Hold the phone, dip, and jump — <strong style="color:#EAF2FB;">hold the button the instant you leave the ground, release the instant you land.</strong> That air time becomes your countermovement-jump height. Best of three.</p>
+
+      <div class="fa-in" style="max-width:580px;margin-bottom:24px;padding:15px 18px;border-radius:13px;border:1px dashed rgba(255,176,32,.32);background:rgba(255,176,32,.06);text-align:left;animation-delay:.16s;">
+        <div style="display:flex;align-items:center;gap:8px;font:600 9px 'IBM Plex Mono';letter-spacing:.2em;color:#FFB020;margin-bottom:6px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" style="stroke:#FFB020;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg>HONEST ABOUT THE LIMIT</div>
+        <div style="font:500 13px/1.55 'Archivo';color:#C6D3E2;">This is a <strong style="color:#EAF2FB;">hand-timed estimate</strong>, so we report a range, never a decimal. The lab-grade version films you at 240fps and counts frames — same physics, tighter number.</div>
+      </div>
+
+      <button onClick="{{ begin }}" class="fa-in" style="display:inline-flex;align-items:center;gap:12px;padding:18px 46px;border-radius:13px;border:0;background:var(--accent,#22D3EE);color:#0b0518;font:700 16px 'Archivo';cursor:pointer;box-shadow:0 14px 46px color-mix(in srgb,var(--accent,#22D3EE) 42%,transparent);transition:transform .16s ease;animation-delay:.24s;" style-hover="transform:translateY(-2px);">
+        Chalk up
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12h13M12 6l6 6-6 6"/></svg>
+      </button>
+      <div class="fa-in" style="margin-top:18px;font:500 10px 'IBM Plex Mono';letter-spacing:.14em;color:#4f627a;animation-delay:.3s;">{{ bestLine }}</div>
+    </main>
+  </sc-if>
+
+  <!-- PLAY -->
+  <sc-if value="{{ isPlay }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow:hidden;padding:0 clamp(16px,2.4vw,42px) 20px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;width:100%;max-width:620px;margin-bottom:10px;">
+        <div style="text-align:left;min-width:110px;">
+          <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.2em;color:#61748c;">ATTEMPT</div>
+          <div style="font:800 24px 'IBM Plex Mono';color:#F2F8FE;line-height:1.05;">{{ attemptLabel }}</div>
+        </div>
+        <div style="display:flex;gap:6px;">
+          <sc-for list="{{ attemptDots }}" as="a" hint-placeholder-count="3">
+            <div style="min-width:58px;text-align:center;padding:6px 8px;border-radius:9px;border:1px solid {{ a.border }};background:{{ a.bg }};">
+              <div style="font:800 13px 'IBM Plex Mono';color:{{ a.color }};line-height:1;">{{ a.val }}</div>
+              <div style="font:600 7.5px 'IBM Plex Mono';letter-spacing:.1em;color:#61748c;margin-top:2px;">{{ a.label }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      <div style="position:relative;width:100%;max-width:620px;flex:1;min-height:0;border-radius:18px;overflow:hidden;border:1px solid rgba(120,140,166,.22);touch-action:none;">
+        <canvas ref="{{ canvasRef }}" style="display:block;width:100%;height:100%;"></canvas>
+        <div ref="{{ flashRef }}" style="position:absolute;inset:0;pointer-events:none;opacity:0;"></div>
+      </div>
+      <button onPointerDown="{{ pressDown }}" onPointerUp="{{ pressUp }}" onPointerLeave="{{ pressUp }}" style="margin-top:14px;user-select:none;touch-action:none;display:inline-flex;align-items:center;justify-content:center;gap:11px;min-width:260px;padding:20px 44px;border-radius:15px;border:0;background:{{ holdBtnBg }};color:{{ holdBtnColor }};font:800 17px 'Archivo';letter-spacing:.01em;cursor:pointer;box-shadow:0 12px 34px color-mix(in srgb,var(--accent,#22D3EE) 38%,transparent);transition:transform .1s ease,background .15s ease;" style-active="transform:scale(.98);">
+        {{ holdBtnLabel }}
+      </button>
+      <div style="margin-top:9px;font:600 10px 'IBM Plex Mono';letter-spacing:.16em;color:#7688a0;text-align:center;">{{ holdSub }}</div>
+    </main>
+  </sc-if>
+
+  <!-- ANALYSE -->
+  <sc-if value="{{ isAnalyse }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;text-align:center;padding:20px clamp(26px,4vw,58px) 70px;">
+      <div style="position:relative;width:120px;height:120px;margin-bottom:34px;">
+        <div style="position:absolute;inset:0;border-radius:50%;border:2px solid color-mix(in srgb,var(--accent,#22D3EE) 22%,transparent);border-top-color:var(--accent,#22D3EE);animation:fa-spin 1s linear infinite;"></div>
+        <div style="position:absolute;inset:0;display:grid;place-items:center;font:800 26px 'IBM Plex Mono';color:var(--accent,#22D3EE);">{{ analysePct }}</div>
+      </div>
+      <div style="font:600 11px 'IBM Plex Mono';letter-spacing:.34em;color:#7688a0;margin-bottom:12px;">FLIGHT TIME → HEIGHT</div>
+      <h2 style="margin:0;font:800 clamp(22px,3vw,36px)/1.1 'Archivo';color:#F2F8FE;">{{ analyseStep }}<span style="color:var(--accent,#22D3EE);">…</span></h2>
+    </main>
+  </sc-if>
+
+  <!-- OVER -->
+  <sc-if value="{{ isOver }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;text-align:center;padding:20px clamp(26px,4vw,58px) 70px;">
+      <div class="fa-in" style="display:inline-flex;align-items:center;gap:9px;margin-bottom:16px;padding:6px 14px;border:1px solid color-mix(in srgb,var(--accent,#22D3EE) 32%,transparent);border-radius:999px;font:600 10px 'IBM Plex Mono';letter-spacing:.28em;color:var(--accent,#22D3EE);">CMJ REPORT</div>
+      <div class="fa-in" style="font:600 10px 'IBM Plex Mono';letter-spacing:.24em;color:#7688a0;margin-bottom:6px;animation-delay:.05s;">{{ pbFlag }}</div>
+      <h1 class="fa-in" style="margin:0 0 2px;font:800 clamp(40px,7.5vw,88px)/0.9 'IBM Plex Mono';letter-spacing:-0.02em;color:#F2F8FE;animation-delay:.08s;">{{ heightRange }}</h1>
+      <div class="fa-in" style="font:600 11px 'IBM Plex Mono';letter-spacing:.2em;color:#7688a0;margin-bottom:8px;animation-delay:.09s;">COUNTERMOVEMENT JUMP · BEST OF THREE</div>
+      <div class="fa-in" style="font:700 13px 'Archivo';color:#B4C2D4;margin-bottom:8px;animation-delay:.1s;">{{ heightVerdict }}</div>
+
+      <!-- attempts + percentile -->
+      <div class="fa-in" style="display:flex;flex-wrap:wrap;gap:22px;justify-content:center;margin:16px 0 26px;animation-delay:.2s;">
+        <div style="text-align:center;"><div style="font:800 26px 'IBM Plex Mono';color:var(--accent,#22D3EE);">{{ percentileTxt }}</div><div style="font:600 9px 'IBM Plex Mono';letter-spacing:.12em;color:#61748c;margin-top:3px;">{{ percentileSub }}</div></div>
+        <div style="width:1px;background:rgba(120,140,166,.2);"></div>
+        <div style="text-align:center;"><div style="font:800 26px 'IBM Plex Mono';color:#EAF2FB;">{{ flightTxt }}</div><div style="font:600 9px 'IBM Plex Mono';letter-spacing:.12em;color:#61748c;margin-top:3px;">BEST FLIGHT TIME</div></div>
+        <div style="width:1px;background:rgba(120,140,166,.2);"></div>
+        <div style="text-align:center;"><div style="font:800 26px 'IBM Plex Mono';color:#EAF2FB;">{{ consistencyTxt }}</div><div style="font:600 9px 'IBM Plex Mono';letter-spacing:.12em;color:#61748c;margin-top:3px;">3-JUMP SPREAD</div></div>
+      </div>
+
+      <div class="fa-in" style="max-width:600px;margin-bottom:20px;padding:18px 22px;border-radius:14px;border:1px dashed rgba(120,140,166,.3);background:rgba(10,16,28,.4);text-align:left;animation-delay:.26s;">
+        <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.2em;color:#7688a0;margin-bottom:8px;">WHAT WE ACTUALLY MEASURED</div>
+        <div style="font:500 14px/1.6 'Archivo';color:#C6D3E2;">{{ whatRead }}</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;">
+          <sc-for list="{{ traitChips }}" as="c" hint-placeholder-count="1">
+            <span style="display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border-radius:8px;border:1px solid color-mix(in srgb,var(--accent,#22D3EE) 30%,transparent);background:color-mix(in srgb,var(--accent,#22D3EE) 8%,transparent);font:700 11px 'IBM Plex Mono';letter-spacing:.06em;color:#C6D3E2;"><span style="font-weight:800;color:var(--accent,#22D3EE);">{{ c.key }}</span>{{ c.label }}</span>
+          </sc-for>
+        </div>
+      </div>
+
+      <div class="fa-in" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:14px;animation-delay:.32s;">
+        <button onClick="{{ retake }}" style="display:inline-flex;align-items:center;gap:11px;padding:18px 44px;border-radius:13px;border:0;background:var(--accent,#22D3EE);color:#0b0518;font:700 16px 'Archivo';cursor:pointer;box-shadow:0 14px 46px color-mix(in srgb,var(--accent,#22D3EE) 42%,transparent);transition:transform .16s ease;" style-hover="transform:translateY(-2px);">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" style="stroke:#0b0518;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
+          Jump again
+        </button>
+        <a href="Assessment.dc.html" style="display:inline-flex;align-items:center;gap:9px;padding:18px 26px;border-radius:13px;border:1px solid rgba(157,176,198,.28);background:rgba(12,18,30,.4);color:#C6D3E2;font:600 15px 'Archivo';" style-hover="border-color:color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);color:#EAF2FB;">Back to the scan</a>
+      </div>
+      <div class="fa-in" style="margin-top:20px;font:500 10px 'IBM Plex Mono';letter-spacing:.14em;color:#4f627a;animation-delay:.38s;">{{ dataLine }}</div>
+    </main>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1000,&quot;height&quot;:820},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#22D3EE&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#22D3EE&quot;,&quot;#A78BFA&quot;,&quot;#C6FF3A&quot;,&quot;#FF7A45&quot;,&quot;#FF4D8D&quot;]},&quot;motion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  N_ATTEMPTS = 3;
+  G = 9.81;
+  MIN_FLIGHT = 0.20;   // s — below this it wasn't a jump
+  MAX_FLIGHT = 0.95;   // s — above this it's a mistimed hold
+  BAND_CM = 2.5;       // reported +/- range
+
+  state = { view:'intro', attempt:0, holding:false, analysePct:0 };
+
+  componentDidMount(){
+    try { this._soundOn = localStorage.getItem('fa_sound') !== '0'; } catch(e){ this._soundOn=true; }
+    try { this._best = parseFloat(localStorage.getItem('fa_am_jump_best')||'0')||0; } catch(e){ this._best=0; }
+    try { const raw=localStorage.getItem('fa_gk_profile'); this._profile=raw?JSON.parse(raw):null; } catch(e){ this._profile=null; }
+    this._onResize=()=>this._resize(); window.addEventListener('resize', this._onResize);
+    this._onKeyDown=(e)=>{ if((e.code==='Space')&&this.state.view==='play'&&!this._holding){ e.preventDefault(); this._takeoff(); } };
+    this._onKeyUp=(e)=>{ if((e.code==='Space')&&this.state.view==='play'&&this._holding){ e.preventDefault(); this._land(); } };
+    window.addEventListener('keydown', this._onKeyDown); window.addEventListener('keyup', this._onKeyUp);
+  }
+  componentWillUnmount(){ window.removeEventListener('resize', this._onResize); window.removeEventListener('keydown', this._onKeyDown); window.removeEventListener('keyup', this._onKeyUp); this._stop(); clearInterval(this._anTimer); }
+
+  // ---------- audio ----------
+  _audio(){ if(this._actx===undefined){ try{ this._actx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ this._actx=null; } } if(this._actx&&this._actx.state==='suspended') this._actx.resume(); return this._actx; }
+  _tone(f,d,t,g,slide){ const c=this._audio(); if(!c||this._soundOn===false) return; const o=c.createOscillator(),a=c.createGain(); o.type=t||'sine'; o.frequency.setValueAtTime(f,c.currentTime); if(slide) o.frequency.exponentialRampToValueAtTime(Math.max(20,slide),c.currentTime+d); o.connect(a); a.connect(c.destination); const n=c.currentTime; a.gain.setValueAtTime(0.0001,n); a.gain.exponentialRampToValueAtTime(g||0.05,n+0.008); a.gain.exponentialRampToValueAtTime(0.0001,n+d); o.start(n); o.stop(n+d+0.02); }
+  _haptic(ms){ try{ if(navigator.vibrate) navigator.vibrate(ms||8); }catch(e){} }
+  _sfx(k){ if(this._soundOn===false) return;
+    if(k==='takeoff'){ this._tone(300,0.12,'sine',0.05,760); }
+    else if(k==='land'){ this._tone(520,0.09,'triangle',0.05); setTimeout(()=>this._tone(760,0.12,'triangle',0.045),50); }
+    else if(k==='bad'){ this._tone(240,0.24,'sawtooth',0.05,120); }
+    else if(k==='done'){ this._tone(520,0.13,'triangle',0.05); setTimeout(()=>this._tone(700,0.13,'triangle',0.05),110); setTimeout(()=>this._tone(940,0.24,'triangle',0.05),230); }
+    else if(k==='whistle'){ this._tone(900,0.16,'sine',0.05,1200); }
+    else if(k==='tap'){ this._tone(520,0.05,'square',0.03); }
+  }
+  _toggleSound(){ const on=this._soundOn===false; this._soundOn=on; try{ localStorage.setItem('fa_sound', on?'1':'0'); }catch(e){} if(on){ this._audio(); this._sfx('tap'); } this.forceUpdate(); }
+
+  // ---------- canvas ----------
+  _resize(){ const cv=this._canvas; if(!cv) return; const r=cv.getBoundingClientRect(); const dpr=Math.min(2,window.devicePixelRatio||1); cv.width=Math.max(2,Math.round(r.width*dpr)); cv.height=Math.max(2,Math.round(r.height*dpr)); this._dpr=dpr; this._W=r.width; this._H=r.height; }
+  _cvRef(el){ this._canvas=el; if(el){ requestAnimationFrame(()=>this._resize()); } }
+  _flRef(el){ this._flashEl=el; }
+  _start(){ this._running=true; this._raf=requestAnimationFrame((t)=>this._loop(t)); }
+  _stop(){ this._running=false; if(this._raf) cancelAnimationFrame(this._raf); }
+
+  // ---------- flow ----------
+  _begin(){
+    this._audio(); this._sfx('whistle'); this._haptic(12);
+    this._attempts=[]; this._holding=false; this._peakCm=0;
+    this.setState({ view:'play', attempt:0, holding:false }, ()=>{ this._resize(); this._start(); });
+  }
+  _heightCm(flightS){ return (this.G*flightS*flightS/8)*100; }
+
+  _takeoff(){
+    if(this.state.view!=='play'||this._holding) return;
+    if(this._attempts.length>=this.N_ATTEMPTS) return;
+    this._holding=true; this._t0=performance.now(); this._sfx('takeoff'); this._haptic(10);
+    this.setState({ holding:true });
+  }
+  _land(){
+    if(!this._holding) return; this._holding=false;
+    const flight=(performance.now()-this._t0)/1000;
+    if(flight<this.MIN_FLIGHT || flight>this.MAX_FLIGHT){
+      this._sfx('bad'); this._flash('rgba(255,74,95,.3)'); this._haptic(20);
+      this._badMsg = flight<this.MIN_FLIGHT? 'Too quick to be a jump — hold through the whole flight.' : 'Held too long — release the instant you land.';
+      this.setState({ holding:false }); return;
+    }
+    this._badMsg=null;
+    const cm=this._heightCm(flight);
+    this._attempts.push({ flightS:flight, cm });
+    this._sfx('land'); this._flash('color-mix(in srgb,'+(this._accent || '#22D3EE')+' 30%,transparent)'); this._haptic(16);
+    this.setState({ holding:false, attempt:this._attempts.length });
+    if(this._attempts.length>=this.N_ATTEMPTS){ clearTimeout(this._to); this._to=setTimeout(()=>this._analyse(), 700); }
+  }
+
+  _analyse(){
+    this._stop(); this._sfx('whistle');
+    this.setState({ view:'analyse', analysePct:0 });
+    const steps=['DETECTING TAKE-OFF','MEASURING FLIGHT TIME','CONVERTING TO JUMP HEIGHT','COMPARING TO YOUR AGE GROUP'];
+    this._anStep=0; const motion=this.props.motion??true; const dur=motion?2200:400;
+    const t0=performance.now();
+    clearInterval(this._anTimer);
+    this._anTimer=setInterval(()=>{
+      const p=Math.min(1,(performance.now()-t0)/dur);
+      this._anStep=Math.min(steps.length-1,Math.floor(p*steps.length));
+      this.setState({ analysePct:Math.round(p*100) });
+      if(p>=1){ clearInterval(this._anTimer); this._gameOver(); }
+    }, 60);
+    this._anSteps=steps;
+  }
+
+  // ---------- draw (jumper viz) ----------
+  _loop(t){ if(!this._running) return; this._raf=requestAnimationFrame((tt)=>this._loop(tt)); if((!this._W||!this._H)&&this._canvas) this._resize(); this._draw(t); }
+  _draw(now){
+    const ctx=this._canvas&&this._canvas.getContext('2d'); if(!ctx) return;
+    const W=this._W,H=this._H,dpr=this._dpr||1; if(!W||!H||!isFinite(W)) return;
+    const acc=this._accent || '#22D3EE';
+    ctx.save(); ctx.scale(dpr,dpr); ctx.clearRect(0,0,W,H);
+    const g=ctx.createLinearGradient(0,0,0,H); g.addColorStop(0,'#0d1c2e'); g.addColorStop(0.6,'#091324'); g.addColorStop(1,'#050c17');
+    ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+    const groundY=H*0.82; const cxp=W*0.5;
+    // measuring stick on the left
+    const topY=H*0.12; ctx.strokeStyle='rgba(120,140,166,.25)'; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(W*0.16,topY); ctx.lineTo(W*0.16,groundY); ctx.stroke();
+    for(let cm=0; cm<=70; cm+=10){ const yy=groundY-(cm/70)*(groundY-topY); ctx.strokeStyle='rgba(120,140,166,.22)'; ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(W*0.13,yy); ctx.lineTo(W*0.16,yy); ctx.stroke(); ctx.fillStyle='rgba(159,176,197,.5)'; ctx.font="600 "+Math.max(8,W*0.016)+"px 'IBM Plex Mono'"; ctx.textAlign='right'; ctx.fillText(cm+'', W*0.12, yy+3); }
+    // ground
+    ctx.strokeStyle='rgba(120,180,220,.3)'; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(0,groundY); ctx.lineTo(W,groundY); ctx.stroke();
+
+    // current jump height (live while holding, projected from elapsed via parabola of a nominal peak)
+    let liveCm=0, liftFrac=0;
+    if(this._holding){ const el=(now-this._t0)/1000; const projCm=this._heightCm(Math.min(this.MAX_FLIGHT,el)); liveCm=projCm; liftFrac=Math.min(1, projCm/70); this._peakCm=Math.max(this._peakCm||0, projCm); }
+    // figure
+    const bodyH=H*0.16; const lift=(liftFrac)*(groundY-topY);
+    const feetY=groundY-lift; const headY=feetY-bodyH;
+    ctx.save();
+    // shadow shrinks with lift
+    ctx.globalAlpha=0.35*(1-liftFrac*0.7); ctx.fillStyle='#000'; ctx.beginPath(); ctx.ellipse(cxp,groundY,Math.max(16,W*0.045)*(1-liftFrac*0.4),Math.max(4,W*0.011),0,0,7); ctx.fill(); ctx.globalAlpha=1;
+    // body
+    ctx.strokeStyle=acc; ctx.lineWidth=Math.max(4,W*0.011); ctx.lineCap='round';
+    const hipY=feetY-bodyH*0.5;
+    ctx.beginPath(); ctx.moveTo(cxp,feetY); ctx.lineTo(cxp,hipY); ctx.stroke();               // legs
+    ctx.beginPath(); ctx.moveTo(cxp,hipY); ctx.lineTo(cxp,headY+bodyH*0.16); ctx.stroke();      // torso
+    // arms swing up with lift
+    const arm=(0.3+liftFrac*0.9); ctx.beginPath(); ctx.moveTo(cxp,hipY+bodyH*0.1); ctx.lineTo(cxp-W*0.045,hipY-bodyH*0.2*arm); ctx.moveTo(cxp,hipY+bodyH*0.1); ctx.lineTo(cxp+W*0.045,hipY-bodyH*0.2*arm); ctx.stroke();
+    ctx.fillStyle=acc; ctx.beginPath(); ctx.arc(cxp,headY,Math.max(7,W*0.017),0,7); ctx.fill();
+    ctx.restore();
+    // peak marker line
+    if((this._peakCm||0)>1 && (this._holding|| (this.state.attempt>0 && !this._holding))){ const pk=Math.min(70,this._peakCm); const py=groundY-(pk/70)*(groundY-topY); ctx.strokeStyle='rgba(198,255,58,.55)'; ctx.setLineDash([5,5]); ctx.lineWidth=1.6; ctx.beginPath(); ctx.moveTo(W*0.16,py); ctx.lineTo(W*0.9,py); ctx.stroke(); ctx.setLineDash([]); }
+
+    // readouts
+    ctx.textAlign='center';
+    if(this._holding){ ctx.fillStyle='#EAF2FB'; ctx.font="800 "+Math.max(20,W*0.05)+"px 'IBM Plex Mono'"; ctx.fillText(Math.round((now-this._t0))+'ms', cxp, topY+Math.max(20,W*0.05)); ctx.fillStyle='rgba(159,176,197,.65)'; ctx.font="600 "+Math.max(9,W*0.016)+"px 'IBM Plex Mono'"; ctx.fillText('AIRBORNE', cxp, topY+Math.max(38,W*0.076)); }
+    else { const last=this._attempts&&this._attempts[this._attempts.length-1]; ctx.fillStyle='rgba(200,215,232,.75)'; ctx.font="800 "+Math.max(13,W*0.028)+"px 'Archivo'"; ctx.fillText(this._badMsg? '' : (last? ('~'+Math.round(last.cm)+' cm'):'READY WHEN YOU ARE'), cxp, topY+Math.max(20,W*0.04)); }
+    ctx.restore();
+  }
+  _flash(col){ const el=this._flashEl; if(!el) return; el.style.background='radial-gradient(circle at 50% 55%,'+col+',transparent 62%)'; el.style.animation='none'; void el.offsetWidth; el.style.animation='fa-flash .55s ease forwards'; }
+
+  // ---------- results ----------
+  _ageYears(){ const AGY={U10:9,U12:11,U14:13,U16:15,U18:17,U21:20,Senior:24,'35+':37}; const ag=this._profile&&this._profile.ageGroup; return ag?(AGY[ag]||null):null; }
+  _percentile(cm){
+    // rough youth->adult CMJ norms (cm). Deliberately coarse; framed as a band.
+    const ay=this._ageYears(); const adultMean=38, adultSD=6;
+    let mean=adultMean, sd=adultSD;
+    if(ay!=null){ if(ay<=11){mean=22;sd=4;} else if(ay<=13){mean=27;sd=5;} else if(ay<=15){mean=32;sd=5;} else if(ay<=17){mean=37;sd=6;} else {mean=40;sd=6;} }
+    const z=(cm-mean)/sd; const p=100*(0.5*(1+this._erf(z/Math.SQRT2)));
+    return Math.max(1,Math.min(99,Math.round(p)));
+  }
+  _erf(x){ const t=1/(1+0.3275911*Math.abs(x)); const y=1-(((((1.061405429*t-1.453152027)*t)+1.421413741)*t-0.284496736)*t+0.254829592)*t*Math.exp(-x*x); return x>=0?y:-y; }
+
+  _gameOver(){
+    this._sfx('done'); this._haptic(24);
+    const A=this._attempts.slice().sort((a,b)=>b.cm-a.cm);
+    const best=A[0]||{cm:0,flightS:0};
+    const cms=this._attempts.map(a=>a.cm);
+    const spread=cms.length>1? (Math.max.apply(null,cms)-Math.min.apply(null,cms)) : 0;
+    const pct=this._percentile(best.cm);
+    const isPB=best.cm>this._best; if(isPB){ this._best=best.cm; try{ localStorage.setItem('fa_am_jump_best', best.cm.toFixed(1)); }catch(e){} }
+    const lo=Math.max(0,best.cm-this.BAND_CM), hi=best.cm+this.BAND_CM;
+    const result={ instrument:'the-jump', version:'am-jump-1.0', position:'am', method:'hand-timed-flight', completedAt:new Date().toISOString(),
+      attempts:this._attempts.map(a=>({ flightMs:Math.round(a.flightS*1000), heightCm:+a.cm.toFixed(1) })),
+      measures:{ bestHeightCm:+best.cm.toFixed(1), rangeCm:[+lo.toFixed(1),+hi.toFixed(1)], bestFlightMs:Math.round(best.flightS*1000), percentile:pct, spreadCm:+spread.toFixed(1) },
+      context:{ ageGroup:(this._profile&&this._profile.ageGroup)||null, ageYears:this._ageYears() },
+      maps:{ EXP:'explosive-power', note:'lower-limb explosive power (flight-time CMJ) — not first-step acceleration with a ball' } };
+    try{ localStorage.setItem('fa_am_jump', JSON.stringify(result)); }catch(e){}
+    this._final={ isPB, best, lo, hi, pct, spread };
+    this.setState({ view:'over' });
+  }
+  _retake(){ this._begin(); }
+  _back(){ this._sfx('tap'); if(this.state.view==='intro'){ window.location.href='Assessment.dc.html'; } else { this._stop(); clearInterval(this._anTimer); this.setState({ view:'intro' }); } }
+
+  renderVals(){
+    const accent=this.props.accent ?? '#22D3EE'; this._accent=accent;
+    const V=this.state.view, S=this.state, soundOn=this._soundOn!==false;
+    const base={ accent,
+      isIntro:V==='intro', isPlay:V==='play', isAnalyse:V==='analyse', isOver:V==='over', showBack:V!=='analyse',
+      soundOn, soundOff:!soundOn, soundColor:soundOn?accent:'#61748c', soundTitle:soundOn?'Sound on':'Sound off',
+      toggleSound:()=>this._toggleSound(), back:()=>this._back(), begin:()=>this._begin(), retake:()=>this._retake(),
+      canvasRef:(el)=>this._cvRef(el), flashRef:(el)=>this._flRef(el),
+      pressDown:(e)=>{ if(e&&e.preventDefault)e.preventDefault(); this._takeoff(); }, pressUp:(e)=>{ if(e&&e.preventDefault)e.preventDefault(); this._land(); },
+      bestLine:(this._best>0?('YOUR BEST · ~'+Math.round(this._best)+' CM'):'FIRST SESSION · SET THE BAR') };
+
+    const done=(this._attempts&&this._attempts.length)||0;
+    base.attemptLabel=Math.min(done+ (this._holding?1:0)+ (done<this.N_ATTEMPTS?0:0), this.N_ATTEMPTS)+' / '+this.N_ATTEMPTS;
+    base.attemptLabel=(Math.min(done+ (done<this.N_ATTEMPTS?1:0), this.N_ATTEMPTS))+' / '+this.N_ATTEMPTS;
+    base.attemptDots=[0,1,2].map(i=>{ const a=this._attempts&&this._attempts[i]; return {
+      val: a? ('~'+Math.round(a.cm)) : '–', label: a?'CM':('JUMP '+(i+1)),
+      border: a?('color-mix(in srgb,'+accent+' 45%,transparent)'):'rgba(120,140,166,.22)',
+      bg: a?('color-mix(in srgb,'+accent+' 10%,transparent)'):'rgba(10,16,28,.4)',
+      color: a?accent:'#61748c' };
+    });
+    base.holdBtnLabel = this._holding? 'LAND — RELEASE NOW' : 'HOLD AS YOU JUMP';
+    base.holdBtnBg = this._holding? '#FFB020' : accent;
+    base.holdBtnColor = '#0b0518';
+    base.holdSub = this._badMsg? this._badMsg : (this._holding? 'release the instant your feet touch down' : 'press as your feet leave the ground');
+
+    const steps=this._anSteps||['DETECTING TAKE-OFF'];
+    base.analysePct=(S.analysePct||0)+'%'; base.analyseStep=steps[Math.min(this._anStep||0,steps.length-1)];
+
+    const f=this._final||{}; const best=f.best||{cm:0,flightS:0};
+    base.pbFlag=f.isPB?'★ NEW PERSONAL BEST':(this._best>0?('BEST · ~'+Math.round(this._best)+' CM'):'BASELINE SET');
+    base.heightRange=(f.lo!=null?Math.round(f.lo):0)+'–'+(f.hi!=null?Math.round(f.hi):0)+' cm';
+    base.flightTxt=best.flightS?Math.round(best.flightS*1000)+'ms':'—';
+    base.percentileTxt=(f.pct!=null?f.pct:0)+'th';
+    base.percentileSub = this._ageYears()!=null? 'FOR YOUR AGE' : 'VS ADULT NORMS';
+    base.consistencyTxt='±'+(f.spread!=null?Math.round(f.spread):0)+'cm';
+    const cm=best.cm||0;
+    if(cm>=45) base.heightVerdict='Serious spring. This is the explosiveness the Maverick and Dynamo are built on.';
+    else if(cm>=36) base.heightVerdict='Strong lower-body power — above the line for your level.';
+    else if(cm>=28) base.heightVerdict='Solid base. Plyometric work would turn this into a weapon.';
+    else base.heightVerdict='Room to grow here. Explosive strength is one of the most trainable traits you have.';
+
+    const parts=[];
+    parts.push('Your best jump hung for '+(best.flightS?Math.round(best.flightS*1000):0)+'ms — a countermovement height of about '+Math.round(cm)+'cm ('+base.heightRange+').');
+    parts.push('That sits around the '+(f.pct!=null?f.pct:0)+'th percentile '+(this._ageYears()!=null?'for your age group.':'against adult norms.'));
+    if(cm>=42) parts.push('Explosive power this high leans Maverick or Dynamo.');
+    parts.push('Hand-timed, so it is a range — the 240fps frame-count method would tighten it.');
+    base.whatRead=parts.join(' ');
+    base.traitChips=[ {key:'EXP',label:'Explosiveness'} ];
+    base.dataLine='MEASURED · HAND-TIMED FLIGHT · BEST OF '+this.N_ATTEMPTS+' · am-jump-1.0';
+    return base;
+  }
+}
+</script>
+</body>
+</html>
