@@ -562,21 +562,22 @@ class Component extends DCLogic {
     this._kpos.y += (tgt.y - this._kpos.y) * ease;
     if (live) this._setPos = { x:ktx, y:kty };           // remember set spot for the dive afterimage
 
-    // command-presence radius around the keeper (subtle pulse while live)
-    const ringPulse = live && !reduce ? (0.5 + 0.5 * osc) : 0.5;
-    FP.radius(ctx, fit, this._kpos.x, this._kpos.y, { reach: 0.085 + ringPulse * 0.014, color: acc });
+    // coverage the keeper can actually reach — an ellipse sized to a realistic
+    // dive (wider across the goal than in depth), so it reads narrower than the
+    // 7.32m mouth: the exposed corners are the whole point of the read.
+    const cvPulse = live && !reduce ? (0.5 + 0.5 * osc) : 0.5;
+    this._coverage(ctx, fit, this._kpos.x, this._kpos.y, acc, cvPulse);
 
     // LIVE threat read — the "scan": angle to cover, the shot lane, shooter menace, ball lock
     if (live) {
       FP.angleCone(ctx, fit, ballPos, { end:1, optimal:true, color:acc });
       this._threatLine(ctx, fit, ballPos, goalC, stress, now, reduce);
-      FP.pressure(ctx, fit, atk.x, atk.y, { intensity: 0.35 + stress / 150, color:'#FF5A6E', r: Math.max(9, fit.m(1.6)) });
+      FP.pressure(ctx, fit, atk.x, atk.y, { intensity: 0.35 + stress / 150, color:'#FF5A6E', r: Math.max(9, fit.m(1.7)) });
       this._reticle(ctx, fit, ballPos, acc, now, reduce);
     }
 
-    // attacker (shooter) chevron, labelled while the call is live
-    const shooterR = Math.max(9, fit.m(1.6));
-    FP.chevron(ctx, fit, atk.x, atk.y, { r: shooterR, role: live ? 'SHOOTER' : null });
+    // the shooter — a red opponent token facing our goal (was an abstract arrow)
+    this._shooter(ctx, fit, atk.x, atk.y, { role: live ? 'SHOOTER' : null });
 
     // dive afterimage — a faint ghost at the set spot sells the explosive move
     if (resolved && last && !last.froze && this._setPos) this._keeper(ctx, fit, this._setPos.x, this._setPos.y, { alpha:0.14 });
@@ -625,7 +626,7 @@ class Component extends DCLogic {
   }
 
   /* ---------- HUD scene helpers (Canvas 2D — portable to any stack) ---------- */
-  // floodlight pool at the goal mouth + faint radar grid + downward scan sweep + corner brackets
+  // floodlight pool at the goal mouth + corner brackets (grid + scan sweep removed)
   _fieldHUD(ctx, fit, acc, now, reduce){
     const ox = fit.ox, oy = fit.oy, dw = fit.drawW, dh = fit.drawH;
     ctx.save();
@@ -635,19 +636,6 @@ class Component extends DCLogic {
     const fl = ctx.createRadialGradient(G[0], G[1], fit.m(2), G[0], G[1], Math.max(dw, dh) * 0.95);
     fl.addColorStop(0, this._hexA(acc, 0.1)); fl.addColorStop(0.5, this._hexA(acc, 0.03)); fl.addColorStop(1, 'rgba(0,0,0,0)');
     ctx.fillStyle = fl; ctx.fillRect(ox, oy, dw, dh);
-    // faint HUD grid
-    ctx.strokeStyle = this._hexA(acc, 0.06); ctx.lineWidth = 1;
-    const step = Math.max(34, Math.min(dw, dh) / 7);
-    for (let gx = ox + step; gx < ox + dw; gx += step) { ctx.beginPath(); ctx.moveTo(gx, oy); ctx.lineTo(gx, oy + dh); ctx.stroke(); }
-    for (let gy = oy + step; gy < oy + dh; gy += step) { ctx.beginPath(); ctx.moveTo(ox, gy); ctx.lineTo(ox + dw, gy); ctx.stroke(); }
-    // radar scan sweep (downward)
-    if (!reduce) {
-      const sy = oy + ((now / 2600) % 1) * dh;
-      const grd = ctx.createLinearGradient(0, sy - 18, 0, sy + 18);
-      grd.addColorStop(0, 'rgba(0,0,0,0)'); grd.addColorStop(0.5, this._hexA(acc, 0.16)); grd.addColorStop(1, 'rgba(0,0,0,0)');
-      ctx.fillStyle = grd; ctx.fillRect(ox, sy - 18, dw, 36);
-      ctx.strokeStyle = this._hexA(acc, 0.4); ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(ox, sy); ctx.lineTo(ox + dw, sy); ctx.stroke();
-    }
     // inner corner brackets
     ctx.strokeStyle = this._hexA(acc, 0.5); ctx.lineWidth = 1.5;
     const b = 14;
@@ -696,6 +684,50 @@ class Component extends DCLogic {
       ctx.beginPath(); ctx.moveTo(x + Math.cos(a) * r0, y + Math.sin(a) * r0); ctx.lineTo(x + Math.cos(a) * r1, y + Math.sin(a) * r1); ctx.stroke();
     }
     ctx.restore();
+  }
+  // keeper reach footprint — an ELLIPSE, wider across the goal (lateral dive)
+  // than in depth (a step out/back). Half-axes are real metres via fit.m(),
+  // so it stays honest against the 7.32m goal at any zoom.
+  _coverage(ctx, fit, nx, ny, acc, pulse){
+    const P = fit.px(nx, ny), x = P[0], y = P[1];
+    const rx = fit.m(2.95) + pulse * fit.m(0.22);   // lateral reach along the goal line
+    const ry = fit.m(2.05) + pulse * fit.m(0.16);   // shorter forward/back reach
+    ctx.save();
+    const g = ctx.createRadialGradient(x, y, Math.min(rx, ry) * 0.25, x, y, Math.max(rx, ry));
+    g.addColorStop(0, this._hexA(acc, 0.14)); g.addColorStop(1, this._hexA(acc, 0));
+    ctx.fillStyle = g; ctx.beginPath(); ctx.ellipse(x, y, rx, ry, 0, 0, 7); ctx.fill();
+    ctx.strokeStyle = this._hexA(acc, 0.5); ctx.lineWidth = Math.max(1.4, fit.m(0.05)); ctx.setLineDash([5, 5]);
+    ctx.beginPath(); ctx.ellipse(x, y, rx, ry, 0, 0, 7); ctx.stroke(); ctx.setLineDash([]);
+    ctx.restore();
+  }
+  // shooter — a red opponent token (mirrors the keeper's block) with a white
+  // pip on the goal-facing edge so the attack direction still reads.
+  _shooter(ctx, fit, nx, ny, o){
+    o = o || {};
+    const P = fit.px(nx, ny), x = P[0], y = P[1], red = '#FF5A6E';
+    const s = Math.max(10, fit.m(1.6)) * (o.scale || 1), rr = s * 0.3;
+    const G = fit.px(1, 0.5), ang = Math.atan2(G[1] - y, G[0] - x);   // toward our goal
+    ctx.save();
+    ctx.fillStyle = 'rgba(0,0,0,.42)';
+    ctx.beginPath(); ctx.ellipse(x, y + s * 0.55, s * 0.55, s * 0.2, 0, 0, 7); ctx.fill();
+    ctx.shadowColor = red; ctx.shadowBlur = fit.m(0.8);
+    const g = ctx.createLinearGradient(x, y - s / 2, x, y + s / 2);
+    g.addColorStop(0, '#FF8593'); g.addColorStop(1, '#E23A4F');
+    ctx.fillStyle = g; ctx.strokeStyle = 'rgba(255,190,198,.85)'; ctx.lineWidth = Math.max(1.4, fit.m(0.06));
+    const rx = x - s / 2, ry = y - s / 2;
+    ctx.beginPath();
+    ctx.moveTo(rx + rr, ry); ctx.arcTo(rx + s, ry, rx + s, ry + s, rr); ctx.arcTo(rx + s, ry + s, rx, ry + s, rr);
+    ctx.arcTo(rx, ry + s, rx, ry, rr); ctx.arcTo(rx, ry, rx + s, ry, rr); ctx.closePath();
+    ctx.fill(); ctx.stroke(); ctx.shadowBlur = 0;
+    // attack-direction pip on the goal-facing edge
+    const er = s * 0.5, ex = x + Math.cos(ang) * er, ey = y + Math.sin(ang) * er;
+    ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(ex, ey, Math.max(2, fit.m(0.16)), 0, 7); ctx.fill();
+    ctx.restore();
+    if (o.role) {
+      ctx.save(); ctx.fillStyle = 'rgba(255,150,160,.85)';
+      ctx.font = "700 " + Math.max(8, fit.font * 0.9) + "px 'IBM Plex Mono'";
+      ctx.textAlign = 'center'; ctx.fillText(o.role, x, y + s * 0.5 + fit.font * 1.1); ctx.restore();
+    }
   }
 
   /* ---------- audio: removed for now. _sfx is a no-op so the existing call
