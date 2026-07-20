@@ -688,9 +688,13 @@ class Component extends DCLogic {
     let to, dur;
     // net sits between the goal line (x=1.0) and its back (~x=1.023); beaten
     // shots finish INSIDE it. Saves finish just in front of the line (gathered).
+    // Every shot flies at the goal mouth (posts sit at y 0.446 / 0.554) so the
+    // trajectory always lines up with the frame and finishes where it was headed:
+    // a save is gathered on the line, a goal is buried just inside the near post.
+    const mouth = (yy) => Math.max(0.47, Math.min(0.53, yy));
     if (rec.froze) { to = { x:1.021, y:0.5 }; dur = 560; }                       // rolls to the back of the net
-    else if (rec.success) { to = { x:0.955, y: 0.5 + (from.y - 0.5) * 0.5 }; dur = 430; }
-    else { to = { x:1.022, y: from.y < 0.5 ? 0.46 : 0.54 }; dur = 480; }         // buries it in the back corner
+    else if (rec.success) { to = { x:0.955, y: mouth(0.5 + (from.y - 0.5) * 0.5) }; dur = 430; }
+    else { to = { x:1.022, y: mouth(from.y < 0.5 ? 0.475 : 0.525) }; dur = 480; } // buries it just inside the post
     this._savePoint = to;           // where the ball ends up — the keeper dives to meet it
     this._trail = [];
     this._flight = { from, to, dur, t0:this._now(), cb:() => this._land(rec, to) };
