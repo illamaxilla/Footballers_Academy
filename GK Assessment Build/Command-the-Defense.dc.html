@@ -105,7 +105,7 @@
   <!-- ============ DRILL · ARENA LAYOUT ============ -->
   <sc-if value="{{ isDrill }}" hint-placeholder-val="{{ true }}">
     <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:8px clamp(16px,2.4vw,42px) 16px;">
-      <div style="width:100%;max-width:1180px;flex:1;min-height:0;display:flex;flex-direction:column;gap:10px;">
+      <div style="width:100%;max-width:740px;flex:1;min-height:0;display:flex;flex-direction:column;gap:10px;">
 
         <!-- ==== PROMPT BANNER ==== -->
         <div class="fa-in-sm" style="flex:0 0 auto;display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:11px 15px;border-radius:13px;border:1px solid rgba(120,140,166,.18);background:rgba(10,16,28,.55);">
@@ -127,7 +127,7 @@
         </div>
 
         <!-- ==== FIELD ==== -->
-        <div style="position:relative;flex:1 1 120px;min-height:120px;border-radius:16px;overflow:hidden;border:1px solid rgba(120,140,166,.18);background:radial-gradient(130% 100% at 50% 100%,#0d1c2e 0%,#091324 52%,#050c17 100%);box-shadow:inset 0 0 60px rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;{{ vizShake }}">
+        <div style="position:relative;flex:0 0 auto;align-self:center;width:auto;height:clamp(300px,50vh,470px);aspect-ratio:3/2;max-width:100%;border-radius:16px;overflow:hidden;border:1px solid rgba(120,140,166,.18);background:radial-gradient(130% 100% at 50% 100%,#0d1c2e 0%,#091324 52%,#050c17 100%);box-shadow:inset 0 0 60px rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;{{ vizShake }}">
           <canvas ref="{{ canvasRef }}" style="position:absolute;inset:0;width:100%;height:100%;display:block;z-index:1;"></canvas>
 
           <!-- direction cue -->
@@ -144,31 +144,6 @@
             </div>
           </sc-if>
 
-          <!-- feedback + oracle read float over the field bottom -->
-          <sc-if value="{{ resolved }}" hint-placeholder-val="{{ false }}">
-            <div style="position:absolute;left:12px;right:12px;bottom:12px;z-index:10;display:flex;flex-wrap:wrap;gap:9px;animation:fa-cardin .5s cubic-bezier(.2,.7,.2,1) both;">
-              <div style="flex:2 1 300px;padding:11px 14px;border-radius:12px;border:1px solid {{ feedBorder }};background:{{ feedBg }};backdrop-filter:blur(7px);">
-                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:7px;">
-                  <span style="font:600 8.5px 'IBM Plex Mono';letter-spacing:.2em;color:{{ feedColor }};">{{ feedKicker }}</span>
-                  <span style="font:800 13px 'Archivo';color:{{ feedColor }};">{{ execPct }}</span>
-                </div>
-                <div style="height:5px;border-radius:99px;background:rgba(120,140,166,.16);overflow:hidden;margin-bottom:8px;"><div style="height:100%;border-radius:99px;background:{{ feedColor }};width:{{ execPct }};"></div></div>
-                <div style="font:500 12px/1.5 'Archivo';color:#DCE7F3;text-wrap:pretty;">{{ feedText }}</div>
-              </div>
-              <div style="flex:1 1 160px;min-width:150px;padding:11px 13px;border-radius:12px;border:1px solid rgba(120,140,166,.16);background:rgba(6,12,22,.7);backdrop-filter:blur(7px);">
-                <div style="font:600 8.5px 'IBM Plex Mono';letter-spacing:.18em;color:#61748c;margin-bottom:8px;">THE ORACLE READ</div>
-                <div style="display:flex;flex-direction:column;gap:6px;">
-                  <sc-for list="{{ eliteSplit }}" as="e" hint-placeholder-count="3">
-                    <div style="display:flex;align-items:center;gap:8px;">
-                      <span style="flex:0 0 auto;width:6px;height:6px;border-radius:50%;background:{{ e.dot }};"></span>
-                      <span style="flex:1;font:600 9.5px 'Archivo';color:{{ e.labelColor }};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ e.label }}</span>
-                      <span style="flex:0 0 34px;text-align:right;font:700 9px 'IBM Plex Mono';color:{{ e.pctColor }};">{{ e.pct }}</span>
-                    </div>
-                  </sc-for>
-                </div>
-              </div>
-            </div>
-          </sc-if>
         </div>
 
         <!-- ==== CONTROL DOCK ==== -->
@@ -217,8 +192,30 @@
           </sc-if>
 
           <sc-if value="{{ resolved }}" hint-placeholder-val="{{ false }}">
-            <div style="min-height:88px;display:flex;justify-content:center;align-items:center;">
-              <button onClick="{{ next }}" style="display:inline-flex;align-items:center;gap:11px;padding:15px 32px;border-radius:12px;border:0;cursor:pointer;background:var(--accent,#22D3EE);color:#03121a;font:700 15px 'Archivo';box-shadow:0 12px 36px color-mix(in srgb,var(--accent,#22D3EE) 40%,transparent);transition:transform .16s ease,box-shadow .16s ease;animation:fa-rise-sm .4s cubic-bezier(.2,.7,.2,1) both;" style-hover="transform:translateY(-2px);box-shadow:0 18px 48px color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);">
+            <div style="display:flex;flex-wrap:wrap;gap:9px;animation:fa-cardin .5s cubic-bezier(.2,.7,.2,1) both;">
+              <div style="flex:2 1 300px;padding:12px 15px;border-radius:12px;border:1px solid {{ feedBorder }};background:{{ feedBg }};">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:7px;">
+                  <span style="font:600 8.5px 'IBM Plex Mono';letter-spacing:.2em;color:{{ feedColor }};">{{ feedKicker }}</span>
+                  <span style="font:800 13px 'Archivo';color:{{ feedColor }};">{{ execPct }}</span>
+                </div>
+                <div style="height:5px;border-radius:99px;background:rgba(120,140,166,.16);overflow:hidden;margin-bottom:8px;"><div style="height:100%;border-radius:99px;background:{{ feedColor }};width:{{ execPct }};"></div></div>
+                <div style="font:500 12.5px/1.5 'Archivo';color:#DCE7F3;text-wrap:pretty;">{{ feedText }}</div>
+              </div>
+              <div style="flex:1 1 170px;min-width:160px;padding:12px 14px;border-radius:12px;border:1px solid rgba(120,140,166,.16);background:rgba(6,12,22,.55);">
+                <div style="font:600 8.5px 'IBM Plex Mono';letter-spacing:.18em;color:#61748c;margin-bottom:8px;">THE ORACLE READ</div>
+                <div style="display:flex;flex-direction:column;gap:6px;">
+                  <sc-for list="{{ eliteSplit }}" as="e" hint-placeholder-count="3">
+                    <div style="display:flex;align-items:center;gap:8px;">
+                      <span style="flex:0 0 auto;width:6px;height:6px;border-radius:50%;background:{{ e.dot }};"></span>
+                      <span style="flex:1;font:600 9.5px 'Archivo';color:{{ e.labelColor }};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ e.label }}</span>
+                      <span style="flex:0 0 34px;text-align:right;font:700 9px 'IBM Plex Mono';color:{{ e.pctColor }};">{{ e.pct }}</span>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+            </div>
+            <div style="display:flex;justify-content:center;margin-top:3px;">
+              <button onClick="{{ next }}" style="display:inline-flex;align-items:center;gap:11px;padding:14px 32px;border-radius:12px;border:0;cursor:pointer;background:var(--accent,#22D3EE);color:#03121a;font:700 15px 'Archivo';box-shadow:0 12px 36px color-mix(in srgb,var(--accent,#22D3EE) 40%,transparent);transition:transform .16s ease,box-shadow .16s ease;animation:fa-rise-sm .4s cubic-bezier(.2,.7,.2,1) both;" style-hover="transform:translateY(-2px);box-shadow:0 18px 48px color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);">
                 {{ nextLabel }}
                 <svg width="17" height="17" viewBox="0 0 24 24" fill="none" style="stroke:#03121a;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12h13M12 6l6 6-6 6"/></svg>
               </button>
@@ -473,7 +470,7 @@ class Component extends DCLogic {
     const S = this.state, scn = this.SCN[S.si] || this.SCN[0];
     // Defensive-third GK cam: our goal at the bottom, the back line across the
     // middle, attackers and the ball above. Full width so wide runners show.
-    const fit = FP.fit(W, H, { cropRect:[0.60, 1.055, 0.0, 1.0], orient:'ns', attackDir:'rtl', inset:0.02 }); this._fit = fit;
+    const fit = FP.fit(W, H, { cropRect:[0.635, 1.055, 0.0, 1.0], orient:'ns', attackDir:'rtl', inset:0.02 }); this._fit = fit;
     FP.pitch(ctx, fit);
     FP.fieldHUD(ctx, fit, { accent:acc });
 
