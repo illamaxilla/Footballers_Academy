@@ -675,7 +675,7 @@
   // flat HUD ball — crisp disc + thin rim, soft glow only in flight (no gloss)
   function ballFlat(ctx, f, nx, ny, o) {
     o = o || {};
-    var P = f.px(nx, ny), x = P[0], y = P[1], r = o.r || Math.max(4, f.m(0.62));
+    var P = f.px(nx, ny), x = P[0], y = P[1], r = o.r || Math.max(3, f.m(0.42));
     ctx.save();
     if (o.flight) { ctx.shadowColor = 'rgba(220,240,255,.55)'; ctx.shadowBlur = f.m(0.8); }
     ctx.fillStyle = o.color || '#F2F8FE';
