@@ -410,10 +410,13 @@ class Component extends DCLogic {
     ctx.save(); ctx.scale(dpr, dpr); ctx.clearRect(0, 0, W, H);
     const s = this.state;
     const atk = this._P(s.atk), kpr = this._P(s.kpr), ball = this._P(s.ball), goalC = { x:1, y:0.5 };
-    // dynamic crop — frame the box + the striker's run
-    let minX = 0.66, minY = 0.20, maxY = 0.80;
-    [atk, kpr, ball].forEach(p => { minX = Math.min(minX, p.x - 0.05); minY = Math.min(minY, p.y - 0.07); maxY = Math.max(maxY, p.y + 0.07); });
-    const fit = FP.fit(W, H, { cropRect:[Math.max(0.44, minX), 1.06, Math.max(0, minY), Math.min(1, maxY)], orient:'ns', attackDir:'rtl', inset:0.03 }); this._fit = fit;
+    // Dynamic crop (mirrors HPK): default tight on the box + goal, expanding
+    // toward the ball and striker so the zoom ADJUSTS with the shot's closeness
+    // and stays zoomed in on close duels.
+    const BOX_BACK = 0.80;
+    let minX = BOX_BACK, minY = 0.20, maxY = 0.80;
+    [ball, atk, kpr].forEach(p => { minX = Math.min(minX, p.x - 0.05); minY = Math.min(minY, p.y - 0.06); maxY = Math.max(maxY, p.y + 0.06); });
+    const fit = FP.fit(W, H, { cropRect:[Math.max(0.52, Math.min(BOX_BACK, minX)), 1.065, Math.max(0, minY), Math.min(1, maxY)], orient:'ns', attackDir:'rtl', inset:0.025 }); this._fit = fit;
     FP.pitch(ctx, fit);
     FP.fieldHUD(ctx, fit, { accent:acc });
 
