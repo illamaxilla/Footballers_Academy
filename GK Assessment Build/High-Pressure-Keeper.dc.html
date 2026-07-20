@@ -582,7 +582,7 @@ class Component extends DCLogic {
     FP.keeperToken(ctx, fit, this._kpos.x, this._kpos.y, { accent:acc, face:face, lean:lean, alpha:kAlpha, scale:kScale });
 
     // ball trail — ONLY while the ball is actually in flight (never at rest)
-    const ballR = Math.max(4, fit.m(0.62));
+    const ballR = Math.max(3, fit.m(0.42));
     if (resolving) {
       const tr = this._trail || [];
       tr.forEach((p, i) => { const f = (i + 1) / tr.length; ctx.globalAlpha = f * 0.4; FP.ballFlat(ctx, fit, p.x, p.y, { r: ballR * (0.4 + f * 0.5) }); });

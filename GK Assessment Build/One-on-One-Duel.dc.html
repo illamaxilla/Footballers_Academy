@@ -410,13 +410,15 @@ class Component extends DCLogic {
     ctx.save(); ctx.scale(dpr, dpr); ctx.clearRect(0, 0, W, H);
     const s = this.state;
     const atk = this._P(s.atk), kpr = this._P(s.kpr), ball = this._P(s.ball), goalC = { x:1, y:0.5 };
-    // Dynamic crop (mirrors HPK): default tight on the box + goal, expanding
-    // toward the ball and striker so the zoom ADJUSTS with the shot's closeness
-    // and stays zoomed in on close duels.
-    const BOX_BACK = 0.80;
-    let minX = BOX_BACK, minY = 0.20, maxY = 0.80;
-    [ball, atk, kpr].forEach(p => { minX = Math.min(minX, p.x - 0.05); minY = Math.min(minY, p.y - 0.06); maxY = Math.max(maxY, p.y + 0.06); });
-    const fit = FP.fit(W, H, { cropRect:[Math.max(0.52, Math.min(BOX_BACK, minX)), 1.065, Math.max(0, minY), Math.min(1, maxY)], orient:'ns', attackDir:'rtl', inset:0.025 }); this._fit = fit;
+    // Crop keyed on the scenario's FIXED decide spot + box/goal (like HPK's fixed
+    // scene positions) so the camera never reframes when the ball flies — the
+    // striker no longer appears to slide after the shot. Zoom still adapts per
+    // scenario: a closer decide spot frames tighter.
+    const t = this.SCN[s.ci] || this.SCN[0];
+    const dec = this._P(t.decide), BOX_BACK = 0.80;
+    const minX = Math.min(BOX_BACK, dec.x - 0.06);
+    const minY = Math.min(0.20, dec.y - 0.08), maxY = Math.max(0.80, dec.y + 0.08);
+    const fit = FP.fit(W, H, { cropRect:[Math.max(0.52, minX), 1.065, Math.max(0, minY), Math.min(1, maxY)], orient:'ns', attackDir:'rtl', inset:0.025 }); this._fit = fit;
     FP.pitch(ctx, fit);
     FP.fieldHUD(ctx, fit, { accent:acc });
 
@@ -437,7 +439,7 @@ class Component extends DCLogic {
     }
 
     if (stage === 'react' || stage === 'commit') {
-      const tr = s.trail || [], ballR = Math.max(4, fit.m(0.62));
+      const tr = s.trail || [], ballR = Math.max(3, fit.m(0.42));
       tr.forEach((p, i) => { const f = (i + 1) / tr.length, pp = this._P(p); ctx.globalAlpha = f * 0.4; FP.ballFlat(ctx, fit, pp.x, pp.y, { r: ballR * (0.4 + f * 0.5) }); });
       ctx.globalAlpha = 1;
     }
@@ -450,7 +452,16 @@ class Component extends DCLogic {
     if (resolved && s.out) { if (s.out.froze) kAlpha = 0.72; else lean = (s.dive === 'L' ? -1 : s.dive === 'R' ? 1 : 0) * 0.42; }
     FP.keeperToken(ctx, fit, K.x, K.y, { accent:acc, face:face, lean:lean, alpha:kAlpha, scale: reading && !reduce ? (1 + osc * 0.02) : 1 });
 
-    FP.ballFlat(ctx, fit, B.x, B.y, { flight: stage === 'react', r: Math.max(4, fit.m(0.62)) });
+    // a conceded ball is nestled in the netting — soft red glow behind it
+    if (resolved && s.impact && s.impact.kind !== 'save') {
+      const gp = fit.px(B.x, B.y);
+      ctx.save();
+      const ng = ctx.createRadialGradient(gp[0], gp[1], 0, gp[0], gp[1], fit.m(2.4));
+      ng.addColorStop(0, 'rgba(255,90,110,.3)'); ng.addColorStop(1, 'rgba(255,90,110,0)');
+      ctx.fillStyle = ng; ctx.beginPath(); ctx.arc(gp[0], gp[1], fit.m(2.4), 0, 7); ctx.fill();
+      ctx.restore();
+    }
+    FP.ballFlat(ctx, fit, B.x, B.y, { flight: stage === 'react', r: Math.max(3, fit.m(0.42)) });
 
     if (s.impact) {
       if (this._impRef !== s.impact) { this._impRef = s.impact; this._impT0 = now; }
@@ -568,9 +579,10 @@ class Component extends DCLogic {
 
   _beginReact(){
     const t = this.SCN[this.state.ci], take = this.state.take;
-    let target, atk = { ...this.state.atk };
-    if (take.t === 'shoot') { target = this._zonePoint(take.z); }
-    else { target = this._dribblePoint(take.z); atk = { x: take.z === 'L' ? 40 : 60, y:80 }; }
+    // striker HOLDS his committed position — only the ball travels, so he never
+    // appears to teleport after the shot (a dribble is shown by the ball's path).
+    const atk = { ...this.state.atk };
+    const target = take.t === 'shoot' ? this._zonePoint(take.z) : this._dribblePoint(take.z);
     const from = { ...this.state.ball };
     this.setState({ stage:'react', t2:1, atk, ball:from, trail:[], ballTrans:'none' });
     this._t2s = this._now(); this._lastTick2 = 1;
@@ -642,12 +654,15 @@ class Component extends DCLogic {
     const score = froze ? 0 : Math.max(0, Math.min(100, Math.round((decScore * 0.4 + reactScore * 0.35 + footScore * 0.25) * factor)));
     const matched = !froze && (picked === 'advance' ? t.adv >= t.stay : t.stay > t.adv);
 
+    // beaten shots bury INSIDE the goal mouth (L/C/R post), deep in the net —
+    // not out wide. y99 sits between the goal line and the net's back bar.
+    const gm = target === 'L' ? 45 : target === 'R' ? 55 : 50;
     let ball, kpr = { ...this.state.kpr }, ballTrans = 'left .4s ease,top .4s ease';
-    if (froze) { ball = { x:50, y:98 }; }
+    if (froze) { ball = { x:50, y:99 }; }
     else if (result === 'save') { kpr = { x: kpr.x + (dive === 'L' ? -7 : dive === 'R' ? 7 : 0), y:kpr.y }; ball = { x:kpr.x, y:kpr.y }; }
-    else if (result === 'near') { ball = { x: target === 'L' ? 30 : (target === 'R' ? 70 : 50), y:97 }; kpr = { x: kpr.x + (dive === 'L' ? -7 : dive === 'R' ? 7 : 0), y:kpr.y }; }
-    else if (timeout) { ball = take.t === 'shoot' ? this._zonePoint(target) : this._dribblePoint(target); ball = { x:ball.x, y:98 }; }
-    else { ball = take.t === 'shoot' ? this._zonePoint(target) : this._dribblePoint(target); ball = { x:ball.x, y:98 }; kpr = { x: kpr.x + (dive === 'L' ? -7 : dive === 'R' ? 7 : 0), y:kpr.y }; }
+    else if (result === 'near') { ball = { x:gm, y:98 }; kpr = { x: kpr.x + (dive === 'L' ? -7 : dive === 'R' ? 7 : 0), y:kpr.y }; }
+    else if (timeout) { ball = { x:gm, y:99 }; }
+    else { ball = { x:gm, y:99 }; kpr = { x: kpr.x + (dive === 'L' ? -7 : dive === 'R' ? 7 : 0), y:kpr.y }; }
 
     const rec = { i, short:t.short, dist:t.dist, ang:t.ang, pace:t.pace, picked, posGood, matched,
       take:{ ...take }, dive, rt, correct, result, decScore, reactScore, footScore, factor, score,
