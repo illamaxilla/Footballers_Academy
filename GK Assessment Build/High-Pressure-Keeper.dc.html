@@ -66,14 +66,6 @@
         <span style="font:800 13px 'Archivo';letter-spacing:.05em;">HIGH PRESSURE KEEPER <span style="color:var(--accent,#22D3EE);">· STRESS TEST</span></span>
       </div>
       <div style="display:flex;align-items:center;gap:12px;min-width:120px;justify-content:flex-end;">
-        <button onClick="{{ toggleSound }}" title="{{ soundTitle }}" style="display:grid;place-items:center;width:28px;height:28px;border-radius:8px;border:1px solid rgba(120,140,166,.24);background:rgba(10,16,28,.5);cursor:pointer;color:{{ soundColor }};transition:color .16s ease,border-color .16s ease;" style-hover="border-color:color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);">
-          <sc-if value="{{ soundOn }}" hint-placeholder-val="{{ true }}">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>
-          </sc-if>
-          <sc-if value="{{ soundOff }}" hint-placeholder-val="{{ false }}">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M22 9l-6 6M16 9l6 6"/></svg>
-          </sc-if>
-        </button>
         <span style="display:flex;gap:4px;">
           <sc-for list="{{ progressDots }}" as="d" hint-placeholder-count="10">
             <span style="width:11px;height:4px;border-radius:99px;transition:all .3s;{{ d.style }}"></span>
@@ -353,7 +345,7 @@
 class Component extends DCLogic {
   state = { view:'intro', ci:0, phase:'live', picked:null, tLeft:1, results:[],
     counts:{oracle:0,sentinel:0,catalyst:0,bastion:0,wall:0}, _meta:null,
-    screenFx:null, swapping:false, cu:1, soundOn:true };
+    screenFx:null, swapping:false, cu:1 };
 
   ORDER = ['oracle','sentinel','catalyst','bastion','wall'];
   AX = { oracle:'ANTICIPATION', sentinel:'COMMAND', catalyst:'DISTRIBUTION', bastion:'REFLEX', wall:'PRESENCE' };
@@ -445,8 +437,6 @@ class Component extends DCLogic {
     this._onResize = () => this._resize();
     window.addEventListener('resize', this._onResize);
     try { const b = JSON.parse(localStorage.getItem('fa_hp_progress') || 'null'); if (b && typeof b.best === 'number') this._best = b; } catch(e) {}
-    let soundOn = true; try { if (localStorage.getItem('fa_sound') === '0') soundOn = false; } catch(e) {}
-    if (soundOn !== this.state.soundOn) this.setState({ soundOn });
     if (this.props.embedded) { this.setState({ view:'drill' }); this._startCard(); }
   }
 
@@ -708,52 +698,9 @@ class Component extends DCLogic {
     ctx.restore();
   }
 
-  /* ---------- audio (synth, no assets) ---------- */
-  _audio(){
-    if (this._actx === undefined) {
-      try { const AC = window.AudioContext || window.webkitAudioContext; this._actx = new AC(); this._master = this._actx.createGain(); this._master.gain.value = 0.5; this._master.connect(this._actx.destination); }
-      catch(e){ this._actx = null; }
-    }
-    if (this._actx && this._actx.state === 'suspended') { try { this._actx.resume(); } catch(e){} }
-    return this._actx;
-  }
-  _tone(freq, dur, type, vol, slideTo){
-    const ctx = this._actx; if (!ctx) return; const t = ctx.currentTime;
-    const o = ctx.createOscillator(), g = ctx.createGain();
-    o.type = type || 'sine'; o.frequency.setValueAtTime(freq, t);
-    if (slideTo) o.frequency.exponentialRampToValueAtTime(Math.max(20, slideTo), t + dur);
-    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(vol || 0.2, t + 0.008);
-    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-    o.connect(g).connect(this._master); o.start(t); o.stop(t + dur + 0.03);
-  }
-  _noise(dur, vol, type, freq){
-    const ctx = this._actx; if (!ctx) return; const t = ctx.currentTime;
-    const b = ctx.createBuffer(1, Math.max(1, Math.floor(ctx.sampleRate * dur)), ctx.sampleRate);
-    const d = b.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
-    const s = ctx.createBufferSource(); s.buffer = b;
-    const f = ctx.createBiquadFilter(); f.type = type || 'bandpass'; f.frequency.value = freq || 800; f.Q.value = 0.9;
-    const g = ctx.createGain(); g.gain.setValueAtTime(vol || 0.15, t); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-    s.connect(f).connect(g).connect(this._master); s.start(t); s.stop(t + dur);
-  }
-  _sfx(name){
-    if (!this.state.soundOn) return; const ctx = this._audio(); if (!ctx) return;
-    switch(name){
-      case 'click': this._tone(520, 0.06, 'triangle', 0.11); break;
-      case 'commit': this._tone(300, 0.13, 'sawtooth', 0.13, 170); break;
-      case 'save': this._tone(660, 0.09, 'sine', 0.16, 900); this._noise(0.09, 0.10, 'highpass', 2600); setTimeout(() => this._tone(1050, 0.13, 'sine', 0.14), 55); break;
-      case 'goal': this._tone(150, 0.32, 'sine', 0.2, 66); this._noise(0.3, 0.16, 'lowpass', 320); break;
-      case 'buzzer': this._tone(190, 0.42, 'square', 0.12, 150); break;
-      case 'tick': this._tone(1250, 0.03, 'square', 0.07); break;
-      case 'whoosh': this._noise(0.24, 0.11, 'bandpass', 780); break;
-      case 'whistle': this._tone(2050, 0.16, 'sine', 0.09, 2550); setTimeout(() => this._tone(2350, 0.2, 'sine', 0.08, 2050), 120); break;
-    }
-  }
-  _toggleSound(){
-    const on = !this.state.soundOn;
-    try { localStorage.setItem('fa_sound', on ? '1' : '0'); } catch(e){}
-    this.setState({ soundOn:on });
-    if (on) { this._audio(); this._sfx('click'); }
-  }
+  /* ---------- audio: removed for now. _sfx is a no-op so the existing call
+   * sites stay intact; drop in a synth/asset player here to re-enable. ------ */
+  _sfx(){}
 
   _begin(){ this._sfx('whistle'); this.setState({ view:'drill', ci:0, results:[], counts:{oracle:0,sentinel:0,catalyst:0,bastion:0,wall:0}, _meta:null, cu:1 }); this._startCard(); }
 
@@ -1099,8 +1046,6 @@ class Component extends DCLogic {
     const showBest = view === 'intro' && !embedded && !!(this._best && this._best.best);
     const bestText = showBest ? ('PERSONAL BEST \u00b7 ' + this._best.best + ' COMPOSURE') : '';
 
-    const soundOn = !!this.state.soundOn;
-
     return {
       accent, motion, embedded, chromeOn: !embedded,
       rootMinH: embedded ? '100%' : '100dvh', rootH: embedded ? '100%' : (isDrill ? '100dvh' : 'auto'),
@@ -1113,8 +1058,6 @@ class Component extends DCLogic {
       goalFx: motion && this.state.screenFx === 'goal',
       swapping: this.state.swapping,
       progressDots,
-      soundOn, soundOff: !soundOn, soundColor: soundOn ? accent : '#61748c',
-      soundTitle: soundOn ? 'Sound on' : 'Sound off', toggleSound: () => this._toggleSound(),
       stepLabel: (view === 'intro' && !embedded) ? 'READY' : ((view === 'result' || view === 'done') ? 'COMPLETE' : (this._pad(ci + 1) + ' / 10')),
       minuteText: t.min, tagText: t.tag, headline: t.scen,
       decisionCountText: this._pad(ci + 1) + ' / 10',
