@@ -530,8 +530,11 @@ class Component extends DCLogic {
   }
 
   _ballAt(p){ return { x:p.x, y:p.y + 3 }; }
-  _zonePoint(z){ return { x: z === 'L' ? 42 : (z === 'R' ? 58 : 50), y:96 }; }
-  _dribblePoint(s){ return { x: s === 'L' ? 33 : 67, y:90 }; }
+  // The goal mouth for a zone — L/C/R sit just inside the posts (the posts are at
+  // game-x ~44.6 and ~55.4). Both the shot's FLIGHT and its resting spot use this
+  // single point, so every trajectory is a straight line that stays lined up with
+  // the goal frame and finishes where it was heading.
+  _goalMouth(z){ return { x: z === 'L' ? 46 : (z === 'R' ? 54 : 50), y:99 }; }
 
   _begin(){ this._sfx('whistle'); this.setState({ view:'drill', ci:0, results:[], counts:{oracle:0,sentinel:0,catalyst:0,bastion:0,wall:0}, _meta:null, cu:1 }); this._startScenario(); }
 
@@ -582,7 +585,7 @@ class Component extends DCLogic {
     // striker HOLDS his committed position — only the ball travels, so he never
     // appears to teleport after the shot (a dribble is shown by the ball's path).
     const atk = { ...this.state.atk };
-    const target = take.t === 'shoot' ? this._zonePoint(take.z) : this._dribblePoint(take.z);
+    const target = this._goalMouth(take.z);
     const from = { ...this.state.ball };
     this.setState({ stage:'react', t2:1, atk, ball:from, trail:[], ballTrans:'none' });
     this._t2s = this._now(); this._lastTick2 = 1;
@@ -654,11 +657,11 @@ class Component extends DCLogic {
     const score = froze ? 0 : Math.max(0, Math.min(100, Math.round((decScore * 0.4 + reactScore * 0.35 + footScore * 0.25) * factor)));
     const matched = !froze && (picked === 'advance' ? t.adv >= t.stay : t.stay > t.adv);
 
-    // beaten shots bury INSIDE the goal mouth (L/C/R post), deep in the net —
-    // not out wide. y99 sits between the goal line and the net's back bar.
-    const gm = target === 'L' ? 45 : target === 'R' ? 55 : 50;
+    // Beaten shots finish exactly where they were flying — the goal mouth for the
+    // struck zone — so the resting ball is on the same line as its trajectory.
+    const gm = this._goalMouth(target).x;
     let ball, kpr = { ...this.state.kpr }, ballTrans = 'left .4s ease,top .4s ease';
-    if (froze) { ball = { x:50, y:99 }; }
+    if (froze) { ball = { x:gm, y:99 }; }
     else if (result === 'save') { kpr = { x: kpr.x + (dive === 'L' ? -7 : dive === 'R' ? 7 : 0), y:kpr.y }; ball = { x:kpr.x, y:kpr.y }; }
     else if (result === 'near') { ball = { x:gm, y:98 }; kpr = { x: kpr.x + (dive === 'L' ? -7 : dive === 'R' ? 7 : 0), y:kpr.y }; }
     else if (timeout) { ball = { x:gm, y:99 }; }
