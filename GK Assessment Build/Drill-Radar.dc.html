@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:#04060c;}
+  a{color:var(--accent,#22D3EE);text-decoration:none;}
+  a:hover{opacity:.92;}
+  @keyframes fa-blink{0%,100%{opacity:1;}50%{opacity:.25;}}
+  @keyframes fa-scanline{0%{top:-4%;}100%{top:104%;}}
+  @keyframes fa-rise{0%{transform:translateY(16px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-rise-sm{0%{transform:translateY(10px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-spin{to{transform:rotate(360deg);}}
+  @keyframes fa-pop{0%{transform:scale(.6);opacity:0;}60%{transform:scale(1.06);}100%{transform:scale(1);opacity:1;}}
+  @keyframes fa-grow{from{transform:scale(0);opacity:0;}to{transform:scale(1);opacity:1;}}
+  @keyframes fa-dot{0%{transform:scale(0);opacity:0;}60%{transform:scale(1.3);opacity:1;}100%{transform:scale(1);opacity:1;}}
+  .fa-in{opacity:0;animation:fa-rise .7s cubic-bezier(.2,.7,.2,1) forwards;}
+  .fa-in-sm{opacity:0;animation:fa-rise-sm .55s cubic-bezier(.2,.7,.2,1) forwards;}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;}.fa-in,.fa-in-sm{opacity:1!important;transform:none!important;}}
+</style>
+</helmet>
+<div data-screen-label="Drill — The Blueprint" style="position:relative;display:flex;flex-direction:column;min-height:{{ rootMinH }};height:{{ rootH }};width:100%;overflow:hidden;background:radial-gradient(120% 90% at 50% 6%,#0e1a2d 0%,#080e1a 44%,#04060c 100%);color:#EAF2FB;font-family:'Archivo',system-ui,sans-serif;--accent:{{ accent }};">
+
+  <div style="position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.4;background:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0px,rgba(255,255,255,.02) 1px,transparent 1px,transparent 4px);"></div>
+
+  <sc-if value="{{ chromeOn }}" hint-placeholder-val="{{ true }}">
+    <div style="position:absolute;top:20px;left:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+    <div style="position:absolute;top:20px;right:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+    <div style="position:absolute;bottom:20px;left:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+    <div style="position:absolute;bottom:20px;right:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+
+    <header style="position:relative;z-index:6;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px clamp(26px,3.4vw,58px);">
+      <button onClick="{{ back }}" style="display:inline-flex;align-items:center;gap:8px;background:none;border:0;cursor:pointer;color:#8EA1B8;font:600 12.5px 'Archivo';padding:0;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M15 5l-7 7 7 7"/></svg>Back
+      </button>
+      <div style="display:flex;align-items:center;gap:11px;">
+        <svg width="22" height="22" viewBox="0 0 32 32" fill="none"><path d="M16 2 28 9v14L16 30 4 23V9z" style="stroke:var(--accent,#22D3EE);stroke-width:1.5;fill:color-mix(in srgb,var(--accent,#22D3EE) 12%,transparent);"/><circle cx="16" cy="16" r="4" style="fill:none;stroke:var(--accent,#22D3EE);stroke-width:1.6;"/></svg>
+        <span style="font:800 13px 'Archivo';letter-spacing:.05em;">DRILL 04 <span style="color:var(--accent,#22D3EE);">· THE BLUEPRINT</span></span>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;min-width:120px;justify-content:flex-end;">
+        <button onClick="{{ toggleSound }}" title="{{ soundTitle }}" style="display:grid;place-items:center;width:28px;height:28px;border-radius:8px;border:1px solid rgba(120,140,166,.24);background:rgba(10,16,28,.5);cursor:pointer;color:{{ soundColor }};transition:color .16s ease,border-color .16s ease;" style-hover="border-color:color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);">
+          <sc-if value="{{ soundOn }}" hint-placeholder-val="{{ true }}">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>
+          </sc-if>
+          <sc-if value="{{ soundOff }}" hint-placeholder-val="{{ false }}">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M22 9l-6 6M16 9l6 6"/></svg>
+          </sc-if>
+        </button>
+        <span style="font:600 10px 'IBM Plex Mono';letter-spacing:.14em;color:color-mix(in srgb,var(--accent,#22D3EE) 80%,#fff);white-space:nowrap;">{{ stepLabel }}</span>
+      </div>
+    </header>
+  </sc-if>
+
+  <!-- ============ INTRO ============ -->
+  <sc-if value="{{ isIntro }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px clamp(26px,4vw,58px) 60px;">
+      <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-54%);font:900 clamp(200px,38vw,420px)/1 'Archivo';color:var(--accent,#22D3EE);opacity:.06;pointer-events:none;user-select:none;z-index:0;">04</div>
+      <div style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;max-width:600px;">
+        <div class="fa-in" style="display:flex;align-items:center;gap:14px;margin-bottom:26px;">
+          <span style="font:600 12px 'IBM Plex Mono';letter-spacing:.4em;color:var(--accent,#22D3EE);">DRILL 04</span>
+          <span style="width:44px;height:1px;background:color-mix(in srgb,var(--accent,#22D3EE) 45%,transparent);"></span>
+          <span style="font:500 11px 'IBM Plex Mono';letter-spacing:.28em;color:#7688a0;">SELF-PORTRAIT</span>
+        </div>
+        <h1 class="fa-in" style="margin:0 0 20px;font:800 clamp(44px,6.4vw,88px)/0.98 'Archivo';letter-spacing:-0.03em;text-wrap:balance;animation-delay:.08s;">The Blueprint</h1>
+        <p class="fa-in" style="margin:0 0 30px;max-width:500px;font:400 clamp(15px,1.3vw,18px)/1.6 'Archivo';color:#9FB0C5;text-wrap:pretty;animation-delay:.16s;">Six tokens. Five instincts. <span style="color:#E4EDF7;font-weight:600;">You can't be elite at everything</span> — spend your budget on the keeper you actually are, and watch your shape take form.</p>
+        <div class="fa-in" style="display:flex;flex-wrap:wrap;justify-content:center;gap:8px 10px;margin-bottom:36px;animation-delay:.22s;">
+          <span style="display:inline-flex;align-items:center;gap:7px;padding:7px 13px;border:1px solid rgba(120,140,166,.24);border-radius:999px;font:600 10px 'IBM Plex Mono';letter-spacing:.16em;color:#9FB0C5;"><span style="width:6px;height:6px;border-radius:50%;background:var(--accent,#22D3EE);"></span>6 INSTINCT TOKENS</span>
+          <span style="display:inline-flex;align-items:center;gap:7px;padding:7px 13px;border:1px solid rgba(120,140,166,.24);border-radius:999px;font:600 10px 'IBM Plex Mono';letter-spacing:.16em;color:#9FB0C5;">LIVE RADAR</span>
+          <span style="display:inline-flex;align-items:center;gap:7px;padding:7px 13px;border:1px solid rgba(120,140,166,.24);border-radius:999px;font:600 10px 'IBM Plex Mono';letter-spacing:.16em;color:#9FB0C5;">~40 SEC</span>
+        </div>
+        <button onClick="{{ begin }}" class="fa-in" style="display:inline-flex;align-items:center;gap:12px;padding:18px 40px;border-radius:13px;border:0;cursor:pointer;background:var(--accent,#22D3EE);color:#03121a;font:700 16px 'Archivo';box-shadow:0 14px 46px color-mix(in srgb,var(--accent,#22D3EE) 42%,transparent);transition:transform .16s ease,box-shadow .16s ease;animation-delay:.3s;" style-hover="transform:translateY(-2px);box-shadow:0 20px 58px color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);">
+          Draw the blueprint
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="stroke:#03121a;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12h13M12 6l6 6-6 6"/></svg>
+        </button>
+      </div>
+    </main>
+  </sc-if>
+
+  <!-- ============ DRILL ============ -->
+  <sc-if value="{{ isDrill }}" hint-placeholder-val="{{ true }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:12px clamp(20px,3vw,48px) 22px;">
+
+      <div class="fa-in-sm" style="flex:0 0 auto;text-align:center;margin-bottom:14px;max-width:640px;">
+        <div style="display:inline-flex;align-items:center;gap:8px;margin-bottom:10px;font:600 10px 'IBM Plex Mono';letter-spacing:.28em;color:var(--accent,#22D3EE);">
+          <span style="width:6px;height:6px;border-radius:50%;background:var(--accent,#22D3EE);box-shadow:0 0 8px var(--accent,#22D3EE);animation:fa-blink 1.6s ease-in-out infinite;"></span>ALLOCATE YOUR INSTINCTS
+        </div>
+        <h2 style="margin:0;font:700 clamp(18px,2.3vw,26px)/1.3 'Archivo';letter-spacing:-0.01em;color:#F2F8FE;text-wrap:balance;">Spend six tokens on the keeper you are.</h2>
+      </div>
+
+      <div style="display:flex;flex-wrap:wrap;gap:26px;justify-content:center;align-items:center;width:100%;max-width:900px;">
+
+        <!-- ===== RADAR ===== -->
+        <div style="position:relative;flex:0 0 auto;width:min(340px,80vw);aspect-ratio:1;">
+          <svg viewBox="0 0 200 200" style="position:absolute;inset:0;width:100%;height:100%;overflow:visible;">
+            <sc-for list="{{ rings }}" as="r" hint-placeholder-count="4">
+              <polygon points="{{ r.points }}" fill="none" stroke="rgba(120,140,166,.16)" stroke-width="0.6"></polygon>
+            </sc-for>
+            <sc-for list="{{ spokes }}" as="s" hint-placeholder-count="5">
+              <line x1="100" y1="100" x2="{{ s.x }}" y2="{{ s.y }}" stroke="rgba(120,140,166,.2)" stroke-width="0.6"></line>
+            </sc-for>
+            <polygon points="{{ dataPoints }}" fill="color-mix(in srgb,var(--accent,#22D3EE) 22%,transparent)" stroke="var(--accent,#22D3EE)" stroke-width="1.4" stroke-linejoin="round" style="transition:all .3s cubic-bezier(.3,.8,.3,1);filter:drop-shadow(0 0 6px color-mix(in srgb,var(--accent,#22D3EE) 45%,transparent));"></polygon>
+            <sc-for list="{{ dots }}" as="d" hint-placeholder-count="0">
+              <circle cx="{{ d.x }}" cy="{{ d.y }}" r="3.4" fill="var(--accent,#22D3EE)" style="filter:drop-shadow(0 0 5px var(--accent,#22D3EE));transition:all .3s cubic-bezier(.3,.8,.3,1);"></circle>
+            </sc-for>
+            <circle cx="100" cy="100" r="1.6" fill="rgba(180,220,235,.6)"></circle>
+            <sc-for list="{{ labels }}" as="l" hint-placeholder-count="5">
+              <text x="{{ l.x }}" y="{{ l.y }}" text-anchor="{{ l.anchor }}" dominant-baseline="middle" style="font:600 7px 'IBM Plex Mono';letter-spacing:.06em;fill:{{ l.fill }};">{{ l.label }}</text>
+            </sc-for>
+          </svg>
+        </div>
+
+        <!-- ===== CONTROLS ===== -->
+        <div style="flex:1 1 320px;max-width:400px;min-width:280px;display:flex;flex-direction:column;gap:9px;">
+          <sc-for list="{{ rows }}" as="r" hint-placeholder-count="5">
+            <div style="display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:12px;border:1px solid {{ r.border }};background:{{ r.bg }};transition:all .18s ease;">
+              <div style="flex:1;min-width:0;">
+                <div style="font:700 12px 'Archivo';letter-spacing:.02em;color:{{ r.labelColor }};">{{ r.label }}</div>
+                <div style="font:500 10px 'Archivo';color:#7688a0;margin-top:1px;">{{ r.word }}</div>
+              </div>
+              <div style="display:flex;gap:3px;">
+                <sc-for list="{{ r.pips }}" as="p" hint-placeholder-count="4">
+                  <span style="width:7px;height:14px;border-radius:2px;{{ p.style }}"></span>
+                </sc-for>
+              </div>
+              <div style="display:flex;align-items:center;gap:6px;">
+                <button onClick="{{ r.onDec }}" style="width:30px;height:30px;border-radius:9px;display:grid;place-items:center;cursor:{{ r.decCursor }};transition:all .14s;{{ r.decLook }}" style-active="transform:scale(.9);">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.6;stroke-linecap:round;"><path d="M5 12h14"/></svg>
+                </button>
+                <button onClick="{{ r.onInc }}" style="width:30px;height:30px;border-radius:9px;display:grid;place-items:center;cursor:{{ r.incCursor }};transition:all .14s;{{ r.incLook }}" style-active="transform:scale(.9);">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.6;stroke-linecap:round;"><path d="M12 5v14M5 12h14"/></svg>
+                </button>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <!-- budget + lock -->
+      <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:16px 22px;margin-top:20px;">
+        <div style="display:flex;align-items:center;gap:11px;">
+          <span style="font:600 9.5px 'IBM Plex Mono';letter-spacing:.2em;color:#7688a0;">TOKENS LEFT</span>
+          <span style="display:flex;gap:5px;">
+            <sc-for list="{{ tokenPips }}" as="t" hint-placeholder-count="6">
+              <span style="width:12px;height:12px;border-radius:50%;{{ t.style }}"></span>
+            </sc-for>
+          </span>
+          <span style="font:800 16px 'Archivo';color:{{ leftColor }};min-width:14px;">{{ tokensLeft }}</span>
+        </div>
+        <button onClick="{{ lock }}" style="display:inline-flex;align-items:center;gap:11px;padding:15px 30px;border-radius:12px;border:0;cursor:{{ lockCursor }};font:700 15px 'Archivo';transition:all .18s ease;{{ lockLook }}" style-active="transform:scale(.97);">
+          {{ lockLabel }}
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12h13M12 6l6 6-6 6"/></svg>
+        </button>
+      </div>
+    </main>
+  </sc-if>
+
+  <!-- ============ RESULT (standalone) ============ -->
+  <sc-if value="{{ isResult }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px clamp(24px,4vw,58px) 56px;">
+      <div class="fa-in" style="display:inline-flex;align-items:center;gap:9px;margin-bottom:18px;padding:6px 14px;border:1px solid color-mix(in srgb,var(--accent,#22D3EE) 32%,transparent);border-radius:999px;font:600 10px 'IBM Plex Mono';letter-spacing:.28em;color:var(--accent,#22D3EE);">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" style="stroke:var(--accent,#22D3EE);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12.5l4.5 4.5L19 6.5"/></svg>DRILL 04 COMPLETE
+      </div>
+      <h1 class="fa-in" style="margin:0 0 26px;font:800 clamp(34px,5vw,64px)/0.98 'Archivo';letter-spacing:-0.03em;text-align:center;animation-delay:.06s;">Blueprint locked.</h1>
+
+      <div style="display:flex;flex-wrap:wrap;gap:22px;justify-content:center;align-items:center;width:100%;max-width:860px;">
+        <div class="fa-in" style="position:relative;flex:0 0 auto;width:min(320px,80vw);aspect-ratio:1;animation-delay:.12s;">
+          <svg viewBox="0 0 200 200" style="position:absolute;inset:0;width:100%;height:100%;overflow:visible;">
+            <sc-for list="{{ rings }}" as="r" hint-placeholder-count="4">
+              <polygon points="{{ r.points }}" fill="none" stroke="rgba(120,140,166,.16)" stroke-width="0.6"></polygon>
+            </sc-for>
+            <sc-for list="{{ spokes }}" as="s" hint-placeholder-count="5">
+              <line x1="100" y1="100" x2="{{ s.x }}" y2="{{ s.y }}" stroke="rgba(120,140,166,.2)" stroke-width="0.6"></line>
+            </sc-for>
+            <polygon points="{{ dataPoints }}" fill="color-mix(in srgb,var(--accent,#22D3EE) 24%,transparent)" stroke="var(--accent,#22D3EE)" stroke-width="1.4" stroke-linejoin="round" style="filter:drop-shadow(0 0 6px color-mix(in srgb,var(--accent,#22D3EE) 45%,transparent));transform-box:fill-box;transform-origin:center;animation:fa-grow .7s cubic-bezier(.2,.8,.3,1) .12s both;"></polygon>
+            <sc-for list="{{ dots }}" as="d" hint-placeholder-count="0">
+              <circle cx="{{ d.x }}" cy="{{ d.y }}" r="3.4" fill="var(--accent,#22D3EE)" style="filter:drop-shadow(0 0 5px var(--accent,#22D3EE));transform-box:fill-box;transform-origin:center;opacity:0;animation:fa-dot .4s cubic-bezier(.2,.7,.2,1) {{ d.delay }} both;"></circle>
+            </sc-for>
+            <sc-for list="{{ labels }}" as="l" hint-placeholder-count="5">
+              <text x="{{ l.x }}" y="{{ l.y }}" text-anchor="{{ l.anchor }}" dominant-baseline="middle" style="font:600 7px 'IBM Plex Mono';letter-spacing:.06em;fill:{{ l.fill }};">{{ l.label }}</text>
+            </sc-for>
+          </svg>
+        </div>
+
+        <div class="fa-in" style="flex:1 1 300px;max-width:400px;display:flex;flex-direction:column;gap:18px;padding:24px;border-radius:16px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);animation-delay:.18s;">
+          <div>
+            <div style="font:600 9.5px 'IBM Plex Mono';letter-spacing:.26em;color:#61748c;margin-bottom:9px;">YOUR DOMINANT INSTINCT</div>
+            <div style="font:800 clamp(26px,3.6vw,36px)/1 'Archivo';letter-spacing:-0.01em;color:var(--accent,#22D3EE);">{{ leadLabel }}</div>
+            <p style="margin:11px 0 0;font:400 14px/1.55 'Archivo';color:#9FB0C5;text-wrap:pretty;">{{ leadNote }}</p>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:11px;">
+            <sc-for list="{{ meter }}" as="m" hint-placeholder-count="5">
+              <div style="display:flex;flex-direction:column;gap:5px;">
+                <div style="display:flex;justify-content:space-between;font:600 9.5px 'IBM Plex Mono';letter-spacing:.12em;color:{{ m.labelColor }};"><span>{{ m.label }}</span><span>{{ m.n }}</span></div>
+                <div style="height:5px;border-radius:99px;background:rgba(120,140,166,.16);overflow:hidden;"><div style="height:100%;border-radius:99px;background:var(--accent,#22D3EE);box-shadow:0 0 8px var(--accent,#22D3EE);width:{{ m.pct }};"></div></div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+
+      <div class="fa-in" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:13px;margin-top:26px;animation-delay:.26s;">
+        <a href="Assessment.dc.html" style="display:inline-flex;align-items:center;gap:11px;padding:16px 34px;border-radius:12px;background:var(--accent,#22D3EE);color:#03121a;font:700 15px 'Archivo';box-shadow:0 12px 36px color-mix(in srgb,var(--accent,#22D3EE) 40%,transparent);transition:transform .16s ease,box-shadow .16s ease;" style-hover="transform:translateY(-2px);box-shadow:0 18px 48px color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);">
+          Continue the scan
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" style="stroke:#03121a;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12h13M12 6l6 6-6 6"/></svg>
+        </a>
+        <button onClick="{{ retake }}" style="display:inline-flex;align-items:center;gap:9px;padding:16px 24px;border-radius:12px;border:1px solid rgba(157,176,198,.28);background:rgba(12,18,30,.4);color:#C6D3E2;font:600 14px 'Archivo';cursor:pointer;transition:border-color .16s ease,color .16s ease;" style-hover="border-color:color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);color:#EAF2FB;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
+          Redraw
+        </button>
+      </div>
+      <div class="fa-in" style="margin-top:20px;font:500 10px 'IBM Plex Mono';letter-spacing:.16em;color:#4f627a;animation-delay:.32s;">DRILL 04 OF 04 · THE BLUEPRINT — READ, SAVE &amp; RAPID-FIRE DRILLS COMPLETE THE ARCHETYPE</div>
+    </main>
+  </sc-if>
+
+  <sc-if value="{{ motion }}" hint-placeholder-val="{{ true }}">
+    <div style="position:absolute;left:0;right:0;height:2px;z-index:2;background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--accent,#22D3EE) 30%,transparent),transparent);opacity:.4;animation:fa-scanline 7s linear infinite;pointer-events:none;"></div>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;$preview&quot;: {&quot;width&quot;: 940, &quot;height&quot;: 720},
+  &quot;accent&quot;: {&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#22D3EE&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#22D3EE&quot;,&quot;#A78BFA&quot;,&quot;#C6FF3A&quot;,&quot;#FF7A45&quot;,&quot;#FF4D8D&quot;],&quot;section&quot;:&quot;Theme&quot;},
+  &quot;motion&quot;: {&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Theme&quot;},
+  &quot;embedded&quot;: {&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Mode&quot;},
+  &quot;onDone&quot;: {&quot;editor&quot;:null,&quot;tsType&quot;:&quot;(counts: Record&lt;string, number&gt;) =&gt; void&quot;}
+}">
+class Component extends DCLogic {
+  state = { view:'intro', alloc:{oracle:0,bastion:0,sentinel:0,catalyst:0,wall:0}, soundOn:true };
+
+  BUDGET = 6; MAX = 4;
+  R = 66; CX = 100; CY = 100; LR = 88;
+  AX = { oracle:'Anticipation', bastion:'Reflex', sentinel:'Command', catalyst:'Distribution', wall:'Presence' };
+  ORDER = ['oracle','bastion','sentinel','catalyst','wall'];
+  AXES = [
+    { k:'oracle',   label:'ANTICIPATION', word:'Read it early' },
+    { k:'bastion',  label:'REFLEX',       word:'Beat the shot' },
+    { k:'sentinel', label:'COMMAND',      word:'Run the box' },
+    { k:'catalyst', label:'DISTRIBUTION', word:'Start attacks' },
+    { k:'wall',     label:'PRESENCE',     word:'Own the air' },
+  ];
+  NOTE = {
+    oracle:'You build from vision — being in the right place before the danger is even real.',
+    bastion:'You back your hands above all — pure shot-stopping is your foundation.',
+    sentinel:'You lead from the back — organising and controlling is your core.',
+    catalyst:'You start with the ball — you see yourself as the first attacker, not the last defender.',
+    wall:'You build on sheer presence — dominating your box and ruling the air.',
+  };
+
+  _pt(i, radius) {
+    const ang = (-90 + i * 72) * Math.PI / 180;
+    return { x: this.CX + radius * Math.cos(ang), y: this.CY + radius * Math.sin(ang), cos: Math.cos(ang), sin: Math.sin(ang) };
+  }
+
+  componentDidMount() {
+    let soundOn = true; try { if (localStorage.getItem('fa_sound') === '0') soundOn = false; } catch(e) {}
+    if (soundOn !== this.state.soundOn) this.setState({ soundOn });
+    if (this.props.embedded) this.setState({ view:'drill' });
+  }
+  _audio(){
+    if (this._actx === undefined) {
+      try { const AC = window.AudioContext || window.webkitAudioContext; this._actx = new AC(); this._master = this._actx.createGain(); this._master.gain.value = 0.5; this._master.connect(this._actx.destination); }
+      catch(e){ this._actx = null; }
+    }
+    if (this._actx && this._actx.state === 'suspended') { try { this._actx.resume(); } catch(e){} }
+    return this._actx;
+  }
+  _tone(freq, dur, type, vol, slideTo){
+    const ctx = this._actx; if (!ctx) return; const t = ctx.currentTime;
+    const o = ctx.createOscillator(), g = ctx.createGain();
+    o.type = type || 'sine'; o.frequency.setValueAtTime(freq, t);
+    if (slideTo) o.frequency.exponentialRampToValueAtTime(Math.max(20, slideTo), t + dur);
+    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(vol || 0.2, t + 0.008);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    o.connect(g).connect(this._master); o.start(t); o.stop(t + dur + 0.03);
+  }
+  _sfx(name){
+    if (!this.state.soundOn) return; const ctx = this._audio(); if (!ctx) return;
+    switch(name){
+      case 'inc': this._tone(680, 0.06, 'triangle', 0.12, 920); break;
+      case 'dec': this._tone(420, 0.06, 'triangle', 0.1, 300); break;
+      case 'click': this._tone(520, 0.06, 'triangle', 0.11); break;
+      case 'chime': this._tone(523, 0.14, 'sine', 0.12, 784); setTimeout(()=>this._tone(784, 0.16, 'sine', 0.12, 1046), 90); setTimeout(()=>this._tone(1046, 0.24, 'sine', 0.11), 190); break;
+    }
+  }
+  _toggleSound(){
+    const on = !this.state.soundOn;
+    try { localStorage.setItem('fa_sound', on ? '1' : '0'); } catch(e){}
+    this.setState({ soundOn:on });
+    if (on) { this._audio(); this._sfx('click'); }
+  }
+  _begin() { this._sfx('click'); this.setState({ view:'drill', alloc:{oracle:0,bastion:0,sentinel:0,catalyst:0,wall:0} }); }
+  _spent() { return this.ORDER.reduce((s, k) => s + this.state.alloc[k], 0); }
+  _inc(k) { const spent = this._spent(); if (spent < this.BUDGET && this.state.alloc[k] < this.MAX) { this._sfx('inc'); this.setState(s => ({ alloc:{ ...s.alloc, [k]: s.alloc[k] + 1 } })); } }
+  _dec(k) { if (this.state.alloc[k] > 0) { this._sfx('dec'); this.setState(s => ({ alloc:{ ...s.alloc, [k]: s.alloc[k] - 1 } })); } }
+  _lock() {
+    if (this._spent() < this.BUDGET) return;
+    this._sfx('chime');
+    if (this.props.embedded) (this.props.onDone || function(){})({ ...this.state.alloc }, { drill:'blueprint', layer:'self', alloc:{ ...this.state.alloc } });
+    else this.setState({ view:'result' });
+  }
+  _retake() { this._sfx('click'); this.setState({ view:'intro', alloc:{oracle:0,bastion:0,sentinel:0,catalyst:0,wall:0} }); }
+
+  renderVals() {
+    const accent = this.props.accent ?? '#22D3EE';
+    const motion = this.props.motion ?? true;
+    const embedded = !!this.props.embedded;
+    const A = (hex, aa) => hex + aa;
+    const { view, alloc } = this.state;
+    const spent = this._spent();
+    const left = this.BUDGET - spent;
+
+    // static geometry
+    const outer = this.AXES.map((_, i) => this._pt(i, this.R));
+    const rings = [1, 2, 3, 4].map(f =>
+      ({ points: this.AXES.map((_, i) => { const p = this._pt(i, this.R * f / 4); return `${p.x.toFixed(1)},${p.y.toFixed(1)}`; }).join(' ') }));
+    const spokes = outer.map(p => ({ x:p.x.toFixed(1), y:p.y.toFixed(1) }));
+    const labels = this.AXES.map((a, i) => {
+      const p = this._pt(i, this.LR);
+      const anchor = p.cos > 0.25 ? 'start' : (p.cos < -0.25 ? 'end' : 'middle');
+      return { label:a.label, x:p.x.toFixed(1), y:p.y.toFixed(1), anchor,
+        fill: alloc[a.k] > 0 ? accent : '#61748c' };
+    });
+
+    // data polygon + dots
+    const dataPoints = this.AXES.map((a, i) => { const p = this._pt(i, this.R * (alloc[a.k] / this.MAX)); return `${p.x.toFixed(1)},${p.y.toFixed(1)}`; }).join(' ');
+    const dots = this.AXES.map((a, i) => ({ a, i })).filter(o => alloc[o.a.k] > 0)
+      .map((o, di) => { const p = this._pt(o.i, this.R * (alloc[o.a.k] / this.MAX)); return { x:p.x.toFixed(1), y:p.y.toFixed(1), delay:(0.25 + di * 0.08).toFixed(2) + 's' }; });
+
+    // stepper rows
+    const rows = this.AXES.map(a => {
+      const v = alloc[a.k];
+      const canInc = spent < this.BUDGET && v < this.MAX;
+      const canDec = v > 0;
+      const active = v > 0;
+      const pips = Array.from({ length:this.MAX }, (_, i) => ({
+        style: i < v ? `background:${accent};box-shadow:0 0 6px ${A(accent,'88')};` : `background:rgba(120,140,166,.2);`,
+      }));
+      return {
+        label:a.label, word:a.word,
+        labelColor: active ? '#F2F8FE' : '#C6D3E2',
+        border: active ? A(accent, '3a') : 'rgba(120,140,166,.18)',
+        bg: active ? A(accent, '0e') : 'rgba(10,16,28,.4)',
+        pips,
+        onInc:() => this._inc(a.k), onDec:() => this._dec(a.k),
+        incCursor: canInc ? 'pointer' : 'not-allowed', decCursor: canDec ? 'pointer' : 'not-allowed',
+        incLook: canInc
+          ? `border:1px solid ${A(accent,'66')};background:${A(accent,'16')};color:${accent};`
+          : `border:1px solid rgba(120,140,166,.14);background:rgba(10,16,28,.3);color:#3f5066;`,
+        decLook: canDec
+          ? `border:1px solid rgba(157,176,198,.32);background:rgba(12,18,30,.5);color:#C6D3E2;`
+          : `border:1px solid rgba(120,140,166,.14);background:rgba(10,16,28,.3);color:#3f5066;`,
+      };
+    });
+
+    const tokenPips = Array.from({ length:this.BUDGET }, (_, i) => ({
+      style: i < left ? `background:${accent};box-shadow:0 0 7px ${A(accent,'99')};` : `background:rgba(120,140,166,.2);border:1px solid rgba(120,140,166,.3);`,
+    }));
+
+    const canLock = left === 0;
+    const lockLook = canLock
+      ? `background:${accent};color:#03121a;box-shadow:0 12px 36px ${A(accent,'40')};`
+      : `background:rgba(12,19,32,.6);color:#5b6f88;border:1px solid rgba(120,140,166,.2)!important;box-shadow:none;`;
+
+    // result meter + lead
+    const meter = this.ORDER.map(k => ({
+      label:this.AX[k], n:alloc[k], pct:Math.min(100, (alloc[k] / this.MAX) * 100) + '%',
+      labelColor: alloc[k] > 0 ? accent : '#61748c',
+    }));
+    let leadK = this.ORDER[0];
+    this.ORDER.forEach(k => { if (alloc[k] > alloc[leadK]) leadK = k; });
+
+    return {
+      accent, motion, embedded,
+      chromeOn: !embedded,
+      soundOn: !!this.state.soundOn, soundOff: !this.state.soundOn, soundColor: this.state.soundOn ? accent : '#61748c', soundTitle: this.state.soundOn ? 'Sound on' : 'Sound off', toggleSound: () => this._toggleSound(),
+      rootMinH: embedded ? '100%' : '100dvh',
+      rootH: embedded ? '100%' : 'auto',
+      isIntro: !embedded && view === 'intro',
+      isDrill: view === 'drill',
+      isResult: !embedded && view === 'result',
+      rings, spokes, labels, dataPoints, dots, rows, tokenPips,
+      tokensLeft: left, leftColor: left === 0 ? accent : '#EAF2FB',
+      canLock, lockLook, lockCursor: canLock ? 'pointer' : 'not-allowed',
+      lockLabel: canLock ? (embedded ? 'Lock it in' : 'Lock the blueprint') : `Spend ${left} more`,
+      meter, leadLabel:this.AX[leadK], leadNote:this.NOTE[leadK],
+      stepLabel: view === 'result' ? 'COMPLETE' : (view === 'intro' && !embedded ? 'READY' : `${spent} / ${this.BUDGET}`),
+      begin:() => this._begin(), lock:() => this._lock(), retake:() => this._retake(),
+      back:() => { window.location.href = 'Assessment.dc.html'; },
+    };
+  }
+}
+</script>
+</body>
+</html>

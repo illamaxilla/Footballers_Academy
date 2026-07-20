@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="./fa-pitch.js"></script>
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:#04060c;}
+  a{color:var(--accent,#22D3EE);text-decoration:none;}
+  a:hover{opacity:.92;}
+  @keyframes fa-blink{0%,100%{opacity:1;}50%{opacity:.25;}}
+  @keyframes fa-scanline{0%{top:-4%;}100%{top:104%;}}
+  @keyframes fa-rise{0%{transform:translateY(16px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-rise-sm{0%{transform:translateY(10px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-heartbeat{0%,100%{transform:scale(1);}12%{transform:scale(1.26);}24%{transform:scale(1);}36%{transform:scale(1.15);}52%{transform:scale(1);}}
+  @keyframes fa-shake{0%,100%{transform:translate(0,0);}20%{transform:translate(-1.2px,1px);}40%{transform:translate(1.2px,-1px);}60%{transform:translate(-1px,-1px);}80%{transform:translate(1px,1px);}}
+  @keyframes fa-shake-hard{0%,100%{transform:translate(0,0) rotate(0);}15%{transform:translate(-4px,2px) rotate(-.5deg);}30%{transform:translate(4px,-2px) rotate(.5deg);}45%{transform:translate(-3px,-2px) rotate(-.4deg);}60%{transform:translate(3px,2px) rotate(.4deg);}80%{transform:translate(-2px,1px) rotate(0);}}
+  @keyframes fa-pop-c{0%{transform:translateX(-50%) scale(.6);opacity:0;}55%{transform:translateX(-50%) scale(1.12);}100%{transform:translateX(-50%) scale(1);opacity:1;}}
+  @keyframes fa-cardin{0%{transform:translateY(10px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-ripple{0%{transform:translate(-50%,-50%) scale(.5);opacity:.85;}100%{transform:translate(-50%,-50%) scale(2.6);opacity:0;}}
+  @keyframes fa-commit{0%{transform:scale(1);}40%{transform:scale(1.035);}100%{transform:scale(1);}}
+  @keyframes fa-screenflash{0%{opacity:0;}18%{opacity:1;}100%{opacity:0;}}
+  @keyframes fa-wipe{0%{transform:translateX(-118%);}48%{transform:translateX(0);}52%{transform:translateX(0);}100%{transform:translateX(118%);}}
+  @keyframes fa-draw{to{stroke-dashoffset:0;}}
+  @keyframes fa-pop{0%{transform:translate(-50%,-50%) scale(.2);opacity:0;}60%{transform:translate(-50%,-50%) scale(1.25);opacity:1;}100%{transform:translate(-50%,-50%) scale(1);opacity:1;}}
+  .fa-in{opacity:0;animation:fa-rise .7s cubic-bezier(.2,.7,.2,1) forwards;}
+  .fa-in-sm{opacity:0;animation:fa-rise-sm .55s cubic-bezier(.2,.7,.2,1) forwards;}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;}.fa-in,.fa-in-sm{opacity:1!important;transform:none!important;}}
+</style>
+</helmet>
+<div data-screen-label="High Pressure Keeper" style="position:relative;display:flex;flex-direction:column;min-height:{{ rootMinH }};height:{{ rootH }};width:100%;overflow:hidden;background:radial-gradient(120% 90% at 50% 6%,#0e1a2d 0%,#080e1a 44%,#04060c 100%);color:#EAF2FB;font-family:'Archivo',system-ui,sans-serif;--accent:{{ accent }};">
+
+  <div style="position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.4;background:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0px,rgba(255,255,255,.02) 1px,transparent 1px,transparent 4px);"></div>
+
+  <!-- stress vignette (darkens + reddens as pressure climbs) -->
+  <div style="position:absolute;inset:0;z-index:1;pointer-events:none;opacity:{{ vignetteOpacity }};transition:opacity .6s ease;background:radial-gradient(120% 100% at 50% 46%,transparent 38%,rgba(2,4,9,.9) 100%);"></div>
+  <div style="position:absolute;inset:0;z-index:1;pointer-events:none;opacity:{{ redTint }};transition:opacity .6s ease;background:radial-gradient(150% 120% at 50% 120%,rgba(255,60,80,.5),transparent 62%);mix-blend-mode:screen;"></div>
+
+  <!-- screen reactions -->
+  <sc-if value="{{ saveFx }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;inset:0;z-index:8;pointer-events:none;background:radial-gradient(120% 100% at 50% 50%,transparent 50%,color-mix(in srgb,var(--accent,#22D3EE) 48%,transparent) 122%);animation:fa-screenflash .72s ease-out forwards;"></div>
+  </sc-if>
+  <sc-if value="{{ goalFx }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;inset:0;z-index:8;pointer-events:none;background:radial-gradient(120% 105% at 50% 64%,rgba(255,60,80,0) 40%,rgba(255,60,80,.55) 116%);animation:fa-screenflash .72s ease-out forwards;"></div>
+  </sc-if>
+
+  <sc-if value="{{ chromeOn }}" hint-placeholder-val="{{ true }}">
+    <div style="position:absolute;top:20px;left:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+    <div style="position:absolute;top:20px;right:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+    <div style="position:absolute;bottom:20px;left:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+    <div style="position:absolute;bottom:20px;right:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+
+    <header style="position:relative;z-index:6;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px clamp(26px,3.4vw,58px);">
+      <button onClick="{{ back }}" style="display:inline-flex;align-items:center;gap:8px;background:none;border:0;cursor:pointer;color:#8EA1B8;font:600 12.5px 'Archivo';padding:0;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M15 5l-7 7 7 7"/></svg>Back
+      </button>
+      <div style="display:flex;align-items:center;gap:11px;">
+        <svg width="22" height="22" viewBox="0 0 32 32" fill="none"><path d="M16 2 28 9v14L16 30 4 23V9z" style="stroke:var(--accent,#22D3EE);stroke-width:1.5;fill:color-mix(in srgb,var(--accent,#22D3EE) 12%,transparent);"/><circle cx="16" cy="16" r="4" style="fill:none;stroke:var(--accent,#22D3EE);stroke-width:1.6;"/></svg>
+        <span style="font:800 13px 'Archivo';letter-spacing:.05em;">HIGH PRESSURE KEEPER <span style="color:var(--accent,#22D3EE);">· STRESS TEST</span></span>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;min-width:120px;justify-content:flex-end;">
+        <button onClick="{{ toggleSound }}" title="{{ soundTitle }}" style="display:grid;place-items:center;width:28px;height:28px;border-radius:8px;border:1px solid rgba(120,140,166,.24);background:rgba(10,16,28,.5);cursor:pointer;color:{{ soundColor }};transition:color .16s ease,border-color .16s ease;" style-hover="border-color:color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);">
+          <sc-if value="{{ soundOn }}" hint-placeholder-val="{{ true }}">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>
+          </sc-if>
+          <sc-if value="{{ soundOff }}" hint-placeholder-val="{{ false }}">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M22 9l-6 6M16 9l6 6"/></svg>
+          </sc-if>
+        </button>
+        <span style="display:flex;gap:4px;">
+          <sc-for list="{{ progressDots }}" as="d" hint-placeholder-count="10">
+            <span style="width:11px;height:4px;border-radius:99px;transition:all .3s;{{ d.style }}"></span>
+          </sc-for>
+        </span>
+        <span style="font:600 10px 'IBM Plex Mono';letter-spacing:.14em;color:color-mix(in srgb,var(--accent,#22D3EE) 80%,#fff);white-space:nowrap;">{{ stepLabel }}</span>
+      </div>
+    </header>
+  </sc-if>
+
+  <!-- ============ INTRO ============ -->
+  <sc-if value="{{ isIntro }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;text-align:center;padding:20px clamp(26px,4vw,58px) 60px;">
+      <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-54%);font:900 clamp(200px,40vw,440px)/1 'Archivo';color:#FF5A6E;opacity:.06;pointer-events:none;user-select:none;z-index:0;">90'</div>
+      <div style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;max-width:620px;">
+        <div class="fa-in" style="display:flex;align-items:center;gap:14px;margin-bottom:26px;">
+          <span style="font:600 12px 'IBM Plex Mono';letter-spacing:.4em;color:var(--accent,#22D3EE);">PHASE 2 · GAME 01</span>
+          <span style="width:44px;height:1px;background:color-mix(in srgb,var(--accent,#22D3EE) 45%,transparent);"></span>
+          <span style="font:500 11px 'IBM Plex Mono';letter-spacing:.28em;color:#7688a0;">RESILIENCE</span>
+        </div>
+        <h1 class="fa-in" style="margin:0 0 20px;font:800 clamp(42px,6vw,84px)/0.98 'Archivo';letter-spacing:-0.03em;text-wrap:balance;animation-delay:.08s;">High Pressure Keeper</h1>
+        <p class="fa-in" style="margin:0 0 30px;max-width:520px;font:400 clamp(15px,1.3vw,18px)/1.6 'Archivo';color:#9FB0C5;text-wrap:pretty;animation-delay:.16s;">90th minute, 1&ndash;1, shootout looming. Ten split-second calls, and the pressure only climbs. <span style="color:#E4EDF7;font-weight:600;">Safe or bold &mdash; commit before the clock empties.</span> We measure how your quality holds as the heart rate rises.</p>
+        <div class="fa-in" style="display:flex;flex-wrap:wrap;justify-content:center;gap:8px 10px;margin-bottom:34px;animation-delay:.22s;">
+          <span style="display:inline-flex;align-items:center;gap:7px;padding:7px 13px;border:1px solid rgba(120,140,166,.24);border-radius:999px;font:600 10px 'IBM Plex Mono';letter-spacing:.16em;color:#9FB0C5;"><span style="width:6px;height:6px;border-radius:50%;background:#FF5A6E;"></span>10 DECISIONS</span>
+          <span style="display:inline-flex;align-items:center;gap:7px;padding:7px 13px;border:1px solid rgba(120,140,166,.24);border-radius:999px;font:600 10px 'IBM Plex Mono';letter-spacing:.16em;color:#9FB0C5;">CLOCK SHRINKS AS STRESS RISES</span>
+          <span style="display:inline-flex;align-items:center;gap:7px;padding:7px 13px;border:1px solid rgba(120,140,166,.24);border-radius:999px;font:600 10px 'IBM Plex Mono';letter-spacing:.16em;color:#9FB0C5;">~40 SEC</span>
+        </div>
+        <sc-if value="{{ showBest }}" hint-placeholder-val="{{ false }}">
+          <div class="fa-in" style="display:inline-flex;align-items:center;gap:9px;margin-bottom:24px;padding:7px 15px;border-radius:999px;border:1px solid color-mix(in srgb,var(--accent,#22D3EE) 30%,transparent);background:color-mix(in srgb,var(--accent,#22D3EE) 8%,transparent);font:600 10px 'IBM Plex Mono';letter-spacing:.2em;color:var(--accent,#22D3EE);animation-delay:.26s;">{{ bestText }}</div>
+        </sc-if>
+        <button onClick="{{ begin }}" class="fa-in" style="display:inline-flex;align-items:center;gap:12px;padding:18px 40px;border-radius:13px;border:0;cursor:pointer;background:var(--accent,#22D3EE);color:#03121a;font:700 16px 'Archivo';box-shadow:0 14px 46px color-mix(in srgb,var(--accent,#22D3EE) 42%,transparent);transition:transform .16s ease,box-shadow .16s ease;animation-delay:.3s;" style-hover="transform:translateY(-2px);box-shadow:0 20px 58px color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);" style-active="transform:translateY(0) scale(.98);">
+          Feel the pressure
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="stroke:#03121a;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12h13M12 6l6 6-6 6"/></svg>
+        </button>
+      </div>
+    </main>
+  </sc-if>
+
+  <!-- ============ DRILL · ARENA LAYOUT ============ -->
+  <sc-if value="{{ isDrill }}" hint-placeholder-val="{{ true }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:8px clamp(16px,2.4vw,42px) 16px;">
+      <div style="width:100%;max-width:1180px;flex:1;min-height:0;display:flex;flex-direction:column;gap:10px;">
+
+        <!-- ==== PROMPT BANNER ==== -->
+        <div class="fa-in-sm" style="flex:0 0 auto;display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:11px 15px;border-radius:13px;border:1px solid rgba(120,140,166,.18);background:rgba(10,16,28,.55);">
+          <span style="display:inline-flex;align-items:center;padding:6px 11px;border-radius:7px;border:1px solid color-mix(in srgb,var(--accent,#22D3EE) 40%,transparent);background:color-mix(in srgb,var(--accent,#22D3EE) 10%,transparent);font:700 9px 'IBM Plex Mono';letter-spacing:.16em;color:var(--accent,#22D3EE);white-space:nowrap;">THE CALL</span>
+          <div style="flex:1 1 300px;min-width:220px;">
+            <span style="display:inline-flex;align-items:center;gap:6px;font:600 9px 'IBM Plex Mono';letter-spacing:.16em;color:#FF9AA6;margin-bottom:4px;"><span style="width:5px;height:5px;border-radius:50%;background:#FF5A6E;box-shadow:0 0 8px #FF5A6E;animation:fa-blink 1.4s ease-in-out infinite;"></span>90'+ &middot; {{ minuteText }} &middot; {{ tagText }}</span>
+            <div style="font:700 clamp(15px,2vw,23px)/1.24 'Archivo';color:#F2F8FE;text-wrap:balance;">{{ headline }}</div>
+          </div>
+          <div style="display:flex;gap:8px;flex:0 0 auto;">
+            <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:8px 13px;border-radius:11px;border:1px solid rgba(120,140,166,.18);background:rgba(6,12,22,.5);">
+              <span style="display:flex;align-items:baseline;gap:3px;"><svg width="14" height="14" viewBox="0 0 24 24" style="transform-origin:center;animation:{{ heartAnim }};"><path d="M12 21C12 21 3.6 14 3.6 8.6 3.6 5.9 5.7 3.9 8.2 3.9 9.9 3.9 11.3 4.9 12 6.2 12.7 4.9 14.1 3.9 15.8 3.9 18.3 3.9 20.4 5.9 20.4 8.6 20.4 14 12 21 12 21Z" fill="{{ heartColor }}"/></svg><span style="font:800 19px 'Archivo';color:#EAF2FB;line-height:1;">{{ bpmText }}</span></span>
+              <span style="font:600 6.5px 'IBM Plex Mono';letter-spacing:.14em;color:#61748c;">BPM</span>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:8px 13px;border-radius:11px;border:1px solid rgba(120,140,166,.18);background:rgba(6,12,22,.5);min-width:70px;">
+              <span style="font:800 17px 'Archivo';color:{{ pressureBarColor }};line-height:1;">{{ pressurePct }}</span>
+              <span style="display:inline-flex;align-items:center;gap:5px;font:700 6.5px 'IBM Plex Mono';letter-spacing:.12em;color:{{ composureColor }};"><span style="width:5px;height:5px;border-radius:50%;background:{{ composureColor }};box-shadow:0 0 6px {{ composureColor }};"></span>{{ composureText }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==== FIELD (canvas fills) ==== -->
+        <div style="position:relative;flex:1 1 120px;min-height:120px;border-radius:16px;overflow:hidden;border:1px solid rgba(120,140,166,.18);background:#070d18;box-shadow:inset 0 0 60px rgba(0,0,0,.4);{{ vizShake }}">
+          <canvas ref="{{ canvasRef }}" style="display:block;width:100%;height:100%;"></canvas>
+          <span style="position:absolute;left:12px;top:10px;font:600 8px 'IBM Plex Mono';letter-spacing:.2em;color:rgba(200,215,232,.4);pointer-events:none;">GK CAM</span>
+
+          <!-- verdict chip -->
+          <sc-if value="{{ resolved }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;top:12px;left:50%;transform:translateX(-50%);z-index:5;display:flex;align-items:center;gap:9px;padding:8px 18px;border-radius:999px;background:rgba(4,10,18,.85);border:1px solid {{ verdictBorder }};box-shadow:0 10px 34px rgba(0,0,0,.55),0 0 22px {{ verdictGlow }};animation:fa-pop-c .46s cubic-bezier(.2,.8,.3,1) both;backdrop-filter:blur(4px);white-space:nowrap;">
+              <span style="font:800 15px 'Archivo';letter-spacing:.08em;color:{{ verdictColor }};">{{ verdictWord }}</span>
+            </div>
+          </sc-if>
+
+          <!-- feedback card floats over the field bottom -->
+          <sc-if value="{{ resolved }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;left:12px;right:12px;bottom:12px;z-index:5;padding:11px 14px;border-radius:12px;border:1px solid {{ feedBorder }};background:{{ feedBg }};backdrop-filter:blur(7px);animation:fa-cardin .5s cubic-bezier(.2,.7,.2,1) both;">
+              <div style="font:600 8.5px 'IBM Plex Mono';letter-spacing:.22em;color:{{ feedColor }};margin-bottom:5px;">{{ feedKicker }}</div>
+              <div style="font:500 12.5px/1.5 'Archivo';color:#DCE7F3;text-wrap:pretty;">{{ feedText }}</div>
+            </div>
+          </sc-if>
+        </div>
+
+        <!-- ==== CONTROL DOCK ==== -->
+        <div style="flex:0 0 auto;display:flex;flex-direction:column;gap:9px;">
+          <sc-if value="{{ live }}" hint-placeholder-val="{{ true }}">
+            <div style="height:5px;border-radius:99px;background:rgba(120,140,166,.16);overflow:hidden;">
+              <div ref="{{ barRef }}" style="height:100%;border-radius:99px;background:{{ timerColor }};box-shadow:0 0 10px {{ timerColor }};width:{{ timerPct }};"></div>
+            </div>
+          </sc-if>
+
+          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            <button onClick="{{ safe.onSelect }}" style="position:relative;flex:1 1 240px;display:flex;flex-direction:column;align-items:flex-start;gap:3px;padding:15px 18px;border-radius:14px;text-align:left;cursor:{{ safe.cursor }};transition:all .15s ease;{{ safe.look }}" style-hover="{{ safe.hover }}" style-active="{{ safe.active }}">
+              <span style="display:flex;align-items:center;gap:10px;">
+                <svg width="19" height="19" viewBox="0 0 24 24" fill="none" style="stroke:{{ safe.iconColor }};stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M12 3l7 3v5c0 4-3 7.2-7 8.4C8 18.2 5 15 5 11V6z"/></svg>
+                <span style="font:800 16px 'Archivo';letter-spacing:.01em;color:#EAF2FB;">{{ safe.verb }}</span>
+              </span>
+              <span style="font:500 12px 'Archivo';color:#9FB0C5;padding-left:29px;">{{ safe.sub }}</span>
+              <sc-if value="{{ safe.eliteShow }}" hint-placeholder-val="{{ false }}">
+                <span style="margin-top:4px;margin-left:29px;font:700 8.5px 'IBM Plex Mono';letter-spacing:.14em;color:{{ safe.eliteColor }};">{{ safe.eliteText }}</span>
+              </sc-if>
+              <sc-if value="{{ safe.showRipple }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;left:26px;top:24px;width:44px;height:44px;border-radius:50%;border:1.5px solid var(--accent,#22D3EE);animation:fa-ripple .7s ease-out forwards;pointer-events:none;"></span></sc-if>
+            </button>
+
+            <button onClick="{{ bold.onSelect }}" style="position:relative;flex:1 1 240px;display:flex;flex-direction:column;align-items:flex-start;gap:3px;padding:15px 18px;border-radius:14px;text-align:left;cursor:{{ bold.cursor }};transition:all .15s ease;{{ bold.look }}" style-hover="{{ bold.hover }}" style-active="{{ bold.active }}">
+              <span style="display:flex;align-items:center;gap:10px;">
+                <svg width="19" height="19" viewBox="0 0 24 24" fill="none" style="fill:{{ bold.iconColor }};"><path d="M13 2L4.5 13.5H11l-1 8.5 9-12.5H12z"/></svg>
+                <span style="font:800 16px 'Archivo';letter-spacing:.01em;color:#EAF2FB;">{{ bold.verb }}</span>
+              </span>
+              <span style="font:500 12px 'Archivo';color:#9FB0C5;padding-left:29px;">{{ bold.sub }}</span>
+              <sc-if value="{{ bold.eliteShow }}" hint-placeholder-val="{{ false }}">
+                <span style="margin-top:4px;margin-left:29px;font:700 8.5px 'IBM Plex Mono';letter-spacing:.14em;color:{{ bold.eliteColor }};">{{ bold.eliteText }}</span>
+              </sc-if>
+              <sc-if value="{{ bold.showRipple }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;left:26px;top:24px;width:44px;height:44px;border-radius:50%;border:1.5px solid #FF5A6E;animation:fa-ripple .7s ease-out forwards;pointer-events:none;"></span></sc-if>
+            </button>
+          </div>
+
+          <div style="min-height:46px;display:flex;justify-content:center;align-items:center;">
+            <sc-if value="{{ resolved }}" hint-placeholder-val="{{ false }}">
+              <button onClick="{{ next }}" style="display:inline-flex;align-items:center;gap:11px;padding:13px 30px;border-radius:12px;border:0;cursor:pointer;background:var(--accent,#22D3EE);color:#03121a;font:700 15px 'Archivo';box-shadow:0 12px 36px color-mix(in srgb,var(--accent,#22D3EE) 40%,transparent);transition:transform .16s ease,box-shadow .16s ease;animation:fa-rise-sm .4s cubic-bezier(.2,.7,.2,1) both;" style-hover="transform:translateY(-2px);box-shadow:0 18px 48px color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);" style-active="transform:translateY(0) scale(.98);">
+                {{ nextLabel }}
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" style="stroke:#03121a;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12h13M12 6l6 6-6 6"/></svg>
+              </button>
+            </sc-if>
+            <sc-if value="{{ live }}" hint-placeholder-val="{{ true }}">
+              <span ref="{{ hintRef }}" style="font:700 12px 'IBM Plex Mono';letter-spacing:.14em;color:{{ subHintColor }};">{{ subHint }}</span>
+            </sc-if>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </sc-if>
+
+  <!-- ============ EMBEDDED DONE ============ -->
+  <sc-if value="{{ isDone }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;text-align:center;padding:20px clamp(26px,4vw,58px) 40px;">
+      <div class="fa-in" style="display:inline-flex;align-items:center;gap:9px;margin-bottom:20px;padding:6px 14px;border:1px solid color-mix(in srgb,var(--accent,#22D3EE) 32%,transparent);border-radius:999px;font:600 10px 'IBM Plex Mono';letter-spacing:.28em;color:var(--accent,#22D3EE);">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" style="stroke:var(--accent,#22D3EE);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12.5l4.5 4.5L19 6.5"/></svg>PRESSURE TEST LOGGED
+      </div>
+      <h2 class="fa-in" style="margin:0 0 14px;font:800 clamp(30px,4.4vw,52px)/1 'Archivo';letter-spacing:-0.03em;animation-delay:.05s;">{{ doneHeadline }}</h2>
+      <p class="fa-in" style="margin:0 0 26px;max-width:440px;font:400 15px/1.6 'Archivo';color:#9FB0C5;text-wrap:pretty;animation-delay:.1s;">{{ doneNote }}</p>
+      <div class="fa-in" style="display:flex;gap:22px;margin-bottom:32px;animation-delay:.14s;">
+        <div style="text-align:center;"><div style="font:800 28px 'Archivo';color:var(--accent,#22D3EE);">{{ scoreText }}</div><div style="font:600 8.5px 'IBM Plex Mono';letter-spacing:.16em;color:#7688a0;margin-top:3px;">COMPOSURE</div></div>
+        <div style="width:1px;background:rgba(120,140,166,.2);"></div>
+        <div style="text-align:center;"><div style="font:800 28px 'Archivo';color:#EAF2FB;">{{ resilienceText }}%</div><div style="font:600 8.5px 'IBM Plex Mono';letter-spacing:.16em;color:#7688a0;margin-top:3px;">RESILIENCE</div></div>
+      </div>
+      <button onClick="{{ emit }}" class="fa-in" style="display:inline-flex;align-items:center;gap:11px;padding:16px 36px;border-radius:12px;border:0;cursor:pointer;background:var(--accent,#22D3EE);color:#03121a;font:700 15px 'Archivo';box-shadow:0 12px 36px color-mix(in srgb,var(--accent,#22D3EE) 40%,transparent);transition:transform .16s ease,box-shadow .16s ease;animation-delay:.2s;" style-hover="transform:translateY(-2px);box-shadow:0 18px 48px color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);" style-active="transform:translateY(0) scale(.98);">
+        Continue the scan
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" style="stroke:#03121a;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12h13M12 6l6 6-6 6"/></svg>
+      </button>
+    </main>
+  </sc-if>
+
+  <!-- ============ RESULT (standalone) ============ -->
+  <sc-if value="{{ isResult }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:14px clamp(24px,4vw,58px) 56px;">
+      <div class="fa-in" style="display:inline-flex;align-items:center;gap:9px;margin-bottom:16px;padding:6px 14px;border:1px solid color-mix(in srgb,var(--accent,#22D3EE) 32%,transparent);border-radius:999px;font:600 10px 'IBM Plex Mono';letter-spacing:.28em;color:var(--accent,#22D3EE);">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" style="stroke:var(--accent,#22D3EE);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12.5l4.5 4.5L19 6.5"/></svg>FINAL WHISTLE
+      </div>
+      <h1 class="fa-in" style="margin:0 0 24px;font:800 clamp(32px,5vw,62px)/0.98 'Archivo';letter-spacing:-0.03em;text-align:center;animation-delay:.06s;">{{ doneHeadline }}</h1>
+
+      <div style="display:flex;flex-wrap:wrap;gap:20px;justify-content:center;align-items:stretch;width:100%;max-width:880px;">
+
+        <!-- score card -->
+        <div class="fa-in" style="flex:1 1 320px;max-width:420px;display:flex;flex-direction:column;gap:18px;padding:24px;border-radius:16px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);animation-delay:.12s;">
+          <div>
+            <div style="font:600 9.5px 'IBM Plex Mono';letter-spacing:.26em;color:#61748c;margin-bottom:9px;">COMPOSURE SCORE</div>
+            <div style="display:flex;align-items:baseline;gap:8px;">
+              <span style="font:800 clamp(50px,8vw,74px)/1 'Archivo';letter-spacing:-0.02em;color:var(--accent,#22D3EE);">{{ scoreText }}</span>
+              <span style="font:600 15px 'IBM Plex Mono';color:#7688a0;">/ 100</span>
+            </div>
+            <p style="margin:11px 0 0;font:400 14px/1.55 'Archivo';color:#9FB0C5;text-wrap:pretty;">{{ scoreNote }}</p>
+          </div>
+          <div style="display:flex;gap:10px;">
+            <div style="flex:1;padding:13px;border-radius:11px;border:1px solid rgba(120,140,166,.18);background:rgba(6,12,22,.5);text-align:center;">
+              <div style="font:800 20px 'Archivo';color:{{ deltaColor }};">{{ deltaText }}</div>
+              <div style="font:600 8px 'IBM Plex Mono';letter-spacing:.1em;color:#7688a0;margin-top:3px;">PRESSURE DELTA</div>
+            </div>
+            <div style="flex:1;padding:13px;border-radius:11px;border:1px solid rgba(120,140,166,.18);background:rgba(6,12,22,.5);text-align:center;">
+              <div style="font:800 20px 'Archivo';color:#EAF2FB;">{{ braveryText }}</div>
+              <div style="font:600 8px 'IBM Plex Mono';letter-spacing:.1em;color:#7688a0;margin-top:3px;">BRAVERY</div>
+            </div>
+            <div style="flex:1;padding:13px;border-radius:11px;border:1px solid rgba(120,140,166,.18);background:rgba(6,12,22,.5);text-align:center;">
+              <div style="font:800 20px 'Archivo';color:#EAF2FB;">{{ hesitationText }}</div>
+              <div style="font:600 8px 'IBM Plex Mono';letter-spacing:.1em;color:#7688a0;margin-top:3px;">HESITATION</div>
+            </div>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding-top:4px;border-top:1px solid rgba(120,140,166,.14);">
+            <span style="font:600 9px 'IBM Plex Mono';letter-spacing:.16em;color:#61748c;">ARCHETYPE SIGNAL</span>
+            <sc-for list="{{ leanChips }}" as="c" hint-placeholder-count="2">
+              <span style="display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;border:1px solid {{ c.border }};font:700 9px 'IBM Plex Mono';letter-spacing:.12em;color:{{ c.color }};">{{ c.label }}</span>
+            </sc-for>
+          </div>
+        </div>
+
+        <!-- pressure curve -->
+        <div class="fa-in" style="flex:1 1 300px;max-width:420px;display:flex;flex-direction:column;gap:14px;padding:24px;border-radius:16px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);animation-delay:.18s;">
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <div style="font:600 9.5px 'IBM Plex Mono';letter-spacing:.22em;color:#61748c;">HOLDING UP UNDER STRESS</div>
+            <div style="font:800 14px 'Archivo';color:var(--accent,#22D3EE);">{{ resilienceText }}%</div>
+          </div>
+          <div style="position:relative;aspect-ratio:16/10;border-radius:12px;overflow:hidden;background:rgba(6,12,22,.5);border:1px solid rgba(120,140,166,.16);">
+            <svg viewBox="0 0 100 100" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;">
+              <defs>
+                <linearGradient id="hpStress" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stop-color="#7FE0C4" stop-opacity="0.14"/>
+                  <stop offset="55%" stop-color="#FFB020" stop-opacity="0.12"/>
+                  <stop offset="100%" stop-color="#FF5A6E" stop-opacity="0.16"/>
+                </linearGradient>
+              </defs>
+              <rect x="0" y="0" width="100" height="100" fill="url(#hpStress)"/>
+              <line x1="0" y1="50" x2="100" y2="50" stroke="rgba(150,170,196,.14)" stroke-width="0.4" stroke-dasharray="2 2"/>
+              <polyline points="{{ sparkPoints }}" fill="none" stroke="var(--accent,#22D3EE)" stroke-width="1.1" stroke-linejoin="round" stroke-linecap="round" style="filter:drop-shadow(0 0 3px color-mix(in srgb,var(--accent,#22D3EE) 60%,transparent));stroke-dasharray:320;stroke-dashoffset:320;animation:fa-draw 1.15s cubic-bezier(.4,.7,.3,1) .15s forwards;"/>
+            </svg>
+            <sc-for list="{{ sparkMarkers }}" as="m" hint-placeholder-count="10">
+              <div style="position:absolute;width:9px;height:9px;border-radius:50%;border:1.5px solid #050c17;{{ m.look }}{{ m.pos }}"></div>
+            </sc-for>
+            <div style="position:absolute;left:6px;bottom:5px;font:600 7.5px 'IBM Plex Mono';letter-spacing:.1em;color:#61748c;">EARLY · LOW STRESS</div>
+            <div style="position:absolute;right:6px;bottom:5px;font:600 7.5px 'IBM Plex Mono';letter-spacing:.1em;color:#FF9AA6;">LATE · CRITICAL</div>
+          </div>
+          <div style="display:flex;gap:8px;">
+            <sc-for list="{{ bands }}" as="b" hint-placeholder-count="3">
+              <div style="flex:1;text-align:center;padding:9px 6px;border-radius:10px;border:1px solid rgba(120,140,166,.16);background:rgba(6,12,22,.4);">
+                <div style="font:800 18px 'Archivo';color:{{ b.color }};">{{ b.val }}</div>
+                <div style="font:600 7.5px 'IBM Plex Mono';letter-spacing:.1em;color:#7688a0;margin-top:2px;">{{ b.label }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+
+      <div class="fa-in" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:13px;margin-top:26px;animation-delay:.26s;">
+        <button onClick="{{ retake }}" style="display:inline-flex;align-items:center;gap:11px;padding:16px 34px;border-radius:12px;border:0;cursor:pointer;background:var(--accent,#22D3EE);color:#03121a;font:700 15px 'Archivo';box-shadow:0 12px 36px color-mix(in srgb,var(--accent,#22D3EE) 40%,transparent);transition:transform .16s ease,box-shadow .16s ease;" style-hover="transform:translateY(-2px);box-shadow:0 18px 48px color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);" style-active="transform:translateY(0) scale(.98);">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:#03121a;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
+          Run it back
+        </button>
+        <a href="Landing.dc.html" style="display:inline-flex;align-items:center;gap:9px;padding:16px 24px;border-radius:12px;border:1px solid rgba(157,176,198,.28);background:rgba(12,18,30,.4);color:#C6D3E2;font:600 14px 'Archivo';transition:border-color .16s ease,color .16s ease;" style-hover="border-color:color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);color:#EAF2FB;">
+          Back to games
+        </a>
+      </div>
+      <div class="fa-in" style="margin-top:20px;max-width:540px;text-align:center;font:400 11px/1.6 'Archivo';color:#4f627a;animation-delay:.32s;">Scored on this session. Real percentiles arrive as the platform gathers keepers under the lights &mdash; every decision you make is a labelled data point.</div>
+    </main>
+  </sc-if>
+
+  <sc-if value="{{ motion }}" hint-placeholder-val="{{ true }}">
+    <div style="position:absolute;left:0;right:0;height:2px;z-index:2;background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--accent,#22D3EE) 30%,transparent),transparent);opacity:.4;animation:fa-scanline 7s linear infinite;pointer-events:none;"></div>
+  </sc-if>
+
+  <!-- screen-cut transition -->
+  <sc-if value="{{ swapping }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;inset:0;z-index:20;pointer-events:none;overflow:hidden;">
+      <div style="position:absolute;top:-4%;bottom:-4%;left:0;width:100%;background:linear-gradient(90deg,transparent 0%,color-mix(in srgb,var(--accent,#22D3EE) 30%,#070d18) 12%,#070d18 22%,#070d18 78%,color-mix(in srgb,var(--accent,#22D3EE) 30%,#070d18) 88%,transparent 100%);box-shadow:0 0 70px #070d18;transform:translateX(-118%);animation:fa-wipe .56s cubic-bezier(.65,0,.35,1) forwards;"></div>
+    </div>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;$preview&quot;: {&quot;width&quot;: 940, &quot;height&quot;: 720},
+  &quot;accent&quot;: {&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#22D3EE&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#22D3EE&quot;,&quot;#A78BFA&quot;,&quot;#C6FF3A&quot;,&quot;#FF7A45&quot;,&quot;#FF4D8D&quot;],&quot;section&quot;:&quot;Theme&quot;},
+  &quot;motion&quot;: {&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Theme&quot;},
+  &quot;embedded&quot;: {&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Mode&quot;},
+  &quot;onDone&quot;: {&quot;editor&quot;:null,&quot;tsType&quot;:&quot;(counts: Record&lt;string, number&gt;, meta?: object) =&gt; void&quot;}
+}">
+class Component extends DCLogic {
+  state = { view:'intro', ci:0, phase:'live', picked:null, tLeft:1, results:[],
+    counts:{oracle:0,sentinel:0,catalyst:0,bastion:0,wall:0}, _meta:null,
+    screenFx:null, swapping:false, cu:1, soundOn:true };
+
+  ORDER = ['oracle','sentinel','catalyst','bastion','wall'];
+  AX = { oracle:'ANTICIPATION', sentinel:'COMMAND', catalyst:'DISTRIBUTION', bastion:'REFLEX', wall:'PRESENCE' };
+
+  SCN = [
+    { min:'89:12', tag:'LONG-RANGE STRIKE', stress:10,
+      scen:'A striker lets fly from 25 metres \u2014 the ball dips toward your top corner.',
+      ball:{x:50,y:37}, atk:{x:44,y:33},
+      safe:{ verb:'HOLD & SET', sub:'Back your shot-stopping', k:'bastion', elite:71 },
+      bold:{ verb:'RUSH THE ANGLE', sub:'Close the distance down', k:'wall', elite:29 },
+      feedSafe:'The ball travels on a 25-yarder \u2014 elite keepers stay set and read it 71% of the time.',
+      feedBold:'Charging a long shot leaves your corners bare. Only 29% of top keepers gamble from here.' },
+    { min:'89:40', tag:'CROSS \u00b7 RIGHT WING', stress:20,
+      scen:'A whipped cross swings in, dropping toward your six-yard box.',
+      ball:{x:24,y:30}, atk:{x:15,y:23},
+      safe:{ verb:'STAY & COVER', sub:'Guard your line', k:'bastion', elite:32 },
+      bold:{ verb:'COME & CLAIM', sub:'Attack the ball', k:'wall', elite:68 },
+      feedSafe:'Sitting on your line invites a free header. Only 32% of elites stay back.',
+      feedBold:'Owning your box kills the cross \u2014 68% of top keepers come and claim it.' },
+    { min:'90:00', tag:'BACK-PASS \u00b7 PRESSED', stress:30,
+      scen:'A back-pass rolls to you with a striker charging you down.',
+      ball:{x:50,y:70}, atk:{x:50,y:58},
+      safe:{ verb:'SIDE-FOOT SAFE', sub:'Kill the risk', k:'sentinel', elite:55 },
+      bold:{ verb:'PLAY THROUGH IT', sub:'Start the attack', k:'catalyst', elite:45 },
+      feedSafe:'With a man on you, the reliable clearance is smart \u2014 55% keep it simple.',
+      feedBold:'Playing through the press launches your attack, but the margin is thin \u2014 45% dare it.' },
+    { min:'90:20', tag:'LOOSE BALL \u00b7 BOX', stress:40,
+      scen:'The ball spills loose in a crowded six-yard box.',
+      ball:{x:53,y:65}, atk:{x:46,y:58},
+      safe:{ verb:'PUNCH CLEAR', sub:'Reset the danger', k:'bastion', elite:40 },
+      bold:{ verb:'CLAIM IT', sub:'Own the moment', k:'wall', elite:60 },
+      feedSafe:'Punching keeps it simple but hands possession back \u2014 40% clear it.',
+      feedBold:'Gathering it clean ends the danger and calms the box \u2014 60% claim it.' },
+    { min:'90:38', tag:'1v1 \u00b7 15 METRES', stress:50,
+      scen:'A striker breaks through, one-on-one, bearing down from 15 metres.',
+      ball:{x:50,y:63}, atk:{x:50,y:59},
+      safe:{ verb:'STAY & REACT', sub:'Wait him out', k:'bastion', elite:42 },
+      bold:{ verb:'ADVANCE & NARROW', sub:'Squeeze the angle', k:'wall', elite:58 },
+      feedSafe:'Staying tall keeps you set, but hands him the picture \u2014 42% wait.',
+      feedBold:'Closing the angle shrinks his target \u2014 58% of elites advance.' },
+    { min:'91:05', tag:'DEFLECTION \u00b7 NEAR POST', stress:60,
+      scen:'A shot clips a defender and spins toward your near post.',
+      ball:{x:40,y:54}, atk:{x:44,y:45},
+      safe:{ verb:'REACT & DIVE', sub:'Trust your reflex', k:'bastion', elite:50 },
+      bold:{ verb:'RESET FEET', sub:'Reposition first', k:'sentinel', elite:50 },
+      feedSafe:'A pure reflex dive can reach it \u2014 a genuine coin-flip at 50%.',
+      feedBold:'Reset your feet and you meet it square \u2014 the other 50%.' },
+    { min:'91:30', tag:'HIGH PRESS \u00b7 TRAPPED', stress:70,
+      scen:'You have the ball, the press is on, and the passing lanes are closing.',
+      ball:{x:50,y:72}, atk:{x:44,y:62},
+      safe:{ verb:'LAUNCH LONG', sub:'Clear the risk', k:'wall', elite:35 },
+      bold:{ verb:'SHORT & BUILD', sub:'Beat the press', k:'catalyst', elite:65 },
+      feedSafe:'Row Z is safe but gives it straight back \u2014 only 35% go long now.',
+      feedBold:'Beating the press with a short ball breaks lines \u2014 65% back themselves.' },
+    { min:'92:00', tag:'CROSS + RUNNER', stress:80,
+      scen:'A cross drops in with an attacker attacking it just 8 metres out.',
+      ball:{x:30,y:52}, atk:{x:56,y:80},
+      safe:{ verb:'STAY & COVER', sub:'Protect the goal', k:'bastion', elite:40 },
+      bold:{ verb:'CLAIM AGGRESSIVELY', sub:'Take it at its peak', k:'wall', elite:60 },
+      feedSafe:'Holding your line lets him attack it freely \u2014 40% stay.',
+      feedBold:'Taking it at the highest point ends the threat \u2014 60% claim.' },
+    { min:'92:40', tag:'BOX SCRAMBLE', stress:90,
+      scen:'Bodies everywhere \u2014 the ball pinballs across your penalty area.',
+      ball:{x:54,y:63}, atk:{x:48,y:57},
+      safe:{ verb:'COVER BACK', sub:'Hold your ground', k:'sentinel', elite:50 },
+      bold:{ verb:'PUNCH THROUGH', sub:'Attack the chaos', k:'wall', elite:50 },
+      feedSafe:'Covering back keeps you set for the shot \u2014 50% hold.',
+      feedBold:'Punching through the crowd clears the danger \u2014 the other 50%.' },
+    { min:'93:15', tag:'FINAL 1v1 \u00b7 INJURY TIME', stress:100,
+      scen:'Deep in injury time \u2014 a striker is clean through, 12 metres out.',
+      ball:{x:50,y:70}, atk:{x:50,y:66},
+      safe:{ verb:'STAY & REACT', sub:'Make him decide', k:'bastion', elite:55 },
+      bold:{ verb:'ADVANCE & CHALLENGE', sub:'Force the error', k:'catalyst', elite:45 },
+      feedSafe:'This late, patience makes him blink first \u2014 55% stay big.',
+      feedBold:'Going to meet him forces the issue, but it is all-or-nothing \u2014 45% commit.' },
+  ];
+
+  _pad(n){ return n < 10 ? '0' + n : '' + n; }
+  _dur(i){ const s = this.SCN[i].stress; return Math.max(2200, Math.round(3200 - s / 100 * 1000)); }
+  _now(){ return (typeof performance !== 'undefined' && performance.now) ? performance.now() : Date.now(); }
+  _clear(){ clearInterval(this._tick); if (this._raf) cancelAnimationFrame(this._raf); this._raf = null; if (this._timerRaf) cancelAnimationFrame(this._timerRaf); this._timerRaf = null; if (this._h) this._h.forEach(clearTimeout); this._h = []; }
+  componentWillUnmount(){ this._clear(); this._stopLoop(); if (this._onResize) window.removeEventListener('resize', this._onResize); }
+  componentDidMount(){
+    this._h = [];
+    this._onResize = () => this._resize();
+    window.addEventListener('resize', this._onResize);
+    try { const b = JSON.parse(localStorage.getItem('fa_hp_progress') || 'null'); if (b && typeof b.best === 'number') this._best = b; } catch(e) {}
+    let soundOn = true; try { if (localStorage.getItem('fa_sound') === '0') soundOn = false; } catch(e) {}
+    if (soundOn !== this.state.soundOn) this.setState({ soundOn });
+    if (this.props.embedded) { this.setState({ view:'drill' }); this._startCard(); }
+  }
+
+  /* ---------- normalised pitch mapping (old 0..100 viz -> fa-pitch 0..1) ----------
+   * old y: 0 = up the pitch (away from our goal), 100 = at our goal line.
+   * old x: 0..100 across, 50 = centre. Our goal sits at pitch x=1 (bottom in the gk cam). */
+  _P(o){ return { x: 0.62 + (o.y / 100) * 0.38, y: (o.x / 100) }; }
+
+  /* ---------- canvas harness (STABLE ref — never churns on re-render) ---------- */
+  _cvRef(el){
+    if (el === this._canvas) return;          // same node: ignore (prevents churn)
+    this._canvas = el;
+    if (el) requestAnimationFrame(() => { this._resize(); this._startLoop(); });
+  }
+  _resize(){
+    const cv = this._canvas; if (!cv) return;
+    const r = cv.getBoundingClientRect(); if (!r.width) return;
+    const dpr = Math.min(2, window.devicePixelRatio || 1);
+    const w = Math.max(2, Math.round(r.width * dpr)), h = Math.max(2, Math.round(r.height * dpr));
+    // only touch the backing store when it actually changed — writing cv.width
+    // clears the canvas, so doing it every frame is what caused the flicker.
+    if (cv.width !== w || cv.height !== h) { cv.width = w; cv.height = h; }
+    this._dpr = dpr; this._W = r.width; this._H = r.height;
+  }
+  _startLoop(){ if (this._loopOn) return; this._loopOn = true; const step = (t) => { if (!this._loopOn) return; this._loopRaf = requestAnimationFrame(step); if ((!this._W || !this._H) && this._canvas) this._resize(); this._advanceFlight(); this._draw(t); }; this._loopRaf = requestAnimationFrame(step); }
+  _stopLoop(){ this._loopOn = false; if (this._loopRaf) cancelAnimationFrame(this._loopRaf); this._loopRaf = null; }
+  _advanceFlight(){ const fl = this._flight; if (!fl) return; const el = this._now() - fl.t0; const p = Math.min(1, el / fl.dur); this._ball = { x: fl.from.x + (fl.to.x - fl.from.x) * p, y: fl.from.y + (fl.to.y - fl.from.y) * p }; this._trail = [...(this._trail || []), this._ball].slice(-8); if (p >= 1) { this._flight = null; if (fl.cb) fl.cb(); } }
+
+  /* square, proportional keeper token (the "GK" jersey block) */
+  _keeper(ctx, fit, nx, ny){
+    const P = fit.px(nx, ny), x = P[0], y = P[1];
+    // sized off pitch metres so the keeper stays realistic vs the 7.32m goal:
+    // ~1.6m footprint. fit.m() maps metres->px.
+    const s = Math.max(10, fit.m(1.6)), w = s, h = s, rr = s * 0.30;
+    ctx.save();
+    // grounded shadow
+    ctx.fillStyle = 'rgba(0,0,0,.36)';
+    ctx.beginPath(); ctx.ellipse(x, y + h * 0.52, w * 0.5, h * 0.2, 0, 0, 7); ctx.fill();
+    // jersey block
+    const g = ctx.createLinearGradient(x, y - h / 2, x, y + h / 2);
+    g.addColorStop(0, '#EAFBFF'); g.addColorStop(1, '#8fd8e6');
+    ctx.fillStyle = g; ctx.strokeStyle = 'rgba(6,16,20,.55)'; ctx.lineWidth = Math.max(1.4, fit.m(0.06));
+    const rx = x - w / 2, ry = y - h / 2;
+    ctx.beginPath();
+    ctx.moveTo(rx + rr, ry);
+    ctx.arcTo(rx + w, ry, rx + w, ry + h, rr); ctx.arcTo(rx + w, ry + h, rx, ry + h, rr);
+    ctx.arcTo(rx, ry + h, rx, ry, rr); ctx.arcTo(rx, ry, rx + w, ry, rr); ctx.closePath();
+    ctx.fill(); ctx.stroke();
+    // GK label
+    ctx.fillStyle = '#06202a'; ctx.font = "800 " + Math.max(8, fit.font * 0.96) + "px 'IBM Plex Mono'";
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText('GK', x, y + 0.5); ctx.textBaseline = 'alphabetic';
+    ctx.restore();
+  }
+
+  _draw(){
+    const cv = this._canvas, ctx = cv && cv.getContext('2d'); if (!ctx) return;
+    const W = this._W, H = this._H, dpr = this._dpr || 1; if (!W || !H || !isFinite(W) || !isFinite(H)) return;
+    const FP = window.FAPitch; if (!FP) return;
+    const acc = this.props.accent || '#22D3EE';
+    ctx.save(); ctx.scale(dpr, dpr); ctx.clearRect(0, 0, W, H);
+    const t = this.SCN[this.state.ci] || this.SCN[0];
+    // ---- dynamic crop: always frame the WHOLE 18-yard box (back line + both
+    //      sides + 6-yard + spot + D-arc), expanding only when the shooter/ball
+    //      sits further out. Our goal is at x=1; the box back line is at
+    //      x=1-16.5/105=0.843 and the D reaches back to x≈0.808. ----
+    const cx1 = 1.065;                    // a little behind the goal line (net shows)
+    const BOX_BACK = 0.80;                // clears the box line + full D-arc with margin
+    const BOX_Y0 = 0.18, BOX_Y1 = 0.82;   // full penalty-box width (40.3m) + slim margin
+    const bp0 = this._P(t.ball), ap0 = this._P(t.atk);
+    let minX = BOX_BACK, minY = BOX_Y0, maxY = BOX_Y1;
+    // margins around the ball/attacker so tokens are never flush to the frame edge
+    [bp0, ap0].forEach(p => { minX = Math.min(minX, p.x - 0.05); minY = Math.min(minY, p.y - 0.06); maxY = Math.max(maxY, p.y + 0.06); });
+    // ALWAYS include every element; floor only prevents extreme zoom-out on far shots
+    let cx0 = Math.max(0.42, Math.min(BOX_BACK, minX));
+    let cy0 = Math.max(0, minY);
+    let cy1 = Math.min(1, maxY);
+    const fit = FP.fit(W, H, { cropRect:[cx0, cx1, cy0, cy1], orient:'ns', attackDir:'rtl', inset:0.025 }); this._fit = fit;
+    FP.pitch(ctx, fit);
+    const phase = this.state.phase;
+    const resolved = phase === 'resolved', resolving = phase === 'resolving';
+    const last = this.state.results[this.state.results.length - 1];
+    const sceneBall = this._P(t.ball);
+    const ballPos = this._ball || sceneBall;
+    const atk = this._P(t.atk);
+    const keeper = this._P({ x:50, y:93 });
+    // shooting angle the keeper has to cover (live only)
+    if (phase === 'live' || phase === 'ready') FP.angleCone(ctx, fit, ballPos, { end:1, optimal:true, color:acc });
+    // attacker chevron (points at our goal) — metre-sized to match the keeper
+    const shooterR = Math.max(9, fit.m(1.6));
+    FP.chevron(ctx, fit, atk.x, atk.y, { r: shooterR });
+    // keeper (+ dive on resolve)
+    let kx = keeper.x, ky = keeper.y, kAlpha = 1;
+    if (resolved && last) {
+      if (last.froze) kAlpha = 0.85;
+      else if (last.success) { ky = 0.5 + (ballPos.y - 0.5) * 0.78; kx = 0.985; }
+      else ky = 0.5 + (ballPos.y - 0.5) * 0.35;
+    }
+    ctx.globalAlpha = kAlpha;
+    this._keeper(ctx, fit, kx, ky);
+    ctx.globalAlpha = 1;
+    // ball trail (flight only) — metre-sized so it matches the zoom
+    const ballR = Math.max(4, fit.m(0.62));
+    if (resolving || resolved) {
+      const tr = this._trail || [];
+      tr.forEach((p, i) => { const f = (i + 1) / tr.length; ctx.globalAlpha = f * 0.4; FP.ball(ctx, fit, p.x, p.y, { r: ballR * (0.4 + f * 0.5) }); });
+      ctx.globalAlpha = 1;
+    }
+    FP.ball(ctx, fit, ballPos.x, ballPos.y, { flight: resolving, r: ballR });
+    // impact verdict ring
+    if (this._impact) FP.verdict(ctx, fit, this._impact.x, this._impact.y, { kind: this._impact.kind === 'save' ? 'correct' : 'wrong' });
+    ctx.restore();
+  }
+
+  /* ---------- audio (synth, no assets) ---------- */
+  _audio(){
+    if (this._actx === undefined) {
+      try { const AC = window.AudioContext || window.webkitAudioContext; this._actx = new AC(); this._master = this._actx.createGain(); this._master.gain.value = 0.5; this._master.connect(this._actx.destination); }
+      catch(e){ this._actx = null; }
+    }
+    if (this._actx && this._actx.state === 'suspended') { try { this._actx.resume(); } catch(e){} }
+    return this._actx;
+  }
+  _tone(freq, dur, type, vol, slideTo){
+    const ctx = this._actx; if (!ctx) return; const t = ctx.currentTime;
+    const o = ctx.createOscillator(), g = ctx.createGain();
+    o.type = type || 'sine'; o.frequency.setValueAtTime(freq, t);
+    if (slideTo) o.frequency.exponentialRampToValueAtTime(Math.max(20, slideTo), t + dur);
+    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(vol || 0.2, t + 0.008);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    o.connect(g).connect(this._master); o.start(t); o.stop(t + dur + 0.03);
+  }
+  _noise(dur, vol, type, freq){
+    const ctx = this._actx; if (!ctx) return; const t = ctx.currentTime;
+    const b = ctx.createBuffer(1, Math.max(1, Math.floor(ctx.sampleRate * dur)), ctx.sampleRate);
+    const d = b.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+    const s = ctx.createBufferSource(); s.buffer = b;
+    const f = ctx.createBiquadFilter(); f.type = type || 'bandpass'; f.frequency.value = freq || 800; f.Q.value = 0.9;
+    const g = ctx.createGain(); g.gain.setValueAtTime(vol || 0.15, t); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    s.connect(f).connect(g).connect(this._master); s.start(t); s.stop(t + dur);
+  }
+  _sfx(name){
+    if (!this.state.soundOn) return; const ctx = this._audio(); if (!ctx) return;
+    switch(name){
+      case 'click': this._tone(520, 0.06, 'triangle', 0.11); break;
+      case 'commit': this._tone(300, 0.13, 'sawtooth', 0.13, 170); break;
+      case 'save': this._tone(660, 0.09, 'sine', 0.16, 900); this._noise(0.09, 0.10, 'highpass', 2600); setTimeout(() => this._tone(1050, 0.13, 'sine', 0.14), 55); break;
+      case 'goal': this._tone(150, 0.32, 'sine', 0.2, 66); this._noise(0.3, 0.16, 'lowpass', 320); break;
+      case 'buzzer': this._tone(190, 0.42, 'square', 0.12, 150); break;
+      case 'tick': this._tone(1250, 0.03, 'square', 0.07); break;
+      case 'whoosh': this._noise(0.24, 0.11, 'bandpass', 780); break;
+      case 'whistle': this._tone(2050, 0.16, 'sine', 0.09, 2550); setTimeout(() => this._tone(2350, 0.2, 'sine', 0.08, 2050), 120); break;
+    }
+  }
+  _toggleSound(){
+    const on = !this.state.soundOn;
+    try { localStorage.setItem('fa_sound', on ? '1' : '0'); } catch(e){}
+    this.setState({ soundOn:on });
+    if (on) { this._audio(); this._sfx('click'); }
+  }
+
+  _begin(){ this._sfx('whistle'); this.setState({ view:'drill', ci:0, results:[], counts:{oracle:0,sentinel:0,catalyst:0,bastion:0,wall:0}, _meta:null, cu:1 }); this._startCard(); }
+
+  _startCard(fromSwap){
+    this._clear();
+    const t = this.SCN[this.state.ci];
+    this._lastTick = 1;
+    this._t0 = this._now();
+    this._ball = this._P(t.ball); this._trail = []; this._impact = null; this._flight = null;
+    this._startLoop();
+    this.setState({ phase:'live', picked:null, tLeft:1, screenFx:null });
+    const dur = this._dur(this.state.ci);
+    const acc = this.props.accent || '#22D3EE';
+    const arm = () => {
+      this._t0 = this._now();
+      // drive the timer by rAF + direct DOM writes — NO setState per tick, so
+      // the whole React tree isn't reconciled 20x/sec (that was the choppiness).
+      const loop = () => {
+        if (this.state.phase !== 'live') { this._timerRaf = null; return; }
+        const el = this._now() - this._t0;
+        const tLeft = Math.max(0, 1 - el / dur);
+        if (this._lastTick > 0.5 && tLeft <= 0.5) this._sfx('tick');
+        if (this._lastTick > 0.26 && tLeft <= 0.26) this._sfx('tick');
+        if (this._lastTick > 0.12 && tLeft <= 0.12) this._sfx('tick');
+        this._lastTick = tLeft;
+        this._tLeft = tLeft;
+        const col = tLeft > 0.5 ? acc : (tLeft > 0.25 ? '#FFB020' : '#FF5A6E');
+        if (this._barEl) { this._barEl.style.width = Math.round(tLeft * 100) + '%'; this._barEl.style.background = col; this._barEl.style.boxShadow = '0 0 10px ' + col; }
+        if (this._hintEl && tLeft <= 0.3) { this._hintEl.textContent = 'COMMIT NOW'; this._hintEl.style.color = '#FF5A6E'; }
+        if (el >= dur) { this._timerRaf = null; this._timeout(); return; }
+        this._timerRaf = requestAnimationFrame(loop);
+      };
+      this._timerRaf = requestAnimationFrame(loop);
+    };
+    if (fromSwap) this._h.push(setTimeout(arm, 300)); else arm();
+  }
+
+  _record(kind){
+    const i = this.state.ci, t = this.SCN[i], dur = this._dur(i);
+    const opt = kind === 'safe' ? t.safe : (kind === 'bold' ? t.bold : null);
+    const tUsed = kind === 'miss' ? dur : Math.min(dur, this._now() - this._t0);
+    const hesFrac = tUsed / dur;
+    const base = opt ? opt.elite : 0;
+    const hesFactor = 1 - hesFrac * 0.15;
+    const brave = kind === 'bold' ? 5 : 0;
+    const score = kind === 'miss' ? 0 : Math.max(0, Math.min(100, Math.round(base * hesFactor + brave)));
+    const success = !!opt && opt.elite >= 50;
+    const rec = { i, stress:t.stress, kind, k:opt ? opt.k : null, elite:base, tUsed:Math.round(tUsed),
+      hesFrac, score, success, froze:kind === 'miss', hesitated: kind !== 'miss' && hesFrac > 0.62 };
+    const counts = { ...this.state.counts }; if (opt) counts[opt.k] = (counts[opt.k] || 0) + 1;
+    return { rec, counts };
+  }
+
+  _pick(kind){
+    if (this.state.phase !== 'live') return;
+    clearInterval(this._tick); if (this._timerRaf) cancelAnimationFrame(this._timerRaf); this._timerRaf = null;
+    const { rec, counts } = this._record(kind);
+    this._sfx('commit');
+    this.setState({ phase:'resolving', picked:kind, counts, results:[...this.state.results, rec] });
+    this._runShot(rec);
+  }
+  _timeout(){
+    this._clear();
+    const { rec, counts } = this._record('miss');
+    this._sfx('buzzer');
+    this.setState({ phase:'resolving', picked:'miss', counts, results:[...this.state.results, rec] });
+    this._runShot(rec);
+  }
+
+  _runShot(rec){
+    const t = this.SCN[this.state.ci];
+    const from = this._P(t.ball);
+    let to, dur;
+    if (rec.froze) { to = { x:1.0, y:0.5 }; dur = 540; }
+    else if (rec.success) { to = { x:0.955, y: 0.5 + (from.y - 0.5) * 0.5 }; dur = 430; }
+    else { to = { x:1.0, y: from.y < 0.5 ? 0.30 : 0.70 }; dur = 470; }
+    this._trail = [];
+    this._flight = { from, to, dur, t0:this._now(), cb:() => this._land(rec, to) };
+  }
+  _land(rec, to){
+    const screenFx = rec.success ? 'save' : 'goal';
+    this._impact = { x:to.x, y:to.y, kind: rec.success ? 'save' : 'goal' };
+    this.setState({ phase:'resolved', screenFx });
+    this._sfx(rec.froze ? 'buzzer' : (rec.success ? 'save' : 'goal'));
+    this._h.push(setTimeout(() => this.setState({ screenFx:null }), 760));
+    this._h.push(setTimeout(() => { this._impact = null; }, 760));
+  }
+
+  _next(){
+    if (this.state.phase !== 'resolved') return;
+    this._sfx('whoosh');
+    this.setState({ swapping:true });
+    this._h.push(setTimeout(() => {
+      if (this.state.ci < this.SCN.length - 1) { this.setState({ ci:this.state.ci + 1 }); this._startCard(true); }
+      else this._finish();
+    }, 250));
+    this._h.push(setTimeout(() => this.setState({ swapping:false }), 580));
+  }
+
+  _meta(){
+    const rs = this.state.results; const n = rs.length || 1;
+    const avg = (a) => a.length ? a.reduce((x, y) => x + y, 0) / a.length : 0;
+    const band = (lo, hi) => Math.round(avg(rs.filter(r => r.i >= lo && r.i <= hi).map(r => r.score)));
+    const low = band(0, 2), med = band(3, 6), high = band(7, 9);
+    const scores = rs.map(r => r.score);
+    const total = Math.round(avg(scores));
+    const pressureDelta = high - low;
+    const resilience = Math.max(0, Math.min(100, Math.round((high / Math.max(low, 1)) * 100)));
+    const hesN = rs.filter(r => r.hesitated || r.froze).length;
+    const hesitationIndex = Math.round(hesN / n * 100);
+    const boldN = rs.filter(r => r.kind === 'bold').length;
+    const braveryIndex = Math.round(boldN / n * 100);
+    const frozeN = rs.filter(r => r.froze).length;
+    const mean = avg(scores); const sd = Math.sqrt(avg(scores.map(s => (s - mean) * (s - mean))));
+    const consistency = Math.max(0, Math.min(100, Math.round(100 - sd * 1.3)));
+    return { drill:'highPressure', layer:'demonstrated', score:total, low, med, high,
+      pressureDelta, resilience, hesitationIndex, braveryIndex, consistency, frozeN, events:rs };
+  }
+
+  _startCountup(){
+    if (this._raf) cancelAnimationFrame(this._raf);
+    const dur = 950, t0 = this._now();
+    this.setState({ cu:0 });
+    const step = () => {
+      const p = Math.min(1, (this._now() - t0) / dur);
+      const e = 1 - Math.pow(1 - p, 3);
+      this.setState({ cu:e });
+      if (p < 1) this._raf = requestAnimationFrame(step); else this._raf = null;
+    };
+    this._raf = requestAnimationFrame(step);
+  }
+
+  _finish(){
+    this._clear(); this._stopLoop();
+    const m = this._meta();
+    const counts = { ...this.state.counts };
+    if (m.hesitationIndex <= 30) counts.sentinel = (counts.sentinel || 0) + 1;
+    if (m.resilience >= 75) counts.bastion = (counts.bastion || 0) + 1;
+    if (m.braveryIndex >= 55) counts.catalyst = (counts.catalyst || 0) + 1;
+    this._finalCounts = counts;
+    if (!this.props.embedded) {
+      try {
+        const prev = this._best && this._best.best || 0;
+        const best = Math.max(prev, m.score);
+        const runs = (this._best && this._best.runs || 0) + 1;
+        localStorage.setItem('fa_hp_progress', JSON.stringify({ best, runs, ts:Date.now() }));
+        this._best = { best, runs };
+      } catch(e) {}
+    }
+    this.setState({ view: this.props.embedded ? 'done' : 'result', _meta:m });
+    this._sfx('whistle');
+    this._startCountup();
+  }
+  _emit(){ this._sfx('click'); (this.props.onDone || function(){})({ ...(this._finalCounts || this.state.counts) }, this.state._meta || this._meta()); }
+  _retake(){ this._clear(); this._stopLoop(); this._sfx('click'); this._ball = null; this._trail = []; this._impact = null; this._flight = null; this.setState({ view:'intro', ci:0, phase:'live', picked:null, tLeft:1, results:[],
+    counts:{oracle:0,sentinel:0,catalyst:0,bastion:0,wall:0}, _meta:null, cu:1, screenFx:null, swapping:false }); }
+
+  _stressMeta(s){
+    if (s < 30) return { label:'COMPOSED', color:'#7FE0C4' };
+    if (s < 55) return { label:'RISING', color:'#FFB020' };
+    if (s < 85) return { label:'INTENSE', color:'#FF7A45' };
+    return { label:'CRITICAL', color:'#FF5A6E' };
+  }
+
+  renderVals(){
+    const accent = this.props.accent ?? '#22D3EE';
+    const motion = this.props.motion ?? true;
+    const embedded = !!this.props.embedded;
+    const A = (h, a) => h + a;
+    const { view, ci, phase, picked, tLeft } = this.state;
+    const t = this.SCN[ci] || this.SCN[0];
+
+    const isDrill = view === 'drill';
+    const live = isDrill && phase === 'live';
+    const committed = isDrill && (phase === 'resolving' || phase === 'resolved');
+    const resolved = isDrill && phase === 'resolved';
+    const last = this.state.results[this.state.results.length - 1];
+
+    // stress-driven visuals
+    const stress = isDrill ? t.stress : 0;
+    const sm = this._stressMeta(stress);
+    const bpm = 72 + Math.round(stress * 0.32);
+    const heartDur = (60 / bpm).toFixed(2);
+    const heartAnim = motion ? ('fa-heartbeat ' + heartDur + 's ease-in-out infinite') : 'none';
+    const vignetteOpacity = (stress / 100 * 0.5).toFixed(3);
+    const redTint = Math.max(0, (stress - 55) / 45 * 0.16).toFixed(3);
+    let vizShake = '';
+    if (motion && resolved && last && !last.success) vizShake = 'animation:fa-shake-hard .42s ease-in-out;';
+    else if (motion && live && stress >= 70) vizShake = 'animation:fa-shake .5s ease-in-out infinite;';
+
+    // verdict
+    let verdictWord = '', verdictColor = accent, verdictBorder = accent, verdictGlow = A(accent, '55');
+    if (resolved && last) {
+      if (last.froze) { verdictWord = 'FROZE'; verdictColor = '#FF9AA6'; verdictBorder = 'rgba(255,90,110,.6)'; verdictGlow = 'rgba(255,90,110,.4)'; }
+      else if (last.success && last.kind === 'bold') { verdictWord = 'BRAVE \u2014 SAVED'; verdictColor = accent; verdictBorder = accent; verdictGlow = A(accent, '55'); }
+      else if (last.success) { verdictWord = 'SOLID \u2014 SAVED'; verdictColor = accent; verdictBorder = accent; verdictGlow = A(accent, '55'); }
+      else if (last.kind === 'bold') { verdictWord = 'OVERCOMMITTED'; verdictColor = '#FFB020'; verdictBorder = 'rgba(255,176,32,.6)'; verdictGlow = 'rgba(255,176,32,.4)'; }
+      else { verdictWord = 'CAUGHT WAITING'; verdictColor = '#FFB020'; verdictBorder = 'rgba(255,176,32,.6)'; verdictGlow = 'rgba(255,176,32,.4)'; }
+    }
+
+    // timer
+    const timerColor = tLeft > 0.5 ? accent : (tLeft > 0.25 ? '#FFB020' : '#FF5A6E');
+    const timerPct = Math.round(tLeft * 100) + '%';
+    let subHint = 'Commit before the clock empties', subHintColor = '#61748c';
+    if (live && tLeft <= 0.3) { subHint = 'COMMIT NOW'; subHintColor = '#FF5A6E'; }
+
+    // decision buttons
+    const mkBtn = (kind) => {
+      const opt = t[kind];
+      const chosen = committed && picked === kind;
+      const isBold = kind === 'bold';
+      let look, hover = '', active = '', iconColor, eliteColor = '#7688a0';
+      if (committed) {
+        if (chosen) {
+          if (last && last.success) { look = `border:1px solid ${accent};background:${A(accent,'1f')};box-shadow:0 0 0 1px ${accent},0 10px 30px ${A(accent,'2e')};animation:fa-commit .42s ease-out;`; iconColor = accent; }
+          else { look = `border:1px solid #FF5A6E;background:rgba(255,90,110,.12);box-shadow:0 0 0 1px #FF5A6E,0 10px 30px rgba(255,90,110,.24);animation:fa-commit .42s ease-out;`; iconColor = '#FF9AA6'; }
+        } else {
+          look = `border:1px solid rgba(120,140,166,.14);background:rgba(10,16,28,.3);opacity:.5;`; iconColor = '#5b6f88';
+        }
+        eliteColor = (opt.elite >= 50) ? accent : '#7688a0';
+      } else {
+        look = isBold
+          ? `border:1px solid rgba(255,90,110,.42);background:rgba(28,12,16,.55);`
+          : `border:1px solid ${A(accent,'40')};background:rgba(12,19,32,.62);`;
+        hover = isBold
+          ? `transform:translateY(-3px);border-color:rgba(255,90,110,.85);background:rgba(36,14,20,.8);`
+          : `transform:translateY(-3px);border-color:${A(accent,'aa')};background:rgba(14,23,38,.85);`;
+        active = 'transform:translateY(-1px) scale(.985);';
+        iconColor = isBold ? '#FF5A6E' : accent;
+      }
+      return {
+        verb:opt.verb, sub:opt.sub, look, hover, active, iconColor, eliteColor,
+        cursor: live ? 'pointer' : 'default',
+        eliteShow: resolved,
+        eliteText: (opt.elite >= 50 ? 'ELITE PICK \u00b7 ' : '') + opt.elite + '% OF TOP KEEPERS',
+        showRipple: chosen && !(last && last.froze),
+        onSelect: () => this._pick(kind),
+      };
+    };
+    const safe = mkBtn('safe'), bold = mkBtn('bold');
+
+    // feedback card
+    let feedKicker = '', feedText = '', feedColor = accent, feedBorder = A(accent,'30'), feedBg = 'rgba(6,14,24,.72)';
+    if (resolved && last) {
+      if (last.froze) { feedKicker = 'NO CALL'; feedText = 'You ran out of clock. Under real pressure, commit to something \u2014 hesitation is the costliest choice.'; feedColor = '#FF9AA6'; feedBorder = 'rgba(255,90,110,.5)'; feedBg = 'rgba(30,8,13,.72)'; }
+      else {
+        const base = last.kind === 'safe' ? t.feedSafe : t.feedBold;
+        const hesNote = last.hesitated ? ' You left it late \u2014 the hesitation cost you points.' : '';
+        feedKicker = last.success ? 'STRONG CALL' : 'RISKY CALL';
+        feedText = base + hesNote;
+        if (last.success) { feedColor = accent; feedBorder = A(accent,'44'); feedBg = 'rgba(6,18,26,.74)'; }
+        else { feedColor = '#FFB020'; feedBorder = 'rgba(255,176,32,.5)'; feedBg = 'rgba(28,22,8,.72)'; }
+      }
+    }
+
+    // progress dots
+    const dotsState = (view === 'intro' && !embedded) ? -1 : ((view === 'result' || view === 'done') ? this.SCN.length : ci);
+    const progressDots = this.SCN.map((_, i) => ({
+      style: i === dotsState ? `width:15px;background:${accent};box-shadow:0 0 8px ${A(accent,'aa')};`
+        : (i < dotsState ? `background:${A(accent,'88')};` : `background:rgba(120,140,166,.26);`),
+    }));
+
+    // result computed
+    const m = this.state._meta || (view === 'result' || view === 'done' ? this._meta() : null);
+    const cu = (view === 'result' || view === 'done') ? (this.state.cu != null ? this.state.cu : 1) : 1;
+    const D = (v) => Math.round(v * cu);
+    let score = m ? m.score : 0, resilience = m ? m.resilience : 0;
+    let scoreText = '0', resilienceText = '0';
+    let scoreNote = '', deltaText = '', deltaColor = accent, braveryText = '', hesitationText = '',
+        doneHeadline = '', doneNote = '', sparkPoints = '', sparkMarkers = [], bands = [], leanChips = [];
+    if (m) {
+      scoreText = '' + D(score);
+      resilienceText = '' + D(resilience);
+      scoreNote = score >= 78 ? 'Ice in your veins. Stress barely touched your game \u2014 elite composure under the lights.'
+        : score >= 60 ? 'Composed. You held most of your quality as the pressure climbed on you.'
+        : score >= 42 ? 'You feel it. Sharp early, but the biggest moments shaved your edge.'
+        : 'The pressure got to you. Good news: composure is the most trainable edge there is.';
+      doneHeadline = score >= 78 ? 'Unshakeable.' : score >= 60 ? 'Held your nerve.' : score >= 42 ? 'Wobbled late.' : 'Rattled under fire.';
+      doneNote = score >= 60 ? 'Your decision quality stayed intact as the clock and the crowd turned up.'
+        : 'Your quality dipped as the stress rose \u2014 the late, high-stakes calls are where to train.';
+      const dv = D(m.pressureDelta);
+      deltaText = (dv > 0 ? '+' : '') + dv;
+      deltaColor = m.pressureDelta >= 0 ? accent : (m.pressureDelta >= -15 ? '#FFB020' : '#FF5A6E');
+      braveryText = D(m.braveryIndex) + '%';
+      hesitationText = D(m.hesitationIndex) + '%';
+      const ev = m.events;
+      const n = ev.length || 1;
+      sparkPoints = ev.map((r, i) => {
+        const x = n > 1 ? (i / (n - 1)) * 100 : 50;
+        const y = 100 - Math.max(0, Math.min(100, r.score));
+        return x.toFixed(1) + ',' + y.toFixed(1);
+      }).join(' ');
+      sparkMarkers = ev.map((r, i) => {
+        const x = n > 1 ? (i / (n - 1)) * 100 : 50;
+        const y = 100 - Math.max(0, Math.min(100, r.score));
+        const col = r.froze ? '#FF5A6E' : (r.success ? accent : '#FFB020');
+        const delay = (0.2 + i * 0.05).toFixed(2);
+        return { pos:`left:${x.toFixed(1)}%;top:${y.toFixed(1)}%;`, look:`background:${col};box-shadow:0 0 8px ${col};opacity:0;transform:translate(-50%,-50%);animation:fa-pop .34s cubic-bezier(.2,.7,.2,1) ${delay}s forwards;` };
+      });
+      const bandColor = (v) => v >= 65 ? '#7FE0C4' : v >= 45 ? '#FFB020' : '#FF5A6E';
+      bands = [
+        { label:'LOW STRESS', val:D(m.low), color:bandColor(m.low) },
+        { label:'MID STRESS', val:D(m.med), color:bandColor(m.med) },
+        { label:'HIGH STRESS', val:D(m.high), color:bandColor(m.high) },
+      ];
+      const fc = this._finalCounts || this.state.counts;
+      const ranked = this.ORDER.slice().filter(k => fc[k] > 0).sort((a, b) => fc[b] - fc[a]).slice(0, 2);
+      leanChips = ranked.map((k, i) => ({
+        label:this.AX[k],
+        color: i === 0 ? accent : '#C6D3E2',
+        border: i === 0 ? A(accent,'55') : 'rgba(120,140,166,.3)',
+      }));
+    }
+
+    const showBest = view === 'intro' && !embedded && !!(this._best && this._best.best);
+    const bestText = showBest ? ('PERSONAL BEST \u00b7 ' + this._best.best + ' COMPOSURE') : '';
+
+    const soundOn = !!this.state.soundOn;
+
+    return {
+      accent, motion, embedded, chromeOn: !embedded,
+      rootMinH: embedded ? '100%' : '100dvh', rootH: embedded ? '100%' : (isDrill ? '100dvh' : 'auto'),
+      isIntro: !embedded && view === 'intro',
+      isDrill, live, resolved,
+      isDone: embedded && view === 'done',
+      isResult: !embedded && view === 'result',
+      vignetteOpacity, redTint,
+      saveFx: motion && this.state.screenFx === 'save',
+      goalFx: motion && this.state.screenFx === 'goal',
+      swapping: this.state.swapping,
+      progressDots,
+      soundOn, soundOff: !soundOn, soundColor: soundOn ? accent : '#61748c',
+      soundTitle: soundOn ? 'Sound on' : 'Sound off', toggleSound: () => this._toggleSound(),
+      stepLabel: (view === 'intro' && !embedded) ? 'READY' : ((view === 'result' || view === 'done') ? 'COMPLETE' : (this._pad(ci + 1) + ' / 10')),
+      minuteText: t.min, tagText: t.tag, headline: t.scen,
+      decisionCountText: this._pad(ci + 1) + ' / 10',
+      bpmText: '' + bpm, heartAnim, heartColor: sm.color,
+      pressurePct: stress + '%', pressureBarColor: sm.color,
+      composureText: sm.label, composureColor: sm.color,
+      vizShake,
+      canvasRef: this._canvasRefFn || (this._canvasRefFn = (el) => this._cvRef(el)),
+      barRef: this._barRefFn || (this._barRefFn = (el) => { this._barEl = el; }),
+      hintRef: this._hintRefFn || (this._hintRefFn = (el) => { this._hintEl = el; }),
+      verdictWord, verdictColor, verdictBorder, verdictGlow,
+      timerColor, timerPct, subHint, subHintColor,
+      safe, bold,
+      feedKicker, feedText, feedColor, feedBorder, feedBg,
+      nextLabel: ci < this.SCN.length - 1 ? 'Next decision' : (embedded ? 'Finish' : 'Final whistle'),
+      scoreText, resilienceText, scoreNote, doneHeadline, doneNote,
+      deltaText, deltaColor, braveryText, hesitationText,
+      sparkPoints, sparkMarkers, bands, leanChips,
+      showBest, bestText,
+      begin: () => this._begin(), next: () => this._next(), retake: () => this._retake(), emit: () => this._emit(),
+      back: () => { window.location.href = 'Landing.dc.html'; },
+    };
+  }
+}
+</script>
+</body>
+</html>

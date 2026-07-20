@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:#04060c;}
+  a{color:var(--accent,#22D3EE);text-decoration:none;}
+  a:hover{opacity:.9;}
+  @keyframes fa-spin{to{transform:rotate(360deg);}}
+  @keyframes fa-spin-r{to{transform:rotate(-360deg);}}
+  @keyframes fa-pulse{0%,100%{transform:scale(1);opacity:.55;}50%{transform:scale(1.14);opacity:1;}}
+  @keyframes fa-blink{0%,100%{opacity:1;}50%{opacity:.25;}}
+  @keyframes fa-scan{0%{top:-42%;}100%{top:104%;}}
+  @keyframes fa-shimmer{0%{transform:translateX(-140%);}100%{transform:translateX(520%);}}
+  @keyframes fa-rise{0%{transform:translateY(14px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-screenflash{0%{opacity:0;}18%{opacity:1;}100%{opacity:0;}}
+  .fa-in{opacity:0;animation:fa-rise .7s cubic-bezier(.2,.7,.2,1) forwards;}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;}.fa-in{opacity:1!important;transform:none!important;}}
+</style>
+</helmet>
+<div data-screen-label="Scan Boot" style="position:relative;display:flex;flex-direction:column;min-height:100dvh;width:100%;overflow:hidden;background:radial-gradient(120% 90% at 50% 6%,#0e1a2d 0%,#080e1a 44%,#04060c 100%);color:#EAF2FB;font-family:'Archivo',system-ui,sans-serif;--accent:{{ accent }};">
+
+  <!-- ambient scanlines -->
+  <div style="position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.4;background:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0px,rgba(255,255,255,.02) 1px,transparent 1px,transparent 4px);"></div>
+
+  <!-- corner brackets -->
+  <div style="position:absolute;top:20px;left:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;top:20px;right:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;left:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;right:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+
+  <!-- ready flash -->
+  <sc-if value="{{ ready }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;inset:0;z-index:8;pointer-events:none;background:radial-gradient(120% 100% at 50% 45%,transparent 44%,color-mix(in srgb,var(--accent,#22D3EE) 42%,transparent) 120%);animation:fa-screenflash .8s ease-out forwards;"></div>
+  </sc-if>
+
+  <!-- MAIN -->
+  <main style="position:relative;z-index:5;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;text-align:center;padding:36px clamp(24px,4vw,58px) 68px;">
+
+    <!-- wordmark -->
+    <div class="fa-in" style="display:flex;align-items:center;gap:11px;margin-bottom:34px;">
+      <svg width="26" height="26" viewBox="0 0 32 32" fill="none"><path d="M16 2 28 9v14L16 30 4 23V9z" style="stroke:var(--accent,#22D3EE);stroke-width:1.5;fill:color-mix(in srgb,var(--accent,#22D3EE) 12%,transparent);"/><circle cx="16" cy="16" r="4" style="fill:none;stroke:var(--accent,#22D3EE);stroke-width:1.6;"/></svg>
+      <div style="line-height:1;text-align:left;">
+        <div style="font:800 13px 'Archivo';letter-spacing:.05em;">FOOTBALLER'S <span style="color:var(--accent,#22D3EE);">ACADEMY</span></div>
+        <div style="margin-top:4px;font:500 8.5px 'IBM Plex Mono';letter-spacing:.32em;color:#6B7C93;">POSITION-DNA&nbsp;ENGINE</div>
+      </div>
+    </div>
+
+    <!-- scanner -->
+    <div class="fa-in" style="position:relative;width:min(230px,54vw);aspect-ratio:1/1;display:grid;place-items:center;animation-delay:.06s;">
+      <!-- back glow -->
+      <div style="position:absolute;inset:6%;border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--accent,#22D3EE) 24%,transparent),transparent 68%);filter:blur(7px);"></div>
+      <!-- outer dashed ring -->
+      <div style="position:absolute;inset:0;border-radius:50%;border:1.5px dashed color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);animation:fa-spin 9s linear infinite;"></div>
+      <!-- mid ring -->
+      <div style="position:absolute;inset:13%;border-radius:50%;border:1px solid color-mix(in srgb,var(--accent,#22D3EE) 30%,transparent);animation:fa-spin-r 16s linear infinite;"></div>
+      <!-- radar sweep -->
+      <sc-if value="{{ motion }}" hint-placeholder-val="{{ true }}">
+        <div style="position:absolute;inset:6%;border-radius:50%;background:conic-gradient(from 0deg,transparent 0deg,transparent 296deg,color-mix(in srgb,var(--accent,#22D3EE) 42%,transparent) 352deg,color-mix(in srgb,var(--accent,#22D3EE) 78%,transparent) 360deg);mix-blend-mode:screen;opacity:.7;animation:fa-spin 2.4s linear infinite;"></div>
+      </sc-if>
+      <!-- inner circle w/ fingerprint -->
+      <div style="position:absolute;inset:22%;border-radius:50%;overflow:hidden;background:#03060c;border:1px solid color-mix(in srgb,var(--accent,#22D3EE) 40%,transparent);box-shadow:inset 0 0 18px color-mix(in srgb,var(--accent,#22D3EE) 22%,transparent),0 0 22px color-mix(in srgb,var(--accent,#22D3EE) 24%,transparent);">
+        <img src="assets/img/fingerprint-seal.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;mix-blend-mode:screen;transform:scale(1.16);opacity:.95;"/>
+        <sc-if value="{{ motion }}" hint-placeholder-val="{{ true }}">
+          <div style="position:absolute;left:0;right:0;height:36%;background:linear-gradient(to bottom,transparent,color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent) 82%,#EAFDFF 100%);mix-blend-mode:screen;opacity:.85;animation:fa-scan 2.2s cubic-bezier(.5,0,.5,1) infinite;"></div>
+        </sc-if>
+      </div>
+    </div>
+
+    <!-- percentage -->
+    <div class="fa-in" style="margin-top:32px;display:flex;flex-direction:column;align-items:center;gap:8px;animation-delay:.12s;">
+      <div style="display:inline-flex;align-items:baseline;font:800 clamp(48px,7vw,72px)/0.9 'Archivo';letter-spacing:-0.02em;color:var(--accent,#22D3EE);text-shadow:0 0 46px color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);"><span>{{ pct }}</span><span style="font-size:.44em;font-family:'IBM Plex Mono';margin-left:3px;">%</span></div>
+      <div style="font:600 11px 'IBM Plex Mono';letter-spacing:.3em;color:#9FB0C5;min-height:15px;">{{ doing }}</div>
+    </div>
+
+    <!-- progress track (overall) -->
+    <div class="fa-in" style="position:relative;width:min(420px,82vw);height:6px;border-radius:99px;background:rgba(120,140,166,.16);overflow:hidden;margin-top:24px;animation-delay:.16s;">
+      <div style="position:absolute;inset:0 auto 0 0;height:100%;border-radius:99px;background:linear-gradient(90deg,color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent),var(--accent,#22D3EE));box-shadow:0 0 12px color-mix(in srgb,var(--accent,#22D3EE) 60%,transparent);width:{{ barWidth }};transition:width .1s linear;"></div>
+      <sc-if value="{{ motion }}" hint-placeholder-val="{{ true }}">
+        <div style="position:absolute;top:0;left:0;width:36px;height:100%;background:linear-gradient(90deg,transparent,rgba(234,251,255,.7),transparent);animation:fa-shimmer 1.5s ease-in-out infinite;"></div>
+      </sc-if>
+    </div>
+
+    <!-- checklist (per-section meters, one at a time) -->
+    <div class="fa-in" style="margin-top:26px;width:min(408px,90vw);display:flex;flex-direction:column;gap:6px;animation-delay:.2s;">
+      <sc-for list="{{ steps }}" as="s" hint-placeholder-count="5">
+        <div style="display:flex;align-items:center;gap:12px;padding:7px 10px;border-radius:10px;transition:background .2s ease;{{ s.rowLook }}">
+          <span style="flex:0 0 auto;width:20px;height:20px;border-radius:6px;display:grid;place-items:center;transition:all .2s ease;{{ s.boxLook }}">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" style="stroke:#03121a;stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round;opacity:{{ s.checkOp }};transition:opacity .18s ease;"><path d="M5 12.5l4.5 4.5L19 6.5"/></svg>
+          </span>
+          <span style="flex:1;min-width:0;text-align:left;font:600 12.5px 'Archivo';white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:color .2s ease;color:{{ s.labelColor }};">{{ s.label }}</span>
+          <span style="flex:0 0 auto;position:relative;width:56px;height:4px;border-radius:99px;overflow:hidden;background:rgba(120,140,166,.18);">
+            <span style="position:absolute;top:0;left:0;height:100%;border-radius:99px;transition:width .12s linear;{{ s.meterLook }}width:{{ s.meterFill }};"></span>
+          </span>
+          <span style="flex:0 0 auto;width:34px;text-align:right;font:600 8.5px 'IBM Plex Mono';letter-spacing:.1em;transition:color .2s ease;color:{{ s.stateColor }};">{{ s.state }}</span>
+        </div>
+      </sc-for>
+    </div>
+
+  </main>
+
+  <!-- skip -->
+  <button onClick="{{ skip }}" style="position:absolute;right:clamp(22px,3vw,44px);bottom:clamp(22px,3vw,44px);z-index:6;display:inline-flex;align-items:center;gap:8px;padding:9px 15px;border-radius:10px;border:1px solid rgba(120,140,166,.24);background:rgba(10,16,28,.5);color:#9FB0C5;font:600 10px 'IBM Plex Mono';letter-spacing:.16em;cursor:pointer;transition:border-color .16s ease,color .16s ease;" style-hover="border-color:color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);color:#EAF2FB;">
+    SKIP
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12h13M12 6l6 6-6 6"/></svg>
+  </button>
+
+  <!-- bottom scanline sweep -->
+  <sc-if value="{{ motion }}" hint-placeholder-val="{{ true }}">
+    <div style="position:absolute;left:0;right:0;height:2px;z-index:2;background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--accent,#22D3EE) 30%,transparent),transparent);opacity:.4;animation:fa-scan 7s linear infinite;pointer-events:none;"></div>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#22D3EE&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#22D3EE&quot;,&quot;#A78BFA&quot;,&quot;#C6FF3A&quot;,&quot;#FF7A45&quot;,&quot;#FF4D8D&quot;],&quot;section&quot;:&quot;Theme&quot;},&quot;motion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Theme&quot;}}">
+class Component extends DCLogic {
+  state = { elapsed:0, ready:false };
+
+  // Each section fills its own meter in turn; its check lands only when full.
+  SECTIONS = [
+    { label:'Position-DNA engine',  doing:'Initialising engine',     dur:980 },
+    { label:'Sensor calibration',   doing:'Calibrating sensors',     dur:720 },
+    { label:'Archetype model',      doing:'Loading archetype model', dur:900 },
+    { label:'Pitch map',            doing:'Mapping the pitch',       dur:640 },
+    { label:'Scan field',           doing:'Locking the scan field',  dur:560 },
+  ];
+  HOLD = 720;
+
+  _now(){ return (typeof performance !== 'undefined' && performance.now) ? performance.now() : Date.now(); }
+  _total(){ return this.SECTIONS.reduce((n, s) => n + s.dur, 0); }
+
+  componentDidMount(){
+    const total = this._total();
+    const t0 = this._now();
+    const tick = () => {
+      const elapsed = this._now() - t0;
+      this.setState({ elapsed: Math.min(elapsed, total) });
+      if (elapsed < total) { this._raf = requestAnimationFrame(tick); }
+      else { this._raf = null; this.setState({ ready:true }); this._nt = setTimeout(() => this._nav(), this.HOLD); }
+    };
+    this._raf = requestAnimationFrame(tick);
+    this._safety = setTimeout(() => this._nav(), total + this.HOLD + 4500); // guarantee exit
+  }
+
+  _nav(){
+    if (this._gone) return; this._gone = true;
+    if (this._raf) cancelAnimationFrame(this._raf);
+    clearTimeout(this._nt); clearTimeout(this._safety);
+    try { window.location.href = 'Position-Select-Field.dc.html'; } catch(e) {}
+  }
+  _skip(){ this._nav(); }
+
+  componentWillUnmount(){ if (this._raf) cancelAnimationFrame(this._raf); clearTimeout(this._nt); clearTimeout(this._safety); }
+
+  renderVals(){
+    const accent = this.props.accent ?? '#22D3EE';
+    const motion = this.props.motion ?? true;
+    const ready = this.state.ready;
+    const elapsed = this.state.elapsed;
+    const total = this._total();
+
+    let start = 0;
+    const bounds = this.SECTIONS.map(s => { const b = { start, end: start + s.dur }; start += s.dur; return b; });
+
+    let activeIndex = bounds.findIndex(b => elapsed < b.end);
+    if (activeIndex === -1) activeIndex = this.SECTIONS.length - 1;
+
+    const steps = this.SECTIONS.map((s, i) => {
+      const b = bounds[i];
+      const local = Math.max(0, Math.min(1, (elapsed - b.start) / s.dur));
+      const done = elapsed >= b.end;
+      const active = !done && i === activeIndex;
+      return {
+        label: s.label,
+        checkOp: done ? '1' : '0',
+        meterFill: Math.round(local * 100) + '%',
+        meterLook: done
+          ? 'background:var(--accent,#22D3EE);box-shadow:0 0 8px color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);'
+          : active
+            ? 'background:linear-gradient(90deg,color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent),var(--accent,#22D3EE));'
+            : 'background:transparent;',
+        boxLook: done
+          ? 'background:var(--accent,#22D3EE);border:1px solid var(--accent,#22D3EE);box-shadow:0 0 10px color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);'
+          : active
+            ? 'background:color-mix(in srgb,var(--accent,#22D3EE) 16%,transparent);border:1px solid color-mix(in srgb,var(--accent,#22D3EE) 70%,transparent);'
+            : 'background:rgba(12,19,32,.5);border:1px solid rgba(120,140,166,.28);',
+        rowLook: active ? 'background:color-mix(in srgb,var(--accent,#22D3EE) 7%,transparent);' : 'background:transparent;',
+        labelColor: done ? '#C6D3E2' : active ? '#EAF2FB' : '#61748c',
+        state: done ? 'OK' : active ? (Math.round(local * 100) + '%') : '\u2014',
+        stateColor: done ? 'var(--accent,#22D3EE)' : active ? 'color-mix(in srgb,var(--accent,#22D3EE) 80%,#EAF2FB)' : '#4f627a',
+      };
+    });
+
+    const overall = total ? Math.min(1, elapsed / total) : 0;
+    return {
+      accent, motion, ready,
+      pct: ready ? 100 : Math.round(overall * 100),
+      barWidth: (overall * 100).toFixed(1) + '%',
+      doing: ready ? 'Scan field ready' : this.SECTIONS[activeIndex].doing,
+      steps,
+      skip: () => this._skip(),
+    };
+  }
+}
+</script>
+</body>
+</html>

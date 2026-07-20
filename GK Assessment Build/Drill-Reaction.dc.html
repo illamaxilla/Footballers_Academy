@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:#04060c;}
+  a{color:var(--accent,#22D3EE);text-decoration:none;}
+  a:hover{opacity:.92;}
+  @keyframes fa-blink{0%,100%{opacity:1;}50%{opacity:.25;}}
+  @keyframes fa-scanline{0%{top:-4%;}100%{top:104%;}}
+  @keyframes fa-rise{0%{transform:translateY(16px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-rise-sm{0%{transform:translateY(10px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-ring{0%,100%{transform:translate(-50%,-50%) scale(.8);opacity:.55;}50%{transform:translate(-50%,-50%) scale(1.25);opacity:.1;}}
+  @keyframes fa-ripple{0%{transform:translate(-50%,-50%) scale(.5);opacity:.85;}100%{transform:translate(-50%,-50%) scale(2.8);opacity:0;}}
+  @keyframes fa-pop{0%{transform:translateX(-50%) scale(.6);opacity:0;}60%{transform:translateX(-50%) scale(1.05);}100%{transform:translateX(-50%) scale(1);opacity:1;}}
+  @keyframes fa-deplete{0%{width:100%;}100%{width:0%;}}
+  @keyframes fa-flash{0%{opacity:0;transform:translate(-50%,-50%) scale(.4);}30%{opacity:1;}100%{opacity:0;transform:translate(-50%,-50%) scale(1.9);}}
+  @keyframes fa-glowpulse{0%,100%{box-shadow:0 0 0 0 color-mix(in srgb,var(--accent,#22D3EE) 40%,transparent),0 10px 30px color-mix(in srgb,var(--accent,#22D3EE) 30%,transparent);}50%{box-shadow:0 0 0 8px color-mix(in srgb,var(--accent,#22D3EE) 6%,transparent),0 14px 40px color-mix(in srgb,var(--accent,#22D3EE) 42%,transparent);}}
+  @keyframes fa-shake-hard{0%,100%{transform:translate(0,0) rotate(0);}15%{transform:translate(-4px,2px) rotate(-.5deg);}30%{transform:translate(4px,-2px) rotate(.5deg);}45%{transform:translate(-3px,-2px) rotate(-.4deg);}60%{transform:translate(3px,2px) rotate(.4deg);}80%{transform:translate(-2px,1px) rotate(0);}}
+  @keyframes fa-screenflash{0%{opacity:0;}18%{opacity:1;}100%{opacity:0;}}
+  .fa-in{opacity:0;animation:fa-rise .7s cubic-bezier(.2,.7,.2,1) forwards;}
+  .fa-in-sm{opacity:0;animation:fa-rise-sm .55s cubic-bezier(.2,.7,.2,1) forwards;}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;}.fa-in,.fa-in-sm{opacity:1!important;transform:none!important;}}
+</style>
+</helmet>
+<div data-screen-label="Drill — The Save" style="position:relative;display:flex;flex-direction:column;min-height:{{ rootMinH }};height:{{ rootH }};width:100%;overflow:hidden;background:radial-gradient(120% 90% at 50% 6%,#0e1a2d 0%,#080e1a 44%,#04060c 100%);color:#EAF2FB;font-family:'Archivo',system-ui,sans-serif;--accent:{{ accent }};">
+
+  <!-- ambient -->
+  <div style="position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.4;background:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0px,rgba(255,255,255,.02) 1px,transparent 1px,transparent 4px);"></div>
+
+  <sc-if value="{{ saveFx }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;inset:0;z-index:9;pointer-events:none;background:radial-gradient(120% 100% at 50% 44%,transparent 50%,color-mix(in srgb,var(--accent,#22D3EE) 44%,transparent) 122%);animation:fa-screenflash .72s ease-out forwards;"></div>
+  </sc-if>
+  <sc-if value="{{ goalFx }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;inset:0;z-index:9;pointer-events:none;background:radial-gradient(120% 105% at 50% 44%,rgba(255,60,80,0) 40%,rgba(255,60,80,.5) 116%);animation:fa-screenflash .72s ease-out forwards;"></div>
+  </sc-if>
+
+  <sc-if value="{{ chromeOn }}" hint-placeholder-val="{{ true }}">
+    <div style="position:absolute;top:20px;left:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+    <div style="position:absolute;top:20px;right:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+    <div style="position:absolute;bottom:20px;left:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+    <div style="position:absolute;bottom:20px;right:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+
+    <header style="position:relative;z-index:6;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px clamp(26px,3.4vw,58px);">
+      <button onClick="{{ back }}" style="display:inline-flex;align-items:center;gap:8px;background:none;border:0;cursor:pointer;color:#8EA1B8;font:600 12.5px 'Archivo';padding:0;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M15 5l-7 7 7 7"/></svg>Back
+      </button>
+      <div style="display:flex;align-items:center;gap:11px;">
+        <svg width="22" height="22" viewBox="0 0 32 32" fill="none"><path d="M16 2 28 9v14L16 30 4 23V9z" style="stroke:var(--accent,#22D3EE);stroke-width:1.5;fill:color-mix(in srgb,var(--accent,#22D3EE) 12%,transparent);"/><circle cx="16" cy="16" r="4" style="fill:none;stroke:var(--accent,#22D3EE);stroke-width:1.6;"/></svg>
+        <span style="font:800 13px 'Archivo';letter-spacing:.05em;">DRILL 02 <span style="color:var(--accent,#22D3EE);">· THE SAVE</span></span>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;min-width:120px;justify-content:flex-end;">
+        <button onClick="{{ toggleSound }}" title="{{ soundTitle }}" style="display:grid;place-items:center;width:28px;height:28px;border-radius:8px;border:1px solid rgba(120,140,166,.24);background:rgba(10,16,28,.5);cursor:pointer;color:{{ soundColor }};transition:color .16s ease,border-color .16s ease;" style-hover="border-color:color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);">
+          <sc-if value="{{ soundOn }}" hint-placeholder-val="{{ true }}">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>
+          </sc-if>
+          <sc-if value="{{ soundOff }}" hint-placeholder-val="{{ false }}">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M22 9l-6 6M16 9l6 6"/></svg>
+          </sc-if>
+        </button>
+        <span style="display:flex;gap:6px;">
+          <sc-for list="{{ progressDots }}" as="d" hint-placeholder-count="4">
+            <span style="width:18px;height:4px;border-radius:99px;transition:all .3s;{{ d.style }}"></span>
+          </sc-for>
+        </span>
+        <span style="font:600 10px 'IBM Plex Mono';letter-spacing:.14em;color:color-mix(in srgb,var(--accent,#22D3EE) 80%,#fff);white-space:nowrap;">{{ stepLabel }}</span>
+      </div>
+    </header>
+  </sc-if>
+
+  <!-- ============ INTRO ============ -->
+  <sc-if value="{{ isIntro }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;align-items:center;justify-content:safe center;text-align:center;padding:20px clamp(26px,4vw,58px) 60px;">
+      <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-54%);font:900 clamp(200px,38vw,420px)/1 'Archivo';color:var(--accent,#22D3EE);opacity:.06;pointer-events:none;user-select:none;z-index:0;">02</div>
+      <div style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;max-width:600px;">
+        <div class="fa-in" style="display:flex;align-items:center;gap:14px;margin-bottom:26px;">
+          <span style="font:600 12px 'IBM Plex Mono';letter-spacing:.4em;color:var(--accent,#22D3EE);">DRILL 02</span>
+          <span style="width:44px;height:1px;background:color-mix(in srgb,var(--accent,#22D3EE) 45%,transparent);"></span>
+          <span style="font:500 11px 'IBM Plex Mono';letter-spacing:.28em;color:#7688a0;">REFLEX INSTINCT</span>
+        </div>
+        <h1 class="fa-in" style="margin:0 0 20px;font:800 clamp(44px,6.4vw,88px)/0.98 'Archivo';letter-spacing:-0.03em;text-wrap:balance;animation-delay:.08s;">The Save</h1>
+        <p class="fa-in" style="margin:0 0 30px;max-width:500px;font:400 clamp(15px,1.3vw,18px)/1.6 'Archivo';color:#9FB0C5;text-wrap:pretty;animation-delay:.16s;">Four shots. Wait for the strike, then <span style="color:#E4EDF7;font-weight:600;">smash the save that fires first.</span> Back your read and you can go early — but move too soon and you're guessing.</p>
+        <div class="fa-in" style="display:flex;flex-wrap:wrap;justify-content:center;gap:8px 10px;margin-bottom:36px;animation-delay:.22s;">
+          <span style="display:inline-flex;align-items:center;gap:7px;padding:7px 13px;border:1px solid rgba(120,140,166,.24);border-radius:999px;font:600 10px 'IBM Plex Mono';letter-spacing:.16em;color:#9FB0C5;"><span style="width:6px;height:6px;border-radius:50%;background:var(--accent,#22D3EE);"></span>GOAL-LINE REFLEX CAM</span>
+          <span style="display:inline-flex;align-items:center;gap:7px;padding:7px 13px;border:1px solid rgba(120,140,166,.24);border-radius:999px;font:600 10px 'IBM Plex Mono';letter-spacing:.16em;color:#9FB0C5;">SCORED RELATIVE · DEVICE-FAIR</span>
+          <span style="display:inline-flex;align-items:center;gap:7px;padding:7px 13px;border:1px solid rgba(120,140,166,.24);border-radius:999px;font:600 10px 'IBM Plex Mono';letter-spacing:.16em;color:#9FB0C5;">~30 SEC</span>
+        </div>
+        <button onClick="{{ begin }}" class="fa-in" style="display:inline-flex;align-items:center;gap:12px;padding:18px 40px;border-radius:13px;border:0;cursor:pointer;background:var(--accent,#22D3EE);color:#03121a;font:700 16px 'Archivo';box-shadow:0 14px 46px color-mix(in srgb,var(--accent,#22D3EE) 42%,transparent);transition:transform .16s ease,box-shadow .16s ease;animation-delay:.3s;" style-hover="transform:translateY(-2px);box-shadow:0 20px 58px color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);">
+          Face the shots
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="stroke:#03121a;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12h13M12 6l6 6-6 6"/></svg>
+        </button>
+      </div>
+    </main>
+  </sc-if>
+
+  <!-- ============ DRILL ============ -->
+  <sc-if value="{{ isDrill }}" hint-placeholder-val="{{ true }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;gap:12px;overflow-y:auto;padding:12px clamp(20px,3vw,48px) 16px;">
+
+      <div class="fa-in-sm" style="flex:0 0 auto;text-align:center;max-width:760px;margin:0 auto;">
+        <div style="display:inline-flex;align-items:center;gap:8px;margin-bottom:8px;font:600 10px 'IBM Plex Mono';letter-spacing:.28em;color:var(--accent,#22D3EE);">
+          <span style="width:6px;height:6px;border-radius:50%;background:var(--accent,#22D3EE);box-shadow:0 0 8px var(--accent,#22D3EE);animation:fa-blink 1.6s ease-in-out infinite;"></span>{{ cam }}
+        </div>
+        <h2 style="margin:0;font:700 clamp(18px,2.3vw,26px)/1.25 'Archivo';letter-spacing:-0.01em;color:#F2F8FE;text-wrap:balance;">{{ shot }}</h2>
+      </div>
+
+      <div style="flex:1 1 0;min-height:0;display:flex;flex-wrap:wrap;gap:26px;justify-content:center;align-items:stretch;width:100%;max-width:1160px;margin:0 auto;">
+
+        <!-- ===== GOAL CAM ===== -->
+        <div style="position:relative;container-type:size;flex:1 1 460px;min-width:300px;aspect-ratio:5/3;max-height:min(66vh,640px);border-radius:16px;overflow:hidden;background:radial-gradient(120% 130% at 50% 18%,#0d1c2e 0%,#091324 52%,#050c17 100%);border:1px solid rgba(120,140,166,.18);box-shadow:inset 0 0 60px rgba(0,0,0,.45);{{ vizShake }}">
+          <div style="position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.5;background:repeating-linear-gradient(90deg,rgba(140,200,220,.03) 0px,rgba(140,200,220,.03) 1px,transparent 1px,transparent 40px);"></div>
+
+          <!-- goal frame + net (realistic 24ft x 8ft, 3:1) -->
+          <svg viewBox="0 0 500 300" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;z-index:1;">
+            <g stroke="rgba(150,200,220,.09)" stroke-width="1">
+              <line x1="0" y1="205" x2="500" y2="205"/><line x1="0" y1="250" x2="500" y2="250"/>
+              <line x1="205" y1="160" x2="205" y2="300"/><line x1="295" y1="160" x2="295" y2="300"/>
+            </g>
+            <g stroke="rgba(150,200,220,.12)" stroke-width="0.8">
+              <line x1="110" y1="42" x2="110" y2="158"/><line x1="150" y1="42" x2="150" y2="158"/><line x1="190" y1="42" x2="190" y2="158"/><line x1="230" y1="42" x2="230" y2="158"/><line x1="270" y1="42" x2="270" y2="158"/><line x1="310" y1="42" x2="310" y2="158"/><line x1="350" y1="42" x2="350" y2="158"/><line x1="390" y1="42" x2="390" y2="158"/>
+              <line x1="72" y1="72" x2="428" y2="72"/><line x1="72" y1="102" x2="428" y2="102"/><line x1="72" y1="132" x2="428" y2="132"/>
+            </g>
+            <g stroke="rgba(196,228,242,.9)" stroke-width="5" stroke-linecap="square" fill="none">
+              <line x1="70" y1="40" x2="70" y2="160"/>
+              <line x1="430" y1="40" x2="430" y2="160"/>
+              <line x1="67.5" y1="40" x2="432.5" y2="40"/>
+            </g>
+            <line x1="6" y1="160" x2="494" y2="160" stroke="rgba(196,228,242,.5)" stroke-width="2"/>
+          </svg>
+
+          <div style="position:absolute;top:10px;left:10px;width:14px;height:14px;border-top:1.5px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:1.5px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:2;"></div>
+          <div style="position:absolute;top:10px;right:10px;width:14px;height:14px;border-top:1.5px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-right:1.5px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:2;"></div>
+          <div style="position:absolute;bottom:10px;left:10px;width:14px;height:14px;border-bottom:1.5px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:1.5px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:2;"></div>
+          <div style="position:absolute;bottom:10px;right:10px;width:14px;height:14px;border-bottom:1.5px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-right:1.5px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:2;"></div>
+
+          <!-- keeper (standing body ≈ 3/4 goal height, feet on the goal line) -->
+          <div style="position:absolute;z-index:4;width:15cqh;height:30cqh;transform-origin:50% 100%;transition:left .34s cubic-bezier(.34,.85,.3,1),top .34s cubic-bezier(.34,.85,.3,1),transform .34s cubic-bezier(.2,.85,.3,1);{{ keeperStyle }}">
+            <div style="position:relative;width:100%;height:100%;border-radius:5cqh;background:linear-gradient(180deg,#EAFBFF,#8fd8e6);display:grid;place-items:center;box-shadow:0 1cqh 3cqh rgba(0,0,0,.5),0 0 0 0.4cqh rgba(255,255,255,.18),0 0 3cqh color-mix(in srgb,var(--accent,#22D3EE) 45%,transparent);">
+              <span style="font:800 6cqh 'Archivo';color:#04202a;letter-spacing:.04em;">GK</span>
+              <span style="position:absolute;top:-1.4cqh;left:50%;transform:translateX(-50%);width:4cqh;height:4cqh;border-radius:50%;background:#EAFBFF;box-shadow:0 0 2cqh color-mix(in srgb,var(--accent,#22D3EE) 60%,transparent);"></span>
+            </div>
+          </div>
+
+          <!-- striker (penalty spot, ground shadow) -->
+          <div style="position:absolute;left:50%;top:92%;z-index:3;transform:translate(-50%,-100%);">
+            <div style="width:0;height:0;margin:0 auto;border-left:4.5cqh solid transparent;border-right:4.5cqh solid transparent;border-bottom:10cqh solid #FF5A6E;filter:drop-shadow(0 0 1.4cqh rgba(255,90,110,.5));opacity:.9;"></div>
+            <div style="width:8cqh;height:1.1cqh;margin:1cqh auto 0;border-radius:1cqh;background:rgba(255,90,110,.5);"></div>
+          </div>
+
+          <!-- ball (≈ 9% of goal height) -->
+          <div style="position:absolute;z-index:5;transform:translate(-50%,-50%);width:3.6cqh;height:3.6cqh;border-radius:50%;background:radial-gradient(circle at 34% 30%,#fff,#bcc9d4);box-shadow:0 0 1.6cqh rgba(255,255,255,.55),0 0.4cqh 1cqh rgba(0,0,0,.45);transition:{{ ballTransition }};{{ ballStyle }}"></div>
+
+          <!-- strike flash -->
+          <sc-if value="{{ justStruck }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;left:50%;top:90%;z-index:6;width:12cqh;height:12cqh;transform:translate(-50%,-50%);border-radius:50%;border:0.5cqh solid #FF5A6E;pointer-events:none;animation:fa-flash .5s ease-out forwards;"></div>
+          </sc-if>
+
+          <!-- reflex clock chip -->
+          <div style="position:absolute;top:11px;left:50%;transform:translateX(-50%);z-index:10;display:flex;align-items:center;gap:9px;padding:7px 15px;border-radius:999px;background:rgba(4,10,18,.82);border:1px solid {{ clockBorder }};box-shadow:0 8px 26px rgba(0,0,0,.5);backdrop-filter:blur(4px);white-space:nowrap;transition:border-color .2s;">
+            <span style="width:7px;height:7px;border-radius:50%;background:{{ clockDot }};box-shadow:0 0 8px {{ clockDot }};{{ clockDotAnim }}"></span>
+            <span style="font:700 12.5px 'IBM Plex Mono';letter-spacing:.04em;color:#EAFBFF;">{{ clockText }}</span>
+          </div>
+
+          <!-- pressure window -->
+          <sc-if value="{{ isLive }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;left:14px;right:14px;bottom:11px;z-index:9;height:3px;border-radius:99px;background:rgba(120,140,166,.18);overflow:hidden;">
+              <div style="height:100%;background:linear-gradient(90deg,var(--accent,#22D3EE),#FF5A6E);animation:fa-deplete 1.2s linear forwards;"></div>
+            </div>
+          </sc-if>
+        </div>
+
+        <!-- ===== RAIL ===== -->
+        <aside style="flex:0 1 280px;min-width:230px;max-width:320px;display:flex;flex-direction:column;gap:13px;">
+          <div style="display:flex;align-items:center;gap:9px;font:600 10px 'IBM Plex Mono';letter-spacing:.28em;color:#7688a0;">
+            <span style="width:6px;height:6px;border-radius:50%;background:var(--accent,#22D3EE);box-shadow:0 0 8px var(--accent,#22D3EE);"></span>LIVE READ
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <sc-for list="{{ meter }}" as="m" hint-placeholder-count="5">
+              <div style="display:flex;flex-direction:column;gap:5px;">
+                <div style="display:flex;justify-content:space-between;font:600 9.5px 'IBM Plex Mono';letter-spacing:.12em;color:{{ m.labelColor }};"><span>{{ m.label }}</span><span>{{ m.n }}</span></div>
+                <div style="height:5px;border-radius:99px;background:rgba(120,140,166,.16);overflow:hidden;"><div style="height:100%;border-radius:99px;background:var(--accent,#22D3EE);box-shadow:0 0 8px var(--accent,#22D3EE);width:{{ m.pct }};transition:width .5s cubic-bezier(.3,.8,.3,1);"></div></div>
+              </div>
+            </sc-for>
+          </div>
+          <sc-if value="{{ resolved }}" hint-placeholder-val="{{ false }}">
+            <div style="margin-top:2px;padding:13px 15px;border-radius:12px;border:1px solid {{ readBorder }};background:{{ readBg }};animation:fa-rise-sm .5s cubic-bezier(.2,.7,.2,1) both;">
+              <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:{{ readKicker }};margin-bottom:7px;">{{ outcomeWord }}</div>
+              <div style="font:500 13px/1.5 'Archivo';color:#DCE7F3;">{{ outcomeNote }}</div>
+            </div>
+          </sc-if>
+          <sc-if value="{{ notResolved }}" hint-placeholder-val="{{ true }}">
+            <div style="margin-top:2px;padding:13px 15px;border-radius:12px;border:1px dashed rgba(120,140,166,.28);background:rgba(10,16,28,.4);font:500 13px/1.5 'Archivo';color:#8698ad;">{{ hintText }}</div>
+          </sc-if>
+
+          <!-- ===== RESPONSE DECK ===== -->
+          <div style="flex:0 0 auto;display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;align-items:center;gap:9px;font:600 10px 'IBM Plex Mono';letter-spacing:.28em;color:#7688a0;">
+              <span style="width:6px;height:6px;border-radius:50%;background:var(--accent,#22D3EE);box-shadow:0 0 8px var(--accent,#22D3EE);"></span>YOUR CALL
+            </div>
+            <button onClick="{{ read.onSelect }}" style="position:relative;display:flex;align-items:center;justify-content:center;gap:9px;padding:12px 10px;border-radius:13px;cursor:{{ read.cursor }};transition:all .16s ease;{{ read.look }}">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto;"><circle cx="12" cy="12" r="3"/><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/></svg>
+              <span style="font:800 13px 'Archivo';letter-spacing:.02em;">{{ read.verb }}</span>
+              <span style="font:600 8.5px 'IBM Plex Mono';letter-spacing:.14em;opacity:.7;">· {{ read.hint }}</span>
+            </button>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+              <sc-for list="{{ saves }}" as="s" hint-placeholder-count="4">
+                <button onClick="{{ s.onSelect }}" style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;padding:13px 8px;border-radius:13px;cursor:{{ s.cursor }};transition:all .16s ease;{{ s.look }}" style-hover="{{ s.hover }}">
+                  <span style="font:800 14px 'Archivo';letter-spacing:.02em;">{{ s.verb }}</span>
+                  <span style="font:600 8.5px 'IBM Plex Mono';letter-spacing:.14em;opacity:.72;">{{ s.axis }}</span>
+                  <sc-if value="{{ s.showRipple }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;left:50%;top:50%;width:40px;height:40px;border-radius:50%;border:1.5px solid var(--accent,#22D3EE);animation:fa-ripple .7s ease-out forwards;pointer-events:none;"></span></sc-if>
+                </button>
+              </sc-for>
+            </div>
+          </div>
+
+          <!-- control -->
+          <div style="flex:0 0 auto;margin-top:4px;min-height:46px;display:flex;justify-content:center;align-items:center;">
+            <sc-if value="{{ resolved }}" hint-placeholder-val="{{ false }}">
+              <button onClick="{{ next }}" style="display:inline-flex;align-items:center;justify-content:center;gap:11px;width:100%;padding:15px 24px;border-radius:12px;border:0;cursor:pointer;background:var(--accent,#22D3EE);color:#03121a;font:700 15px 'Archivo';box-shadow:0 12px 36px color-mix(in srgb,var(--accent,#22D3EE) 40%,transparent);transition:transform .16s ease,box-shadow .16s ease;animation:fa-rise-sm .4s cubic-bezier(.2,.7,.2,1) both;" style-hover="transform:translateY(-2px);box-shadow:0 18px 48px color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);">
+                {{ nextLabel }}
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" style="stroke:#03121a;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12h13M12 6l6 6-6 6"/></svg>
+              </button>
+            </sc-if>
+            <sc-if value="{{ notResolved }}" hint-placeholder-val="{{ true }}">
+              <span style="font:400 12px 'Archivo';color:#61748c;">{{ waitHint }}</span>
+            </sc-if>
+          </div>
+        </aside>
+      </div>
+    </main>
+  </sc-if>
+
+  <!-- ============ RESULT ============ -->
+  <sc-if value="{{ isResult }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;align-items:center;justify-content:safe center;padding:14px clamp(24px,4vw,58px) 56px;">
+      <div class="fa-in" style="display:inline-flex;align-items:center;gap:9px;margin-bottom:18px;padding:6px 14px;border:1px solid color-mix(in srgb,var(--accent,#22D3EE) 32%,transparent);border-radius:999px;font:600 10px 'IBM Plex Mono';letter-spacing:.28em;color:var(--accent,#22D3EE);">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" style="stroke:var(--accent,#22D3EE);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12.5l4.5 4.5L19 6.5"/></svg>DRILL 02 COMPLETE
+      </div>
+      <h1 class="fa-in" style="margin:0 0 26px;font:800 clamp(34px,5vw,64px)/0.98 'Archivo';letter-spacing:-0.03em;text-align:center;animation-delay:.06s;">Shots faced.</h1>
+
+      <div style="display:flex;flex-wrap:wrap;gap:22px;justify-content:center;align-items:stretch;width:100%;max-width:860px;">
+        <div class="fa-in" style="flex:1 1 320px;max-width:420px;display:flex;flex-direction:column;gap:20px;padding:24px;border-radius:16px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);animation-delay:.12s;">
+          <div>
+            <div style="font:600 9.5px 'IBM Plex Mono';letter-spacing:.26em;color:#61748c;margin-bottom:9px;">YOUR SAVING INSTINCT</div>
+            <div style="font:800 clamp(26px,3.6vw,36px)/1 'Archivo';letter-spacing:-0.01em;color:var(--accent,#22D3EE);">{{ leadLabel }}</div>
+            <p style="margin:11px 0 0;font:400 14px/1.55 'Archivo';color:#9FB0C5;text-wrap:pretty;">{{ leadNote }}</p>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:11px;">
+            <sc-for list="{{ meter }}" as="m" hint-placeholder-count="5">
+              <div style="display:flex;flex-direction:column;gap:5px;">
+                <div style="display:flex;justify-content:space-between;font:600 9.5px 'IBM Plex Mono';letter-spacing:.12em;color:{{ m.labelColor }};"><span>{{ m.label }}</span><span>{{ m.n }}</span></div>
+                <div style="height:5px;border-radius:99px;background:rgba(120,140,166,.16);overflow:hidden;"><div style="height:100%;border-radius:99px;background:var(--accent,#22D3EE);box-shadow:0 0 8px var(--accent,#22D3EE);width:{{ m.pct }};"></div></div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div class="fa-in" style="flex:1 1 300px;max-width:410px;display:flex;flex-direction:column;gap:15px;padding:24px;border-radius:16px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);animation-delay:.18s;">
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <div style="font:600 9.5px 'IBM Plex Mono';letter-spacing:.22em;color:#61748c;">REACTION PROFILE</div>
+            <div style="font:600 8.5px 'IBM Plex Mono';letter-spacing:.12em;color:color-mix(in srgb,var(--accent,#22D3EE) 75%,#fff);">vs REFERENCE</div>
+          </div>
+          <div style="display:flex;align-items:baseline;gap:8px;">
+            <span style="font:800 clamp(46px,7vw,70px)/1 'Archivo';letter-spacing:-0.02em;color:var(--accent,#22D3EE);">{{ pctLabel }}</span>
+            <span style="font:600 14px 'IBM Plex Mono';color:#7688a0;">/ 100</span>
+          </div>
+          <div style="font:400 13px/1.5 'Archivo';color:#9FB0C5;text-wrap:pretty;">{{ speedNote }}</div>
+          <div style="display:flex;gap:9px;">
+            <div style="flex:1;padding:12px;border-radius:11px;border:1px solid rgba(120,140,166,.18);background:rgba(6,12,22,.5);text-align:center;">
+              <div style="font:800 20px 'Archivo';color:#EAF2FB;">{{ consLabel }}</div>
+              <div style="font:600 8px 'IBM Plex Mono';letter-spacing:.1em;color:#7688a0;margin-top:3px;">CONSISTENCY</div>
+            </div>
+            <div style="flex:1;padding:12px;border-radius:11px;border:1px solid rgba(120,140,166,.18);background:rgba(6,12,22,.5);text-align:center;">
+              <div style="font:800 20px 'Archivo';color:#EAF2FB;">{{ readsN }}</div>
+              <div style="font:600 8px 'IBM Plex Mono';letter-spacing:.1em;color:#7688a0;margin-top:3px;">READ EARLY</div>
+            </div>
+            <div style="flex:1;padding:12px;border-radius:11px;border:1px solid rgba(120,140,166,.18);background:rgba(6,12,22,.5);text-align:center;">
+              <div style="font:800 20px 'Archivo';color:#EAF2FB;">{{ avgMs }}<span style="font-size:.5em;color:#7688a0;">s</span></div>
+              <div style="font:600 8px 'IBM Plex Mono';letter-spacing:.1em;color:#7688a0;margin-top:3px;">RAW AVG</div>
+            </div>
+          </div>
+          <div style="font:400 10px/1.5 'Archivo';color:#5b6f88;padding-top:2px;border-top:1px solid rgba(120,140,166,.14);">Reaction speed — not shot-stopping. Screen latency varies by device, so we score you relative and rank consistency, never raw milliseconds.</div>
+        </div>
+      </div>
+
+      <div class="fa-in" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:13px;margin-top:26px;animation-delay:.26s;">
+        <a href="Assessment.dc.html" style="display:inline-flex;align-items:center;gap:11px;padding:16px 34px;border-radius:12px;background:var(--accent,#22D3EE);color:#03121a;font:700 15px 'Archivo';box-shadow:0 12px 36px color-mix(in srgb,var(--accent,#22D3EE) 40%,transparent);transition:transform .16s ease,box-shadow .16s ease;" style-hover="transform:translateY(-2px);box-shadow:0 18px 48px color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);">
+          Continue the scan
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" style="stroke:#03121a;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12h13M12 6l6 6-6 6"/></svg>
+        </a>
+        <button onClick="{{ retake }}" style="display:inline-flex;align-items:center;gap:9px;padding:16px 24px;border-radius:12px;border:1px solid rgba(157,176,198,.28);background:rgba(12,18,30,.4);color:#C6D3E2;font:600 14px 'Archivo';cursor:pointer;transition:border-color .16s ease,color .16s ease;" style-hover="border-color:color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);color:#EAF2FB;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
+          Run it back
+        </button>
+      </div>
+      <div class="fa-in" style="margin-top:20px;font:500 10px 'IBM Plex Mono';letter-spacing:.16em;color:#4f627a;animation-delay:.32s;">DRILL 02 OF 04 · THE SAVE — REFLEX, RADAR &amp; RAPID-FIRE FEED THE FULL ARCHETYPE</div>
+    </main>
+  </sc-if>
+
+  <!-- scan sweep -->
+  <sc-if value="{{ motion }}" hint-placeholder-val="{{ true }}">
+    <div style="position:absolute;left:0;right:0;height:2px;z-index:2;background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--accent,#22D3EE) 30%,transparent),transparent);opacity:.4;animation:fa-scanline 7s linear infinite;pointer-events:none;"></div>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;$preview&quot;: {&quot;width&quot;: 940, &quot;height&quot;: 720},
+  &quot;accent&quot;: {&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#22D3EE&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#22D3EE&quot;,&quot;#A78BFA&quot;,&quot;#C6FF3A&quot;,&quot;#FF7A45&quot;,&quot;#FF4D8D&quot;],&quot;section&quot;:&quot;Theme&quot;},
+  &quot;motion&quot;: {&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Theme&quot;},
+  &quot;embedded&quot;: {&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Mode&quot;},
+  &quot;onDone&quot;: {&quot;editor&quot;:null,&quot;tsType&quot;:&quot;(counts: Record&lt;string, number&gt;) =&gt; void&quot;}
+}">
+class Component extends DCLogic {
+  state = { view:'intro', si:0, phase:'set', selected:null, outcome:null, liveMs:0,
+    counts:{oracle:0,sentinel:0,catalyst:0,bastion:0,wall:0}, rts:[], reads:0, events:[], soundOn:true, screenFx:null };
+
+  AX = { oracle:'Anticipation', bastion:'Reflex', sentinel:'Command', catalyst:'Distribution', wall:'Presence' };
+  ORDER = ['oracle','bastion','sentinel','catalyst','wall'];
+  NOTE = {
+    oracle:'You back your read — you move before the ball is even struck.',
+    bastion:'Pure hand speed. The harder it comes, the faster you fire.',
+    sentinel:'Controlled hands. You steer every save away from danger.',
+    catalyst:'A save is the start of an attack — you save with the counter in mind.',
+    wall:'Safe, huge, no rebounds. What you catch, you keep.',
+  };
+
+  READ = { k:'oracle', verb:'READ IT EARLY', out:'CLAIMED EARLY',
+    note:'Anticipation +1 — you read the shot before it was struck and were already moving.' };
+  SAVES = [
+    { k:'bastion',  verb:'PALM',       out:'REFLEX SAVE', note:'Reflex +1 — pure hand speed, you clawed it away.' },
+    { k:'wall',     verb:'CATCH',      out:'CAUGHT CLEAN',note:'Presence +1 — no rebound, you swallowed it whole.' },
+    { k:'sentinel', verb:'PARRY SAFE', out:'PARRIED WIDE',note:'Command +1 — you steered it away from all danger.' },
+    { k:'catalyst', verb:'PARRY & GO', out:'COUNTER ON',  note:'Distribution +1 — saved, and the break was already on.' },
+  ];
+  ROUNDS = [
+    { cam:'GOAL CAM · 01', shot:'Struck low and hard to your right.',        corner:{x:70,y:45} },
+    { cam:'GOAL CAM · 02', shot:'Whipped up towards your top-left corner.',  corner:{x:26,y:20}  },
+    { cam:'GOAL CAM · 03', shot:'Driven down the middle, rising fast.',      corner:{x:50,y:24}  },
+    { cam:'GOAL CAM · 04', shot:'Curled low to your bottom-left, skidding.', corner:{x:31,y:45}  },
+  ];
+  KEEPER = { x:50, y:53.3 };
+
+  _clear() { clearTimeout(this._strike); clearTimeout(this._win); clearInterval(this._ticker); }
+  componentWillUnmount() { this._clear(); }
+  componentDidMount() {
+    let soundOn = true; try { if (localStorage.getItem('fa_sound') === '0') soundOn = false; } catch(e) {}
+    if (soundOn !== this.state.soundOn) this.setState({ soundOn });
+    if (this.props.embedded) { this.setState({ view:'drill' }); this._enter(); }
+  }
+
+  _audio(){
+    if (this._actx === undefined) {
+      try { const AC = window.AudioContext || window.webkitAudioContext; this._actx = new AC(); this._master = this._actx.createGain(); this._master.gain.value = 0.5; this._master.connect(this._actx.destination); }
+      catch(e){ this._actx = null; }
+    }
+    if (this._actx && this._actx.state === 'suspended') { try { this._actx.resume(); } catch(e){} }
+    return this._actx;
+  }
+  _tone(freq, dur, type, vol, slideTo){
+    const ctx = this._actx; if (!ctx) return; const t = ctx.currentTime;
+    const o = ctx.createOscillator(), g = ctx.createGain();
+    o.type = type || 'sine'; o.frequency.setValueAtTime(freq, t);
+    if (slideTo) o.frequency.exponentialRampToValueAtTime(Math.max(20, slideTo), t + dur);
+    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(vol || 0.2, t + 0.008);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    o.connect(g).connect(this._master); o.start(t); o.stop(t + dur + 0.03);
+  }
+  _noise(dur, vol, type, freq){
+    const ctx = this._actx; if (!ctx) return; const t = ctx.currentTime;
+    const bf = ctx.createBuffer(1, Math.max(1, Math.floor(ctx.sampleRate * dur)), ctx.sampleRate);
+    const dd = bf.getChannelData(0); for (let i = 0; i < dd.length; i++) dd[i] = Math.random() * 2 - 1;
+    const s = ctx.createBufferSource(); s.buffer = bf;
+    const f = ctx.createBiquadFilter(); f.type = type || 'bandpass'; f.frequency.value = freq || 800; f.Q.value = 0.9;
+    const g = ctx.createGain(); g.gain.setValueAtTime(vol || 0.15, t); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    s.connect(f).connect(g).connect(this._master); s.start(t); s.stop(t + dur);
+  }
+  _sfx(name){
+    if (!this.state.soundOn) return; const ctx = this._audio(); if (!ctx) return;
+    switch(name){
+      case 'strike': this._noise(0.1, 0.12, 'bandpass', 900); this._tone(180, 0.12, 'square', 0.1, 120); break;
+      case 'save': this._tone(660, 0.09, 'sine', 0.16, 900); this._noise(0.09, 0.10, 'highpass', 2600); setTimeout(() => this._tone(1050, 0.13, 'sine', 0.14), 55); break;
+      case 'goal': this._tone(150, 0.32, 'sine', 0.2, 66); this._noise(0.3, 0.16, 'lowpass', 320); break;
+      case 'whoosh': this._noise(0.24, 0.11, 'bandpass', 780); break;
+      case 'whistle': this._tone(2050, 0.16, 'sine', 0.09, 2550); setTimeout(() => this._tone(2350, 0.2, 'sine', 0.08, 2050), 120); break;
+      case 'click': this._tone(520, 0.06, 'triangle', 0.11); break;
+    }
+  }
+  _toggleSound(){
+    const on = !this.state.soundOn;
+    try { localStorage.setItem('fa_sound', on ? '1' : '0'); } catch(e){}
+    this.setState({ soundOn:on });
+    if (on) { this._audio(); this._sfx('click'); }
+  }
+
+  _begin() { this._sfx('whistle'); this.setState({ view:'drill', si:0, counts:{oracle:0,sentinel:0,catalyst:0,bastion:0,wall:0}, rts:[], reads:0, events:[] }); this._enter(); }
+
+  _enter() {
+    this._clear();
+    this.setState({ phase:'set', selected:null, outcome:null, liveMs:0, screenFx:null });
+    const d = 850 + Math.random() * 1250;
+    this._strike = setTimeout(() => this._fire(), d);
+  }
+  _fire() {
+    if (this.state.phase !== 'set') return;
+    this._t0 = (typeof performance !== 'undefined' ? performance.now() : Date.now());
+    this.setState({ phase:'live', liveMs:0 });
+    this._sfx('strike');
+    this._ticker = setInterval(() => {
+      if (this.state.phase === 'live') this.setState({ liveMs: (performance.now ? performance.now() : Date.now()) - this._t0 });
+    }, 55);
+    this._win = setTimeout(() => { if (this.state.phase === 'live') this._beaten(); }, 1200);
+  }
+  _read() {
+    if (this.state.phase !== 'set') return;
+    this._clear();
+    this._sfx('save');
+    const counts = { ...this.state.counts }; counts.oracle++;
+    this.setState({ phase:'resolved', selected:'oracle', reads:this.state.reads + 1, counts, screenFx:'save',
+      events:[...this.state.events, { k:'oracle', rt:null, anticipated:true, beaten:false }],
+      outcome:{ k:'oracle', out:this.READ.out, note:this.READ.note, ms:null, anticipated:true } });
+    setTimeout(()=>this.setState({ screenFx:null }), 760);
+  }
+  _save(s) {
+    if (this.state.phase !== 'live') return;
+    const ms = (performance.now ? performance.now() : Date.now()) - this._t0;
+    this._clear();
+    this._sfx('save');
+    const counts = { ...this.state.counts }; counts[s.k]++;
+    this.setState({ phase:'resolved', selected:s.k, liveMs:ms, rts:[...this.state.rts, ms], counts, screenFx:'save',
+      events:[...this.state.events, { k:s.k, rt:Math.round(ms), anticipated:false, beaten:false }],
+      outcome:{ k:s.k, out:s.out, note:s.note, ms, anticipated:false } });
+    setTimeout(()=>this.setState({ screenFx:null }), 760);
+  }
+  _beaten() {
+    this._clear();
+    this._sfx('goal');
+    this.setState({ phase:'resolved', selected:'beaten', screenFx:'goal',
+      events:[...this.state.events, { k:null, rt:null, anticipated:false, beaten:true }],
+      outcome:{ k:null, out:'BEATEN', note:'A fraction late — that one flew past you. Reset and go again.', ms:null, anticipated:false } });
+    setTimeout(()=>this.setState({ screenFx:null }), 760);
+  }
+  _next() {
+    this._sfx('whoosh');
+    const last = this.state.si >= this.ROUNDS.length - 1;
+    if (!last) { this.setState({ si:this.state.si + 1 }); this._enter(); }
+    else if (this.props.embedded) { this._clear(); (this.props.onDone || function(){})({ ...this.state.counts }, this._meta()); }
+    else { this._clear(); this.setState({ view:'result' }); this._sfx('whistle'); }
+  }
+  _retake() { this._clear(); this.setState({ view:'intro', si:0, phase:'set', selected:null, outcome:null, liveMs:0,
+    counts:{oracle:0,sentinel:0,catalyst:0,bastion:0,wall:0}, rts:[], reads:0, events:[] }); }
+
+  _metrics() {
+    const rts = this.state.rts;
+    const n = rts.length;
+    if (!n) return { meanMs:null, consistency:null, percentile:null };
+    const mean = rts.reduce((a,b)=>a+b,0)/n;
+    const sd = Math.sqrt(rts.reduce((a,b)=>a+(b-mean)*(b-mean),0)/n);
+    const cv = mean>0 ? sd/mean : 0;
+    const consistency = Math.round(Math.max(0, Math.min(100, 100 - cv*150)));
+    const z = (580 - mean)/150;
+    const percentile = Math.max(2, Math.min(98, Math.round(100/(1+Math.exp(-z)))));
+    return { meanMs:Math.round(mean), consistency, percentile };
+  }
+  _meta() {
+    const m = this._metrics();
+    return { drill:'save', layer:'demonstrated', percentile:m.percentile, consistency:m.consistency,
+      meanMs:m.meanMs, reads:this.state.reads, saves:this.state.rts.length, events:this.state.events };
+  }
+
+  renderVals() {
+    const accent = this.props.accent ?? '#22D3EE';
+    const motion = this.props.motion ?? true;
+    const embedded = !!this.props.embedded;
+    const A = (hex, aa) => hex + aa;
+    const { view, si, phase, selected, counts } = this.state;
+    const rnd = this.ROUNDS[si] || this.ROUNDS[0];
+
+    const isDrill = embedded ? true : view === 'drill';
+    const isSet = isDrill && phase === 'set';
+    const isLive = isDrill && phase === 'live';
+    const resolved = isDrill && phase === 'resolved';
+
+    // ---- ball + keeper positions (keeper stands feet-anchored on the goal line) ----
+    const KX = this.KEEPER.x, KY = this.KEEPER.y;
+    const standing = `left:${KX}%;top:${KY}%;transform:translate(-50%,-100%);`;
+    let ballStyle, ballTransition, keeperStyle;
+    if (isSet) { ballStyle = 'left:50%;top:90%;'; ballTransition = 'none'; keeperStyle = standing; }
+    else if (isLive) { ballStyle = `left:${rnd.corner.x}%;top:${rnd.corner.y}%;`; ballTransition = 'left 1.15s cubic-bezier(.3,.5,.5,1),top 1.15s cubic-bezier(.3,.5,.5,1)'; keeperStyle = standing; }
+    else { // resolved
+      ballStyle = `left:${rnd.corner.x}%;top:${rnd.corner.y}%;`; ballTransition = 'none';
+      const saved = selected && selected !== 'beaten';
+      const bx = rnd.corner.x, dir = bx >= KX ? 1 : -1;
+      if (saved) { // full-stretch dive to the ball
+        const kl = KX + (bx - KX) * 0.42;
+        keeperStyle = `left:${kl}%;top:${KY}%;transform:translate(-50%,-100%) rotate(${dir*72}deg) scale(1.03);`;
+      } else { // beaten — late reach the wrong way / short
+        const kl = KX + (bx - KX) * 0.18;
+        keeperStyle = `left:${kl}%;top:${KY}%;transform:translate(-50%,-100%) rotate(${dir*38}deg);`;
+      }
+    }
+
+    // ---- reflex clock ----
+    let clockText, clockDot, clockBorder, clockDotAnim = '';
+    if (isSet) { clockText = 'LINING UP…'; clockDot = '#7688a0'; clockBorder = 'rgba(120,140,166,.35)'; clockDotAnim = 'animation:fa-blink 1s ease-in-out infinite;'; }
+    else if (isLive) { clockText = ((this.state.liveMs || 0) / 1000).toFixed(2) + 's'; clockDot = '#FF5A6E'; clockBorder = 'rgba(255,90,110,.7)'; clockDotAnim = 'animation:fa-blink .5s ease-in-out infinite;'; }
+    else {
+      const o = this.state.outcome;
+      if (o && o.anticipated) { clockText = 'ANTICIPATED'; clockDot = accent; clockBorder = accent; }
+      else if (o && o.ms != null) { clockText = (o.ms / 1000).toFixed(2) + 's'; clockDot = accent; clockBorder = accent; }
+      else { clockText = 'BEATEN'; clockDot = '#FF5A6E'; clockBorder = 'rgba(255,90,110,.7)'; }
+    }
+
+    // ---- read (anticipate) button ----
+    const readSel = resolved && selected === 'oracle';
+    const read = {
+      verb:this.READ.verb, hint: isSet ? 'GO ON YOUR READ' : 'STRIKE INCOMING',
+      cursor: isSet ? 'pointer' : 'default',
+      onSelect: () => this._read(),
+      look: readSel
+        ? `border:1px solid ${accent};background:${A(accent,'20')};color:${accent};box-shadow:0 0 0 1px ${accent};`
+        : isSet
+          ? `border:1px solid ${A(accent,'88')};background:${A(accent,'12')};color:${accent};animation:fa-glowpulse 1.6s ease-in-out infinite;`
+          : `border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.4);color:#4f627a;`,
+    };
+
+    // ---- save buttons ----
+    const saves = this.SAVES.map(s => {
+      const sel = resolved && selected === s.k;
+      const active = isLive;
+      const dim = resolved && !sel;
+      return {
+        verb:s.verb, axis:this.AX[s.k].slice(0,4).toUpperCase(), showRipple:sel,
+        cursor: active ? 'pointer' : 'default',
+        onSelect: () => this._save(s),
+        hover: active ? `transform:translateY(-2px);border-color:${A(accent,'aa')};background:rgba(14,23,38,.9);` : '',
+        look: sel
+          ? `border:1px solid ${accent};background:${A(accent,'20')};color:${accent};box-shadow:0 0 0 1px ${accent},0 10px 28px ${A(accent,'33')};`
+          : active
+            ? `border:1px solid ${A(accent,'55')};background:rgba(12,19,32,.7);color:#E4EDF7;`
+            : dim ? `border:1px solid rgba(120,140,166,.12);background:rgba(10,16,28,.32);color:#5b6f88;opacity:.55;`
+                  : `border:1px solid rgba(120,140,166,.16);background:rgba(10,16,28,.42);color:#61748c;`,
+      };
+    });
+
+    // ---- meter ----
+    const meter = this.ORDER.map(k => ({
+      label:this.AX[k], n:counts[k], pct:Math.min(100, (counts[k] / this.ROUNDS.length) * 100) + '%',
+      labelColor: counts[k] > 0 ? accent : '#61748c',
+    }));
+
+    // ---- outcome card ----
+    const o = this.state.outcome;
+    const beaten = o && o.k == null;
+    const readBorder = beaten ? 'rgba(255,90,110,.4)' : A(accent,'4d');
+    const readBg = beaten ? 'rgba(40,10,16,.4)' : A(accent,'14');
+    const readKicker = beaten ? '#FF9AA6' : accent;
+
+    // ---- result ----
+    let leadK = this.ORDER[0];
+    this.ORDER.forEach(k => { if (counts[k] > counts[leadK]) leadK = k; });
+    const rts = this.state.rts;
+    const met = this._metrics();
+    const avgMs = met.meanMs != null ? (met.meanMs/1000).toFixed(2) : '—';
+    const pctLabel = met.percentile != null ? met.percentile : '—';
+    const consLabel = met.consistency != null ? met.consistency : '—';
+    const speedNote = this.state.reads >= 2
+      ? 'You barely wait for the strike — you back your read over your reflexes. That is anticipation, not just hands.'
+      : met.percentile == null ? 'You read every shot early — your reflexes never got tested. Anticipation over reaction.'
+      : met.percentile >= 66 ? 'Fast hands, and steady — your reaction speed sits well above the reference keeper.'
+      : met.percentile >= 40 ? 'Solid, repeatable hands — you wait, read the flight, then commit.'
+      : 'Reaction is not your main weapon — you win with reading and positioning instead.';
+
+    const dotsState = view === 'intro' && !embedded ? -1 : (view === 'result' ? this.ROUNDS.length : si);
+    const soundOn = !!this.state.soundOn;
+    const saveFx = motion && this.state.screenFx === 'save';
+    const goalFx = motion && this.state.screenFx === 'goal';
+    const vizShake = (motion && resolved && selected === 'beaten') ? 'animation:fa-shake-hard .42s ease-in-out;' : '';
+    const progressDots = this.ROUNDS.map((_, i) => ({
+      style: i === dotsState
+        ? `width:22px;background:${accent};box-shadow:0 0 8px ${A(accent,'aa')};`
+        : (i < dotsState ? `background:${A(accent,'88')};` : `background:rgba(120,140,166,.26);`),
+    }));
+
+    return {
+      accent, motion, embedded,
+      chromeOn: !embedded,
+      saveFx, goalFx, vizShake,
+      soundOn, soundOff: !soundOn, soundColor: soundOn ? accent : '#61748c', soundTitle: soundOn ? 'Sound on' : 'Sound off', toggleSound: () => this._toggleSound(),
+      rootMinH: embedded ? '100%' : '100dvh',
+      rootH: embedded ? '100%' : '100dvh',
+      isIntro: !embedded && view === 'intro',
+      isDrill, isResult: !embedded && view === 'result',
+      isSet, isLive, resolved, notResolved: !resolved,
+      justStruck: isLive,
+      cam:rnd.cam, shot:rnd.shot,
+      ballStyle, ballTransition, keeperStyle,
+      clockText, clockDot, clockBorder, clockDotAnim,
+      read, saves, meter,
+      outcomeWord: o ? o.out : '', outcomeNote: o ? o.note : '',
+      readBorder, readBg, readKicker,
+      hintText: isSet ? 'Watch the striker. Wait for the strike — or back your read and beat him to it.' : 'Now! Pick the save that fires first.',
+      waitHint: isSet ? 'Wait for the strike…' : 'Make the save',
+      nextLabel: si < this.ROUNDS.length - 1 ? 'Next shot' : (embedded ? 'Continue the scan' : 'See my reflexes'),
+      stepLabel: view === 'intro' && !embedded ? 'READY' : (view === 'result' ? 'COMPLETE' : `0${si + 1} / 0${this.ROUNDS.length}`),
+      progressDots,
+      leadLabel:this.AX[leadK], leadNote:this.NOTE[leadK],
+      avgMs, pctLabel, consLabel, speedNote, readsN:this.state.reads, savedN:rts.length,
+      begin:() => this._begin(), next:() => this._next(), retake:() => this._retake(),
+      back:() => { window.location.href = 'Assessment.dc.html'; },
+    };
+  }
+}
+</script>
+</body>
+</html>

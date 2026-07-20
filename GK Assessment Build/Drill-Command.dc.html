@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:#04060c;}
+  a{color:var(--accent,#22D3EE);text-decoration:none;}
+  a:hover{opacity:.92;}
+  @keyframes fa-blink{0%,100%{opacity:1;}50%{opacity:.25;}}
+  @keyframes fa-scanline{0%{top:-4%;}100%{top:104%;}}
+  @keyframes fa-rise{0%{transform:translateY(16px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-rise-sm{0%{transform:translateY(10px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-pop{0%{transform:translate(-50%,-50%) scale(.6);opacity:0;}60%{transform:translate(-50%,-50%) scale(1.05);}100%{transform:translate(-50%,-50%) scale(1);opacity:1;}}
+  @keyframes fa-ripple{0%{transform:translate(-50%,-50%) scale(.5);opacity:.85;}100%{transform:translate(-50%,-50%) scale(2.6);opacity:0;}}
+  @keyframes fa-shake-hard{0%,100%{transform:translate(0,0) rotate(0);}15%{transform:translate(-4px,2px) rotate(-.5deg);}30%{transform:translate(4px,-2px) rotate(.5deg);}45%{transform:translate(-3px,-2px) rotate(-.4deg);}60%{transform:translate(3px,2px) rotate(.4deg);}80%{transform:translate(-2px,1px) rotate(0);}}
+  @keyframes fa-screenflash{0%{opacity:0;}18%{opacity:1;}100%{opacity:0;}}
+  .fa-in{opacity:0;animation:fa-rise .7s cubic-bezier(.2,.7,.2,1) forwards;}
+  .fa-in-sm{opacity:0;animation:fa-rise-sm .55s cubic-bezier(.2,.7,.2,1) forwards;}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;}.fa-in,.fa-in-sm{opacity:1!important;transform:none!important;}}
+</style>
+</helmet>
+<div data-screen-label="Drill — Command the Box" style="position:relative;display:flex;flex-direction:column;min-height:{{ rootMinH }};height:{{ rootH }};width:100%;overflow:hidden;background:radial-gradient(120% 90% at 50% 6%,#0e1a2d 0%,#080e1a 44%,#04060c 100%);color:#EAF2FB;font-family:'Archivo',system-ui,sans-serif;--accent:{{ accent }};">
+
+  <div style="position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.4;background:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0px,rgba(255,255,255,.02) 1px,transparent 1px,transparent 4px);"></div>
+
+  <sc-if value="{{ saveFx }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;inset:0;z-index:9;pointer-events:none;background:radial-gradient(120% 100% at 50% 44%,transparent 50%,color-mix(in srgb,var(--accent,#22D3EE) 44%,transparent) 122%);animation:fa-screenflash .72s ease-out forwards;"></div>
+  </sc-if>
+  <sc-if value="{{ goalFx }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;inset:0;z-index:9;pointer-events:none;background:radial-gradient(120% 105% at 50% 44%,rgba(255,60,80,0) 40%,rgba(255,60,80,.5) 116%);animation:fa-screenflash .72s ease-out forwards;"></div>
+  </sc-if>
+
+  <sc-if value="{{ chromeOn }}" hint-placeholder-val="{{ true }}">
+    <div style="position:absolute;top:20px;left:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+    <div style="position:absolute;top:20px;right:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+    <div style="position:absolute;bottom:20px;left:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+    <div style="position:absolute;bottom:20px;right:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+
+    <header style="position:relative;z-index:6;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px clamp(26px,3.4vw,58px);">
+      <button onClick="{{ back }}" style="display:inline-flex;align-items:center;gap:8px;background:none;border:0;cursor:pointer;color:#8EA1B8;font:600 12.5px 'Archivo';padding:0;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M15 5l-7 7 7 7"/></svg>Back
+      </button>
+      <div style="display:flex;align-items:center;gap:11px;">
+        <svg width="22" height="22" viewBox="0 0 32 32" fill="none"><path d="M16 2 28 9v14L16 30 4 23V9z" style="stroke:var(--accent,#22D3EE);stroke-width:1.5;fill:color-mix(in srgb,var(--accent,#22D3EE) 12%,transparent);"/><circle cx="16" cy="16" r="4" style="fill:none;stroke:var(--accent,#22D3EE);stroke-width:1.6;"/></svg>
+        <span style="font:800 13px 'Archivo';letter-spacing:.05em;">COMMAND THE BOX <span style="color:var(--accent,#22D3EE);">· THE AIR</span></span>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;min-width:120px;justify-content:flex-end;">
+        <button onClick="{{ toggleSound }}" title="{{ soundTitle }}" style="display:grid;place-items:center;width:28px;height:28px;border-radius:8px;border:1px solid rgba(120,140,166,.24);background:rgba(10,16,28,.5);cursor:pointer;color:{{ soundColor }};transition:color .16s ease,border-color .16s ease;" style-hover="border-color:color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);">
+          <sc-if value="{{ soundOn }}" hint-placeholder-val="{{ true }}">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>
+          </sc-if>
+          <sc-if value="{{ soundOff }}" hint-placeholder-val="{{ false }}">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M22 9l-6 6M16 9l6 6"/></svg>
+          </sc-if>
+        </button>
+        <span style="display:flex;gap:5px;">
+          <sc-for list="{{ progressDots }}" as="d" hint-placeholder-count="5">
+            <span style="width:14px;height:4px;border-radius:99px;transition:all .3s;{{ d.style }}"></span>
+          </sc-for>
+        </span>
+        <span style="font:600 10px 'IBM Plex Mono';letter-spacing:.14em;color:color-mix(in srgb,var(--accent,#22D3EE) 80%,#fff);white-space:nowrap;">{{ stepLabel }}</span>
+      </div>
+    </header>
+  </sc-if>
+
+  <!-- ============ INTRO ============ -->
+  <sc-if value="{{ isIntro }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px clamp(26px,4vw,58px) 60px;">
+      <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-54%);font:900 clamp(180px,34vw,380px)/1 'Archivo';color:var(--accent,#22D3EE);opacity:.06;pointer-events:none;user-select:none;z-index:0;">05</div>
+      <div style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;max-width:620px;">
+        <div class="fa-in" style="display:flex;align-items:center;gap:14px;margin-bottom:26px;">
+          <span style="font:600 12px 'IBM Plex Mono';letter-spacing:.4em;color:var(--accent,#22D3EE);">DRILL 05</span>
+          <span style="width:44px;height:1px;background:color-mix(in srgb,var(--accent,#22D3EE) 45%,transparent);"></span>
+          <span style="font:500 11px 'IBM Plex Mono';letter-spacing:.28em;color:#7688a0;">AERIAL COMMAND</span>
+        </div>
+        <h1 class="fa-in" style="margin:0 0 20px;font:800 clamp(42px,6vw,84px)/0.98 'Archivo';letter-spacing:-0.03em;text-wrap:balance;animation-delay:.08s;">Command the Box</h1>
+        <p class="fa-in" style="margin:0 0 24px;max-width:520px;font:400 clamp(15px,1.3vw,18px)/1.6 'Archivo';color:#9FB0C5;text-wrap:pretty;animation-delay:.16s;">Crosses rain into your box. <span style="color:#E4EDF7;font-weight:600;">Come and claim, punch clear, or stay and set</span> — then time your jump. This reads your command instinct.</p>
+        <div class="fa-in" style="display:flex;align-items:flex-start;gap:10px;margin-bottom:28px;padding:11px 15px;border-radius:11px;border:1px solid rgba(255,176,32,.3);background:rgba(255,176,32,.07);animation-delay:.2s;max-width:470px;text-align:left;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="flex:0 0 auto;margin-top:2px;stroke:#FFB020;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg>
+          <span style="flex:1;font:500 11.5px/1.55 'IBM Plex Mono';letter-spacing:.02em;color:#FFD79A;text-wrap:pretty;">We measure the <b style="color:#FFE8C2;">decision</b>, not your reach. True aerial dominance needs video — that's Track B.</span>
+        </div>
+        <button onClick="{{ begin }}" class="fa-in" style="display:inline-flex;align-items:center;gap:12px;padding:18px 40px;border-radius:13px;border:0;cursor:pointer;background:var(--accent,#22D3EE);color:#03121a;font:700 16px 'Archivo';box-shadow:0 14px 46px color-mix(in srgb,var(--accent,#22D3EE) 42%,transparent);transition:transform .16s ease,box-shadow .16s ease;animation-delay:.3s;" style-hover="transform:translateY(-2px);box-shadow:0 20px 58px color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);">
+          Own your area
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="stroke:#03121a;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12h13M12 6l6 6-6 6"/></svg>
+        </button>
+      </div>
+    </main>
+  </sc-if>
+
+  <!-- ============ DRILL ============ -->
+  <sc-if value="{{ isDrill }}" hint-placeholder-val="{{ true }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:10px clamp(20px,3vw,48px) 16px;">
+
+      <div style="flex:1;min-height:0;display:flex;flex-wrap:wrap;gap:clamp(16px,2.4vw,48px);justify-content:space-between;align-items:stretch;width:100%;max-width:1460px;margin:0 auto;">
+
+        <!-- ===== FIELD COLUMN ===== -->
+        <div style="flex:2 1 520px;min-width:290px;max-width:1060px;display:flex;flex-direction:column;min-height:0;">
+        <div class="fa-in-sm" style="flex:0 0 auto;text-align:center;margin-bottom:12px;">
+          <h2 style="margin:0;font:700 clamp(18px,2.2vw,26px)/1.3 'Archivo';letter-spacing:-0.01em;color:#F2F8FE;text-wrap:balance;">{{ ctx }}</h2>
+        </div>
+        <!-- ===== BOX ===== -->
+        <div style="position:relative;flex:1;min-height:340px;border-radius:16px;overflow:hidden;background:radial-gradient(130% 100% at 50% 100%,#0d1c2e 0%,#091324 52%,#050c17 100%);border:1px solid rgba(120,140,166,.18);box-shadow:inset 0 0 60px rgba(0,0,0,.45);{{ vizShake }}">
+          <div style="position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.5;background:repeating-linear-gradient(90deg,rgba(140,200,220,.03) 0px,rgba(140,200,220,.03) 1px,transparent 1px,transparent 44px);"></div>
+
+          <svg viewBox="0 0 150 100" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;z-index:1;">
+            <g stroke="rgba(150,200,220,.09)" stroke-width="0.4">
+              <line x1="38" y1="12" x2="38" y2="84"/><line x1="62" y1="12" x2="62" y2="84"/><line x1="88" y1="12" x2="88" y2="84"/><line x1="112" y1="12" x2="112" y2="84"/>
+              <line x1="10" y1="36" x2="140" y2="36"/><line x1="10" y1="60" x2="140" y2="60"/>
+            </g>
+            <rect x="10" y="12" width="130" height="72" fill="none" stroke="rgba(150,200,220,.24)" stroke-width="0.5"/>
+            <rect x="42" y="52" width="66" height="34" fill="none" stroke="rgba(150,200,220,.26)" stroke-width="0.5"/>
+            <line x1="55" y1="88" x2="95" y2="88" stroke="#7fdfe9" stroke-width="1.1" stroke-linecap="round"/>
+            <line x1="55" y1="84" x2="55" y2="88" stroke="#7fdfe9" stroke-width="0.9"/>
+            <line x1="95" y1="84" x2="95" y2="88" stroke="#7fdfe9" stroke-width="0.9"/>
+            <path d="M52,52 A24,20 0 0 1 98,52" fill="none" stroke="rgba(150,200,220,.16)" stroke-width="0.5"/>
+          </svg>
+
+          <div style="position:absolute;top:9px;left:9px;width:13px;height:13px;border-top:1.5px solid color-mix(in srgb,var(--accent,#22D3EE) 45%,transparent);border-left:1.5px solid color-mix(in srgb,var(--accent,#22D3EE) 45%,transparent);z-index:2;pointer-events:none;"></div>
+          <div style="position:absolute;top:9px;right:9px;width:13px;height:13px;border-top:1.5px solid color-mix(in srgb,var(--accent,#22D3EE) 45%,transparent);border-right:1.5px solid color-mix(in srgb,var(--accent,#22D3EE) 45%,transparent);z-index:2;pointer-events:none;"></div>
+          <div style="position:absolute;bottom:9px;left:9px;width:13px;height:13px;border-bottom:1.5px solid color-mix(in srgb,var(--accent,#22D3EE) 45%,transparent);border-left:1.5px solid color-mix(in srgb,var(--accent,#22D3EE) 45%,transparent);z-index:2;pointer-events:none;"></div>
+          <div style="position:absolute;bottom:9px;right:9px;width:13px;height:13px;border-bottom:1.5px solid color-mix(in srgb,var(--accent,#22D3EE) 45%,transparent);border-right:1.5px solid color-mix(in srgb,var(--accent,#22D3EE) 45%,transparent);z-index:2;pointer-events:none;"></div>
+          <sc-if value="{{ deciding }}" hint-placeholder-val="{{ true }}">
+          <div style="position:absolute;top:11px;left:30px;z-index:7;display:inline-flex;align-items:center;gap:7px;font:700 9px 'IBM Plex Mono';letter-spacing:.18em;color:color-mix(in srgb,var(--accent,#22D3EE) 90%,#fff);text-shadow:0 1px 7px rgba(2,6,12,.9);pointer-events:none;">
+            <span style="width:6px;height:6px;border-radius:50%;background:var(--accent,#22D3EE);box-shadow:0 0 8px var(--accent,#22D3EE);animation:fa-blink 1.6s ease-in-out infinite;"></span>{{ cam }}
+          </div>
+          </sc-if>
+
+          <!-- bodies -->
+          <sc-for list="{{ bodies }}" as="b" hint-placeholder-count="4">
+            <div style="position:absolute;transform:translate(-50%,-50%);z-index:3;width:17px;height:17px;border-radius:50%;{{ b.look }}{{ b.pos }}"></div>
+          </sc-for>
+
+          <!-- target ring (timing) -->
+          <sc-if value="{{ timing }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;z-index:6;transform:translate(-50%,-50%);width:72px;height:72px;border-radius:50%;border:2px solid var(--accent,#22D3EE);box-shadow:0 0 20px color-mix(in srgb,var(--accent,#22D3EE) 45%,transparent);transition:transform {{ contactMs }}ms linear;{{ ringPos }}{{ ringScale }}"></div>
+            <div style="position:absolute;z-index:6;transform:translate(-50%,-50%);width:18px;height:18px;border-radius:50%;border:1.5px dashed color-mix(in srgb,var(--accent,#22D3EE) 60%,transparent);{{ ringPos }}"></div>
+          </sc-if>
+
+          <!-- interception marker (resolved) -->
+          <sc-if value="{{ resolved }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;z-index:6;transform:translate(-50%,-50%);display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:{{ markBg }};border:1.5px solid {{ markBorder }};{{ ringPos }};animation:fa-pop .38s cubic-bezier(.2,.7,.2,1) both;">
+              <span style="font:800 8px 'IBM Plex Mono';color:{{ markColor }};letter-spacing:.04em;">{{ markText }}</span>
+            </div>
+          </sc-if>
+
+          <!-- ball -->
+          <div style="position:absolute;z-index:5;transform:translate(-50%,-50%);width:14px;height:14px;border-radius:50%;background:radial-gradient(circle at 34% 30%,#fff,#bcc9d4);box-shadow:0 0 10px rgba(255,255,255,.55),0 2px 5px rgba(0,0,0,.45);transition:{{ ballTransition }};{{ ballStyle }}"></div>
+
+          <!-- keeper -->
+          <div style="position:absolute;transform:translate(-50%,-50%);z-index:5;display:grid;place-items:center;width:38px;height:38px;border-radius:11px;background:linear-gradient(180deg,#EAFBFF,#8fd8e6);color:#04202a;font:800 11px 'Archivo';letter-spacing:.04em;box-shadow:0 6px 20px rgba(0,0,0,.5),0 0 0 2px rgba(255,255,255,.18),0 0 18px color-mix(in srgb,var(--accent,#22D3EE) 45%,transparent);transition:left .4s cubic-bezier(.34,.8,.3,1),top .4s cubic-bezier(.34,.8,.3,1),transform .4s cubic-bezier(.2,.85,.3,1);{{ keeperStyle }}">GK</div>
+
+          <!-- outcome -->
+          <sc-if value="{{ resolved }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;top:20px;left:50%;z-index:10;display:flex;align-items:center;gap:9px;padding:8px 16px;border-radius:999px;background:rgba(4,10,18,.85);border:1px solid {{ outcomeBorder }};box-shadow:0 10px 34px rgba(0,0,0,.55);animation:fa-pop .4s cubic-bezier(.2,.7,.2,1) both;backdrop-filter:blur(4px);">
+              <span style="font:800 13px 'Archivo';letter-spacing:.06em;color:{{ outcomeColor }};">{{ outcomeWord }}</span>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ timing }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;top:20px;left:50%;transform:translateX(-50%);z-index:9;display:flex;align-items:center;gap:8px;padding:7px 15px;border-radius:999px;background:rgba(4,10,18,.82);border:1px solid color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);box-shadow:0 8px 26px rgba(0,0,0,.5);backdrop-filter:blur(4px);white-space:nowrap;">
+              <span style="width:6px;height:6px;border-radius:50%;background:var(--accent,#22D3EE);box-shadow:0 0 8px var(--accent,#22D3EE);animation:fa-blink .6s ease-in-out infinite;"></span>
+              <span style="font:700 9.5px 'IBM Plex Mono';letter-spacing:.16em;color:var(--accent,#22D3EE);">{{ timingLabel }}</span>
+            </div>
+          </sc-if>
+        </div>
+        </div><!-- /field column -->
+
+          <!-- ===== RAIL ===== -->
+        <aside style="flex:1 1 272px;max-width:374px;min-width:212px;display:flex;flex-direction:column;gap:13px;min-height:0;overflow-y:auto;">
+          <div style="display:flex;align-items:center;gap:9px;font:600 10px 'IBM Plex Mono';letter-spacing:.28em;color:#7688a0;">
+            <span style="width:6px;height:6px;border-radius:50%;background:var(--accent,#22D3EE);box-shadow:0 0 8px var(--accent,#22D3EE);"></span>COMMAND LOG
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <sc-for list="{{ tallies }}" as="t" hint-placeholder-count="3">
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:9px 12px;border-radius:10px;border:1px solid {{ t.border }};background:{{ t.bg }};">
+                <span style="font:600 10px 'IBM Plex Mono';letter-spacing:.1em;color:{{ t.color }};">{{ t.label }}</span>
+                <span style="font:800 16px 'Archivo';color:{{ t.numColor }};">{{ t.n }}</span>
+              </div>
+            </sc-for>
+          </div>
+
+          <!-- ===== ACTION DOCK ===== -->
+          <div style="flex:0 0 auto;">
+            <sc-if value="{{ deciding }}" hint-placeholder-val="{{ true }}">
+              <div style="display:flex;flex-direction:column;gap:10px;">
+                <sc-for list="{{ actions }}" as="a" hint-placeholder-count="3">
+                  <button onClick="{{ a.onSelect }}" style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px 18px;border-radius:13px;cursor:pointer;transition:all .14s ease;border:1px solid {{ a.border }};background:{{ a.bg }};color:{{ a.color }};" style-hover="{{ a.hover }}" style-active="transform:scale(.97);">
+                    <span style="font:800 15px 'Archivo';letter-spacing:.02em;">{{ a.verb }}</span>
+                    <span style="font:600 8px 'IBM Plex Mono';letter-spacing:.14em;opacity:.72;">{{ a.axis }}</span>
+                  </button>
+                </sc-for>
+              </div>
+            </sc-if>
+            <sc-if value="{{ timing }}" hint-placeholder-val="{{ false }}">
+              <button onClick="{{ commit }}" style="width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;padding:20px;border-radius:15px;cursor:pointer;border:1px solid color-mix(in srgb,var(--accent,#22D3EE) 60%,transparent);background:color-mix(in srgb,var(--accent,#22D3EE) 14%,transparent);color:var(--accent,#22D3EE);box-shadow:0 0 0 1px color-mix(in srgb,var(--accent,#22D3EE) 40%,transparent);transition:transform .1s ease;" style-hover="transform:translateY(-2px);" style-active="transform:scale(.97);">
+                <span style="font:800 18px 'Archivo';letter-spacing:.06em;">{{ commitVerb }}</span>
+                <span style="font:600 9.5px 'IBM Plex Mono';letter-spacing:.16em;opacity:.72;">TIME THE JUMP</span>
+              </button>
+            </sc-if>
+            <sc-if value="{{ resolved }}" hint-placeholder-val="{{ false }}">
+              <button onClick="{{ next }}" style="width:100%;display:inline-flex;align-items:center;justify-content:center;gap:11px;padding:18px;border-radius:14px;border:0;cursor:pointer;background:var(--accent,#22D3EE);color:#03121a;font:700 16px 'Archivo';box-shadow:0 12px 36px color-mix(in srgb,var(--accent,#22D3EE) 40%,transparent);transition:transform .16s ease,box-shadow .16s ease;animation:fa-rise-sm .4s cubic-bezier(.2,.7,.2,1) both;" style-hover="transform:translateY(-2px);box-shadow:0 18px 48px color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);">
+                {{ nextLabel }}
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" style="stroke:#03121a;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12h13M12 6l6 6-6 6"/></svg>
+              </button>
+            </sc-if>
+          </div>
+
+          <sc-if value="{{ resolved }}" hint-placeholder-val="{{ false }}">
+            <div style="flex:1;padding:14px 15px;border-radius:12px;border:1px solid {{ outcomeBorder }};background:{{ outcomeBg }};animation:fa-rise-sm .5s cubic-bezier(.2,.7,.2,1) both;">
+              <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:{{ outcomeColor }};margin-bottom:7px;">{{ readKicker }}</div>
+              <div style="font:500 13px/1.55 'Archivo';color:#DCE7F3;">{{ readNote }}</div>
+            </div>
+          </sc-if>
+          <sc-if value="{{ notResolved }}" hint-placeholder-val="{{ true }}">
+            <div style="flex:1;padding:14px 15px;border-radius:12px;border:1px dashed rgba(120,140,166,.28);background:rgba(10,16,28,.4);font:500 13px/1.55 'Archivo';color:#8698ad;">{{ hintText }}</div>
+          </sc-if>
+        </aside>
+      </div>
+    </main>
+  </sc-if>
+
+  <!-- ============ RESULT ============ -->
+  <sc-if value="{{ isResult }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px clamp(24px,4vw,58px) 56px;">
+      <div class="fa-in" style="display:inline-flex;align-items:center;gap:9px;margin-bottom:18px;padding:6px 14px;border:1px solid color-mix(in srgb,var(--accent,#22D3EE) 32%,transparent);border-radius:999px;font:600 10px 'IBM Plex Mono';letter-spacing:.28em;color:var(--accent,#22D3EE);">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" style="stroke:var(--accent,#22D3EE);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12.5l4.5 4.5L19 6.5"/></svg>COMMAND THE BOX · COMPLETE
+      </div>
+      <h1 class="fa-in" style="margin:0 0 26px;font:800 clamp(34px,5vw,64px)/0.98 'Archivo';letter-spacing:-0.03em;text-align:center;animation-delay:.06s;">Box owned.</h1>
+
+      <div style="display:flex;flex-wrap:wrap;gap:22px;justify-content:center;align-items:stretch;width:100%;max-width:860px;">
+        <div class="fa-in" style="flex:1 1 320px;max-width:420px;display:flex;flex-direction:column;gap:18px;padding:24px;border-radius:16px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);animation-delay:.12s;">
+          <div>
+            <div style="font:600 9.5px 'IBM Plex Mono';letter-spacing:.26em;color:#61748c;margin-bottom:9px;">AERIAL COMMAND</div>
+            <div style="display:flex;align-items:baseline;gap:8px;">
+              <span style="font:800 clamp(52px,8vw,76px)/1 'Archivo';letter-spacing:-0.02em;color:var(--accent,#22D3EE);">{{ scoreText }}</span>
+              <span style="font:600 15px 'IBM Plex Mono';color:#7688a0;">/ 100</span>
+            </div>
+            <p style="margin:11px 0 0;font:400 14px/1.55 'Archivo';color:#9FB0C5;text-wrap:pretty;">{{ scoreNote }}</p>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;font:600 9px 'IBM Plex Mono';letter-spacing:.16em;color:#7688a0;margin-bottom:8px;"><span>STAYS HOME</span><span>DOMINATES</span></div>
+            <div style="position:relative;height:6px;border-radius:99px;background:linear-gradient(90deg,rgba(120,140,166,.3),color-mix(in srgb,var(--accent,#22D3EE) 60%,transparent));">
+              <div style="position:absolute;top:50%;transform:translate(-50%,-50%);width:14px;height:14px;border-radius:50%;background:#EAFBFF;box-shadow:0 0 0 3px color-mix(in srgb,var(--accent,#22D3EE) 40%,transparent),0 2px 8px rgba(0,0,0,.5);transition:left .6s cubic-bezier(.3,.8,.3,1);left:{{ score }}%;"></div>
+            </div>
+            <div style="margin-top:10px;font:600 11px 'IBM Plex Mono';letter-spacing:.06em;color:#C6D3E2;">{{ leadLabel }}</div>
+          </div>
+        </div>
+
+        <div class="fa-in" style="flex:1 1 260px;max-width:380px;display:flex;flex-direction:column;gap:12px;padding:24px;border-radius:16px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);animation-delay:.18s;">
+          <div style="font:600 9.5px 'IBM Plex Mono';letter-spacing:.22em;color:#61748c;">HOW YOU RULED IT</div>
+          <sc-for list="{{ breakdown }}" as="b" hint-placeholder-count="4">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:11px 13px;border-radius:11px;border:1px solid rgba(120,140,166,.18);background:rgba(6,12,22,.5);">
+              <div>
+                <div style="font:700 12px 'Archivo';color:#E4EDF7;">{{ b.label }}</div>
+                <div style="font:500 10px 'Archivo';color:#7688a0;margin-top:1px;">{{ b.sub }}</div>
+              </div>
+              <span style="font:800 22px 'Archivo';color:{{ b.numColor }};">{{ b.n }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div class="fa-in" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:13px;margin-top:26px;animation-delay:.26s;">
+        <a href="Assessment.dc.html" style="display:inline-flex;align-items:center;gap:11px;padding:16px 34px;border-radius:12px;background:var(--accent,#22D3EE);color:#03121a;font:700 15px 'Archivo';box-shadow:0 12px 36px color-mix(in srgb,var(--accent,#22D3EE) 40%,transparent);transition:transform .16s ease,box-shadow .16s ease;" style-hover="transform:translateY(-2px);box-shadow:0 18px 48px color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);">
+          Continue the scan
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" style="stroke:#03121a;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12h13M12 6l6 6-6 6"/></svg>
+        </a>
+        <button onClick="{{ retake }}" style="display:inline-flex;align-items:center;gap:9px;padding:16px 24px;border-radius:12px;border:1px solid rgba(157,176,198,.28);background:rgba(12,18,30,.4);color:#C6D3E2;font:600 14px 'Archivo';cursor:pointer;transition:border-color .16s ease,color .16s ease;" style-hover="border-color:color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);color:#EAF2FB;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
+          Run it back
+        </button>
+      </div>
+    </main>
+  </sc-if>
+
+  <sc-if value="{{ motion }}" hint-placeholder-val="{{ true }}">
+    <div style="position:absolute;left:0;right:0;height:2px;z-index:2;background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--accent,#22D3EE) 30%,transparent),transparent);opacity:.4;animation:fa-scanline 7s linear infinite;pointer-events:none;"></div>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;$preview&quot;: {&quot;width&quot;: 940, &quot;height&quot;: 720},
+  &quot;accent&quot;: {&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#22D3EE&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#22D3EE&quot;,&quot;#A78BFA&quot;,&quot;#C6FF3A&quot;,&quot;#FF7A45&quot;,&quot;#FF4D8D&quot;],&quot;section&quot;:&quot;Theme&quot;},
+  &quot;motion&quot;: {&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Theme&quot;},
+  &quot;embedded&quot;: {&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Mode&quot;},
+  &quot;onDone&quot;: {&quot;editor&quot;:null,&quot;tsType&quot;:&quot;(counts: Record&lt;string, number&gt;, meta?: object) =&gt; void&quot;}
+}">
+class Component extends DCLogic {
+  state = { view:'intro', si:0, phase:'decide', action:null, timingQ:null, outcome:null,
+    counts:{oracle:0,sentinel:0,catalyst:0,bastion:0,wall:0},
+    claims:0, punches:0, stays:0, timings:[], results:[], soundOn:true, screenFx:null, cu:1 };
+
+  CONTACT_MS = 1050;
+  KEEPER = { x:50, y:80 };
+
+  SCN = [
+    { ctx:'A near-post ball is whipped in low and hard.', wing:'L', target:{x:40,y:68}, best:'claim', crowd:1 },
+    { ctx:'Corner in — the six-yard box is a scrum.', wing:'R', target:{x:56,y:62}, best:'punch', crowd:3 },
+    { ctx:'It is floated deep to the back stick.', wing:'L', target:{x:74,y:70}, best:'stay', crowd:1 },
+    { ctx:'A cross hangs, dropping into the heart of the six.', wing:'R', target:{x:50,y:66}, best:'claim', crowd:2 },
+    { ctx:'Whipped in with bodies flying at the near post.', wing:'L', target:{x:44,y:60}, best:'punch', crowd:3 },
+  ];
+
+  ACT = {
+    claim:{ verb:'COME & CLAIM', axis:'DOMINATE', commit:'CLAIM IT' },
+    punch:{ verb:'PUNCH CLEAR', axis:'COMMAND', commit:'PUNCH IT' },
+    stay: { verb:'STAY & SET', axis:'POSITION', commit:'' },
+  };
+
+  _now(){ return (typeof performance!=='undefined'&&performance.now)?performance.now():Date.now(); }
+  _clear(){ clearTimeout(this._to); clearTimeout(this._tk); clearTimeout(this._fx); if(this._raf) cancelAnimationFrame(this._raf); this._raf=null; }
+  componentWillUnmount(){ this._clear(); }
+  componentDidMount(){
+    let soundOn = true; try { if (localStorage.getItem('fa_sound') === '0') soundOn = false; } catch(e) {}
+    if (soundOn !== this.state.soundOn) this.setState({ soundOn });
+    if(this.props.embedded){ this.setState({view:'drill'}); this._enter(); }
+  }
+
+  _audio(){
+    if (this._actx === undefined) {
+      try { const AC = window.AudioContext || window.webkitAudioContext; this._actx = new AC(); this._master = this._actx.createGain(); this._master.gain.value = 0.5; this._master.connect(this._actx.destination); }
+      catch(e){ this._actx = null; }
+    }
+    if (this._actx && this._actx.state === 'suspended') { try { this._actx.resume(); } catch(e){} }
+    return this._actx;
+  }
+  _tone(freq, dur, type, vol, slideTo){
+    const ctx = this._actx; if (!ctx) return; const t = ctx.currentTime;
+    const o = ctx.createOscillator(), g = ctx.createGain();
+    o.type = type || 'sine'; o.frequency.setValueAtTime(freq, t);
+    if (slideTo) o.frequency.exponentialRampToValueAtTime(Math.max(20, slideTo), t + dur);
+    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(vol || 0.2, t + 0.008);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    o.connect(g).connect(this._master); o.start(t); o.stop(t + dur + 0.03);
+  }
+  _noise(dur, vol, type, freq){
+    const ctx = this._actx; if (!ctx) return; const t = ctx.currentTime;
+    const bf = ctx.createBuffer(1, Math.max(1, Math.floor(ctx.sampleRate * dur)), ctx.sampleRate);
+    const dd = bf.getChannelData(0); for (let i = 0; i < dd.length; i++) dd[i] = Math.random() * 2 - 1;
+    const s = ctx.createBufferSource(); s.buffer = bf;
+    const f = ctx.createBiquadFilter(); f.type = type || 'bandpass'; f.frequency.value = freq || 800; f.Q.value = 0.9;
+    const g = ctx.createGain(); g.gain.setValueAtTime(vol || 0.15, t); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    s.connect(f).connect(g).connect(this._master); s.start(t); s.stop(t + dur);
+  }
+  _sfx(name){
+    if (!this.state.soundOn) return; const ctx = this._audio(); if (!ctx) return;
+    switch(name){
+      case 'cross': this._noise(0.24, 0.09, 'bandpass', 700); break;
+      case 'commit': this._tone(300, 0.12, 'sawtooth', 0.13, 180); break;
+      case 'catch': this._tone(660, 0.09, 'sine', 0.16, 900); this._noise(0.09, 0.10, 'highpass', 2600); setTimeout(() => this._tone(1050, 0.13, 'sine', 0.14), 55); break;
+      case 'punch': this._noise(0.14, 0.16, 'lowpass', 900); this._tone(220, 0.16, 'square', 0.12, 130); break;
+      case 'near': this._tone(520, 0.1, 'sine', 0.12, 640); break;
+      case 'goal': this._tone(150, 0.32, 'sine', 0.2, 66); this._noise(0.3, 0.16, 'lowpass', 320); break;
+      case 'tick': this._tone(1200, 0.03, 'square', 0.08); break;
+      case 'whoosh': this._noise(0.2, 0.09, 'bandpass', 780); break;
+      case 'whistle': this._tone(2050, 0.16, 'sine', 0.09, 2550); setTimeout(() => this._tone(2350, 0.2, 'sine', 0.08, 2050), 120); break;
+      case 'click': this._tone(520, 0.06, 'triangle', 0.11); break;
+    }
+  }
+  _toggleSound(){
+    const on = !this.state.soundOn;
+    try { localStorage.setItem('fa_sound', on ? '1' : '0'); } catch(e){}
+    this.setState({ soundOn:on });
+    if (on) { this._audio(); this._sfx('click'); }
+  }
+  _startCountup(){
+    if (this._raf) cancelAnimationFrame(this._raf);
+    const dur = 900, t0 = this._now();
+    this.setState({ cu:0 });
+    const step = () => {
+      const p = Math.min(1, (this._now() - t0) / dur);
+      const e = 1 - Math.pow(1 - p, 3);
+      this.setState({ cu:e });
+      if (p < 1) this._raf = requestAnimationFrame(step); else this._raf = null;
+    };
+    this._raf = requestAnimationFrame(step);
+  }
+
+  _begin(){ this._sfx('whistle'); this.setState({ view:'drill', si:0, counts:{oracle:0,sentinel:0,catalyst:0,bastion:0,wall:0}, claims:0, punches:0, stays:0, timings:[], results:[] }); this._enter(); }
+
+  _enter(){ this._clear(); this.setState({ phase:'decide', action:null, timingQ:null, outcome:null, screenFx:null }); }
+
+  _choose(act){
+    if(this.state.phase!=='decide') return;
+    this._sfx('click');
+    if(act==='stay'){ this._resolve('stay', null); return; }
+    // enter timing
+    this._t0=this._now();
+    this._sfx('cross');
+    this.setState({ phase:'timing', action:act });
+    this._tk = setTimeout(()=>this._sfx('tick'), this.CONTACT_MS - 120);
+    this._to = setTimeout(()=>{ if(this.state.phase==='timing') this._commit(true); }, this.CONTACT_MS + 260);
+  }
+
+  _commit(auto){
+    if(this.state.phase!=='timing') return;
+    this._clear();
+    if(!auto) this._sfx('whoosh');
+    const t=this._now()-this._t0;
+    const err=Math.abs(this.CONTACT_MS - t);
+    let q; if(auto) q='late'; else if(err<170) q='perfect'; else if(err<360) q='ok'; else q='late';
+    this._resolve(this.state.action, q);
+  }
+
+  _resolve(act, q){
+    this._clear();
+    const sc=this.SCN[this.state.si];
+    const counts={ ...this.state.counts };
+    let claims=this.state.claims, punches=this.state.punches, stays=this.state.stays;
+    const timings=[...this.state.timings];
+    let word, kicker, note, good=true;
+    if(act==='claim'){ claims++; counts.wall+=1; counts.sentinel+=0.3; if(q) timings.push(q);
+      if(q==='perfect'){ word='CLAIMED CLEAN'; kicker='COMMANDED IT'; note='You came, you timed it, you took it at its peak. That is a keeper who owns his box.'; }
+      else if(q==='ok'){ word='GATHERED'; kicker='CLAIMED'; note='You claimed it — a fraction off the top of the jump, but the box is yours.'; good=true; }
+      else { word='SPILLED'; kicker='CAME LATE'; note='Right instinct to come, but the timing was late — that is the bit video will sharpen.'; good=false; }
+    } else if(act==='punch'){ punches++; counts.wall+=0.6; counts.sentinel+=0.6; if(q) timings.push(q);
+      if(q==='perfect'){ word='PUNCHED CLEAR'; kicker='DECISIVE'; note='Safety-first authority — you got the distance and cleared the danger with real command.'; }
+      else if(q==='ok'){ word='CLEARED'; kicker='PUNCHED'; note='You backed yourself to come and dealt with it. Commanding, if not clean.'; }
+      else { word='MISTIMED'; kicker='PUNCHED LATE'; note='Coming to punch was brave; the timing let you down. A physical read for Track B.'; good=false; }
+    } else { stays++; counts.oracle+=0.6; counts.sentinel+=0.4;
+      word='HELD THE LINE'; kicker='POSITIONAL'; note='You trusted your spot and your defenders. Composed — but the aggressive keepers take that ball.'; good=true;
+      if(sc.best!=='stay'){ note='You stayed. Safe, but that was there to be claimed — the dominant keepers come for it.'; }
+    }
+    const results=[...this.state.results, { act, q:q||null, good, best:sc.best }];
+    const screenFx = good ? 'save' : 'goal';
+    this._sfx(act==='punch' ? (good?'punch':'goal') : (act==='stay' ? 'near' : (good?'catch':'goal')));
+    this.setState({ phase:'resolved', action:act, timingQ:q, outcome:{ word, kicker, note, good }, counts, claims, punches, stays, timings, results, screenFx });
+    this._fx = setTimeout(()=>this.setState({ screenFx:null }), 760);
+  }
+
+  _next(){
+    this._sfx('whoosh');
+    if(this.state.si < this.SCN.length-1){ this.setState({ si:this.state.si+1 }); this._enter(); }
+    else this._finish();
+  }
+
+  _score(){
+    const n=this.SCN.length;
+    const proactive=this.state.claims+this.state.punches;
+    const timings=this.state.timings;
+    const tq = timings.length? timings.reduce((a,q)=>a+(q==='perfect'?1:q==='ok'?0.6:0.2),0)/timings.length : 0;
+    const raw = (proactive/n)*0.68 + tq*0.32;
+    return Math.round(Math.max(0,Math.min(1,raw))*100);
+  }
+
+  _meta(){
+    const timings=this.state.timings;
+    const perfect=timings.filter(q=>q==='perfect').length;
+    return { drill:'commandBox', layer:'demonstrated', score:this._score(),
+      claims:this.state.claims, punches:this.state.punches, stays:this.state.stays,
+      perfectTimings:perfect, events:this.state.results };
+  }
+
+  _finish(){
+    this._clear();
+    const meta=this._meta();
+    if(this.props.embedded) (this.props.onDone||function(){})({ ...this.state.counts }, meta);
+    else { this.setState({ view:'result', _meta:meta }); this._sfx('whistle'); this._startCountup(); }
+  }
+
+  _retake(){ this._clear(); this._sfx('click'); this.setState({ view:'intro', si:0, phase:'decide', action:null, timingQ:null, outcome:null, counts:{oracle:0,sentinel:0,catalyst:0,bastion:0,wall:0}, claims:0, punches:0, stays:0, timings:[], results:[], screenFx:null, cu:1 }); }
+
+  renderVals(){
+    const accent=this.props.accent ?? '#22D3EE';
+    const motion=this.props.motion ?? true;
+    const embedded=!!this.props.embedded;
+    const A=(h,a)=>h+a;
+    const { view, si, phase, action } = this.state;
+    const o = this.state.outcome;
+    const sc=this.SCN[si] || this.SCN[0];
+    const isDrill = embedded ? true : view==='drill';
+    const deciding = isDrill && phase==='decide';
+    const timing = isDrill && phase==='timing';
+    const resolved = isDrill && phase==='resolved';
+
+    const startWing = sc.wing==='L' ? {x:5,y:46} : {x:95,y:46};
+
+    // ball
+    let ballStyle, ballTransition;
+    if(deciding){ ballStyle=`left:${startWing.x}%;top:${startWing.y}%;`; ballTransition='none'; }
+    else if(timing){ ballStyle=`left:${sc.target.x}%;top:${sc.target.y}%;`; ballTransition=`left ${this.CONTACT_MS}ms cubic-bezier(.4,.1,.6,1),top ${this.CONTACT_MS}ms cubic-bezier(.3,.6,.5,1)`; }
+    else { // resolved
+      if(action==='stay'){ ballStyle=`left:${sc.target.x}%;top:${sc.target.y}%;`; ballTransition='none'; }
+      else if(o && o.good){ ballStyle=`left:${sc.target.x}%;top:${sc.target.y}%;`; ballTransition='left .45s ease,top .45s ease'; }
+      else { ballStyle=`left:${sc.target.x-3}%;top:87%;`; ballTransition='left .3s ease,top .3s ease'; }
+    }
+
+    // keeper
+    let keeperStyle;
+    if(deciding||timing) keeperStyle=`left:${this.KEEPER.x}%;top:${this.KEEPER.y}%;transform:translate(-50%,-50%);`;
+    else if(action==='stay') keeperStyle=`left:${this.KEEPER.x}%;top:${this.KEEPER.y}%;transform:translate(-50%,-50%);`;
+    else { const pop=(o&&o.good)?' scale(1.14)':' scale(.98)'; keeperStyle=`left:${sc.target.x}%;top:${(sc.target.y+4)}%;transform:translate(-50%,-50%)${pop};`; }
+
+    // ring
+    const ringPos=`left:${sc.target.x}%;top:${sc.target.y}%;`;
+    const ringScale = timing ? 'transform:translate(-50%,-50%) scale(.34);' : 'transform:translate(-50%,-50%) scale(2.4);';
+
+    // bodies (context crowd)
+    const bodySeed=[ {x:sc.target.x-9,y:sc.target.y+7,att:true},{x:sc.target.x+8,y:sc.target.y+5,att:false},{x:sc.target.x+2,y:sc.target.y+12,att:true},{x:sc.target.x-6,y:sc.target.y-6,att:false} ];
+    const bodies = bodySeed.slice(0,sc.crowd+1).map(b=>({
+      pos:`left:${b.x}%;top:${b.y}%;`,
+      look: b.att ? 'background:rgba(255,90,110,.32);border:1.5px solid rgba(255,90,110,.6);' : 'background:rgba(140,170,200,.22);border:1.5px solid rgba(160,190,215,.5);',
+    }));
+
+    // interception marker
+    const markGood = o && o.good;
+    const markBg = markGood ? A(accent,'26') : 'rgba(255,90,110,.16)';
+    const markBorder = markGood ? accent : '#FF5A6E';
+    const markColor = markGood ? '#EAFBFF' : '#FF9AA6';
+    const markText = action==='punch' ? 'PUNCH' : action==='claim' ? 'CLAIM' : 'SET';
+
+    // actions
+    const actions = ['claim','punch','stay'].map(k=>({
+      verb:this.ACT[k].verb, axis:this.ACT[k].axis,
+      onSelect:()=>this._choose(k),
+      border:A(accent,'80'), bg:A(accent,'14'), color:'#F2F8FE',
+      hover:`transform:translateY(-2px);border-color:${accent};background:${A(accent,'22')};box-shadow:0 8px 26px ${A(accent,'2e')};`,
+    }));
+
+    // tallies
+    const tallies=[
+      { label:'CLAIMED', n:this.state.claims },
+      { label:'PUNCHED', n:this.state.punches },
+      { label:'HELD', n:this.state.stays },
+    ].map(x=>({ label:x.label, n:x.n,
+      color:'#C6D3E2', numColor:x.n>0?accent:'#5b6f88',
+      border:x.n>0?A(accent,'33'):'rgba(120,140,166,.16)', bg:x.n>0?A(accent,'0e'):'rgba(10,16,28,.4)' }));
+
+    const outcomeWord=o?o.word:'';
+    const outcomeColor=o?(o.good?accent:'#FF9AA6'):accent;
+    const outcomeBorder=o?(o.good?accent:'rgba(255,90,110,.55)'):accent;
+    const outcomeBg=o?(o.good?A(accent,'14'):'rgba(40,10,16,.4)'):A(accent,'14');
+
+    // result
+    const m=this.state._meta || this._meta();
+    const score=m.score;
+    const cu = view==='result' ? (this.state.cu!=null?this.state.cu:1) : 1;
+    const scoreText = '' + Math.round(score * cu);
+    const leadLabel = score>=68 ? 'Dominant — you come and rule the air (Wall)'
+      : m.punches>=m.claims && (m.punches+m.claims)>=2 ? 'Commanding — decisive, you clear the danger (Sentinel)'
+      : score>=40 ? 'Selective — you pick your moments to attack the ball'
+      : 'Positional — you hold your line and trust your read (Oracle)';
+    const scoreNote = score>=68?'You attack crosses and back your timing — the aerial dominance that defines a Wall in the box.'
+      : score>=40?'You come when it feels right and stay when it does not. Balanced command of your area.'
+      : 'You prefer to hold your position. Safe — but the ball in the air is there to be taken.';
+    const breakdown=[
+      { label:'Came for it', sub:'Claims + punches', n:(m.claims+m.punches) },
+      { label:'Perfect timing', sub:'Met it at the peak', n:m.perfectTimings },
+      { label:'Stayed home', sub:'Trusted your spot', n:m.stays },
+      { label:'Punches', sub:'Decisive clearances', n:m.punches },
+    ].map(b=>({ label:b.label, sub:b.sub, n:b.n, numColor:accent }));
+
+    const dotsState = view==='intro'&&!embedded ? -1 : (view==='result'?this.SCN.length:si);
+    const progressDots = this.SCN.map((_,i)=>({
+      style: i===dotsState&&view!=='result' ? `width:16px;background:${accent};box-shadow:0 0 8px ${A(accent,'aa')};`
+        : (i<dotsState?`background:${A(accent,'88')};`:`background:rgba(120,140,166,.26);`),
+    }));
+
+    return {
+      accent, motion, embedded, chromeOn:!embedded,
+      rootMinH: embedded?'100%':'100dvh', rootH: embedded?'100%':'auto',
+      saveFx: motion && this.state.screenFx==='save', goalFx: motion && this.state.screenFx==='goal',
+      vizShake: (motion && resolved && o && !o.good) ? 'animation:fa-shake-hard .42s ease-in-out;' : '',
+      soundOn: !!this.state.soundOn, soundOff: !this.state.soundOn, soundColor: this.state.soundOn ? accent : '#61748c', soundTitle: this.state.soundOn ? 'Sound on' : 'Sound off', toggleSound: () => this._toggleSound(),
+      isIntro:!embedded&&view==='intro', isDrill, isResult:!embedded&&view==='result',
+      deciding, timing, resolved, notResolved:!resolved,
+      ctx:sc.ctx, cam:'SIX-YARD CAM · '+('0'+(si+1)).slice(-2),
+      ballStyle, ballTransition, keeperStyle, bodies,
+      ringPos, ringScale, contactMs:this.CONTACT_MS,
+      markBg, markBorder, markColor, markText,
+      actions, commit:()=>this._commit(false), commitVerb:this.ACT[action||'claim'].commit,
+      timingLabel: action==='punch'?'TIME THE PUNCH':'TIME THE CATCH',
+      tallies,
+      outcomeWord, outcomeColor, outcomeBorder, outcomeBg,
+      readKicker:o?o.kicker:'', readNote:o?o.note:'',
+      hintText: deciding?'Read the flight and the bodies. Do you come, punch, or set your feet?':'Wait for it… commit at the top of the jump.',
+      nextLabel: si<this.SCN.length-1?'Next cross':(embedded?'Continue the scan':'See my command'),
+      stepLabel: view==='intro'&&!embedded?'READY':(view==='result'?'COMPLETE':`0${si+1} / 0${this.SCN.length}`),
+      progressDots,
+      score, scoreText, scoreNote, leadLabel, breakdown,
+      begin:()=>this._begin(), next:()=>this._next(), retake:()=>this._retake(),
+      back:()=>{ window.location.href='Assessment.dc.html'; },
+    };
+  }
+}
+</script>
+</body>
+</html>

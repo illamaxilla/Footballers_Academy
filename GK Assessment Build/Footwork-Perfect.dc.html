@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:#04060c;}
+  a{color:var(--accent,#22D3EE);text-decoration:none;}
+  a:hover{opacity:.92;}
+  @keyframes fa-blink{0%,100%{opacity:1;}50%{opacity:.25;}}
+  @keyframes fa-scanline{0%{top:-4%;}100%{top:104%;}}
+  @keyframes fa-rise{0%{transform:translateY(16px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-rise-sm{0%{transform:translateY(10px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-cardin{0%{transform:translateY(10px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-spin{to{transform:rotate(360deg);}}
+  @keyframes fa-barflow{0%{background-position:0 0;}100%{background-position:34px 0;}}
+  @keyframes fa-pulse{0%,100%{opacity:.55;}50%{opacity:1;}}
+  .fa-in{opacity:0;animation:fa-rise .7s cubic-bezier(.2,.7,.2,1) forwards;}
+  .fa-in-sm{opacity:0;animation:fa-rise-sm .55s cubic-bezier(.2,.7,.2,1) forwards;}
+  @media (prefers-reduced-motion:reduce){.fa-in,.fa-in-sm{opacity:1!important;transform:none!important;}}
+</style>
+</helmet>
+<div data-screen-label="Footwork Perfect" style="position:relative;display:flex;flex-direction:column;min-height:{{ rootMinH }};height:{{ rootH }};width:100%;overflow:hidden;background:radial-gradient(120% 90% at 50% 6%,#0e1a2d 0%,#080e1a 44%,#04060c 100%);color:#EAF2FB;font-family:'Archivo',system-ui,sans-serif;--accent:{{ accent }};">
+
+  <div style="position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.4;background:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0px,rgba(255,255,255,.02) 1px,transparent 1px,transparent 4px);"></div>
+
+  <sc-if value="{{ chromeOn }}" hint-placeholder-val="{{ true }}">
+    <div style="position:absolute;top:20px;left:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+    <div style="position:absolute;top:20px;right:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+    <div style="position:absolute;bottom:20px;left:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+    <div style="position:absolute;bottom:20px;right:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+
+    <header style="position:relative;z-index:6;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px clamp(26px,3.4vw,58px);">
+      <button onClick="{{ back }}" style="display:inline-flex;align-items:center;gap:8px;background:none;border:0;cursor:pointer;color:#8EA1B8;font:600 12.5px 'Archivo';padding:0;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M15 5l-7 7 7 7"/></svg>Back
+      </button>
+      <div style="display:flex;align-items:center;gap:11px;">
+        <svg width="22" height="22" viewBox="0 0 32 32" fill="none"><path d="M16 2 28 9v14L16 30 4 23V9z" style="stroke:var(--accent,#22D3EE);stroke-width:1.5;fill:color-mix(in srgb,var(--accent,#22D3EE) 12%,transparent);"/><path d="M9 21l6-9 4 4 5-8" style="stroke:var(--accent,#22D3EE);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;fill:none;"/></svg>
+        <span style="font:800 13px 'Archivo';letter-spacing:.05em;">FOOTWORK PERFECT <span style="color:var(--accent,#22D3EE);">· TECHNIQUE LAB</span></span>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;min-width:120px;justify-content:flex-end;">
+        <span style="display:flex;gap:4px;">
+          <sc-for list="{{ stepDots }}" as="d" hint-placeholder-count="5">
+            <span style="width:9px;height:4px;border-radius:99px;transition:all .3s;{{ d.style }}"></span>
+          </sc-for>
+        </span>
+        <span style="font:600 10px 'IBM Plex Mono';letter-spacing:.14em;color:color-mix(in srgb,var(--accent,#22D3EE) 80%,#fff);white-space:nowrap;">{{ stepLabel }}</span>
+      </div>
+    </header>
+  </sc-if>
+
+  <!-- ============ INTRO / RECORDING GUIDE ============ -->
+  <sc-if value="{{ isIntro }}" hint-placeholder-val="{{ false }}">
+    <main data-screen-label="Footwork — Guide" style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:20px clamp(24px,4vw,58px) 60px;">
+      <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-54%);font:900 clamp(150px,30vw,340px)/1 'Archivo';color:var(--accent,#22D3EE);opacity:.05;pointer-events:none;user-select:none;z-index:0;letter-spacing:-0.04em;">DIVE</div>
+      <div style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;max-width:920px;width:100%;">
+        <div class="fa-in" style="display:flex;align-items:center;gap:14px;margin-bottom:22px;">
+          <span style="font:600 12px 'IBM Plex Mono';letter-spacing:.4em;color:var(--accent,#22D3EE);">PHASE 3 · GAME 04</span>
+          <span style="width:44px;height:1px;background:color-mix(in srgb,var(--accent,#22D3EE) 45%,transparent);"></span>
+          <span style="font:500 11px 'IBM Plex Mono';letter-spacing:.28em;color:#7688a0;">MOTOR COORDINATION</span>
+        </div>
+        <h1 class="fa-in" style="margin:0 0 16px;font:800 clamp(38px,5.4vw,74px)/0.98 'Archivo';letter-spacing:-0.03em;text-align:center;text-wrap:balance;animation-delay:.08s;">Footwork Perfect</h1>
+        <p class="fa-in" style="margin:0 0 30px;max-width:600px;font:400 clamp(15px,1.3vw,18px)/1.6 'Archivo';color:#9FB0C5;text-align:center;text-wrap:pretty;animation-delay:.16s;">Film five diving saves and upload the clip. We model your <span style="color:#E4EDF7;font-weight:600;">foot plant, body line, hands and recovery</span> frame-by-frame, then measure the gap to elite keepers.</p>
+
+        <div style="display:flex;flex-wrap:wrap;gap:18px;justify-content:center;align-items:stretch;width:100%;margin-bottom:26px;">
+          <!-- setup card -->
+          <div class="fa-in" style="flex:1.1 1 340px;max-width:440px;display:flex;flex-direction:column;gap:14px;padding:22px;border-radius:16px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);animation-delay:.2s;">
+            <div style="font:600 9.5px 'IBM Plex Mono';letter-spacing:.24em;color:#61748c;">OPTIMAL SETUP</div>
+            <div style="position:relative;height:120px;border-radius:12px;border:1px solid rgba(120,140,166,.16);background:radial-gradient(130% 120% at 50% 100%,#0d1c2e,#091324 60%,#050c17);overflow:hidden;display:flex;align-items:center;justify-content:space-between;padding:0 18px;">
+              <div style="position:absolute;inset:0;opacity:.5;background:repeating-linear-gradient(0deg,rgba(140,200,220,.03) 0px,rgba(140,200,220,.03) 1px,transparent 1px,transparent 22px);"></div>
+              <div style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:6px;">
+                <div style="width:26px;height:38px;border-radius:5px;border:1.5px solid color-mix(in srgb,var(--accent,#22D3EE) 70%,#fff);background:rgba(12,19,32,.7);display:grid;place-items:center;"><span style="width:8px;height:8px;border-radius:50%;border:1.5px solid var(--accent,#22D3EE);"></span></div>
+                <span style="font:600 7.5px 'IBM Plex Mono';letter-spacing:.1em;color:#8EA1B8;">CAMERA</span>
+              </div>
+              <div style="position:relative;z-index:2;flex:1;margin:0 12px;display:flex;flex-direction:column;align-items:center;gap:4px;">
+                <div style="width:100%;height:0;border-top:1.5px dashed rgba(157,176,198,.4);"></div>
+                <span style="font:600 8px 'IBM Plex Mono';letter-spacing:.08em;color:#9FB0C5;">4–5m · SIDE ANGLE</span>
+              </div>
+              <div style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:6px;">
+                <div style="display:flex;align-items:flex-end;gap:3px;">
+                  <div style="width:14px;height:34px;border-radius:4px;background:linear-gradient(180deg,#EAFBFF,#8fd8e6);"></div>
+                  <div style="width:20px;height:44px;border:1.5px solid rgba(140,200,220,.4);border-bottom:none;border-radius:3px 3px 0 0;"></div>
+                </div>
+                <span style="font:600 7.5px 'IBM Plex Mono';letter-spacing:.1em;color:#8EA1B8;">KEEPER · GOAL</span>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:9px;">
+              <div style="display:flex;align-items:flex-start;gap:9px;"><span style="flex:0 0 auto;margin-top:1px;width:14px;height:14px;border-radius:50%;background:color-mix(in srgb,var(--accent,#22D3EE) 18%,transparent);display:grid;place-items:center;"><span style="width:5px;height:5px;border-radius:50%;background:var(--accent,#22D3EE);"></span></span><span style="font:500 12px/1.45 'Archivo';color:#C6D3E2;">Natural light, no harsh shadows. Keeper in full frame.</span></div>
+              <div style="display:flex;align-items:flex-start;gap:9px;"><span style="flex:0 0 auto;margin-top:1px;width:14px;height:14px;border-radius:50%;background:color-mix(in srgb,var(--accent,#22D3EE) 18%,transparent);display:grid;place-items:center;"><span style="width:5px;height:5px;border-radius:50%;background:var(--accent,#22D3EE);"></span></span><span style="font:500 12px/1.45 'Archivo';color:#C6D3E2;">1080p preferred (720p minimum). MP4 or MOV.</span></div>
+              <div style="display:flex;align-items:flex-start;gap:9px;"><span style="flex:0 0 auto;margin-top:1px;width:14px;height:14px;border-radius:50%;background:color-mix(in srgb,var(--accent,#22D3EE) 18%,transparent);display:grid;place-items:center;"><span style="width:5px;height:5px;border-radius:50%;background:var(--accent,#22D3EE);"></span></span><span style="font:500 12px/1.45 'Archivo';color:#C6D3E2;">2–4 minutes total. Phone fixed on a tripod.</span></div>
+            </div>
+          </div>
+
+          <!-- dives checklist card -->
+          <div class="fa-in" style="flex:1 1 300px;max-width:400px;display:flex;flex-direction:column;gap:12px;padding:22px;border-radius:16px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);animation-delay:.26s;">
+            <div style="font:600 9.5px 'IBM Plex Mono';letter-spacing:.24em;color:#61748c;">DIVES TO INCLUDE</div>
+            <div style="display:flex;flex-direction:column;gap:9px;">
+              <sc-for list="{{ checklist }}" as="c" hint-placeholder-count="5">
+                <div style="display:flex;align-items:center;gap:11px;padding:10px 13px;border-radius:11px;border:1px solid rgba(120,140,166,.16);background:rgba(6,12,22,.5);">
+                  <span style="flex:0 0 auto;width:20px;height:20px;border-radius:6px;border:1.5px solid color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);display:grid;place-items:center;color:var(--accent,#22D3EE);font:700 10px 'IBM Plex Mono';">{{ c.n }}</span>
+                  <span style="font:600 12.5px 'Archivo';color:#DCE7F3;">{{ c.label }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+
+        <div class="fa-in" style="display:flex;flex-wrap:wrap;justify-content:center;gap:8px 10px;margin-bottom:24px;animation-delay:.3s;">
+          <span style="display:inline-flex;align-items:center;gap:7px;padding:7px 13px;border:1px solid rgba(120,140,166,.24);border-radius:999px;font:600 10px 'IBM Plex Mono';letter-spacing:.16em;color:#9FB0C5;"><span style="width:6px;height:6px;border-radius:50%;background:var(--accent,#22D3EE);"></span>5–6 DIVES</span>
+          <span style="display:inline-flex;align-items:center;gap:7px;padding:7px 13px;border:1px solid rgba(120,140,166,.24);border-radius:999px;font:600 10px 'IBM Plex Mono';letter-spacing:.16em;color:#9FB0C5;">FRAME-BY-FRAME ANALYSIS</span>
+          <span style="display:inline-flex;align-items:center;gap:7px;padding:7px 13px;border:1px solid rgba(120,140,166,.24);border-radius:999px;font:600 10px 'IBM Plex Mono';letter-spacing:.16em;color:#9FB0C5;">~8 MIN</span>
+        </div>
+        <sc-if value="{{ showBest }}" hint-placeholder-val="{{ false }}">
+          <div class="fa-in" style="display:inline-flex;align-items:center;gap:9px;margin-bottom:22px;padding:7px 15px;border-radius:999px;border:1px solid color-mix(in srgb,var(--accent,#22D3EE) 30%,transparent);background:color-mix(in srgb,var(--accent,#22D3EE) 8%,transparent);font:600 10px 'IBM Plex Mono';letter-spacing:.2em;color:var(--accent,#22D3EE);">{{ bestText }}</div>
+        </sc-if>
+        <button onClick="{{ toUpload }}" class="fa-in" style="display:inline-flex;align-items:center;gap:12px;padding:18px 40px;border-radius:13px;border:0;cursor:pointer;background:var(--accent,#22D3EE);color:#03121a;font:700 16px 'Archivo';box-shadow:0 14px 46px color-mix(in srgb,var(--accent,#22D3EE) 42%,transparent);transition:transform .16s ease,box-shadow .16s ease;animation-delay:.34s;" style-hover="transform:translateY(-2px);box-shadow:0 20px 58px color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);">
+          Upload your dives
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="stroke:#03121a;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12h13M12 6l6 6-6 6"/></svg>
+        </button>
+      </div>
+    </main>
+  </sc-if>
+
+  <!-- ============ UPLOAD ============ -->
+  <sc-if value="{{ isUpload }}" hint-placeholder-val="{{ false }}">
+    <main data-screen-label="Footwork — Upload" style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:16px clamp(24px,4vw,58px) 48px;">
+      <div style="width:100%;max-width:640px;display:flex;flex-direction:column;align-items:center;gap:18px;">
+        <div class="fa-in-sm" style="text-align:center;">
+          <h2 style="margin:0 0 8px;font:700 clamp(22px,3vw,32px)/1.1 'Archivo';letter-spacing:-0.02em;">Upload your dive clip</h2>
+          <p style="margin:0;font:400 14px/1.5 'Archivo';color:#9FB0C5;">MP4 · MOV · up to 100MB. Everything stays on your device in this preview.</p>
+        </div>
+
+        <!-- when no file: dropzone -->
+        <sc-if value="{{ showDrop }}" hint-placeholder-val="{{ true }}">
+          <label class="fa-in-sm" onDragOver="{{ onDragOver }}" onDragLeave="{{ onDragLeave }}" onDrop="{{ onDrop }}" style="width:100%;display:flex;flex-direction:column;align-items:center;gap:14px;padding:44px 28px;border-radius:18px;cursor:pointer;text-align:center;transition:all .18s ease;{{ dropStyle }}">
+            <input type="file" accept="video/mp4,video/quicktime,video/webm,video/x-m4v,video/*" onChange="{{ onPick }}" style="display:none;"/>
+            <span style="width:64px;height:64px;border-radius:50%;display:grid;place-items:center;background:color-mix(in srgb,var(--accent,#22D3EE) 14%,transparent);border:1px solid color-mix(in srgb,var(--accent,#22D3EE) 40%,transparent);">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" style="stroke:var(--accent,#22D3EE);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg>
+            </span>
+            <div>
+              <div style="font:700 17px 'Archivo';color:#EAF2FB;margin-bottom:4px;">{{ dropTitle }}</div>
+              <div style="font:500 12.5px 'Archivo';color:#8EA1B8;">or tap to browse your device</div>
+            </div>
+            <div style="display:flex;gap:7px;flex-wrap:wrap;justify-content:center;margin-top:2px;">
+              <span style="padding:4px 10px;border-radius:999px;border:1px solid rgba(120,140,166,.2);font:600 8.5px 'IBM Plex Mono';letter-spacing:.12em;color:#7688a0;">MP4 / MOV</span>
+              <span style="padding:4px 10px;border-radius:999px;border:1px solid rgba(120,140,166,.2);font:600 8.5px 'IBM Plex Mono';letter-spacing:.12em;color:#7688a0;">≥ 720p</span>
+              <span style="padding:4px 10px;border-radius:999px;border:1px solid rgba(120,140,166,.2);font:600 8.5px 'IBM Plex Mono';letter-spacing:.12em;color:#7688a0;">≤ 100MB</span>
+            </div>
+          </label>
+
+          <sc-if value="{{ loadingMeta }}" hint-placeholder-val="{{ false }}">
+            <div style="display:inline-flex;align-items:center;gap:10px;font:600 11px 'IBM Plex Mono';letter-spacing:.1em;color:#9FB0C5;">
+              <span style="width:15px;height:15px;border-radius:50%;border:2px solid rgba(120,140,166,.3);border-top-color:var(--accent,#22D3EE);animation:fa-spin .8s linear infinite;"></span>READING CLIP…
+            </div>
+          </sc-if>
+          <sc-if value="{{ metaError }}" hint-placeholder-val="{{ false }}">
+            <div style="width:100%;padding:13px 16px;border-radius:12px;border:1px solid rgba(255,90,110,.5);background:rgba(40,10,16,.3);font:500 12.5px/1.5 'Archivo';color:#FF9AA6;">That file isn’t a video we can read. Try an MP4 or MOV export of your clip.</div>
+          </sc-if>
+
+          <div class="fa-in-sm" style="display:flex;align-items:center;gap:12px;width:100%;animation-delay:.08s;">
+            <span style="flex:1;height:1px;background:rgba(120,140,166,.16);"></span>
+            <span style="font:600 9px 'IBM Plex Mono';letter-spacing:.2em;color:#5c6f88;">NO CLIP HANDY?</span>
+            <span style="flex:1;height:1px;background:rgba(120,140,166,.16);"></span>
+          </div>
+          <button onClick="{{ useSample }}" class="fa-in-sm" style="display:inline-flex;align-items:center;gap:10px;padding:13px 24px;border-radius:12px;border:1px solid rgba(157,176,198,.28);background:rgba(12,18,30,.5);color:#C6D3E2;font:600 13.5px 'Archivo';cursor:pointer;transition:border-color .16s ease,color .16s ease;animation-delay:.1s;" style-hover="border-color:color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);color:#EAF2FB;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 3l14 9-14 9V3z"/></svg>
+            Use a sample session
+          </button>
+        </sc-if>
+
+        <!-- when file selected: validation card -->
+        <sc-if value="{{ showFileCard }}" hint-placeholder-val="{{ false }}">
+          <div class="fa-in-sm" style="width:100%;display:flex;flex-direction:column;gap:16px;padding:20px;border-radius:16px;border:1px solid rgba(120,140,166,.22);background:rgba(10,16,28,.55);">
+            <div style="display:flex;align-items:center;gap:13px;">
+              <span style="flex:0 0 auto;width:44px;height:44px;border-radius:10px;display:grid;place-items:center;background:color-mix(in srgb,var(--accent,#22D3EE) 14%,transparent);border:1px solid color-mix(in srgb,var(--accent,#22D3EE) 34%,transparent);">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" style="stroke:var(--accent,#22D3EE);stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="M10 9l5 3-5 3V9z"/></svg>
+              </span>
+              <div style="flex:1;min-width:0;">
+                <div style="font:700 14.5px 'Archivo';color:#EAF2FB;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ fileName }}</div>
+                <div style="font:600 10px 'IBM Plex Mono';letter-spacing:.06em;color:#7688a0;margin-top:2px;">{{ fileMeta }}</div>
+              </div>
+              <button onClick="{{ clearFile }}" style="flex:0 0 auto;background:none;border:0;cursor:pointer;color:#8EA1B8;font:600 11px 'Archivo';padding:6px;">Change</button>
+            </div>
+
+            <sc-if value="{{ hasVideo }}" hint-placeholder-val="{{ false }}">
+              <video src="{{ videoUrl }}" controls muted playsinline preload="metadata" style="width:100%;max-height:220px;border-radius:11px;background:#050c17;border:1px solid rgba(120,140,166,.18);"></video>
+            </sc-if>
+
+            <div style="display:flex;flex-direction:column;gap:2px;">
+              <sc-for list="{{ fileChecks }}" as="c" hint-placeholder-count="4">
+                <div style="display:flex;align-items:center;gap:11px;padding:9px 4px;border-bottom:1px solid rgba(120,140,166,.1);">
+                  <span style="flex:0 0 auto;width:18px;height:18px;border-radius:50%;display:grid;place-items:center;background:{{ c.iconBg }};">
+                    <span style="font:800 10px 'Archivo';color:{{ c.iconColor }};">{{ c.icon }}</span>
+                  </span>
+                  <span style="flex:0 0 96px;font:600 9.5px 'IBM Plex Mono';letter-spacing:.08em;color:#8EA1B8;">{{ c.label }}</span>
+                  <span style="flex:1;font:500 12px 'Archivo';color:{{ c.detailColor }};text-align:right;">{{ c.detail }}</span>
+                </div>
+              </sc-for>
+            </div>
+
+            <button onClick="{{ analyze }}" style="width:100%;display:inline-flex;align-items:center;justify-content:center;gap:11px;padding:16px 28px;border-radius:13px;border:0;cursor:pointer;background:var(--accent,#22D3EE);color:#03121a;font:800 16px 'Archivo';box-shadow:0 12px 36px color-mix(in srgb,var(--accent,#22D3EE) 40%,transparent);transition:transform .16s ease;" style-hover="transform:translateY(-2px);">
+              Analyse my dives
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="stroke:#03121a;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12h13M12 6l6 6-6 6"/></svg>
+            </button>
+            <sc-if value="{{ hasWarn }}" hint-placeholder-val="{{ false }}">
+              <div style="font:500 11px/1.5 'Archivo';color:#FFD79A;text-align:center;">Some checks flagged — analysis still runs, but accuracy improves with a clearer clip.</div>
+            </sc-if>
+          </div>
+        </sc-if>
+      </div>
+    </main>
+  </sc-if>
+
+  <!-- ============ ANALYSING (scene detect) ============ -->
+  <sc-if value="{{ isAnalyzing }}" hint-placeholder-val="{{ false }}">
+    <main data-screen-label="Footwork — Analysing" style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:20px clamp(24px,4vw,58px) 48px;">
+      <div style="width:100%;max-width:560px;display:flex;flex-direction:column;align-items:center;gap:22px;">
+        <div style="position:relative;width:112px;height:112px;display:grid;place-items:center;">
+          <span style="position:absolute;inset:0;border-radius:50%;border:2px solid rgba(120,140,166,.16);"></span>
+          <span style="position:absolute;inset:0;border-radius:50%;border:3px solid transparent;border-top-color:var(--accent,#22D3EE);border-right-color:color-mix(in srgb,var(--accent,#22D3EE) 40%,transparent);animation:fa-spin 1s linear infinite;"></span>
+          <span style="font:800 26px 'Archivo';color:#EAF2FB;">{{ anaPct }}</span>
+        </div>
+        <div style="text-align:center;">
+          <div style="font:700 10px 'IBM Plex Mono';letter-spacing:.22em;color:var(--accent,#22D3EE);margin-bottom:7px;">ANALYSIS IN PROGRESS</div>
+          <h2 style="margin:0;font:700 clamp(18px,2.4vw,24px)/1.2 'Archivo';letter-spacing:-0.01em;">{{ anaStageLabel }}</h2>
+        </div>
+        <div style="width:100%;height:8px;border-radius:99px;background:rgba(120,140,166,.14);overflow:hidden;">
+          <span style="display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,color-mix(in srgb,var(--accent,#22D3EE) 60%,transparent),var(--accent,#22D3EE));width:{{ anaBarW }};transition:width .25s ease;"></span>
+        </div>
+        <div style="width:100%;display:flex;flex-direction:column;gap:9px;">
+          <sc-for list="{{ anaStages }}" as="s" hint-placeholder-count="5">
+            <div style="display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:11px;border:1px solid {{ s.border }};background:{{ s.bg }};transition:all .3s;">
+              <span style="flex:0 0 auto;width:18px;height:18px;border-radius:50%;display:grid;place-items:center;{{ s.dotStyle }}">{{ s.dotInner }}</span>
+              <span style="flex:1;font:600 12.5px 'Archivo';color:{{ s.textColor }};">{{ s.name }}</span>
+              <span style="font:600 9px 'IBM Plex Mono';letter-spacing:.12em;color:{{ s.tagColor }};">{{ s.tag }}</span>
+            </div>
+          </sc-for>
+        </div>
+        <div style="font:500 11px 'IBM Plex Mono';letter-spacing:.06em;color:#5c6f88;">{{ anaEta }}</div>
+      </div>
+    </main>
+  </sc-if>
+
+  <!-- ============ SCENE REVIEW ============ -->
+  <sc-if value="{{ isScenes }}" hint-placeholder-val="{{ false }}">
+    <main data-screen-label="Footwork — Confirm dives" style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:16px clamp(24px,4vw,58px) 40px;">
+      <div style="width:100%;max-width:760px;display:flex;flex-direction:column;gap:16px;">
+        <div class="fa-in-sm" style="display:inline-flex;align-items:center;gap:9px;align-self:flex-start;padding:6px 13px;border:1px solid color-mix(in srgb,var(--accent,#22D3EE) 32%,transparent);border-radius:999px;font:600 9.5px 'IBM Plex Mono';letter-spacing:.2em;color:var(--accent,#22D3EE);">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" style="stroke:var(--accent,#22D3EE);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12.5l4.5 4.5L19 6.5"/></svg>ANALYSIS COMPLETE
+        </div>
+        <div class="fa-in-sm" style="animation-delay:.04s;">
+          <h2 style="margin:0 0 5px;font:700 clamp(20px,2.6vw,28px)/1.15 'Archivo';letter-spacing:-0.02em;">Found {{ foundCount }} dives — confirm the set to score</h2>
+          <p style="margin:0;font:400 13.5px/1.5 'Archivo';color:#9FB0C5;">We scored each detection for confidence. Deselect anything that isn’t a clean dive; five is ideal.</p>
+        </div>
+
+        <sc-if value="{{ hasVideo }}" hint-placeholder-val="{{ false }}">
+          <video src="{{ videoUrl }}" controls muted playsinline preload="metadata" class="fa-in-sm" style="width:100%;max-height:210px;border-radius:12px;background:#050c17;border:1px solid rgba(120,140,166,.18);animation-delay:.08s;"></video>
+        </sc-if>
+
+        <div style="display:flex;flex-direction:column;gap:9px;">
+          <sc-for list="{{ diveRows }}" as="d" hint-placeholder-count="6">
+            <button onClick="{{ d.onToggle }}" style="display:flex;align-items:center;gap:14px;width:100%;text-align:left;padding:13px 16px;border-radius:13px;cursor:{{ d.cursor }};transition:all .16s ease;{{ d.rowStyle }}">
+              <span style="flex:0 0 auto;width:22px;height:22px;border-radius:7px;display:grid;place-items:center;{{ d.boxStyle }}">{{ d.check }}</span>
+              <span style="flex:0 0 auto;width:44px;height:44px;border-radius:9px;display:grid;place-items:center;background:radial-gradient(120% 120% at 50% 100%,#0d1c2e,#091324);border:1px solid rgba(120,140,166,.18);position:relative;overflow:hidden;">
+                <span style="width:11px;height:22px;border-radius:3px;background:linear-gradient(180deg,#EAFBFF,#8fd8e6);transform:rotate({{ d.poseRot }});opacity:{{ d.poseOpacity }};"></span>
+              </span>
+              <span style="flex:1;min-width:0;">
+                <span style="display:block;font:700 13.5px 'Archivo';color:{{ d.titleColor }};">{{ d.title }}</span>
+                <span style="display:block;font:600 9.5px 'IBM Plex Mono';letter-spacing:.06em;color:#7688a0;margin-top:2px;">{{ d.sub }}</span>
+              </span>
+              <span style="flex:0 0 auto;display:flex;flex-direction:column;align-items:flex-end;gap:5px;width:96px;">
+                <span style="font:700 9.5px 'IBM Plex Mono';letter-spacing:.04em;color:{{ d.confColor }};">{{ d.confText }}</span>
+                <span style="width:100%;height:5px;border-radius:99px;background:rgba(120,140,166,.16);overflow:hidden;"><span style="display:block;height:100%;border-radius:99px;background:{{ d.confBar }};width:{{ d.confW }};"></span></span>
+              </span>
+            </button>
+          </sc-for>
+        </div>
+
+        <div class="fa-in-sm" style="display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-top:4px;">
+          <span style="font:600 11px 'IBM Plex Mono';letter-spacing:.1em;color:{{ selColor }};">{{ selCountText }}</span>
+          <button onClick="{{ confirm }}" style="display:inline-flex;align-items:center;gap:10px;padding:14px 28px;border-radius:12px;border:0;cursor:{{ confirmCursor }};background:{{ confirmBg }};color:#03121a;font:800 14.5px 'Archivo';box-shadow:{{ confirmShadow }};transition:transform .16s ease;" style-hover="transform:translateY(-2px);">
+            {{ confirmLabel }}
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" style="stroke:#03121a;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12h13M12 6l6 6-6 6"/></svg>
+          </button>
+        </div>
+      </div>
+    </main>
+  </sc-if>
+
+  <!-- ============ SCORING ============ -->
+  <sc-if value="{{ isScoring }}" hint-placeholder-val="{{ false }}">
+    <main data-screen-label="Footwork — Scoring" style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:20px clamp(24px,4vw,58px) 48px;">
+      <div style="width:100%;max-width:520px;display:flex;flex-direction:column;align-items:center;gap:20px;">
+        <div style="position:relative;width:96px;height:96px;display:grid;place-items:center;">
+          <span style="position:absolute;inset:0;border-radius:50%;border:2px solid rgba(120,140,166,.16);"></span>
+          <span style="position:absolute;inset:0;border-radius:50%;border:3px solid transparent;border-top-color:var(--accent,#22D3EE);animation:fa-spin .9s linear infinite;"></span>
+          <span style="font:800 22px 'Archivo';color:#EAF2FB;">{{ scorePct }}</span>
+        </div>
+        <div style="text-align:center;">
+          <div style="font:700 10px 'IBM Plex Mono';letter-spacing:.22em;color:var(--accent,#22D3EE);margin-bottom:7px;">SCORING TECHNIQUE</div>
+          <h2 style="margin:0;font:700 clamp(18px,2.4vw,23px)/1.2 'Archivo';">{{ scoreStageLabel }}</h2>
+        </div>
+        <div style="width:100%;height:8px;border-radius:99px;background:rgba(120,140,166,.14);overflow:hidden;">
+          <span style="display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,color-mix(in srgb,var(--accent,#22D3EE) 60%,transparent),var(--accent,#22D3EE));width:{{ scoreBarW }};transition:width .25s ease;"></span>
+        </div>
+        <div style="font:500 11.5px/1.5 'Archivo';color:#7688a0;text-align:center;max-width:400px;">Comparing your joint kinematics to elite reference dives (Buffon · Neuer · ter Stegen).</div>
+      </div>
+    </main>
+  </sc-if>
+
+  <!-- ============ RESULT ============ -->
+  <sc-if value="{{ isResult }}" hint-placeholder-val="{{ false }}">
+    <main data-screen-label="Footwork — Results" style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:14px clamp(20px,3.4vw,52px) 56px;">
+      <div class="fa-in" style="display:inline-flex;align-items:center;gap:9px;margin-bottom:14px;padding:6px 14px;border:1px solid color-mix(in srgb,var(--accent,#22D3EE) 32%,transparent);border-radius:999px;font:600 10px 'IBM Plex Mono';letter-spacing:.24em;color:var(--accent,#22D3EE);">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" style="stroke:var(--accent,#22D3EE);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12.5l4.5 4.5L19 6.5"/></svg>TECHNIQUE REPORT
+      </div>
+      <h1 class="fa-in" style="margin:0 0 22px;font:800 clamp(28px,4.4vw,54px)/0.98 'Archivo';letter-spacing:-0.03em;text-align:center;text-wrap:balance;animation-delay:.05s;">{{ verdict }}</h1>
+
+      <div style="display:flex;flex-wrap:wrap;gap:18px;justify-content:center;align-items:stretch;width:100%;max-width:940px;">
+
+        <!-- overall + archetype -->
+        <div class="fa-in" style="flex:1 1 300px;max-width:400px;display:flex;flex-direction:column;gap:18px;padding:24px;border-radius:16px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);animation-delay:.1s;">
+          <div>
+            <div style="font:600 9.5px 'IBM Plex Mono';letter-spacing:.24em;color:#61748c;margin-bottom:9px;">OVERALL TECHNIQUE</div>
+            <div style="display:flex;align-items:baseline;gap:8px;">
+              <span style="font:800 clamp(52px,8vw,78px)/1 'Archivo';letter-spacing:-0.02em;color:{{ overallColor }};">{{ overall }}</span>
+              <span style="font:600 15px 'IBM Plex Mono';color:#7688a0;">/ 100</span>
+            </div>
+            <div style="display:inline-flex;align-items:center;gap:8px;margin-top:10px;padding:5px 12px;border-radius:999px;background:rgba(6,12,22,.6);border:1px solid rgba(120,140,166,.18);font:700 10px 'IBM Plex Mono';letter-spacing:.08em;color:#C6D3E2;">{{ percentileText }} PERCENTILE</div>
+            <p style="margin:12px 0 0;font:400 13.5px/1.55 'Archivo';color:#9FB0C5;text-wrap:pretty;">{{ verdictNote }}</p>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding-top:14px;border-top:1px solid rgba(120,140,166,.14);">
+            <span style="font:600 9px 'IBM Plex Mono';letter-spacing:.16em;color:#61748c;">ARCHETYPE SIGNAL</span>
+            <sc-for list="{{ leanChips }}" as="c" hint-placeholder-count="2">
+              <span style="display:inline-flex;align-items:center;gap:6px;padding:4px 11px;border-radius:999px;border:1px solid {{ c.border }};font:700 9px 'IBM Plex Mono';letter-spacing:.1em;color:{{ c.color }};">{{ c.label }}</span>
+            </sc-for>
+          </div>
+        </div>
+
+        <!-- metric breakdown -->
+        <div class="fa-in" style="flex:1.3 1 380px;max-width:500px;display:flex;flex-direction:column;gap:11px;padding:22px;border-radius:16px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);animation-delay:.16s;">
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <div style="font:600 9.5px 'IBM Plex Mono';letter-spacing:.2em;color:#61748c;">BREAKDOWN vs ELITE</div>
+            <div style="display:flex;align-items:center;gap:12px;">
+              <span style="display:inline-flex;align-items:center;gap:5px;font:600 8px 'IBM Plex Mono';color:#8698ad;"><span style="width:8px;height:8px;border-radius:2px;background:var(--accent,#22D3EE);"></span>YOU</span>
+              <span style="display:inline-flex;align-items:center;gap:5px;font:600 8px 'IBM Plex Mono';color:#8698ad;"><span style="width:8px;height:2px;background:#3AE0A0;"></span>ELITE</span>
+            </div>
+          </div>
+          <sc-for list="{{ metricCards }}" as="m" hint-placeholder-count="5">
+            <div style="display:flex;flex-direction:column;gap:5px;">
+              <div style="display:flex;align-items:center;justify-content:space-between;">
+                <span style="font:600 11.5px 'Archivo';color:#DCE7F3;">{{ m.name }}</span>
+                <span style="display:flex;align-items:baseline;gap:7px;">
+                  <span style="font:800 13px 'Archivo';color:{{ m.color }};">{{ m.your }}</span>
+                  <span style="font:600 8.5px 'IBM Plex Mono';color:{{ m.gapColor }};">{{ m.gapText }}</span>
+                </span>
+              </div>
+              <div style="position:relative;height:9px;border-radius:99px;background:rgba(120,140,166,.14);overflow:hidden;">
+                <span style="display:block;height:100%;border-radius:99px;background:{{ m.barColor }};width:{{ m.yourW }};transition:width .5s ease;"></span>
+                <span style="position:absolute;top:-2px;bottom:-2px;width:2px;background:#3AE0A0;left:{{ m.eliteW }};box-shadow:0 0 6px #3AE0A0;"></span>
+              </div>
+              <div style="font:500 10.5px/1.45 'Archivo';color:#8a9ab0;">{{ m.note }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <!-- dive-by-dive -->
+      <div class="fa-in" style="width:100%;max-width:940px;margin-top:16px;padding:20px 22px;border-radius:16px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);animation-delay:.22s;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:13px;">
+          <div style="font:600 9.5px 'IBM Plex Mono';letter-spacing:.2em;color:#61748c;">DIVE-BY-DIVE</div>
+          <div style="font:500 9px 'IBM Plex Mono';letter-spacing:.08em;color:#5c6f88;">TAP A DIVE FOR FRAME-BY-FRAME</div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;">
+          <sc-for list="{{ diveScoreRows }}" as="d" hint-placeholder-count="5">
+            <button onClick="{{ d.onOpen }}" style="display:flex;flex-direction:column;gap:8px;text-align:left;padding:13px 14px;border-radius:12px;cursor:pointer;border:1px solid {{ d.border }};background:rgba(6,12,22,.5);transition:all .16s ease;" style-hover="transform:translateY(-2px);border-color:color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);">
+              <div style="display:flex;align-items:center;justify-content:space-between;">
+                <span style="font:600 9px 'IBM Plex Mono';letter-spacing:.06em;color:#7688a0;">{{ d.tag }}</span>
+                <span style="width:16px;height:16px;border-radius:50%;display:grid;place-items:center;background:{{ d.iconBg }};font:800 9px 'Archivo';color:{{ d.iconColor }};">{{ d.icon }}</span>
+              </div>
+              <div style="display:flex;align-items:baseline;gap:5px;">
+                <span style="font:800 24px 'Archivo';color:{{ d.scoreColor }};">{{ d.score }}</span>
+                <span style="font:600 10px 'IBM Plex Mono';color:#5c6f88;">/100</span>
+              </div>
+              <div style="font:600 11.5px 'Archivo';color:#DCE7F3;">{{ d.label }}</div>
+              <div style="font:500 10px/1.4 'Archivo';color:#8a9ab0;">{{ d.note }}</div>
+              <div style="display:inline-flex;align-items:center;gap:5px;font:600 9px 'IBM Plex Mono';letter-spacing:.08em;color:var(--accent,#22D3EE);margin-top:1px;">FRAMES <svg width="11" height="11" viewBox="0 0 24 24" fill="none" style="stroke:var(--accent,#22D3EE);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round;"><path d="M9 6l6 6-6 6"/></svg></div>
+            </button>
+          </sc-for>
+        </div>
+      </div>
+
+      <div class="fa-in" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:12px;margin-top:24px;animation-delay:.28s;">
+        <button onClick="{{ retake }}" style="display:inline-flex;align-items:center;gap:11px;padding:15px 30px;border-radius:12px;border:0;cursor:pointer;background:var(--accent,#22D3EE);color:#03121a;font:700 14.5px 'Archivo';box-shadow:0 12px 36px color-mix(in srgb,var(--accent,#22D3EE) 40%,transparent);transition:transform .16s ease;" style-hover="transform:translateY(-2px);">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:#03121a;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
+          See it again
+        </button>
+        <button onClick="{{ uploadNew }}" style="display:inline-flex;align-items:center;gap:9px;padding:15px 24px;border-radius:12px;border:1px solid rgba(157,176,198,.28);background:rgba(12,18,30,.4);color:#C6D3E2;font:600 13.5px 'Archivo';cursor:pointer;transition:border-color .16s ease,color .16s ease;" style-hover="border-color:color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);color:#EAF2FB;">
+          Upload a new clip
+        </button>
+        <a href="Landing.dc.html" style="display:inline-flex;align-items:center;gap:9px;padding:15px 24px;border-radius:12px;border:1px solid rgba(157,176,198,.28);background:rgba(12,18,30,.4);color:#C6D3E2;font:600 13.5px 'Archivo';transition:border-color .16s ease,color .16s ease;" style-hover="border-color:color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);color:#EAF2FB;">
+          Back to games
+        </a>
+      </div>
+      <div class="fa-in" style="margin-top:18px;max-width:600px;text-align:center;font:400 11px/1.6 'Archivo';color:#4f627a;animation-delay:.34s;">This preview shows the full analysis experience with a modelled scoring pass. Live sessions run frame-accurate pose detection in the cloud and benchmark against licensed elite footage.</div>
+    </main>
+  </sc-if>
+
+  <!-- ============ FRAME-BY-FRAME ============ -->
+  <sc-if value="{{ isFrames }}" hint-placeholder-val="{{ false }}">
+    <main data-screen-label="Footwork — Frame-by-frame" style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:14px clamp(20px,3.4vw,52px) 40px;">
+      <div style="width:100%;max-width:900px;display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+          <button onClick="{{ backToResult }}" style="display:inline-flex;align-items:center;gap:8px;background:none;border:0;cursor:pointer;color:#8EA1B8;font:600 12px 'Archivo';padding:0;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M15 5l-7 7 7 7"/></svg>Report
+          </button>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <button onClick="{{ prevDive }}" style="width:30px;height:30px;border-radius:8px;border:1px solid rgba(120,140,166,.24);background:rgba(12,18,30,.5);color:#C6D3E2;cursor:pointer;display:grid;place-items:center;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M15 5l-7 7 7 7"/></svg></button>
+            <span style="font:700 11px 'IBM Plex Mono';letter-spacing:.1em;color:#EAF2FB;min-width:150px;text-align:center;">{{ frDiveLabel }}</span>
+            <button onClick="{{ nextDive }}" style="width:30px;height:30px;border-radius:8px;border:1px solid rgba(120,140,166,.24);background:rgba(12,18,30,.5);color:#C6D3E2;cursor:pointer;display:grid;place-items:center;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M9 5l7 7-7 7"/></svg></button>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:stretch;">
+          <!-- schematic -->
+          <div style="flex:1.2 1 320px;min-width:280px;display:flex;flex-direction:column;gap:10px;">
+            <div style="position:relative;width:100%;aspect-ratio:4/3;border-radius:16px;overflow:hidden;background:radial-gradient(130% 110% at 50% 100%,#0d1c2e 0%,#091324 55%,#050c17 100%);border:1px solid rgba(120,140,166,.18);box-shadow:inset 0 0 50px rgba(0,0,0,.5);">
+              <div style="position:absolute;inset:0;opacity:.5;background:repeating-linear-gradient(0deg,rgba(140,200,220,.03) 0px,rgba(140,200,220,.03) 1px,transparent 1px,transparent 34px);"></div>
+              <!-- goal hint -->
+              <div style="position:absolute;left:8%;top:20%;width:2px;height:60%;background:rgba(140,200,220,.16);"></div>
+              <div style="position:absolute;left:8%;top:20%;width:20%;height:2px;background:rgba(140,200,220,.16);"></div>
+              <!-- ground -->
+              <div style="position:absolute;left:0;right:0;top:82%;height:2px;background:linear-gradient(90deg,transparent,rgba(140,200,220,.4),transparent);"></div>
+              <!-- phase/time badge -->
+              <div style="position:absolute;top:12px;left:14px;z-index:5;font:800 11px 'Archivo';color:#EAF2FB;">{{ frPhaseTitle }}</div>
+              <div style="position:absolute;top:12px;right:14px;z-index:5;font:700 9.5px 'IBM Plex Mono';letter-spacing:.1em;color:var(--accent,#22D3EE);">{{ frTime }}</div>
+              <div style="position:absolute;bottom:10px;left:14px;z-index:5;font:600 8px 'IBM Plex Mono';letter-spacing:.14em;color:#5c6f88;">MODELLED · YOU vs ELITE</div>
+              <!-- elite ghost -->
+              <div style="position:absolute;z-index:3;width:9%;display:flex;flex-direction:column;align-items:center;transition:left .45s cubic-bezier(.3,.8,.3,1),top .45s cubic-bezier(.3,.8,.3,1),transform .45s cubic-bezier(.3,.8,.3,1);{{ eliteStyle }}">
+                <span style="width:60%;aspect-ratio:1;border-radius:50%;border:1.5px dashed rgba(58,224,160,.55);"></span>
+                <span style="width:100%;height:34px;border-radius:5px;border:1.5px dashed rgba(58,224,160,.55);margin-top:2px;"></span>
+              </div>
+              <!-- you -->
+              <div style="position:absolute;z-index:4;width:9%;display:flex;flex-direction:column;align-items:center;transition:left .45s cubic-bezier(.3,.8,.3,1),top .45s cubic-bezier(.3,.8,.3,1),transform .45s cubic-bezier(.3,.8,.3,1);{{ keeperStyle }}">
+                <span style="width:62%;aspect-ratio:1;border-radius:50%;background:linear-gradient(180deg,#EAFBFF,#8fd8e6);"></span>
+                <span style="width:100%;height:34px;border-radius:5px;background:linear-gradient(180deg,#EAFBFF,#8fd8e6);margin-top:2px;box-shadow:0 3px 12px rgba(0,0,0,.4);"></span>
+                <span style="width:30%;aspect-ratio:1;border-radius:50%;background:var(--accent,#22D3EE);margin-top:-4px;box-shadow:0 0 8px var(--accent,#22D3EE);"></span>
+              </div>
+              <!-- ball -->
+              <div style="position:absolute;z-index:5;width:6%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 34% 30%,#fff,#bcc9d4);box-shadow:0 0 9px rgba(255,255,255,.5),0 2px 5px rgba(0,0,0,.45);transition:left .45s ease,top .45s ease;{{ ballStyle }}"></div>
+            </div>
+            <!-- phase timeline -->
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:4px;">
+              <button onClick="{{ prevPhase }}" style="flex:0 0 auto;width:28px;height:28px;border-radius:8px;border:1px solid rgba(120,140,166,.24);background:rgba(12,18,30,.5);color:#C6D3E2;cursor:pointer;display:grid;place-items:center;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M15 5l-7 7 7 7"/></svg></button>
+              <div style="flex:1;display:flex;align-items:center;gap:4px;">
+                <sc-for list="{{ phaseDots }}" as="p" hint-placeholder-count="5">
+                  <button onClick="{{ p.onSel }}" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;background:none;border:0;cursor:pointer;padding:2px 0;">
+                    <span style="width:100%;height:4px;border-radius:99px;{{ p.barStyle }}"></span>
+                    <span style="font:600 7.5px 'IBM Plex Mono';letter-spacing:.04em;color:{{ p.labelColor }};">{{ p.short }}</span>
+                  </button>
+                </sc-for>
+              </div>
+              <button onClick="{{ nextPhase }}" style="flex:0 0 auto;width:28px;height:28px;border-radius:8px;border:1px solid rgba(120,140,166,.24);background:rgba(12,18,30,.5);color:#C6D3E2;cursor:pointer;display:grid;place-items:center;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M9 5l7 7-7 7"/></svg></button>
+            </div>
+          </div>
+
+          <!-- annotation panel -->
+          <aside style="flex:1 1 260px;min-width:240px;display:flex;flex-direction:column;gap:13px;padding:20px;border-radius:16px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);">
+            <div style="display:flex;align-items:center;justify-content:space-between;">
+              <div>
+                <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.18em;color:#61748c;">PHASE {{ frPhaseNum }} / 5</div>
+                <div style="font:800 16px 'Archivo';color:#EAF2FB;margin-top:2px;">{{ frPhaseTitle }}</div>
+              </div>
+              <div style="text-align:right;">
+                <div style="font:800 22px 'Archivo';color:{{ diveScoreColor }};">{{ diveScore }}</div>
+                <div style="font:600 8px 'IBM Plex Mono';letter-spacing:.1em;color:#7688a0;">DIVE SCORE</div>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:9px;">
+              <sc-for list="{{ framePoints }}" as="p" hint-placeholder-count="2">
+                <div style="display:flex;align-items:flex-start;gap:10px;">
+                  <span style="flex:0 0 auto;margin-top:1px;width:18px;height:18px;border-radius:50%;display:grid;place-items:center;background:{{ p.iconBg }};font:800 10px 'Archivo';color:{{ p.iconColor }};">{{ p.icon }}</span>
+                  <span style="flex:1;font:500 12px/1.5 'Archivo';color:#DCE7F3;">{{ p.text }}</span>
+                </div>
+              </sc-for>
+            </div>
+            <div style="margin-top:auto;padding:11px 13px;border-radius:11px;border:1px solid rgba(58,224,160,.28);background:rgba(12,36,26,.28);">
+              <div style="font:600 8.5px 'IBM Plex Mono';letter-spacing:.14em;color:#3AE0A0;margin-bottom:3px;">ELITE REFERENCE</div>
+              <div style="font:600 12.5px 'Archivo';color:#CFEFE0;">{{ eliteTarget }}</div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </main>
+  </sc-if>
+
+  <!-- ============ EMBEDDED DONE ============ -->
+  <sc-if value="{{ isDone }}" hint-placeholder-val="{{ false }}">
+    <main data-screen-label="Footwork — Done" style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;text-align:center;padding:20px clamp(26px,4vw,58px) 40px;">
+      <div class="fa-in" style="display:inline-flex;align-items:center;gap:9px;margin-bottom:20px;padding:6px 14px;border:1px solid color-mix(in srgb,var(--accent,#22D3EE) 32%,transparent);border-radius:999px;font:600 10px 'IBM Plex Mono';letter-spacing:.24em;color:var(--accent,#22D3EE);">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" style="stroke:var(--accent,#22D3EE);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12.5l4.5 4.5L19 6.5"/></svg>TECHNIQUE SCAN LOGGED
+      </div>
+      <h2 class="fa-in" style="margin:0 0 14px;font:800 clamp(28px,4.4vw,50px)/1 'Archivo';letter-spacing:-0.03em;animation-delay:.05s;">{{ verdict }}</h2>
+      <p class="fa-in" style="margin:0 0 26px;max-width:460px;font:400 15px/1.6 'Archivo';color:#9FB0C5;text-wrap:pretty;animation-delay:.1s;">{{ verdictNote }}</p>
+      <div class="fa-in" style="display:flex;gap:22px;margin-bottom:32px;animation-delay:.14s;">
+        <div style="text-align:center;"><div style="font:800 28px 'Archivo';color:var(--accent,#22D3EE);">{{ overall }}</div><div style="font:600 8.5px 'IBM Plex Mono';letter-spacing:.14em;color:#7688a0;margin-top:3px;">TECHNIQUE</div></div>
+        <div style="width:1px;background:rgba(120,140,166,.2);"></div>
+        <div style="text-align:center;"><div style="font:800 28px 'Archivo';color:#EAF2FB;">{{ percentileText }}</div><div style="font:600 8.5px 'IBM Plex Mono';letter-spacing:.14em;color:#7688a0;margin-top:3px;">PERCENTILE</div></div>
+      </div>
+      <button onClick="{{ emit }}" class="fa-in" style="display:inline-flex;align-items:center;gap:11px;padding:16px 36px;border-radius:12px;border:0;cursor:pointer;background:var(--accent,#22D3EE);color:#03121a;font:700 15px 'Archivo';box-shadow:0 12px 36px color-mix(in srgb,var(--accent,#22D3EE) 40%,transparent);transition:transform .16s ease;animation-delay:.2s;" style-hover="transform:translateY(-2px);">
+        Continue the scan
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" style="stroke:#03121a;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12h13M12 6l6 6-6 6"/></svg>
+      </button>
+    </main>
+  </sc-if>
+
+  <sc-if value="{{ motion }}" hint-placeholder-val="{{ true }}">
+    <div style="position:absolute;left:0;right:0;height:2px;z-index:2;background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--accent,#22D3EE) 30%,transparent),transparent);opacity:.4;animation:fa-scanline 7s linear infinite;pointer-events:none;"></div>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;$preview&quot;: {&quot;width&quot;: 960, &quot;height&quot;: 720},
+  &quot;accent&quot;: {&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#22D3EE&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#22D3EE&quot;,&quot;#A78BFA&quot;,&quot;#C6FF3A&quot;,&quot;#FF7A45&quot;,&quot;#FF4D8D&quot;],&quot;section&quot;:&quot;Theme&quot;},
+  &quot;motion&quot;: {&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Theme&quot;},
+  &quot;embedded&quot;: {&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Mode&quot;},
+  &quot;onDone&quot;: {&quot;editor&quot;:null,&quot;tsType&quot;:&quot;(counts: Record&lt;string, number&gt;, meta?: object) =&gt; void&quot;}
+}">
+class Component extends DCLogic {
+  state = {
+    view:'intro', drag:false, file:null, videoUrl:null, loadingMeta:false, metaError:false,
+    anaPct:0, anaStage:0, scorePct:0, scoreStage:0,
+    dives:null, runSeed:0, result:null, frameDive:0, framePhase:0,
+  };
+
+  DIVES = [
+    { id:1, label:'Left-side dive', type:'Extended', dir:'L', t:[5,8],   conf:98, sub:{footPlant:58, alignment:66, hand:82, recovery:66} },
+    { id:2, label:'Right-side dive', type:'Extended', dir:'R', t:[12,15], conf:95, sub:{footPlant:84, alignment:84, hand:84, recovery:76} },
+    { id:3, label:'Reactive dive', type:'Reactive', dir:'C', t:[18,20],  conf:91, sub:{footPlant:82, alignment:72, hand:74, recovery:72} },
+    { id:4, label:'Extended left dive', type:'Extended', dir:'L', t:[25,28], conf:97, sub:{footPlant:66, alignment:60, hand:84, recovery:74} },
+    { id:5, label:'Dive + recovery', type:'Recovery', dir:'R', t:[32,35], conf:94, sub:{footPlant:74, alignment:78, hand:78, recovery:58} },
+    { id:6, label:'Partial dive', type:'Partial', dir:'?', t:[38,40],    conf:67, sub:null },
+  ];
+  SUBKEYS = ['footPlant','alignment','hand','recovery'];
+  ELITE = { footPlant:86, alignment:88, hand:90, recovery:91, consistency:87 };
+  MNAME = { footPlant:'Foot plant explosiveness', alignment:'Body alignment', hand:'Hand placement', recovery:'Recovery speed', consistency:'Consistency' };
+  PHASES = [
+    { short:'SET',   title:'Set position', t:0 },
+    { short:'PUSH',  title:'Takeoff',      t:90 },
+    { short:'PEAK',  title:'Peak extension', t:150 },
+    { short:'HANDS', title:'Contact',      t:210 },
+    { short:'LAND',  title:'Landing',      t:300 },
+  ];
+  ETARGET = ['Balanced set, weight forward','Peak in ~180ms','0° — square to goal','Two-handed claim','Reset in ~1.4s'];
+  ORDER = ['oracle','sentinel','catalyst','bastion','wall'];
+  AX = { oracle:'ANTICIPATION', sentinel:'COMMAND', catalyst:'AGGRESSION', bastion:'REFLEX', wall:'PRESENCE' };
+
+  _clamp(v,a,b){ return Math.max(a, Math.min(b, v)); }
+  _mean(a){ return a.length ? a.reduce((x,y)=>x+y,0)/a.length : 0; }
+  _sd(a){ if(a.length<2) return 0; const m=this._mean(a); return Math.sqrt(this._mean(a.map(x=>(x-m)*(x-m)))); }
+  _j(seed,a,b){ if(!seed) return 0; let h=(seed*131+a*17+b*7)>>>0; h=((h^(h>>>13))*1274126177)>>>0; return (h%11)-5; }
+  _mmss(s){ s=Math.round(s||0); const m=Math.floor(s/60), r=s%60; return m+':'+(r<10?'0':'')+r; }
+
+  _clear(){ if(this._tk){ clearInterval(this._tk); this._tk=null; } }
+  componentWillUnmount(){ this._clear(); if(this._url){ try{ URL.revokeObjectURL(this._url); }catch(e){} } }
+  componentDidMount(){
+    try{ const b=JSON.parse(localStorage.getItem('fa_footwork_progress')||'null'); if(b&&typeof b.best==='number') this._best=b; }catch(e){}
+    if(this.props.embedded){ this.setState({ view:'upload' }); }
+  }
+
+  _toUpload(){ this.setState({ view:'upload', file:null, videoUrl:null, metaError:false, loadingMeta:false }); }
+
+  _fmt(type){ type=(type||'').toLowerCase();
+    return type.includes('quicktime')?'MOV':type.includes('webm')?'WEBM':(type.includes('mp4')||type.includes('m4v'))?'MP4':((type.split('/')[1]||'VIDEO').toUpperCase()); }
+
+  _checks(type,sizeMB,w,h,dur){
+    const arr=[];
+    arr.push({ label:'Format', detail:this._fmt(type)+' · accepted', ok:true });
+    arr.push({ label:'File size', detail:sizeMB.toFixed(1)+' MB'+(sizeMB>100?' · over 100MB':''), ok:sizeMB<=100 });
+    if(w&&h) arr.push({ label:'Resolution', detail:w+'×'+h+(h>=720?'':' · below 720p'), ok:h>=720 });
+    else arr.push({ label:'Resolution', detail:'read on device', ok:true });
+    if(dur) arr.push({ label:'Duration', detail:this._mmss(dur)+(dur<8?' · very short':dur>360?' · trim to dives':''), ok:dur>=8&&dur<=360 });
+    else arr.push({ label:'Duration', detail:'read on device', ok:true });
+    arr.push({ label:'Keeper', detail:'full body, 4–5m out', ok:true });
+    return arr;
+  }
+
+  _ingest(file){
+    if(!file) return;
+    if(this._url){ try{ URL.revokeObjectURL(this._url); }catch(e){} this._url=null; }
+    const type=(file.type||'').toLowerCase();
+    const okType = type.indexOf('video/')===0 || /\.(mp4|mov|m4v|webm)$/i.test(file.name||'');
+    if(!okType){ this.setState({ metaError:true, file:null, videoUrl:null, loadingMeta:false, drag:false }); return; }
+    const sizeMB=file.size/1048576;
+    const url=URL.createObjectURL(file); this._url=url;
+    this.setState({ loadingMeta:true, metaError:false, file:null, videoUrl:null, drag:false });
+    let done=false;
+    const finish=(w,h,dur)=>{
+      if(done) return; done=true;
+      const checks=this._checks(type,sizeMB,w,h,dur);
+      this.setState({ loadingMeta:false, videoUrl:url,
+        file:{ name:file.name||'clip.mp4', sizeMB, type, w, h, durationSec:dur, checks, sample:false } });
+    };
+    try{
+      const v=document.createElement('video'); v.preload='metadata'; v.muted=true;
+      v.onloadedmetadata=()=>finish(v.videoWidth||0, v.videoHeight||0, v.duration||0);
+      v.onerror=()=>finish(0,0,0);
+      v.src=url;
+      setTimeout(()=>finish(0,0,0), 6000);
+    }catch(e){ finish(0,0,0); }
+  }
+
+  _onPick(e){ const f=e&&e.target&&e.target.files&&e.target.files[0]; this._ingest(f); }
+  _onDrop(e){ e.preventDefault(); const f=e&&e.dataTransfer&&e.dataTransfer.files&&e.dataTransfer.files[0]; this.setState({ drag:false }); this._ingest(f); }
+  _clearFile(){ if(this._url){ try{ URL.revokeObjectURL(this._url); }catch(e){} this._url=null; } this.setState({ file:null, videoUrl:null, metaError:false, loadingMeta:false }); }
+
+  _useSample(){
+    if(this._url){ try{ URL.revokeObjectURL(this._url); }catch(e){} this._url=null; }
+    const dur=154, w=1920, h=1080, sizeMB=48.6, type='video/mp4';
+    const checks=this._checks(type,sizeMB,w,h,dur);
+    this.setState({ file:{ name:'academy_dive_session.mp4', sizeMB, type, w, h, durationSec:dur, checks, sample:true }, videoUrl:null, metaError:false, loadingMeta:false });
+    this._T(()=>this._analyze(), 60);
+  }
+  _T(fn,ms){ return setTimeout(fn,ms); }
+
+  _analyze(){
+    this._clear();
+    this.setState({ view:'analyzing', anaPct:0, anaStage:0 });
+    const step=100/118;
+    this._tk=setInterval(()=>{
+      let p=Math.min(100, this.state.anaPct+step);
+      const stg = p<20?0 : p<42?1 : p<66?2 : p<88?3 : 4;
+      this.setState({ anaPct:p, anaStage:stg });
+      if(p>=100){ this._clear(); this._buildScenes(); }
+    }, 40);
+  }
+
+  _buildScenes(){
+    const dur=(this.state.file&&this.state.file.durationSec)||160;
+    const k = (dur && dur<44) ? dur/44 : 1;
+    const dives=this.DIVES.map(d=>({
+      id:d.id, label:d.label, type:d.type, dir:d.dir, conf:d.conf, sub:d.sub,
+      t0:+(d.t[0]*k).toFixed(1), t1:+(d.t[1]*k).toFixed(1),
+      selected: d.conf>=90,
+    }));
+    this.setState({ view:'scenes', dives });
+  }
+
+  _toggle(id){
+    const dives=this.state.dives.map(d=> d.id===id ? { ...d, selected:!d.selected } : d);
+    const n=dives.filter(d=>d.selected).length;
+    if(n<1) return;
+    this.setState({ dives });
+  }
+
+  _confirm(){
+    const n=this.state.dives.filter(d=>d.selected).length;
+    if(n<1) return;
+    this._clear();
+    this.setState({ view:'scoring', scorePct:0, scoreStage:0 });
+    const step=100/62;
+    this._tk=setInterval(()=>{
+      let p=Math.min(100, this.state.scorePct+step);
+      const stg = p<40?0 : p<74?1 : 2;
+      this.setState({ scorePct:p, scoreStage:stg });
+      if(p>=100){ this._clear(); this._score(); }
+    }, 40);
+  }
+
+  _compute(sel, seed){
+    const dj=sel.map(d=>{
+      const s={};
+      this.SUBKEYS.forEach((kk,ki)=>{ s[kk]=this._clamp((d.sub[kk]||60)+this._j(seed,d.id,ki), 24, 98); });
+      const overall=Math.round((s.footPlant+s.alignment+s.hand+s.recovery)/4);
+      return { id:d.id, label:d.label, type:d.type, dir:d.dir, s, overall };
+    });
+    const agg={};
+    this.SUBKEYS.forEach(kk=>{ agg[kk]=Math.round(this._mean(dj.map(x=>x.s[kk]))); });
+    const overalls=dj.map(x=>x.overall);
+    const sd=this._sd(overalls);
+    const lefts=dj.filter(x=>x.dir==='L').map(x=>x.overall);
+    const rights=dj.filter(x=>x.dir==='R').map(x=>x.overall);
+    const leftAvg=lefts.length?Math.round(this._mean(lefts)):null;
+    const rightAvg=rights.length?Math.round(this._mean(rights)):null;
+    const sideGap=(leftAvg!=null&&rightAvg!=null)?Math.abs(leftAvg-rightAvg):0;
+    const consistency=this._clamp(Math.round(100 - sd*3.2 - sideGap*1.4), 30, 98);
+    const metrics={ footPlant:agg.footPlant, alignment:agg.alignment, hand:agg.hand, recovery:agg.recovery, consistency };
+    const overall=Math.round(metrics.footPlant*0.25 + metrics.alignment*0.25 + metrics.hand*0.20 + metrics.recovery*0.20 + consistency*0.10);
+    const percentile=this._clamp(Math.round((overall-38)*1.78), 3, 97);
+    const plantMs=Math.round(180+(100-metrics.footPlant)*2.2);
+    const alignDeg=Math.max(0, Math.round((100-metrics.alignment)*0.28));
+    const recovSec=(1.2+(100-metrics.recovery)*0.0375).toFixed(1);
+
+    let bastion=0, wall=0;
+    if(metrics.footPlant>=68) bastion++; if(metrics.footPlant>=80) bastion++;
+    if(metrics.recovery>=68) bastion++;  if(metrics.recovery>=80) bastion++;
+    if(overall>=68) bastion++;
+    if(metrics.alignment>=68) wall++;    if(metrics.alignment>=80) wall++;
+    if(consistency>=68) wall++;          if(consistency>=80) wall++;
+    if(overall>=72) wall++;
+    if(bastion===0) bastion=1;
+    const counts={ oracle:0, sentinel:0, catalyst:0, bastion, wall };
+
+    return { seed, dj, metrics, overall, percentile, plantMs, alignDeg, recovSec, leftAvg, rightAvg, counts };
+  }
+
+  _score(){
+    const seed=this.state.runSeed||0;
+    const sel=this.state.dives.filter(d=>d.selected && d.sub);
+    const use=sel.length?sel:this.DIVES.filter(d=>d.sub).slice(0,5);
+    const r=this._compute(use, seed);
+    if(!this.props.embedded){
+      try{
+        const prev=(this._best&&this._best.best)||0;
+        const best=Math.max(prev, r.overall);
+        const runs=((this._best&&this._best.runs)||0)+1;
+        localStorage.setItem('fa_footwork_progress', JSON.stringify({ best, runs, ts:Date.now() }));
+        this._best={ best, runs };
+      }catch(e){}
+    }
+    this._finalCounts=r.counts;
+    this.setState({ view: this.props.embedded?'done':'result', result:r });
+  }
+
+  _openFrames(i){ this.setState({ view:'frames', frameDive:i, framePhase:0 }); }
+  _frDelta(d){ const r=this.state.result; const n=r?r.dj.length:5; this.setState({ frameDive:(this.state.frameDive+d+n)%n, framePhase:0 }); }
+  _phDelta(d){ this.setState({ framePhase:this._clamp(this.state.framePhase+d, 0, 4) }); }
+  _setPhase(i){ this.setState({ framePhase:i }); }
+
+  _retake(){ this._clear(); this.setState({ view:'scoring', runSeed:(Date.now()%9973)+1, scorePct:0, scoreStage:0 });
+    const step=100/50;
+    this._tk=setInterval(()=>{
+      let p=Math.min(100, this.state.scorePct+step);
+      const stg = p<40?0 : p<74?1 : 2;
+      this.setState({ scorePct:p, scoreStage:stg });
+      if(p>=100){ this._clear(); this._score(); }
+    }, 40);
+  }
+  _emit(){ (this.props.onDone||function(){})({ ...(this._finalCounts||{oracle:0,sentinel:0,catalyst:0,bastion:1,wall:0}) }, this._meta()); }
+  _meta(){ const r=this.state.result||this._compute(this.DIVES.filter(d=>d.sub).slice(0,5),0);
+    return { drill:'footwork', layer:'demonstrated', overall:r.overall, percentile:r.percentile, metrics:r.metrics,
+      dives:r.dj.map(x=>({ id:x.id, label:x.label, dir:x.dir, score:x.overall })), counts:r.counts }; }
+
+  _phasePoints(d, ph){
+    const s=d.s, pts=[];
+    const deg=Math.max(0, Math.round((100-s.alignment)*0.28));
+    const ms=Math.round(180+(100-s.footPlant)*2.2);
+    const sec=(1.2+(100-s.recovery)*0.0375).toFixed(1);
+    if(ph===0){ pts.push({ ok:true, text:'Balanced set — feet about shoulder-width, weight on the balls.' }); }
+    else if(ph===1){
+      if(s.footPlant>=78){ pts.push({ ok:true, text:'Explosive double-foot push off the turf.' }); }
+      else if(s.footPlant>=64){ pts.push({ ok:false, text:'Leading foot fires ~2 frames late — drive both together.' }); pts.push({ ok:true, text:'Good knee bend loading the spring.' }); }
+      else { pts.push({ ok:false, text:'Slow first push — '+ms+'ms to peak (elite ~180ms).' }); }
+    }
+    else if(ph===2){
+      if(deg<=6){ pts.push({ ok:true, text:'Square at full stretch — only '+deg+'° off perpendicular.' }); pts.push({ ok:true, text:'Hands leading, chest driving the line.' }); }
+      else { pts.push({ ok:false, text:'Body rotated '+deg+'° off square (target 0°).' }); pts.push({ ok:true, text:'Strong extension through the top hand.' }); }
+    }
+    else if(ph===3){
+      if(s.hand>=76){ pts.push({ ok:true, text:'Leading hand set early — clean contact shape.' }); }
+      else { pts.push({ ok:false, text:'One-handed reach — get the second hand behind it.' }); }
+      if(deg>10){ pts.push({ ok:false, text:'Trunk twist bleeds power out of the save.' }); }
+    }
+    else {
+      if(s.recovery>=84){ pts.push({ ok:true, text:'Back on your feet in '+sec+'s — quick, balanced reset.' }); }
+      else { pts.push({ ok:false, text:'Slow to reset — '+sec+'s to ready (elite ~1.4s).' }); pts.push({ ok:false, text:'Landing hand not absorbing — legs slow to gather.' }); }
+    }
+    return pts;
+  }
+
+  renderVals(){
+    const accent=this.props.accent ?? '#22D3EE';
+    const motion=this.props.motion ?? true;
+    const embedded=!!this.props.embedded;
+    const A=(h,a)=>h+a;
+    const EG='#3AE0A0', AM='#FFB020', RD='#FF5A6E';
+    const S=this.state;
+    const V=S.view;
+
+    const cScore=(v)=> v>=80?EG : v>=65?accent : v>=50?AM : RD;
+
+    // header steps
+    const stageIdx={ intro:0, upload:1, analyzing:2, scenes:3, scoring:3, result:4, frames:4, done:4 }[V] ?? 0;
+    const STAGES=['GUIDE','UPLOAD','ANALYSE','CONFIRM','RESULT'];
+    const stepDots=STAGES.map((_,i)=>({ style: i===stageIdx ? 'width:13px;background:'+accent+';box-shadow:0 0 8px '+A(accent,'aa')+';'
+      : (i<stageIdx ? 'background:'+A(accent,'88')+';' : 'background:rgba(120,140,166,.26);') }));
+    const stepLabel = (V==='result'||V==='done'||V==='frames') ? 'COMPLETE' : STAGES[stageIdx];
+
+    // intro
+    const checklist=[
+      { n:'1', label:'Left-side dive (extended)' },
+      { n:'2', label:'Right-side dive (extended)' },
+      { n:'3', label:'Centre dive (forward)' },
+      { n:'4', label:'Dive + full recovery' },
+      { n:'5', label:'Reactive dive (explosive)' },
+    ];
+
+    // upload
+    const drag=S.drag;
+    const dropStyle = drag
+      ? 'border:2px dashed '+accent+';background:color-mix(in srgb,'+accent+' 10%,rgba(10,16,28,.5));'
+      : 'border:2px dashed rgba(120,140,166,.34);background:rgba(10,16,28,.4);';
+    const dropTitle = drag ? 'Drop to upload' : 'Drag & drop your dive clip';
+    const f=S.file;
+    const hasFile=!!f;
+    const hasVideo=!!S.videoUrl;
+    const showDrop=!hasFile;
+    const showFileCard=hasFile;
+    let fileName='', fileMeta='', fileChecks=[], hasWarn=false;
+    if(f){
+      fileName=f.name;
+      const parts=[this._fmt(f.type)];
+      parts.push((typeof f.sizeMB==='number'?f.sizeMB.toFixed(1):f.sizeMB)+' MB');
+      if(f.durationSec) parts.push(this._mmss(f.durationSec));
+      if(f.w&&f.h) parts.push(f.w+'×'+f.h);
+      if(f.sample) parts.push('SAMPLE');
+      fileMeta=parts.join('  ·  ');
+      fileChecks=(f.checks||[]).map(c=>({
+        label:c.label.toUpperCase(), detail:c.detail, icon:c.ok?'✓':'!',
+        iconColor:c.ok?EG:AM, iconBg:c.ok?'rgba(58,224,160,.16)':'rgba(255,176,32,.16)',
+        detailColor:c.ok?'#C6D3E2':'#FFD79A',
+      }));
+      hasWarn=(f.checks||[]).some(c=>!c.ok);
+    }
+
+    // analysing
+    const anaNames=['Uploading to secure storage','Detecting keeper in frame','Identifying dive attempts','Extracting pose landmarks','Comparing to elite keepers'];
+    const anaStages=anaNames.map((nm,i)=>{
+      const st = i<S.anaStage?'done' : i===S.anaStage?'active':'wait';
+      return { name:nm,
+        border: st==='wait'?'rgba(120,140,166,.14)':A(accent, st==='active'?'44':'26'),
+        bg: st==='active'?A(accent,'0e'):'rgba(6,12,22,.4)',
+        dotStyle: st==='done'?'background:'+accent+";color:#03121a;font:800 9px 'Archivo';" : st==='active'?'background:transparent;border:2px solid '+accent+';':'background:transparent;border:2px solid rgba(120,140,166,.3);',
+        dotInner: st==='done'?'✓':'',
+        textColor: st==='wait'?'#61748c':'#DCE7F3',
+        tag: st==='done'?'DONE':st==='active'?'···':'',
+        tagColor: st==='done'?EG:accent };
+    });
+    const anaPct=Math.round(S.anaPct)+'%';
+    const anaBarW=S.anaPct+'%';
+    const anaStageLabel=anaNames[S.anaStage]||anaNames[0];
+    const anaEta = S.anaPct<50 ? 'Estimated 2 minutes remaining' : S.anaPct<85 ? 'Almost there…' : 'Finalising detections…';
+
+    // scenes
+    let diveRows=[], selCount=0, foundCount=0;
+    if(S.dives){
+      foundCount=S.dives.length;
+      selCount=S.dives.filter(d=>d.selected).length;
+      diveRows=S.dives.map(d=>{
+        const isPartial=!d.sub;
+        const sel=d.selected;
+        const confColor = d.conf>=90?EG : d.conf>=75?accent : AM;
+        const rot = d.dir==='L'?'-58deg' : d.dir==='R'?'58deg' : d.dir==='C'?'-12deg' : '20deg';
+        return {
+          id:d.id, onToggle:()=>this._toggle(d.id), cursor:'pointer',
+          rowStyle: sel
+            ? 'border:1px solid '+A(accent,'55')+';background:'+A(accent,'0f')+';'
+            : 'border:1px solid rgba(120,140,166,.16);background:rgba(6,12,22,.4);'+(isPartial?'opacity:.62;':''),
+          boxStyle: sel ? "background:"+accent+";border:1.5px solid "+accent+";color:#03121a;font:800 12px 'Archivo';" : "background:transparent;border:1.5px solid rgba(120,140,166,.4);",
+          check: sel ? '✓' : '',
+          poseRot:rot, poseOpacity: isPartial?'.4':'.85',
+          title:d.label, titleColor: sel?'#F2F8FE':'#B9C7D8',
+          sub:(d.type.toUpperCase())+' · '+d.dir+'  ·  '+this._mmss(d.t0)+'–'+this._mmss(d.t1),
+          confText:'CONF '+d.conf+'%', confColor, confW:d.conf+'%',
+          confBar: d.conf>=90?EG : d.conf>=75?accent : AM,
+        };
+      });
+    }
+    const canConfirm=selCount>=1;
+    const selCountText=selCount+' of '+foundCount+' selected'+(selCount>5?' · trim to 5 for best read':'');
+    const selColor= selCount>0?'#C6D3E2':'#7688a0';
+    const confirmLabel='Confirm & score '+selCount;
+    const confirmBg=canConfirm?accent:'color-mix(in srgb,'+accent+' 34%,#2a3446)';
+    const confirmShadow=canConfirm?'0 12px 34px color-mix(in srgb,'+accent+' 40%,transparent)':'none';
+    const confirmCursor=canConfirm?'pointer':'not-allowed';
+
+    // scoring
+    const scoreNames=['Modelling joint kinematics','Scoring five dives','Benchmarking vs elite'];
+    const scorePct=Math.round(S.scorePct)+'%';
+    const scoreBarW=S.scorePct+'%';
+    const scoreStageLabel=scoreNames[S.scoreStage]||scoreNames[0];
+
+    // result
+    const r=S.result;
+    let overall=0, overallColor=accent, percentileText='—', verdict='', verdictNote='', metricCards=[], diveScoreRows=[], leanChips=[];
+    if(r){
+      overall=r.overall; overallColor=cScore(overall);
+      percentileText=r.percentile+'th';
+      verdict = overall>=82?'Elite-track technique.' : overall>=70?'Solid, with clear gains.' : overall>=58?'Raw tools, rough edges.' : 'Technique needs rebuilding.';
+      verdictNote = overall>=82
+        ? 'Your dives are explosive, square and repeatable — the mechanics scouts look for. Sharpen the weaker side and it is complete.'
+        : overall>=70
+        ? 'The shot-stopping athleticism is there. Tighten your foot plant and body line and the whole picture lifts.'
+        : overall>=58
+        ? 'Good raw spring, but the technical model is inconsistent — takeoff timing and recovery are costing you saves.'
+        : 'The base athleticism shows in flashes. Rebuild the dive from the foot plant up to make it reliable under pressure.';
+
+      const mk=(key)=>{
+        const your=r.metrics[key], elite=this.ELITE[key], gap=your-elite;
+        let note='';
+        if(key==='footPlant') note = your>=82 ? ('Explosive off both feet — peak in ~'+r.plantMs+'ms, near elite.') : ('You reach peak height in '+r.plantMs+'ms; elite push in ~180ms. Build first-step power.');
+        else if(key==='alignment') note = your>=82 ? ('Square through takeoff — only '+r.alignDeg+'° off perpendicular.') : ('Rotated '+r.alignDeg+'° off square at full stretch. Core stability through the push.');
+        else if(key==='hand') note = your>=82 ? ('Leading hand set early and correct on every dive.') : ('Good leading hand. On closer shots, get the second hand behind it.');
+        else if(key==='recovery') note = your>=82 ? ('Back up in ~'+r.recovSec+'s — quick, balanced reset.') : ('Off the ground in '+r.recovSec+'s; elite reset in ~1.4s. Strengthen legs.');
+        else note = (r.leftAvg!=null&&r.rightAvg!=null) ? ('Left-side dives ('+r.leftAvg+') trail your right ('+r.rightAvg+'). Mirror your stronger side.') : ('Technique varies dive to dive — groove one repeatable pattern.');
+        const gc = Math.abs(gap)<=6?EG : Math.abs(gap)<=14?AM : RD;
+        return { name:this.MNAME[key], your:your, gapText:(gap>=0?'+':'−')+Math.abs(gap), gapColor:gc,
+          color:cScore(your), yourW:your+'%', eliteW:elite+'%', barColor:cScore(your), note };
+      };
+      metricCards=['footPlant','alignment','hand','recovery','consistency'].map(mk);
+
+      diveScoreRows=r.dj.map((d,i)=>{
+        const good=d.overall>=74;
+        const noteMap={
+          footPlant:'foot plant slow', alignment:'body angle off', hand:'hands strong', recovery:'slow to reset',
+        };
+        // pick weakest sub as the note
+        let weakKey='footPlant', weakVal=100;
+        this.SUBKEYS.forEach(kk=>{ if(d.s[kk]<weakVal){ weakVal=d.s[kk]; weakKey=kk; } });
+        let strongKey='footPlant', strongVal=0;
+        this.SUBKEYS.forEach(kk=>{ if(d.s[kk]>strongVal){ strongVal=d.s[kk]; strongKey=kk; } });
+        const shortName={ footPlant:'foot plant', alignment:'body line', hand:'hands', recovery:'recovery' };
+        const note = good ? ('strong '+shortName[strongKey]) : (shortName[weakKey]+' needs work');
+        return { onOpen:()=>this._openFrames(i), tag:('DIVE 0'+(i+1)+' · '+d.dir),
+          border: good?A(EG,'40'):'rgba(120,140,166,.2)',
+          icon: good?'✓':'✗', iconColor: good?EG:RD, iconBg: good?'rgba(58,224,160,.16)':'rgba(255,90,110,.16)',
+          score:d.overall, scoreColor:cScore(d.overall), label:d.label, note };
+      });
+
+      const fc=this._finalCounts||r.counts;
+      const ranked=this.ORDER.slice().filter(k=>fc[k]>0).sort((a,b)=>fc[b]-fc[a]).slice(0,2);
+      leanChips=(ranked.length?ranked:['bastion']).map((k,i)=>({ label:this.AX[k], color:i===0?accent:'#C6D3E2', border:i===0?A(accent,'55'):'rgba(120,140,166,.3)' }));
+    }
+
+    // frames
+    let frDiveLabel='', frDiveType='', frPhaseTitle='', frPhaseNum='1', frTime='0ms', framePoints=[], eliteTarget='', diveScore=0, diveScoreColor=accent,
+        keeperStyle='', eliteStyle='', ballStyle='', phaseDots=[];
+    if(r && r.dj[S.frameDive]){
+      const d=r.dj[S.frameDive], ph=S.framePhase, P=this.PHASES[ph];
+      frDiveLabel='DIVE 0'+(S.frameDive+1)+' · '+d.label.toUpperCase();
+      frDiveType=d.type;
+      frPhaseTitle=P.title; frPhaseNum=(ph+1)+''; frTime=P.t+'ms';
+      diveScore=d.overall; diveScoreColor=cScore(d.overall);
+      framePoints=this._phasePoints(d, ph).map(p=>({ text:p.text, icon:p.ok?'✓':'✗', iconColor:p.ok?EG:RD, iconBg:p.ok?'rgba(58,224,160,.16)':'rgba(255,90,110,.16)' }));
+      eliteTarget=this.ETARGET[ph];
+
+      const sign = d.dir==='L'?-1 : d.dir==='R'?1 : -0.35;
+      const deg=Math.max(0, Math.round((100-d.s.alignment)*0.28));
+      const geo=[
+        { x:50,           y:74, mag:0 },
+        { x:50+sign*8,    y:58, mag:24 },
+        { x:50+sign*20,   y:36, mag:80 },
+        { x:50+sign*24,   y:40, mag:86 },
+        { x:50+sign*28,   y:70, mag:92 },
+      ][ph];
+      let yourRot=sign*geo.mag; if(ph>=2) yourRot += sign*deg*0.6;
+      const eDelta=[0,4,6,4,0][ph];
+      const eliteRot=sign*(geo.mag+eDelta);
+      const ex=geo.x+sign*(ph>=2?4:0), ey=geo.y-(ph===2?8:ph===3?6:0);
+      keeperStyle='left:'+geo.x+'%;top:'+geo.y+'%;transform:translate(-50%,-50%) rotate('+yourRot+'deg);';
+      eliteStyle='left:'+ex+'%;top:'+ey+'%;transform:translate(-50%,-50%) rotate('+eliteRot+'deg);opacity:.6;';
+      const bp=[{ x:50, y:88 },{ x:50, y:86 },{ x:50+sign*30, y:28 },{ x:50+sign*33, y:30 },{ x:geo.x, y:geo.y-5 }][ph];
+      ballStyle='left:'+bp.x+'%;top:'+bp.y+'%;transform:translate(-50%,-50%);';
+
+      phaseDots=this.PHASES.map((pp,i)=>({
+        onSel:()=>this._setPhase(i),
+        barStyle: i===ph ? 'background:'+accent+';box-shadow:0 0 8px '+A(accent,'aa')+';' : (i<ph ? 'background:'+A(accent,'77')+';' : 'background:rgba(120,140,166,.24);'),
+        labelColor: i===ph ? accent : '#61748c', short:pp.short,
+      }));
+    }
+
+    // done/best
+    const showBest = V==='intro' && !embedded && !!(this._best && this._best.best);
+    const bestText = (this._best&&this._best.best) ? ('PERSONAL BEST · '+this._best.best+' TECHNIQUE') : '';
+
+    return {
+      accent, motion, embedded, chromeOn:!embedded,
+      rootMinH: embedded?'100%':'100dvh', rootH: embedded?'100%':'auto',
+      stepDots, stepLabel,
+      isIntro: !embedded && V==='intro',
+      isUpload: V==='upload',
+      isAnalyzing: V==='analyzing',
+      isScenes: V==='scenes',
+      isScoring: V==='scoring',
+      isResult: !embedded && V==='result',
+      isFrames: !embedded && V==='frames',
+      isDone: embedded && V==='done',
+      // intro
+      checklist, showBest, bestText, toUpload:()=>this._toUpload(),
+      // upload
+      showDrop, showFileCard, dropStyle, dropTitle, loadingMeta:S.loadingMeta, metaError:S.metaError,
+      onDragOver:(e)=>{ e.preventDefault(); if(!S.drag) this.setState({ drag:true }); },
+      onDragLeave:(e)=>{ e.preventDefault(); this.setState({ drag:false }); },
+      onDrop:(e)=>this._onDrop(e), onPick:(e)=>this._onPick(e), useSample:()=>this._useSample(),
+      hasVideo, videoUrl:S.videoUrl, fileName, fileMeta, fileChecks, hasWarn,
+      analyze:()=>this._analyze(), clearFile:()=>this._clearFile(),
+      // analysing
+      anaPct, anaBarW, anaStageLabel, anaStages, anaEta,
+      // scenes
+      foundCount, diveRows, selCountText, selColor, confirm:()=>this._confirm(),
+      confirmLabel, confirmBg, confirmShadow, confirmCursor,
+      // scoring
+      scorePct, scoreBarW, scoreStageLabel,
+      // result
+      overall, overallColor, percentileText, verdict, verdictNote, metricCards, diveScoreRows, leanChips,
+      retake:()=>this._retake(), uploadNew:()=>this._toUpload(),
+      // frames
+      frDiveLabel, frDiveType, frPhaseTitle, frPhaseNum, frTime, framePoints, eliteTarget, diveScore, diveScoreColor,
+      keeperStyle, eliteStyle, ballStyle, phaseDots,
+      prevPhase:()=>this._phDelta(-1), nextPhase:()=>this._phDelta(1),
+      prevDive:()=>this._frDelta(-1), nextDive:()=>this._frDelta(1), backToResult:()=>this.setState({ view:'result' }),
+      // done
+      emit:()=>this._emit(),
+      back:()=>{ window.location.href='Landing.dc.html'; },
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  @keyframes far-in{from{opacity:0;transform:scale(.92);}to{opacity:1;transform:scale(1);}}
+  @keyframes far-grow{from{transform:scale(0);opacity:0;}to{transform:scale(1);opacity:1;}}
+  @keyframes far-dot{0%{transform:scale(0);opacity:0;}60%{transform:scale(1.3);opacity:1;}100%{transform:scale(1);opacity:1;}}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;}}
+</style>
+</helmet>
+<div style="display:flex;flex-direction:column;align-items:center;gap:14px;width:100%;font-family:'Archivo',system-ui,sans-serif;--accent:{{ accent }};">
+  <div style="position:relative;width:{{ size }};max-width:100%;aspect-ratio:1;">
+    <svg viewBox="0 0 200 200" style="position:absolute;inset:0;width:100%;height:100%;overflow:visible;animation:far-in .6s cubic-bezier(.2,.7,.2,1) both;">
+      <!-- rings -->
+      <sc-for list="{{ rings }}" as="r" hint-placeholder-count="4">
+        <polygon points="{{ r.points }}" fill="none" stroke="rgba(120,140,166,.14)" stroke-width="0.5"></polygon>
+      </sc-for>
+      <!-- spokes -->
+      <sc-for list="{{ spokes }}" as="s" hint-placeholder-count="5">
+        <line x1="100" y1="100" x2="{{ s.x }}" y2="{{ s.y }}" stroke="rgba(120,140,166,.18)" stroke-width="0.5"></line>
+      </sc-for>
+      <!-- said polygon -->
+      <sc-if value="{{ hasSaid }}" hint-placeholder-val="{{ false }}">
+        <polygon points="{{ saidPoints }}" fill="rgba(255,176,32,.12)" stroke="#FFB020" stroke-width="1.2" stroke-linejoin="round" stroke-dasharray="3 2.4" style="filter:drop-shadow(0 0 4px rgba(255,176,32,.35));transform-box:fill-box;transform-origin:center;animation:far-grow .65s cubic-bezier(.2,.8,.3,1) .3s both;"></polygon>
+        <sc-for list="{{ saidDots }}" as="d" hint-placeholder-count="0">
+          <circle cx="{{ d.x }}" cy="{{ d.y }}" r="2.6" fill="#FFB020"></circle>
+        </sc-for>
+      </sc-if>
+      <!-- played polygon -->
+      <polygon points="{{ playedPoints }}" fill="color-mix(in srgb,var(--accent,#22D3EE) 22%,transparent)" stroke="var(--accent,#22D3EE)" stroke-width="1.5" stroke-linejoin="round" style="filter:drop-shadow(0 0 6px color-mix(in srgb,var(--accent,#22D3EE) 45%,transparent));transform-box:fill-box;transform-origin:center;animation:far-grow .7s cubic-bezier(.2,.8,.3,1) .14s both;"></polygon>
+      <sc-for list="{{ playedDots }}" as="d" hint-placeholder-count="5">
+        <circle cx="{{ d.x }}" cy="{{ d.y }}" r="3.2" fill="var(--accent,#22D3EE)" style="filter:drop-shadow(0 0 5px var(--accent,#22D3EE));transform-box:fill-box;transform-origin:center;opacity:0;animation:far-dot .42s cubic-bezier(.2,.7,.2,1) {{ d.delay }} both;"></circle>
+      </sc-for>
+      <circle cx="100" cy="100" r="1.5" fill="rgba(180,220,235,.6)"></circle>
+      <!-- labels -->
+      <sc-for list="{{ labels }}" as="l" hint-placeholder-count="5">
+        <text x="{{ l.x }}" y="{{ l.ny }}" text-anchor="{{ l.anchor }}" dominant-baseline="middle" style="font:800 6.4px 'Archivo';letter-spacing:.04em;fill:{{ l.fill }};">{{ l.name }}</text>
+        <text x="{{ l.x }}" y="{{ l.vy }}" text-anchor="{{ l.anchor }}" dominant-baseline="middle" style="font:600 5px 'IBM Plex Mono';letter-spacing:.02em;fill:#61748c;">{{ l.pct }}</text>
+      </sc-for>
+    </svg>
+  </div>
+  <!-- legend -->
+  <div style="display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap;">
+    <sc-if value="{{ hasSaid }}" hint-placeholder-val="{{ false }}">
+      <span style="display:inline-flex;align-items:center;gap:8px;font:600 9px 'IBM Plex Mono';letter-spacing:.16em;color:#9FB0C5;"><span style="width:16px;height:3px;border-radius:99px;background:#FFB020;"></span>YOU SAID</span>
+    </sc-if>
+    <span style="display:inline-flex;align-items:center;gap:8px;font:600 9px 'IBM Plex Mono';letter-spacing:.16em;color:color-mix(in srgb,var(--accent,#22D3EE) 85%,#fff);"><span style="width:16px;height:3px;border-radius:99px;background:var(--accent,#22D3EE);"></span>{{ playedLegend }}</span>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;$preview&quot;: {&quot;width&quot;: 380, &quot;height&quot;: 430},
+  &quot;accent&quot;: {&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#22D3EE&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#22D3EE&quot;,&quot;#A78BFA&quot;,&quot;#C6FF3A&quot;,&quot;#FF7A45&quot;,&quot;#FF4D8D&quot;]},
+  &quot;size&quot;: {&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:340,&quot;tsType&quot;:&quot;number&quot;,&quot;min&quot;:200,&quot;max&quot;:520},
+  &quot;played&quot;: {&quot;editor&quot;:null,&quot;tsType&quot;:&quot;number[]&quot;},
+  &quot;said&quot;: {&quot;editor&quot;:null,&quot;tsType&quot;:&quot;number[]&quot;}
+}">
+class Component extends DCLogic {
+  ORDER = ['oracle','sentinel','catalyst','bastion','wall'];
+  NAMES = { oracle:'ORACLE', sentinel:'SENTINEL', catalyst:'CATALYST', bastion:'BASTION', wall:'WALL' };
+  R = 66; CX = 100; CY = 100; LR = 90;
+  DEMO_PLAYED = [0.4, 0.22, 0.1, 0.16, 0.12];
+  DEMO_SAID   = [0.16, 0.2, 0.12, 0.4, 0.12];
+
+  _pt(i, radius) {
+    const ang = (-90 + i * 72) * Math.PI / 180;
+    return { x: this.CX + radius * Math.cos(ang), y: this.CY + radius * Math.sin(ang), cos: Math.cos(ang), sin: Math.sin(ang) };
+  }
+  _arr(v, fallback) {
+    if (Array.isArray(v) && v.length === 5) return v.map(x => (typeof x === 'number' && isFinite(x)) ? x : 0);
+    return fallback;
+  }
+
+  renderVals() {
+    const accent = this.props.accent ?? '#22D3EE';
+    const size = (this.props.size ?? 340) + 'px';
+    const played = this._arr(this.props.played, this.DEMO_PLAYED);
+    const saidRaw = this.props.said;
+    const hasSaid = Array.isArray(saidRaw) && saidRaw.length === 5;
+    const said = hasSaid ? this._arr(saidRaw, this.DEMO_SAID) : null;
+
+    const all = played.concat(said || []);
+    const maxVal = Math.max(...all, 0.0001);
+    const rad = (v) => this.R * Math.max(0, Math.min(1, v / maxVal)) * 0.95;
+
+    const rings = [1,2,3,4].map(f => ({
+      points: this.ORDER.map((_,i) => { const p=this._pt(i, this.R*f/4); return `${p.x.toFixed(1)},${p.y.toFixed(1)}`; }).join(' '),
+    }));
+    const spokes = this.ORDER.map((_,i) => { const p=this._pt(i, this.R); return { x:p.x.toFixed(1), y:p.y.toFixed(1) }; });
+
+    const playedPts = played.map((v,i)=>{ const p=this._pt(i, rad(v)); return `${p.x.toFixed(1)},${p.y.toFixed(1)}`; });
+    const playedPoints = playedPts.join(' ');
+    const playedDots = played.map((v,i)=>{ const p=this._pt(i, rad(v)); return { x:p.x.toFixed(1), y:p.y.toFixed(1), delay:(0.3+i*0.07).toFixed(2)+'s' }; });
+
+    let saidPoints = '', saidDots = [];
+    if (hasSaid) {
+      saidPoints = said.map((v,i)=>{ const p=this._pt(i, rad(v)); return `${p.x.toFixed(1)},${p.y.toFixed(1)}`; }).join(' ');
+      saidDots = said.map((v,i)=>{ const p=this._pt(i, rad(v)); return { x:p.x.toFixed(1), y:p.y.toFixed(1) }; });
+    }
+
+    const psum = played.reduce((a,b)=>a+b,0) || 1;
+    const maxIdx = played.indexOf(Math.max(...played));
+    const labels = this.ORDER.map((k,i) => {
+      const p = this._pt(i, this.LR);
+      const anchor = p.cos > 0.3 ? 'start' : (p.cos < -0.3 ? 'end' : 'middle');
+      const dy = p.sin < -0.2 ? -3.2 : (p.sin > 0.2 ? 3.2 : 0);
+      return { name:this.NAMES[k], pct: Math.round((played[i]/psum)*100)+'%',
+        x:p.x.toFixed(1), ny:(p.y+dy-2.4).toFixed(1), vy:(p.y+dy+3.4).toFixed(1),
+        anchor, fill: i===maxIdx ? accent : '#B4C2D4' };
+    });
+
+    return {
+      accent, size,
+      rings, spokes, labels,
+      playedPoints, playedDots, hasSaid, saidPoints, saidDots,
+      playedLegend: hasSaid ? 'YOU PLAYED' : 'YOUR PROFILE',
+    };
+  }
+}
+</script>
+</body>
+</html>

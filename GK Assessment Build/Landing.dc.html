@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:#04060c;}
+  a{color:var(--accent,#22D3EE);text-decoration:none;}
+  a:hover{opacity:.9;}
+  @keyframes fa-spin{to{transform:rotate(360deg);}}
+  @keyframes fa-sweep{0%{transform:translateX(-8vw);opacity:0;}12%{opacity:.6;}50%{opacity:.55;}88%{opacity:.6;}100%{transform:translateX(102vw);opacity:0;}}
+  @keyframes fa-blink{0%,100%{opacity:1;}50%{opacity:.25;}}
+  @keyframes fa-flicker{0%,100%{opacity:.92;}47%{opacity:.86;}48%{opacity:.6;}49%{opacity:.9;}72%{opacity:.8;}73%{opacity:.95;}}
+  @keyframes fa-rise{0%{transform:translateY(14px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-drift{0%{transform:translateY(0);}50%{transform:translateY(-18px);}100%{transform:translateY(0);}}
+  @keyframes fa-scan{0%{top:-45%;}100%{top:105%;}}
+  .fa-in{opacity:0;animation:fa-rise .9s cubic-bezier(.2,.7,.2,1) forwards;}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;opacity:1!important;transform:none!important;}}
+</style>
+</helmet>
+<div data-screen-label="Landing" style="position:relative;display:flex;flex-direction:column;min-height:100dvh;width:100%;overflow:hidden;background:#04060c;color:#EAF2FB;font-family:'Archivo',system-ui,sans-serif;--accent:{{ accent }};">
+
+  <!-- ============ BACKDROP ============ -->
+  <img src="assets/img/scan-chamber.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:70% 42%;z-index:0;animation:fa-flicker 6s ease-in-out infinite;"/>
+  <!-- readability + cinematic grade -->
+  <div style="position:absolute;inset:0;z-index:1;background:linear-gradient(96deg,#04060c 0%,rgba(4,6,12,.94) 24%,rgba(4,6,12,.62) 46%,rgba(4,6,12,.2) 66%,rgba(4,6,12,.55) 100%);"></div>
+  <div style="position:absolute;inset:0;z-index:1;background:radial-gradient(140% 120% at 50% 0%,transparent 42%,rgba(4,6,12,.72) 100%);"></div>
+  <div style="position:absolute;inset:0;z-index:1;background:radial-gradient(90% 70% at 74% 44%,color-mix(in srgb,var(--accent,#22D3EE) 15%,transparent),transparent 60%);mix-blend-mode:screen;pointer-events:none;"></div>
+  <!-- scanlines -->
+  <div style="position:absolute;inset:0;z-index:2;pointer-events:none;opacity:.5;background:repeating-linear-gradient(0deg,rgba(255,255,255,.028) 0px,rgba(255,255,255,.028) 1px,transparent 1px,transparent 4px);"></div>
+
+  <!-- ============ HUD ATMOSPHERE ============ -->
+  <sc-if value="{{ motion }}" hint-placeholder-val="{{ true }}">
+    <div style="position:absolute;top:0;bottom:0;left:0;width:130px;z-index:3;pointer-events:none;background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--accent,#22D3EE) 26%,transparent) 48%,color-mix(in srgb,var(--accent,#22D3EE) 70%,transparent) 50%,color-mix(in srgb,var(--accent,#22D3EE) 26%,transparent) 52%,transparent);filter:blur(3px);mix-blend-mode:screen;animation:fa-sweep 8.5s cubic-bezier(.45,0,.55,1) infinite;"></div>
+  </sc-if>
+
+  <!-- corner brackets -->
+  <div style="position:absolute;top:20px;left:20px;width:26px;height:26px;border-top:2px solid color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;top:20px;right:20px;width:26px;height:26px;border-top:2px solid color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;left:20px;width:26px;height:26px;border-bottom:2px solid color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;right:20px;width:26px;height:26px;border-bottom:2px solid color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);z-index:4;pointer-events:none;"></div>
+
+  <!-- right edge tick readout -->
+  <div style="position:absolute;top:50%;right:30px;transform:translateY(-50%);z-index:4;display:flex;flex-direction:column;align-items:flex-end;gap:11px;pointer-events:none;font-family:'IBM Plex Mono',monospace;">
+    <div style="font-size:9px;letter-spacing:.22em;color:color-mix(in srgb,var(--accent,#22D3EE) 80%,#EAF2FB);opacity:.7;">SCAN&nbsp;FIELD</div>
+    <div style="width:34px;height:1px;background:color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);"></div>
+    <div style="width:22px;height:1px;background:color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);"></div>
+    <div style="width:34px;height:1px;background:color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);"></div>
+    <div style="width:16px;height:1px;background:color-mix(in srgb,var(--accent,#22D3EE) 30%,transparent);"></div>
+    <div style="width:34px;height:1px;background:color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);"></div>
+    <div style="width:26px;height:1px;background:color-mix(in srgb,var(--accent,#22D3EE) 40%,transparent);"></div>
+    <div style="font-size:9px;letter-spacing:.14em;color:color-mix(in srgb,var(--accent,#22D3EE) 80%,#EAF2FB);opacity:.7;">98.6%</div>
+  </div>
+
+  <!-- ============ TOP BAR ============ -->
+  <header style="position:relative;z-index:5;display:flex;align-items:center;justify-content:space-between;padding:26px clamp(28px,3.6vw,64px);">
+    <div style="display:flex;align-items:center;gap:13px;">
+      <svg width="30" height="30" viewBox="0 0 32 32" fill="none">
+        <path d="M16 2 28 9v14L16 30 4 23V9z" style="stroke:var(--accent,#22D3EE);stroke-width:1.5;fill:color-mix(in srgb,var(--accent,#22D3EE) 12%,transparent);"/>
+        <circle cx="16" cy="16" r="4" style="fill:none;stroke:var(--accent,#22D3EE);stroke-width:1.6;"/>
+        <path d="M16 5.4v3.6M16 23v3.6M5.4 12H9M23 12h3.6" style="stroke:var(--accent,#22D3EE);stroke-width:1.3;opacity:.5;"/>
+      </svg>
+      <div style="line-height:1;">
+        <div style="font:800 15px 'Archivo';letter-spacing:.06em;">FOOTBALLER'S <span style="color:var(--accent,#22D3EE);">ACADEMY</span></div>
+        <div style="margin-top:4px;font:500 9px 'IBM Plex Mono';letter-spacing:.34em;color:#6B7C93;">POSITION-DNA&nbsp;ENGINE</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:26px;">
+      <nav style="display:flex;gap:26px;font:500 12.5px 'Archivo';letter-spacing:.02em;color:#9DB0C6;">
+        <a href="#" style="color:#9DB0C6;">The Science</a>
+        <a href="#" style="color:#9DB0C6;">Archetypes</a>
+        <a href="#" style="color:#9DB0C6;">Academy</a>
+      </nav>
+      <span style="display:flex;align-items:center;gap:8px;padding:7px 13px;border:1px solid color-mix(in srgb,var(--accent,#22D3EE) 30%,transparent);border-radius:999px;font:600 10px 'IBM Plex Mono';letter-spacing:.2em;color:color-mix(in srgb,var(--accent,#22D3EE) 85%,#fff);">
+        <span style="width:6px;height:6px;border-radius:50%;background:var(--accent,#22D3EE);box-shadow:0 0 9px var(--accent,#22D3EE);animation:fa-blink 1.8s ease-in-out infinite;"></span>SCANNER&nbsp;ONLINE
+      </span>
+    </div>
+  </header>
+
+  <!-- ============ HERO ============ -->
+  <main style="position:relative;z-index:5;flex:1;display:flex;align-items:center;">
+    <div style="width:100%;max-width:1520px;margin:0 auto;padding:clamp(12px,2vw,40px) clamp(28px,3.6vw,64px) clamp(40px,5vw,80px);">
+      <div style="max-width:620px;">
+
+        <!-- eyebrow with fingerprint seal -->
+        <div class="fa-in" style="display:flex;align-items:center;gap:16px;margin-bottom:30px;animation-delay:.05s;">
+          <div style="position:relative;width:62px;height:62px;flex:0 0 auto;border-radius:50%;border:1px solid color-mix(in srgb,var(--accent,#22D3EE) 45%,transparent);box-shadow:0 0 22px color-mix(in srgb,var(--accent,#22D3EE) 28%,transparent),inset 0 0 16px color-mix(in srgb,var(--accent,#22D3EE) 14%,transparent);overflow:hidden;background:#03060c;">
+            <img src="assets/img/fingerprint-seal.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;mix-blend-mode:screen;transform:scale(1.5);"/>
+            <sc-if value="{{ motion }}" hint-placeholder-val="{{ true }}">
+              <div style="position:absolute;left:0;right:0;height:40%;background:linear-gradient(to bottom,transparent,color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent) 82%,#EAFDFF 100%);mix-blend-mode:screen;opacity:.85;animation:fa-scan 2.6s cubic-bezier(.5,0,.5,1) infinite;"></div>
+            </sc-if>
+            <div style="position:absolute;inset:0;border-radius:50%;box-shadow:inset 0 0 12px color-mix(in srgb,var(--accent,#22D3EE) 30%,transparent);"></div>
+          </div>
+          <div style="line-height:1.3;">
+            <div style="font:600 12px 'IBM Plex Mono';letter-spacing:.42em;color:var(--accent,#22D3EE);">KNOW&nbsp;THYSELF</div>
+            <div style="margin-top:4px;font:500 10px 'IBM Plex Mono';letter-spacing:.2em;color:#7C8DA4;">BIOMETRIC&nbsp;IDENTITY&nbsp;SCAN</div>
+          </div>
+        </div>
+
+        <!-- headline -->
+        <h1 class="fa-in" style="margin:0 0 26px;font:800 clamp(46px,6vw,96px)/0.96 'Archivo';letter-spacing:-0.03em;text-wrap:balance;animation-delay:.16s;">
+          <span style="color:#F4F9FE;">Reveal the player</span><br>
+          <span style="color:var(--accent,#22D3EE);text-shadow:0 0 52px color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);">you were built to be.</span>
+        </h1>
+
+        <!-- subcopy -->
+        <p class="fa-in" style="margin:0 0 40px;max-width:498px;font:400 clamp(16px,1.15vw,19px)/1.6 'Archivo';color:#A7B7CB;text-wrap:pretty;animation-delay:.26s;">
+          A short bioscan reads your instincts across 12 on-pitch moments — then reveals your <span style="color:#E5EEF8;font-weight:600;">archetype</span>: one of 31 unique football identities in the Position-DNA system.
+        </p>
+
+        <!-- CTA row -->
+        <div class="fa-in" style="display:flex;flex-wrap:wrap;align-items:center;gap:16px;animation-delay:.36s;">
+          <a href="Scan-Boot.dc.html" style="position:relative;display:inline-flex;align-items:center;gap:12px;padding:18px 34px;border-radius:13px;background:var(--accent,#22D3EE);color:#031017;font:700 16px 'Archivo';letter-spacing:.01em;box-shadow:0 14px 46px color-mix(in srgb,var(--accent,#22D3EE) 42%,transparent),inset 0 0 0 1px color-mix(in srgb,var(--accent,#22D3EE) 70%,transparent);transition:transform .16s ease,box-shadow .16s ease;" style-hover="transform:translateY(-2px);box-shadow:0 20px 58px color-mix(in srgb,var(--accent,#22D3EE) 58%,transparent),inset 0 0 0 1px color-mix(in srgb,var(--accent,#22D3EE) 90%,transparent);">
+            Begin the Scan
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" style="stroke:#031017;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12h13M12 6l6 6-6 6"/></svg>
+          </a>
+          <a href="#" style="display:inline-flex;align-items:center;gap:10px;padding:18px 26px;border-radius:13px;border:1px solid rgba(157,176,198,.28);background:rgba(12,18,30,.4);color:#C6D3E2;font:600 15px 'Archivo';backdrop-filter:blur(6px);transition:border-color .16s ease,color .16s ease;" style-hover="border-color:color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);color:#EAF2FB;">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><circle cx="12" cy="12" r="9"/><path d="M12 16v-4M12 8.5h.01"/></svg>
+            How it works
+          </a>
+        </div>
+
+        <!-- trust line -->
+        <div class="fa-in" style="display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;margin-top:34px;font:500 12.5px 'IBM Plex Mono';letter-spacing:.06em;color:#7A8BA1;animation-delay:.46s;">
+          <span style="display:inline-flex;align-items:center;gap:7px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--accent,#22D3EE);"></span>FREE</span>
+          <span style="opacity:.4;">/</span>
+          <span>NO&nbsp;ACCOUNT</span>
+          <span style="opacity:.4;">/</span>
+          <span>12&nbsp;QUESTIONS</span>
+          <span style="opacity:.4;">/</span>
+          <span>~2&nbsp;MIN</span>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- ============ BOTTOM TICKER ============ -->
+  <footer style="position:relative;z-index:5;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:16px clamp(28px,3.6vw,64px);border-top:1px solid rgba(120,140,166,.14);font:500 10.5px 'IBM Plex Mono';letter-spacing:.2em;color:#5E7089;">
+    <span>POSITION-DNA&nbsp;·&nbsp;BIOMETRIC&nbsp;ASSESSMENT&nbsp;ENGINE</span>
+    <span style="display:none;" data-hide-mobile>SYS.READY&nbsp;//&nbsp;AWAITING&nbsp;INPUT</span>
+    <span style="color:color-mix(in srgb,var(--accent,#22D3EE) 70%,#5E7089);">7&nbsp;POSITIONS&nbsp;·&nbsp;31&nbsp;ARCHETYPES</span>
+  </footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;accent&quot;: {&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#22D3EE&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#22D3EE&quot;,&quot;#A78BFA&quot;,&quot;#C6FF3A&quot;,&quot;#FF7A45&quot;,&quot;#FF4D8D&quot;],&quot;section&quot;:&quot;Theme&quot;},
+  &quot;motion&quot;: {&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Theme&quot;}
+}">
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      accent: this.props.accent ?? '#22D3EE',
+      motion: this.props.motion ?? true,
+    };
+  }
+}
+</script>
+</body>
+</html>

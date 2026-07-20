@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:#03060e;}
+  a{color:var(--accent,#22D3EE);text-decoration:none;}
+  @keyframes fa-blink{0%,100%{opacity:1;}50%{opacity:.25;}}
+  @keyframes fa-ping{0%{transform:scale(1);opacity:.8;}100%{transform:scale(2.5);opacity:0;}}
+  @keyframes fa-ping2{0%{transform:scale(1);opacity:.6;}100%{transform:scale(2.2);opacity:0;}}
+  @keyframes fa-sweepx{0%{left:-8%;opacity:0;}12%{opacity:.6;}88%{opacity:.6;}100%{left:108%;opacity:0;}}
+  @keyframes fa-rise{0%{transform:translateY(14px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  .fa-in{opacity:0;animation:fa-rise .8s cubic-bezier(.2,.7,.2,1) forwards;}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;}.fa-in{opacity:1!important;transform:none!important;}}
+</style>
+</helmet>
+<div data-screen-label="Position Select — Field" style="position:relative;display:flex;flex-direction:column;height:100dvh;width:100%;overflow:hidden;background:radial-gradient(120% 100% at 50% 46%,#0b1930 0%,#071120 46%,#03060e 100%);color:#EAF2FB;font-family:'Archivo',system-ui,sans-serif;--accent:{{ accent }};">
+
+  <div style="position:absolute;top:18px;left:18px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;top:18px;right:18px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:18px;left:18px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:18px;right:18px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+
+  <!-- ============ TOP BAR ============ -->
+  <header style="position:relative;z-index:6;display:flex;align-items:center;justify-content:space-between;padding:20px clamp(26px,3.4vw,58px) 4px;">
+    <a href="Landing.dc.html" style="display:inline-flex;align-items:center;gap:8px;color:#9DB0C6;font:600 12.5px 'Archivo';">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M15 5l-7 7 7 7"/></svg>Back
+    </a>
+    <div style="display:flex;align-items:center;gap:11px;">
+      <svg width="24" height="24" viewBox="0 0 32 32" fill="none"><path d="M16 2 28 9v14L16 30 4 23V9z" style="stroke:var(--accent,#22D3EE);stroke-width:1.5;fill:color-mix(in srgb,var(--accent,#22D3EE) 12%,transparent);"/><circle cx="16" cy="16" r="4" style="fill:none;stroke:var(--accent,#22D3EE);stroke-width:1.6;"/></svg>
+      <span style="font:800 13px 'Archivo';letter-spacing:.05em;">FOOTBALLER'S <span style="color:var(--accent,#22D3EE);">ACADEMY</span></span>
+    </div>
+    <span style="display:flex;align-items:center;gap:8px;font:600 10px 'IBM Plex Mono';letter-spacing:.2em;color:color-mix(in srgb,var(--accent,#22D3EE) 85%,#fff);">
+      <span style="width:6px;height:6px;border-radius:50%;background:var(--accent,#22D3EE);box-shadow:0 0 9px var(--accent,#22D3EE);animation:fa-blink 1.8s ease-in-out infinite;"></span>FIELD MAP
+    </span>
+  </header>
+
+  <!-- title -->
+  <div class="fa-in" style="position:relative;z-index:6;text-align:center;padding:4px 20px 0;">
+    <div style="display:inline-flex;align-items:center;gap:8px;margin-bottom:6px;padding:5px 13px;border:1px solid color-mix(in srgb,var(--accent,#22D3EE) 30%,transparent);border-radius:999px;font:600 9.5px 'IBM Plex Mono';letter-spacing:.26em;color:var(--accent,#22D3EE);">
+      <span style="width:5px;height:5px;border-radius:50%;background:var(--accent,#22D3EE);box-shadow:0 0 7px var(--accent,#22D3EE);"></span>STEP 01 · SELECT POSITION
+    </div>
+    <h1 style="margin:0;font:800 clamp(22px,2.7vw,36px)/1 'Archivo';letter-spacing:-0.02em;">Where do you <span style="color:var(--accent,#22D3EE);text-shadow:0 0 34px color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);">play?</span></h1>
+  </div>
+
+  <!-- ============ PITCH (portrait, full 17-position map) ============ -->
+  <main style="position:relative;z-index:5;flex:1;display:grid;place-items:center;min-height:0;padding:10px clamp(16px,3vw,52px);">
+    <div class="fa-in" style="position:relative;height:min(calc(100dvh - 300px),52vw,600px);aspect-ratio:1000/560;animation-delay:.08s;">
+
+      <!-- surface -->
+      <div style="position:absolute;inset:0;border-radius:18px;overflow:hidden;border:1px solid color-mix(in srgb,var(--accent,#22D3EE) 30%,transparent);background:linear-gradient(200deg,color-mix(in srgb,var(--accent,#22D3EE) 8%,transparent),transparent 55%),radial-gradient(80% 100% at 50% 50%,color-mix(in srgb,var(--accent,#22D3EE) 7%,transparent),transparent 70%);box-shadow:inset 0 0 60px color-mix(in srgb,var(--accent,#22D3EE) 10%,transparent),0 24px 80px rgba(0,0,0,.5);">
+        <div style="position:absolute;inset:0;background:linear-gradient(color-mix(in srgb,var(--accent,#22D3EE) 12%,transparent) 1px,transparent 1px) 0 0/100% 6.25%,linear-gradient(90deg,color-mix(in srgb,var(--accent,#22D3EE) 12%,transparent) 1px,transparent 1px) 0 0/4% 100%;opacity:.55;"></div>
+        <!-- markings (portrait) -->
+        <svg viewBox="0 0 1000 560" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;">
+          <g style="fill:none;stroke:color-mix(in srgb,var(--accent,#22D3EE) 60%,transparent);stroke-width:2.2;filter:drop-shadow(0 0 5px color-mix(in srgb,var(--accent,#22D3EE) 40%,transparent));">
+            <line x1="500" y1="14" x2="500" y2="546"/>
+            <circle cx="500" cy="280" r="82"/>
+            <rect x="14" y="150" width="150" height="260"/>
+            <rect x="14" y="212" width="58" height="136"/>
+            <path d="M164 214 A82 82 0 0 1 164 346"/>
+            <rect x="836" y="150" width="150" height="260"/>
+            <rect x="928" y="212" width="58" height="136"/>
+            <path d="M836 214 A82 82 0 0 0 836 346"/>
+          </g>
+          <circle cx="500" cy="280" r="5" style="fill:color-mix(in srgb,var(--accent,#22D3EE) 80%,transparent);"/>
+          <circle cx="108" cy="280" r="4" style="fill:color-mix(in srgb,var(--accent,#22D3EE) 60%,transparent);"/>
+          <circle cx="892" cy="280" r="4" style="fill:color-mix(in srgb,var(--accent,#22D3EE) 60%,transparent);"/>
+        </svg>
+        <sc-if value="{{ motion }}" hint-placeholder-val="{{ true }}">
+          <div style="position:absolute;top:0;bottom:0;width:80px;background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--accent,#22D3EE) 30%,transparent),transparent);filter:blur(2px);animation:fa-sweepx 7s cubic-bezier(.45,0,.55,1) infinite;pointer-events:none;"></div>
+        </sc-if>
+      </div>
+
+      <!-- end labels -->
+      <div style="position:absolute;left:14px;top:8px;font:600 8.5px 'IBM Plex Mono';letter-spacing:.22em;color:#5E7189;">DEFEND</div>
+      <div style="position:absolute;right:14px;top:8px;font:600 8.5px 'IBM Plex Mono';letter-spacing:.22em;color:#5E7189;">ATTACK</div>
+
+      <!-- markers -->
+      <sc-for list="{{ positions }}" as="pos" hint-placeholder-count="17">
+        <button onClick="{{ pos.onSelect }}" onMouseEnter="{{ pos.onHover }}" onMouseLeave="{{ clearHover }}" style="position:absolute;{{ pos.pos }};transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:5px;background:none;border:0;padding:5px;cursor:pointer;transition:transform .16s ease;z-index:3;" style-hover="transform:translate(-50%,-50%) scale(1.16);z-index:5;">
+          <span style="position:absolute;top:20px;left:50%;transform:translateX(-50%);width:40px;height:12px;border-radius:50%;background:radial-gradient(ellipse,color-mix(in srgb,var(--accent,#22D3EE) 65%,transparent),transparent 72%);filter:blur(5px);pointer-events:none;transition:opacity .18s ease;{{ pos.groundLook }}"></span>
+          <span style="position:relative;display:grid;place-items:center;width:30px;height:30px;">
+            <span style="position:absolute;width:30px;height:30px;border-radius:50%;border:1.6px solid;{{ pos.ringLook }}"></span>
+            <span style="width:15px;height:15px;border-radius:50%;border:2px solid;transition:all .18s ease;{{ pos.coreLook }}"></span>
+          </span>
+          <span style="font:700 9.5px 'IBM Plex Mono';letter-spacing:.08em;white-space:nowrap;padding:2px 7px;border-radius:6px;transition:all .18s ease;{{ pos.labelLook }}">{{ pos.label }}</span>
+        </button>
+      </sc-for>
+
+    </div>
+  </main>
+
+  <!-- ============ BOTTOM DOCK ============ -->
+  <div style="position:relative;z-index:6;padding:4px clamp(16px,3vw,48px) clamp(16px,2.2vw,30px);">
+    <div class="fa-in" style="max-width:940px;margin:0 auto;display:flex;align-items:center;gap:15px;padding:12px 16px;border:1px solid rgba(120,140,166,.2);border-radius:16px;background:linear-gradient(180deg,rgba(9,17,30,.8),rgba(5,10,20,.62));backdrop-filter:blur(10px);animation-delay:.14s;">
+      <div style="position:relative;flex:0 0 auto;width:48px;height:48px;border-radius:12px;display:grid;place-items:center;border:1px solid color-mix(in srgb,var(--accent,#22D3EE) 40%,transparent);background:color-mix(in srgb,var(--accent,#22D3EE) 10%,transparent);box-shadow:{{ badgeGlow }};transition:box-shadow .2s ease;">
+        <span style="font:800 15px 'Archivo';color:var(--accent,#22D3EE);">{{ activeShort }}</span>
+      </div>
+      <div style="flex:1;min-width:0;">
+        <div style="display:flex;align-items:center;gap:9px;">
+          <span style="font:800 16px/1.1 'Archivo';color:#EDF4FB;">{{ activeName }}</span>
+          <span style="flex:0 0 auto;padding:2px 8px;border-radius:999px;font:700 8px 'IBM Plex Mono';letter-spacing:.16em;{{ statusLook }}">{{ statusText }}</span>
+        </div>
+        <div style="margin-top:3px;font:400 12px/1.4 'Archivo';color:#94A6BB;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">{{ activeRole }}</div>
+      </div>
+      <a href="{{ continueHref }}" style="flex:0 0 auto;display:inline-flex;align-items:center;gap:10px;padding:15px 24px;border-radius:12px;font:700 14.5px 'Archivo';white-space:nowrap;transition:transform .16s ease,box-shadow .16s ease;{{ continueLook }}" style-hover="{{ continueHover }}">
+        {{ continueLabel }}
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12h13M12 6l6 6-6 6"/></svg>
+      </a>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;accent&quot;: {&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#22D3EE&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#22D3EE&quot;,&quot;#A78BFA&quot;,&quot;#C6FF3A&quot;,&quot;#FF7A45&quot;,&quot;#FF4D8D&quot;],&quot;section&quot;:&quot;Theme&quot;},
+  &quot;motion&quot;: {&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Theme&quot;}
+}">
+class Component extends DCLogic {
+  state = { selected:'GK', hover:null };
+
+  // p: label · x/y in % on a portrait pitch (top = attack, bottom = defend) · live: scan available
+  SPOTS = [
+    { p:'GK',  x:9,  y:50 },
+    { p:'LB',  x:25, y:26 }, { p:'CB', x:22, y:50 }, { p:'RB', x:25, y:74 },
+    { p:'LWB', x:33, y:12 }, { p:'RWB', x:33, y:88 },
+    { p:'CDM', x:40, y:50 },
+    { p:'LM',  x:53, y:22 }, { p:'CM', x:53, y:50 }, { p:'RM', x:53, y:78 },
+    { p:'CAM', x:65, y:50 },
+    { p:'LW',  x:74, y:13 }, { p:'RW', x:74, y:87 },
+    { p:'LF',  x:80, y:30 }, { p:'CF', x:80, y:50 }, { p:'RF', x:80, y:70 },
+    { p:'ST',  x:91, y:50 },
+  ];
+  ROLES = {
+    GK:{ name:'Goalkeeper',            role:'The last line. Command your box, read danger before it happens, and launch every attack.' },
+    LB:{ name:'Left Back',             role:'Lock down the left channel, defend one-v-one, then overlap and deliver from the byline.' },
+    RB:{ name:'Right Back',            role:'Lock down the right channel, defend one-v-one, then overlap and deliver from the byline.' },
+    CB:{ name:'Centre Back',           role:'The wall. Win your duels, organise the line, and turn defending into the start of possession.' },
+    LWB:{ name:'Left Wing Back',       role:'The engine on the left flank — defend deep, then bomb on to attack the byline.' },
+    RWB:{ name:'Right Wing Back',      role:'The engine on the right flank — defend deep, then bomb on to attack the byline.' },
+    CDM:{ name:'Defensive Midfielder', role:'The shield. Screen the back line, break up attacks, and recycle possession forward.' },
+    LM:{ name:'Left Midfielder',       role:'Up and down the left touchline — provide width, whip in crosses, track back every time.' },
+    RM:{ name:'Right Midfielder',      role:'Up and down the right touchline — provide width, whip in crosses, track back every time.' },
+    CM:{ name:'Central Midfielder',    role:'The heartbeat. Link every phase, cover the most ground, and set the rhythm of the team.' },
+    CAM:{ name:'Attacking Midfielder', role:'The playmaker. Operate between the lines and unlock organised defenses with the killer pass.' },
+    LW:{ name:'Left Winger',           role:'Beat your marker, stretch the pitch, then cut inside to create and score.' },
+    RW:{ name:'Right Winger',          role:'Beat your marker, stretch the pitch, then cut inside to create and score.' },
+    LF:{ name:'Left Forward',          role:'The half-space finisher — combine, arrive late, and convert the chances you make.' },
+    RF:{ name:'Right Forward',         role:'The half-space finisher — combine, arrive late, and convert the chances you make.' },
+    CF:{ name:'Centre Forward',        role:'Hold it up, link the play, and finish — the reference point for the whole attack.' },
+    ST:{ name:'Striker',               role:'The finisher. Live on the shoulder, create your own chances, and decide games in a moment.' },
+  };
+  LIVE = { GK:true };
+
+  renderVals() {
+    const accent = this.props.accent ?? '#22D3EE';
+    const motion = this.props.motion ?? true;
+    const A = (hex, aa) => hex + aa;
+
+    const positions = this.SPOTS.map((s, i) => {
+      const sel = this.state.selected === s.p;
+      const live = !!this.LIVE[s.p];
+      let ringLook, coreLook, labelLook, groundLook;
+      if (sel) {
+        ringLook = `border-color:${accent};opacity:1;animation:fa-ping 1.8s ease-out infinite;`;
+        coreLook = `background:${accent};border-color:${accent};box-shadow:0 0 22px ${A(accent,'cc')},0 0 0 6px ${A(accent,'22')};`;
+        labelLook = `color:#04121a;background:${accent};font-weight:800;box-shadow:0 4px 14px ${A(accent,'55')};`;
+        groundLook = 'opacity:.95;';
+      } else if (live) {
+        ringLook = `border-color:${A(accent,'aa')};opacity:.9;animation:fa-ping2 2.4s ease-out infinite;`;
+        coreLook = `background:${A(accent,'55')};border-color:${accent};box-shadow:0 0 16px ${A(accent,'77')};`;
+        labelLook = `color:${accent};background:rgba(5,11,22,.8);border:1px solid ${A(accent,'66')};`;
+        groundLook = 'opacity:.7;';
+      } else {
+        ringLook = `border-color:${A(accent,'66')};opacity:0;`;
+        coreLook = `background:rgba(180,198,220,.14);border-color:rgba(190,208,228,.5);box-shadow:0 0 8px rgba(0,0,0,.4);`;
+        labelLook = `color:#AEBECF;background:rgba(5,11,22,.6);border:1px solid rgba(120,140,166,.22);`;
+        groundLook = 'opacity:.25;';
+      }
+      return {
+        key:i, label:s.p, pos:`left:${s.x}%;top:${s.y}%;`,
+        onSelect: () => this.setState({ selected: s.p }),
+        onHover:  () => this.setState({ hover: s.p }),
+        ringLook, coreLook, labelLook, groundLook,
+      };
+    });
+
+    const activeId = this.state.hover ?? this.state.selected;
+    const active = this.ROLES[activeId] || null;
+    const activeLive = !!this.LIVE[activeId];
+    const selLive = !!this.LIVE[this.state.selected];
+
+    return {
+      accent, motion, positions,
+      clearHover: () => this.setState({ hover: null }),
+      activeShort: activeId || '?',
+      activeName:  active ? active.name : 'Select your position',
+      activeRole:  active ? active.role : 'Tap your position on the pitch. The goalkeeper scan is live now — the rest of the map is on the way.',
+      statusText:  activeLive ? 'LIVE' : 'SOON',
+      statusLook:  activeLive ? `color:#04121a;background:${accent};` : 'color:#9DB0C6;background:rgba(120,140,166,.18);border:1px solid rgba(120,140,166,.3);',
+      badgeGlow:   `0 0 26px ${A(accent,'44')}`,
+      continueLabel: selLive ? 'Enter the Scan' : 'Scan coming soon',
+      continueHref:  selLive ? 'Assessment.dc.html' : '#',
+      continueLook:  selLive ? `background:${accent};color:#03121a;box-shadow:0 10px 34px ${A(accent,'55')};pointer-events:auto;opacity:1;` : `background:${A(accent,'12')};color:#5f7286;border:1px solid ${A(accent,'22')};pointer-events:none;opacity:.6;`,
+      continueHover: selLive ? 'transform:translateY(-2px);box-shadow:0 16px 44px ' + A(accent,'6b') : '',
+    };
+  }
+}
+</script>
+</body>
+</html>
