@@ -9,6 +9,7 @@
 <x-dc>
 <helmet>
 <link href="assets/vendor/fonts/fonts.css" rel="stylesheet">
+<script src="./fa-pitch.js"></script>
 <style>
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;background:#04060c;}
@@ -116,16 +117,8 @@
             <span style="width:6px;height:6px;border-radius:50%;background:var(--accent,#22D3EE);box-shadow:0 0 8px var(--accent,#22D3EE);animation:fa-blink 1.6s ease-in-out infinite;"></span>{{ cam }}
           </div>
 
-          <!-- goal frame + net -->
-          <svg viewBox="0 0 160 100" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;z-index:1;">
-            <g stroke="rgba(150,200,220,.14)" stroke-width="0.4">
-              <line x1="34" y1="19" x2="34" y2="63"/><line x1="50" y1="19" x2="50" y2="63"/><line x1="66" y1="19" x2="66" y2="63"/><line x1="80" y1="19" x2="80" y2="63"/><line x1="94" y1="19" x2="94" y2="63"/><line x1="110" y1="19" x2="110" y2="63"/><line x1="126" y1="19" x2="126" y2="63"/>
-              <line x1="27" y1="30" x2="133" y2="30"/><line x1="27" y1="41" x2="133" y2="41"/><line x1="27" y1="52" x2="133" y2="52"/>
-            </g>
-            <rect x="27.2" y="19" width="105.6" height="44" fill="none" stroke="rgba(180,220,235,.5)" stroke-width="1.1"/>
-            <path d="M20,83 L140,83 L133,63 L27,63 Z" fill="rgba(120,180,150,.05)" stroke="rgba(150,200,220,.16)" stroke-width="0.5"/>
-            <circle cx="80" cy="74" r="1" fill="rgba(180,220,235,.55)"/>
-          </svg>
+          <!-- goal frame + net + shooter + ball (canvas) -->
+          <canvas ref="{{ canvasRef }}" style="position:absolute;inset:0;width:100%;height:100%;display:block;z-index:1;"></canvas>
 
           <!-- zone grid -->
           <sc-for list="{{ zones }}" as="z" hint-placeholder-count="6">
@@ -133,27 +126,6 @@
               <span style="font:700 8px 'IBM Plex Mono';letter-spacing:.16em;padding:3px 8px;border-radius:6px;transition:all .16s ease;{{ z.tag }}">{{ z.tagText }}</span>
             </button>
           </sc-for>
-
-          <!-- approach path -->
-          <sc-if value="{{ showApproach }}" hint-placeholder-val="{{ true }}">
-            <svg viewBox="0 0 160 100" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;z-index:3;pointer-events:none;"><line x1="{{ appX1 }}" y1="{{ appY1 }}" x2="{{ appX2 }}" y2="{{ appY2 }}" stroke="color-mix(in srgb,var(--accent,#22D3EE) 40%,transparent)" stroke-width="0.7" stroke-dasharray="2 2.4" style="animation:fa-runpulse 1s ease-in-out infinite;"/></svg>
-          </sc-if>
-
-          <!-- ball -->
-          <div style="position:absolute;z-index:5;transform:translate(-50%,-50%);width:14px;height:14px;border-radius:50%;background:radial-gradient(circle at 34% 30%,#fff,#bcc9d4);box-shadow:0 0 10px rgba(255,255,255,.55),0 2px 5px rgba(0,0,0,.45);transition:{{ ballTransition }};{{ ballStyle }}"></div>
-
-          <!-- shooter -->
-          <div style="position:absolute;z-index:5;transform:translate(-50%,-50%) rotate({{ shooterRot }}deg);transition:{{ shooterTransition }};{{ shooterStyle }}">
-            <div style="position:relative;width:0;height:0;border-left:11px solid transparent;border-right:11px solid transparent;border-bottom:18px solid #FF5A6E;filter:drop-shadow(0 0 8px rgba(255,90,110,.55));"></div>
-            <!-- height cue -->
-            <sc-if value="{{ showHeightCue }}" hint-placeholder-val="{{ false }}">
-              <div style="position:absolute;left:50%;top:{{ heightCueTop }};transform:translateX(-50%);width:0;height:0;{{ heightCueArrow }}"></div>
-            </sc-if>
-            <!-- plant foot cue -->
-            <sc-if value="{{ showPlant }}" hint-placeholder-val="{{ false }}">
-              <div style="position:absolute;top:6px;{{ plantSideStyle }}width:11px;height:6px;border-radius:99px;background:#FFD166;box-shadow:0 0 8px rgba(255,209,102,.6);"></div>
-            </sc-if>
-          </div>
 
           <!-- occlusion overlay -->
           <sc-if value="{{ occluded }}" hint-placeholder-val="{{ false }}">
@@ -337,7 +309,85 @@ class Component extends DCLogic {
   _appStart(side){ return side==='L'?{x:38,y:95}:side==='R'?{x:62,y:95}:{x:50,y:97}; }
 
   _clear(){ clearTimeout(this._freeze); clearTimeout(this._to); }
-  componentWillUnmount(){ this._clear(); }
+  componentWillUnmount(){ this._clear(); this._stopLoop(); }
+
+  /* ---- canvas scene (behind-goal cam; zones stay as HTML hotspots) ---- */
+  _cvRef(el){ if (el === this._canvas) return; this._canvas = el; if (el) requestAnimationFrame(() => { this._resize(); this._startLoop(); }); }
+  _resize(){ const cv=this._canvas; if(!cv) return; const r=cv.getBoundingClientRect(); if(!r.width) return; const dpr=Math.min(2,window.devicePixelRatio||1); const w=Math.max(2,Math.round(r.width*dpr)),h=Math.max(2,Math.round(r.height*dpr)); if(cv.width!==w||cv.height!==h){cv.width=w;cv.height=h;} this._dpr=dpr; this._W=r.width; this._H=r.height; }
+  _startLoop(){ if(this._loopOn) return; this._loopOn=true; const step=()=>{ if(!this._loopOn) return; this._loopRaf=requestAnimationFrame(step); if((!this._W||!this._H)&&this._canvas) this._resize(); this._draw(); }; this._loopRaf=requestAnimationFrame(step); }
+  _stopLoop(){ this._loopOn=false; if(this._loopRaf) cancelAnimationFrame(this._loopRaf); this._loopRaf=null; }
+
+  _draw(){
+    const cv=this._canvas; if(!cv) return;
+    const FP=window.FAPitch; if(!FP) return;
+    const ctx=cv.getContext('2d'); if(!ctx) return;
+    const W=this._W, H=this._H, dpr=this._dpr||1; if(!W||!H) return;
+    ctx.setTransform(dpr,0,0,dpr,0,0); ctx.clearRect(0,0,W,H);
+    const X=(v)=>v/100*W, Y=(v)=>v/100*H;
+    const acc=this.props.accent ?? '#22D3EE';
+    const reduce=!(this.props.motion ?? true);
+    const now=this._now();
+    const s=this.state, t=this.TRIALS[s.ti]||this.TRIALS[0];
+    const phase=s.phase, runup=phase==='runup', reading=phase==='read', revealed=phase==='reveal';
+    const stage=s.stage;
+
+    // phase bookkeeping
+    const key=phase+':'+s.ti;
+    if(this._pkey!==key){ this._pkey=key; this._pt0=now; }
+    const pt=now-(this._pt0||now);
+
+    // faint ground: penalty spot
+    ctx.save(); ctx.fillStyle='rgba(180,220,235,.5)';
+    ctx.beginPath(); ctx.arc(X(50),Y(74),Math.max(1.4,W*0.0016),0,7); ctx.fill(); ctx.restore();
+
+    // goal face (frame + net + grid) aligned to the HTML zone rect
+    const box={ x:X(17), y:Y(19), w:X(66), h:Y(44) };
+    FP.goalFace(ctx, box, { cols:3, rows:2 });
+
+    // geometry helpers (container %)
+    const start = t.approach==='L'?{x:38,y:95}:t.approach==='R'?{x:62,y:95}:{x:50,y:97};
+    const nearBall={ x:44, y:78 }, spot={ x:50, y:72 };
+    const stageFrac = stage===1?0.45:(stage===2?0.72:0.95);
+    let frac;
+    if(runup) frac=0.04+(stageFrac-0.04)*Math.min(1,pt/(this.RUNUP[stage]||1000));
+    else frac=stageFrac;
+    const sx=start.x+(nearBall.x-start.x)*frac, sy=start.y+(nearBall.y-start.y)*frac;
+    const aimCol=t.zone%3, isHigh=t.zone<3;
+    const leanBase = aimCol===0?-15:aimCol===2?15:0;
+    const shooterRot = (runup? leanBase*0.4 : (stage>=2?leanBase:leanBase*0.4)) * Math.PI/180;
+
+    // approach path
+    if(runup||reading){
+      ctx.save(); ctx.strokeStyle='rgba(120,200,230,.4)'; ctx.lineWidth=Math.max(1,W*0.0016); ctx.setLineDash([3,4]);
+      ctx.beginPath(); ctx.moveTo(X(start.x),Y(start.y)); ctx.lineTo(X(nearBall.x),Y(spot.y)); ctx.stroke(); ctx.setLineDash([]); ctx.restore();
+    }
+
+    // ball
+    let bx=spot.x, by=spot.y;
+    if(revealed){ const c={ x:this.GL+aimCol*this.COLW+this.COLW/2, y:this.GT+(isHigh?0:1)*this.ROWH+this.ROWH/2 };
+      const e=1-Math.pow(1-Math.min(1,pt/520),3); bx=spot.x+(c.x-spot.x)*e; by=spot.y+(c.y-spot.y)*e; }
+    const ballR=Math.max(3.4,W*0.009);
+    FP.ballFlat(ctx,{ px:()=>[X(bx),Y(by)], m:(v)=>v*(ballR/0.42) }, 0,0, { r:ballR, flight:revealed });
+
+    // shooter (red chevron pointing up-goal) + cues
+    const chH=Math.max(14,H*0.03);
+    ctx.save(); ctx.translate(X(sx),Y(sy)); ctx.rotate(shooterRot);
+    ctx.shadowColor='rgba(255,90,110,.55)'; ctx.shadowBlur=W*0.006;
+    ctx.fillStyle='#FF5A6E'; ctx.beginPath();
+    ctx.moveTo(0,-chH*0.6); ctx.lineTo(chH*0.42,chH*0.4); ctx.lineTo(-chH*0.42,chH*0.4); ctx.closePath(); ctx.fill();
+    ctx.shadowBlur=0;
+    // plant foot (strongest tell, stage>=3)
+    if(stage>=3 && (reading||revealed)){
+      const px=aimCol===0?-chH*0.7:aimCol===2?chH*0.7:0, py=chH*0.2;
+      ctx.fillStyle='#FFD166'; ctx.beginPath(); ctx.ellipse(px,py,chH*0.24,chH*0.13,0,0,7); ctx.fill();
+    }
+    // height cue (stage>=2)
+    if(stage>=2 && (reading||revealed)){
+      ctx.fillStyle='rgba(255,209,102,.9)'; const ay=isHigh?-chH*0.95:chH*0.75, d=isHigh?-1:1;
+      ctx.beginPath(); ctx.moveTo(0,ay+d*chH*0.28); ctx.lineTo(chH*0.2,ay); ctx.lineTo(-chH*0.2,ay); ctx.closePath(); ctx.fill();
+    }
+    ctx.restore();
+  }
   componentDidMount(){
     let soundOn = true; try { if (localStorage.getItem('fa_sound') === '0') soundOn = false; } catch(e) {}
     if (soundOn !== this.state.soundOn) this.setState({ soundOn });
@@ -602,6 +652,7 @@ class Component extends DCLogic {
       score:m.score, scoreNote, sidePct, heightPct, fullN:m.full, earlyLine, mapMarks,
       begin:()=>this._begin(), next:()=>this._next(), retake:()=>this._retake(),
       back:()=>{ window.location.href='Assessment.dc.html'; },
+      canvasRef: this._cvRefFn || (this._cvRefFn = (el) => this._cvRef(el)),
     };
   }
 }
