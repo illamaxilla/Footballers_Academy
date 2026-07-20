@@ -9,6 +9,7 @@
 <x-dc>
 <helmet>
 <link href="assets/vendor/fonts/fonts.css" rel="stylesheet">
+<script src="./fa-pitch.js"></script>
 <style>
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;background:#04060c;}
@@ -133,14 +134,7 @@
 
           <!-- ==== GOAL (where you dive) ==== -->
           <div style="position:relative;flex:0 1 auto;width:100%;max-width:600px;aspect-ratio:20/7;max-height:40%;border-radius:14px 14px 4px 4px;overflow:hidden;background:radial-gradient(120% 150% at 50% 0%,#0d1c2e 0%,#091324 55%,#050c17 100%);border:1px solid rgba(120,140,166,.18);box-shadow:inset 0 0 40px rgba(0,0,0,.45);{{ vizShake }}">
-            <svg viewBox="0 0 200 70" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;z-index:1;">
-              <rect x="24" y="8" width="152" height="46" fill="none" stroke="#7fdfe9" stroke-width="1.2"/>
-              <line x1="24" y1="8" x2="24" y2="54" stroke="#7fdfe9" stroke-width="1.2"/>
-              <line x1="176" y1="8" x2="176" y2="54" stroke="#7fdfe9" stroke-width="1.2"/>
-              <path d="M24 8 L24 54 M32 8 L32 54 M40 8 L40 54 M48 8 L48 54 M56 8 L56 54 M64 8 L64 54 M72 8 L72 54 M80 8 L80 54 M88 8 L88 54 M96 8 L96 54 M104 8 L104 54 M112 8 L112 54 M120 8 L120 54 M128 8 L128 54 M136 8 L136 54 M144 8 L144 54 M152 8 L152 54 M160 8 L160 54 M168 8 L168 54" stroke="rgba(140,200,220,.08)" stroke-width="0.4"/>
-              <path d="M24 20 L176 20 M24 32 L176 32 M24 44 L176 44" stroke="rgba(140,200,220,.08)" stroke-width="0.4"/>
-              <line x1="0" y1="66" x2="200" y2="66" stroke="rgba(140,200,220,.2)" stroke-width="0.8"/>
-            </svg>
+            <canvas ref="{{ goalCanvasRef }}" style="position:absolute;inset:0;width:100%;height:100%;display:block;z-index:1;"></canvas>
             <div style="position:absolute;top:8px;left:12px;z-index:2;font:600 8.5px 'IBM Plex Mono';letter-spacing:.2em;color:#5c6f88;">THE GOAL</div>
 
             <!-- dive zones (tap targets during the kick) -->
@@ -156,12 +150,6 @@
               </button>
             </sc-if>
 
-            <!-- keeper on the line -->
-            <div style="position:absolute;z-index:3;display:grid;place-items:center;width:9%;aspect-ratio:1;border-radius:6px;background:linear-gradient(180deg,#EAFBFF,#8fd8e6);color:#04202a;font:800 7px 'Archivo';box-shadow:0 4px 14px rgba(0,0,0,.5),0 0 0 2px rgba(255,255,255,.18),0 0 12px color-mix(in srgb,var(--accent,#22D3EE) 42%,transparent);{{ gkStyle }}">GK</div>
-            <!-- ball flying into the goal (only from the strike onward) -->
-            <sc-if value="{{ showPkBall }}" hint-placeholder-val="{{ false }}">
-              <div style="position:absolute;z-index:4;width:6%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 34% 30%,#fff,#bcc9d4);box-shadow:0 0 9px rgba(255,255,255,.5),0 2px 5px rgba(0,0,0,.45);transition:{{ pkBallTrans }};{{ pkBallStyle }}"></div>
-            </sc-if>
             <!-- impact burst -->
             <sc-if value="{{ impactShow }}" hint-placeholder-val="{{ false }}">
               <div style="position:absolute;z-index:6;pointer-events:none;{{ impactPos }}">
@@ -430,7 +418,53 @@ class Component extends DCLogic {
   _now(){ return (typeof performance!=='undefined'&&performance.now)?performance.now():Date.now(); }
   _clear(){ clearInterval(this._tk); this._tk=null; if(this._to) this._to.forEach(id=>clearTimeout(id)); this._to=[]; if(this._raf) cancelAnimationFrame(this._raf); this._raf=null; }
   _T(fn,ms){ const id=setTimeout(fn,ms); this._to.push(id); return id; }
-  componentWillUnmount(){ this._clear(); }
+  componentWillUnmount(){ this._clear(); this._stopLoop(); }
+
+  /* ---------- goal canvas harness (front elevation via fa-pitch) ---------- */
+  _cvRef(el){ if (el === this._canvas) return; this._canvas = el; if (el) requestAnimationFrame(() => { this._resize(); this._startLoop(); }); }
+  _resize(){ const cv = this._canvas; if (!cv) return; const r = cv.getBoundingClientRect(); if (!r.width) return; const dpr = Math.min(2, window.devicePixelRatio || 1); const w = Math.max(2, Math.round(r.width * dpr)), h = Math.max(2, Math.round(r.height * dpr)); if (cv.width !== w || cv.height !== h) { cv.width = w; cv.height = h; } this._dpr = dpr; this._W = r.width; this._H = r.height; }
+  _startLoop(){ if (this._loopOn) return; this._loopOn = true; const step = () => { if (!this._loopOn) return; this._loopRaf = requestAnimationFrame(step); if ((!this._W || !this._H) && this._canvas) this._resize(); this._draw(); }; this._loopRaf = requestAnimationFrame(step); }
+  _stopLoop(){ this._loopOn = false; if (this._loopRaf) cancelAnimationFrame(this._loopRaf); this._loopRaf = null; }
+
+  _draw(){
+    const cv = this._canvas; if (!cv) return;
+    const ctx = cv.getContext('2d'); const W = this._W, H = this._H, dpr = this._dpr || 1;
+    if (!W || !H) return;
+    const FP = window.FAPitch; if (!FP) return;
+    const acc = this.props.accent || '#22D3EE', now = this._now();
+    const motion = this.props.motion !== false;
+    const reduce = !motion || (window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches);
+    ctx.save(); ctx.scale(dpr, dpr); ctx.clearRect(0, 0, W, H);
+    const S = this.state, pk = this.PK[S.pi] || this.PK[0];
+    const resolved = S.phase === 'resolved', kicking = S.phase === 'kick';
+
+    // front-elevation goal opening
+    const gx = W * 0.11, gw = W * 0.78, gy = H * 0.15, gh = H * 0.58;
+    // reveal the true corner on the goal face once the kick is struck
+    let zone = null, zoneColor = '#FF5A6E';
+    if (resolved) { zone = pk.trueDir === 'L' ? 0 : (pk.trueDir === 'R' ? 2 : 1); zoneColor = (S.res && S.res.saved) ? acc : '#FF5A6E'; }
+    FP.goalFace(ctx, { x:gx, y:gy, w:gw, h:gh }, { cols:3, rows:2, zone:zone, zoneColor:zoneColor });
+
+    // eased keeper x so the dive glides
+    const kTgt = S.gk.x;
+    if (this._rpPi !== S.pi || this._rk == null) { this._rk = kTgt; this._rpPi = S.pi; }
+    this._rk += (kTgt - this._rk) * (reduce ? 1 : 0.34);
+    const baseY = gy + gh, dive = Math.max(-1, Math.min(1, (this._rk - 50) / 22.5));
+    FP.keeperFront(ctx, gx + gw / 2, baseY, gh, { dive: dive });
+
+    // the ball — spot before the kick, buried in the corner or gathered on a save
+    if (kicking || resolved) {
+      const bx = S.pkBall.x / 100 * W, by = S.pkBall.y / 100 * H, r = Math.max(4, H * 0.05);
+      ctx.save();
+      if (resolved) { ctx.shadowColor = 'rgba(220,240,255,.55)'; ctx.shadowBlur = 8; }
+      ctx.fillStyle = '#F2F8FE'; ctx.beginPath(); ctx.arc(bx, by, r, 0, 7); ctx.fill(); ctx.shadowBlur = 0;
+      ctx.strokeStyle = 'rgba(9,20,34,.42)'; ctx.lineWidth = Math.max(1, r * 0.14);
+      ctx.beginPath(); ctx.arc(bx, by, r * 0.93, 0, 7); ctx.stroke();
+      ctx.restore();
+    }
+    ctx.restore();
+  }
+
   componentDidMount(){
     this._to=[];
     try{ const b=JSON.parse(localStorage.getItem('fa_eyespy_progress')||'null'); if(b&&typeof b.best==='number') this._best=b; }catch(e){}
@@ -844,6 +878,7 @@ class Component extends DCLogic {
       scenTag: pk.diff+' \u00b7 '+pk.foot+'-FOOT', countText:'0'+(S.pi+1)+' / 0'+this.PK.length,
       headline: pk.name, footValue: pk.foot==='R'?'RIGHT':'LEFT', angleValue: pk.angle,
       zones, gazeStatus,
+      goalCanvasRef: this._cvRefFn || (this._cvRefFn = (el) => this._cvRef(el)),
       tellShow, tellStyle, tellGlyph, tellColor, tellTextShow, tellText, tellTextColor, tellTextBorder,
       gkStyle, pkBallStyle, pkBallTrans:S.pkTrans,
       markerPct, diveHint,
