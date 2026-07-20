@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="./fa-pitch.js"></script>
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:#04060c;}
+  @keyframes fa-rise{0%{transform:translateY(14px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  .fa-in{opacity:0;animation:fa-rise .55s cubic-bezier(.2,.7,.2,1) forwards;}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;}.fa-in{opacity:1!important;transform:none!important;}}
+</style>
+</helmet>
+<div style="position:relative;min-height:100dvh;width:100%;background:radial-gradient(120% 90% at 50% 6%,#0e1a2d 0%,#080e1a 44%,#04060c 100%);color:#EAF2FB;font-family:'Archivo',system-ui,sans-serif;--accent:{{ accent }};padding:34px clamp(20px,3.4vw,56px) 60px;">
+
+  <div style="position:absolute;inset:0;pointer-events:none;opacity:.4;background:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0px,rgba(255,255,255,.02) 1px,transparent 1px,transparent 4px);"></div>
+
+  <header style="position:relative;display:flex;align-items:center;gap:11px;margin-bottom:6px;">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" style="stroke:var(--accent,#A78BFA);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;"><rect x="3" y="4" width="18" height="16" rx="1.5"/><path d="M3 12h18M12 4v16"/><circle cx="12" cy="12" r="2.4"/></svg>
+    <span style="font:800 14px 'Archivo';letter-spacing:.05em;">FIELD <span style="color:var(--accent,#A78BFA);">STYLES</span></span>
+    <span style="margin-left:8px;font:600 10px 'IBM Plex Mono';letter-spacing:.14em;color:#61748c;">SHARED RENDERER · fa-pitch.js</span>
+  </header>
+  <p style="position:relative;max-width:720px;margin:0 0 26px;font:400 14px/1.6 'Archivo';color:#9FB0C5;">Every card is a landscape frame. Full pitch runs east–west; the crops run north–south (attack toward the top) so the action fills a wide panel. Same scene, same tokens, different field of view.</p>
+
+  <div style="position:relative;display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:20px;">
+    <sc-for list="{{ styles }}" as="s" hint-placeholder-count="4">
+      <div class="fa-in" style="border-radius:18px;border:1px solid rgba(120,140,166,.22);background:rgba(10,16,28,.5);overflow:hidden;">
+        <div style="display:flex;align-items:baseline;justify-content:space-between;gap:10px;padding:15px 18px 12px;">
+          <div>
+            <div style="font:800 16px 'Archivo';letter-spacing:-0.01em;">{{ s.title }}</div>
+            <div style="font:600 9.5px 'IBM Plex Mono';letter-spacing:.12em;color:#7688a0;margin-top:3px;">{{ s.meta }}</div>
+          </div>
+          <span style="padding:5px 10px;border-radius:8px;border:1px solid rgba(120,140,166,.24);background:rgba(10,16,28,.5);font:700 10px 'IBM Plex Mono';letter-spacing:.08em;color:var(--accent,#A78BFA);">{{ s.crop }}</span>
+        </div>
+        <div style="position:relative;aspect-ratio:16/9;border-top:1px solid rgba(120,140,166,.14);">
+          <canvas data-key="{{ s.key }}" style="display:block;width:100%;height:100%;"></canvas>
+          <div style="position:absolute;left:12px;bottom:10px;font:600 8.5px 'IBM Plex Mono';letter-spacing:.2em;color:rgba(200,215,232,.5);pointer-events:none;">{{ s.dir }}</div>
+        </div>
+        <div style="padding:12px 18px 16px;font:400 12.5px/1.5 'Archivo';color:#9FB0C5;">{{ s.note }}</div>
+      </div>
+    </sc-for>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1200,&quot;height&quot;:900},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#A78BFA&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#A78BFA&quot;,&quot;#22D3EE&quot;,&quot;#C6FF3A&quot;,&quot;#FF7A45&quot;,&quot;#FF4D8D&quot;]}}">
+class Component extends DCLogic {
+  SCENE = {
+    players:[
+      {team:'us',x:0.07,y:0.50,role:'GK'},
+      {team:'us',x:0.26,y:0.34,role:'CB'},
+      {team:'us',x:0.26,y:0.66,role:'CB'},
+      {team:'us',x:0.44,y:0.52,role:'DM'},
+      {team:'us',x:0.58,y:0.30,role:'CM'},
+      {team:'us',x:0.62,y:0.54,role:'AM'},
+      {team:'us',x:0.78,y:0.22,role:'RW'},
+      {team:'us',x:0.83,y:0.52,role:'ST'},
+      {team:'us',x:0.74,y:0.84,role:'LW'},
+      {team:'them',x:0.96,y:0.50,role:'GK'},
+      {team:'them',x:0.80,y:0.36,role:'CB'},
+      {team:'them',x:0.80,y:0.66,role:'CB'},
+      {team:'them',x:0.66,y:0.30,role:'RB'},
+      {team:'them',x:0.66,y:0.54,role:'DM'},
+      {team:'them',x:0.72,y:0.62,role:'CM'}
+    ],
+    carrier:5, bestPass:8, freeMan:8, lanes:[4,6,8,3]
+  };
+
+  STYLES = [
+    { key:'penalty',        pov:true, elev:0.24, cam:17, crop:'pen \u00b7 normal', title:'Penalty \u00b7 normal', meta:'FROM THE SPOT', dir:'GOAL \u2191',
+      note:'Shooter\u2019s-eye at normal height: goal at the north with the 6-yard box and spot in front. For penalties and finishing.' },
+    { key:'penalty-high',   pov:true, elev:0.2, cam:9, crop:'pen \u00b7 close', title:'Penalty \u00b7 close', meta:'FROM THE SPOT', dir:'GOAL \u2191',
+      note:'Same eye-level, camera pulled in tight \u2014 the goal fills the frame for point-blank shot-placement reads.' },
+    { key:'full',           crop:'full',           orient:'ew', attackDir:'ltr', title:'Full pitch',    meta:'END TO END', dir:'ATTACK \u2192',
+      note:'Whole shape, goal to goal. For scene inspectors and build-up reads (Scene Lab, Chunk Test).' },
+    { key:'defensive-third',crop:'defensive-third',orient:'ns', attackDir:'ltr', title:'Defensive third', meta:'OWN THIRD', dir:'ATTACK \u2191',
+      note:'Our third, north\u2013south. For build-from-the-back, pressing traps and recovery reads.' },
+    { key:'middle-third',   crop:'middle-third',   orient:'ns', attackDir:'ltr', title:'Middle third',  meta:'MIDFIELD BAND', dir:'ATTACK \u2191',
+      note:'The engine room. For progression, receiving between the lines and transition moments.' },
+    { key:'final-third',    crop:'final-third',    orient:'ns', attackDir:'ltr', title:'Final third',   meta:'ATTACKING THIRD', dir:'ATTACK \u2191',
+      note:'Tighter still. For shot-vs-pass and chance-creation moments near the box.' },
+    { key:'attacking-half', crop:'attacking-half', orient:'ns', attackDir:'ltr', title:'Attacking half', meta:'HALFWAY \u2192 GOAL', dir:'ATTACK \u2191',
+      note:'North\u2013south in a landscape frame. The relevant half fills the panel \u2014 for final-pass and freeze decisions.' },
+    { key:'box',            crop:'box',            orient:'ns', attackDir:'ltr', title:'The box',        meta:'PENALTY AREA', dir:'ATTACK \u2191',
+      note:'Zoomed to the penalty area for finishing, 1v1 and goalmouth reads.' },
+    { key:'gk',             crop:'gk',             orient:'ns', attackDir:'rtl', title:'Keeper view',    meta:'FROM THE GOAL', dir:'\u2193 INCOMING',
+      note:'The goalkeeper\u2019s angle: the goal sits at the bottom and play comes toward it. For shot-stopping and 1v1 reads.' },
+    { key:'gk-close',       crop:'gk-close',       orient:'ns', attackDir:'rtl', title:'Keeper \u00b7 goalmouth', meta:'CLOSE', dir:'\u2193 INCOMING',
+      note:'Zoomed tight to the six-yard box and goal frame. For reactions, crosses claimed and goal-line saves.' },
+    { key:'gk-18',          crop:'gk-18',          orient:'ns', attackDir:'rtl', title:'Keeper \u00b7 the 18', meta:'PENALTY AREA', dir:'\u2193 INCOMING',
+      note:'Tight into the 18-yard box: penalty spot, D and goal frame. For shot-stopping angles and set-piece reads.' },
+    { key:'gk-spot',        crop:'gk-spot',        orient:'ns', attackDir:'rtl', title:'Keeper \u00b7 from the spot', meta:'SPOT \u2192 GOAL', dir:'\u2193 INCOMING',
+      note:'Closer in from the penalty spot to the frame. For penalties and point-blank 1v1 saves.' },
+    { key:'gk-6yard',       crop:'gk-6yard',       orient:'ns', attackDir:'rtl', title:'Keeper \u00b7 six-yard box', meta:'GOAL LINE', dir:'\u2193 INCOMING',
+      note:'Inside the six-yard box, hard on the goal line. For goal-line clearances, claims and reaction saves.' }
+  ];
+
+  componentDidMount(){
+    this._grid = null;
+    this._onResize = () => this._drawAll();
+    window.addEventListener('resize', this._onResize);
+    this._boot(0);
+  }
+  componentWillUnmount(){ window.removeEventListener('resize', this._onResize); this._running=false; if(this._raf) cancelAnimationFrame(this._raf); }
+
+  _boot(t){ if(!window.FAPitch){ if(t<40) setTimeout(()=>this._boot(t+1),60); return; } this._running=true; this._loop(); }
+  _loop(){ if(!this._running) return; this._raf=requestAnimationFrame((tt)=>this._loop(tt)); this._drawAll(performance.now()); }
+
+  _canvas(key){ return document.querySelector('canvas[data-key="'+key+'"]'); }
+
+  _resize(cv){ const r=cv.getBoundingClientRect(); const dpr=Math.min(2,window.devicePixelRatio||1); cv.width=Math.max(2,Math.round(r.width*dpr)); cv.height=Math.max(2,Math.round(r.height*dpr)); return {w:r.width,h:r.height,dpr}; }
+
+  _drawAll(now){
+    const FP=window.FAPitch; if(!FP) return;
+    now = now || performance.now();
+    const acc=this.props.accent??'#A78BFA';
+    const sc=this.SCENE;
+    this.STYLES.forEach(st=>{
+      const cv=this._canvas(st.key); if(!cv) return;
+      const {w,h,dpr}=this._resize(cv); if(!w||!h) return;
+      const ctx=cv.getContext('2d'); ctx.save(); ctx.scale(dpr,dpr); ctx.clearRect(0,0,w,h);
+      if(st.pov){ FP.penaltyPOV(ctx,w,h,{accent:acc,elev:st.elev,cam:st.cam}); ctx.restore(); return; }
+      const fit=FP.fit(w,h,{crop:st.crop,orient:st.orient,attackDir:st.attackDir});
+      FP.pitch(ctx,fit);
+      // markings only — no tokens, ball or lanes on the field
+      ctx.restore(); // scale
+    });
+  }
+
+  renderVals(){
+    const acc=this.props.accent??'#A78BFA';
+    return { accent:acc, styles:this.STYLES.map(s=>({ ...s })) };
+  }
+}
+</script>
+</body>
+</html>

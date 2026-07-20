@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:#04060c;}
+  a{color:var(--accent,#A78BFA);} a:hover{color:#c4b0ff;}
+  @keyframes fa-rise{0%{transform:translateY(12px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-deplete{0%{width:100%;}100%{width:0%;}}
+  @keyframes fa-sweep{0%{left:2%;}50%{left:96%;}100%{left:2%;}}
+  @keyframes fa-shimmer{0%{transform:translateX(-120%);}100%{transform:translateX(320%);}}
+  @keyframes fa-spin{to{transform:rotate(360deg);}}
+  @keyframes fa-pulsering{0%{transform:scale(1);opacity:.7;}100%{transform:scale(1.9);opacity:0;}}
+  .fa-in{opacity:0;animation:fa-rise .5s cubic-bezier(.2,.7,.2,1) forwards;}
+  .hk-press{transition:transform .12s ease, box-shadow .2s ease, background .2s ease, border-color .2s ease, color .2s ease;}
+  .hk-press:active{transform:translateY(1px) scale(.985);}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;}.fa-in{opacity:1!important;transform:none!important;}}
+</style>
+</helmet>
+<div style="position:relative;min-height:100dvh;width:100%;background:radial-gradient(120% 90% at 50% 6%,#0e1a2d 0%,#080e1a 44%,#04060c 100%);color:#EAF2FB;font-family:'Archivo',system-ui,sans-serif;--accent:{{ accent }};padding:34px clamp(20px,3.4vw,56px) 80px;">
+  <div style="position:absolute;inset:0;pointer-events:none;opacity:.4;background:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0px,rgba(255,255,255,.02) 1px,transparent 1px,transparent 4px);"></div>
+
+  <header style="position:relative;display:flex;align-items:center;gap:11px;margin-bottom:6px;">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" style="stroke:var(--accent,#A78BFA);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;"><rect x="3" y="8" width="4" height="10" rx="1"/><rect x="10" y="4" width="4" height="14" rx="1"/><rect x="17" y="11" width="4" height="7" rx="1"/></svg>
+    <span style="font:800 14px 'Archivo';letter-spacing:.05em;">HUD <span style="color:var(--accent,#A78BFA);">KIT</span></span>
+    <span style="margin-left:8px;font:600 10px 'IBM Plex Mono';letter-spacing:.14em;color:#61748c;">CONTROLS · METERS · READOUTS</span>
+  </header>
+  <p style="position:relative;max-width:780px;margin:0 0 30px;font:400 14px/1.6 'Archivo';color:#9FB0C5;">Layout-independent chrome for every game — the buttons, toggles, bars, meters and stat readouts. Live and interactive; drop into any screen regardless of the field layout.</p>
+
+  <div style="position:relative;display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:20px;">
+
+    <!-- BUTTONS -->
+    <section class="fa-in" style="border-radius:18px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);padding:20px 22px;">
+      <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.2em;color:var(--accent,#A78BFA);margin-bottom:16px;">01 · BUTTONS</div>
+      <div style="display:flex;flex-direction:column;gap:16px;">
+        <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;">
+          <button class="hk-press" style="display:inline-flex;align-items:center;gap:11px;padding:14px 26px;border-radius:13px;border:0;background:var(--accent,#A78BFA);color:#0b0518;font:700 14px 'Archivo';cursor:pointer;box-shadow:0 8px 24px -10px var(--accent,#A78BFA);" style-hover="filter:brightness(1.08);box-shadow:0 12px 30px -8px var(--accent,#A78BFA);">Commit the pass
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:#0b0518;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12h13M12 6l6 6-6 6"/></svg>
+          </button>
+          <button class="hk-press" style="padding:14px 24px;border-radius:13px;border:1px solid rgba(120,140,166,.3);background:rgba(10,16,28,.5);color:#EAF2FB;font:700 14px 'Archivo';cursor:pointer;" style-hover="border-color:var(--accent,#A78BFA);color:#fff;">Secondary</button>
+          <button class="hk-press" style="display:inline-flex;align-items:center;gap:8px;padding:0;border:0;background:none;color:#8EA1B8;font:600 13px 'Archivo';cursor:pointer;" style-hover="color:#EAF2FB;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M15 5l-7 7 7 7"/></svg>Back
+          </button>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;">
+          <button class="hk-press" style="display:grid;place-items:center;width:38px;height:38px;border-radius:11px;border:1px solid rgba(120,140,166,.26);background:rgba(10,16,28,.5);color:#9FB0C5;cursor:pointer;" style-hover="border-color:var(--accent,#A78BFA);color:#fff;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button>
+          <div style="display:inline-flex;border-radius:11px;overflow:hidden;border:1px solid rgba(120,140,166,.26);">
+            <button onClick="{{ dec }}" class="hk-press" style="display:grid;place-items:center;width:38px;height:38px;border:0;background:rgba(10,16,28,.5);color:#9FB0C5;cursor:pointer;" style-hover="color:#fff;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.4;stroke-linecap:round;"><path d="M5 12h14"/></svg></button>
+            <div style="display:grid;place-items:center;min-width:44px;font:800 15px 'IBM Plex Mono';color:var(--accent,#A78BFA);background:rgba(6,10,18,.4);border-left:1px solid rgba(120,140,166,.18);border-right:1px solid rgba(120,140,166,.18);">{{ count }}</div>
+            <button onClick="{{ inc }}" class="hk-press" style="display:grid;place-items:center;width:38px;height:38px;border:0;background:rgba(10,16,28,.5);color:#9FB0C5;cursor:pointer;" style-hover="color:#fff;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.4;stroke-linecap:round;"><path d="M12 5v14M5 12h14"/></svg></button>
+          </div>
+          <button class="hk-press" style="padding:14px 22px;border-radius:13px;border:1px solid rgba(255,90,110,.4);background:rgba(255,90,110,.08);color:#FF8A97;font:700 14px 'Archivo';cursor:pointer;" style-hover="background:rgba(255,90,110,.16);color:#fff;">End session</button>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;">
+          <button disabled="{{ true }}" style="display:inline-flex;align-items:center;gap:10px;padding:14px 24px;border-radius:13px;border:1px solid rgba(120,140,166,.16);background:rgba(10,16,28,.35);color:#4d5c70;font:700 14px 'Archivo';cursor:not-allowed;">Continue</button>
+          <button style="display:inline-flex;align-items:center;gap:10px;padding:14px 24px;border-radius:13px;border:0;background:color-mix(in srgb,var(--accent,#A78BFA) 45%,transparent);color:#0b0518;font:700 14px 'Archivo';cursor:progress;">
+            <span style="width:15px;height:15px;border-radius:50%;border:2.4px solid rgba(11,5,24,.35);border-top-color:#0b0518;display:inline-block;animation:fa-spin .7s linear infinite;"></span>Analysing
+          </button>
+          <button style="display:inline-flex;align-items:center;gap:9px;padding:14px 22px;border-radius:13px;border:1px solid rgba(120,140,166,.24);background:rgba(10,16,28,.4);color:#7688a0;font:700 13px 'Archivo';cursor:pointer;" style-hover="border-color:#FFB020;color:#FFD37A;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><rect x="4" y="11" width="16" height="9" rx="1.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>Full Combine
+            <span style="padding:2px 7px;border-radius:6px;background:rgba(255,176,32,.14);color:#FFB020;font:700 9px 'IBM Plex Mono';letter-spacing:.08em;">PRO</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SEGMENTED + TOGGLES -->
+    <section class="fa-in" style="border-radius:18px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);padding:20px 22px;animation-delay:.04s;">
+      <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.2em;color:var(--accent,#A78BFA);margin-bottom:16px;">02 · SEGMENTED &amp; TOGGLES</div>
+      <div style="display:flex;flex-direction:column;gap:18px;">
+        <div style="position:relative;display:inline-flex;padding:4px;border-radius:13px;border:1px solid rgba(120,140,166,.22);background:rgba(10,16,28,.5);width:max-content;">
+          <div style="position:absolute;top:4px;bottom:4px;left:{{ segLeft }};width:calc(50% - 4px);border-radius:9px;background:var(--accent,#A78BFA);transition:left .28s cubic-bezier(.3,.8,.3,1);box-shadow:0 4px 14px -6px var(--accent,#A78BFA);"></div>
+          <button onClick="{{ segA }}" class="hk-press" style="position:relative;z-index:1;padding:9px 22px;border:0;background:none;cursor:pointer;font:700 12.5px 'Archivo';color:{{ segAColor }};transition:color .2s;">Structured</button>
+          <button onClick="{{ segB }}" class="hk-press" style="position:relative;z-index:1;padding:9px 22px;border:0;background:none;cursor:pointer;font:700 12.5px 'Archivo';color:{{ segBColor }};transition:color .2s;">Scrambled</button>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:9px;">
+          <sc-for list="{{ overlays }}" as="o" hint-placeholder-count="3">
+            <button onClick="{{ o.toggle }}" class="hk-press" style="display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:12px 14px;border-radius:12px;border:1px solid {{ o.border }};background:{{ o.bg }};cursor:pointer;">
+              <span style="flex:0 0 auto;width:17px;height:17px;border-radius:5px;border:1.5px solid {{ o.mark }};background:{{ o.fill }};display:grid;place-items:center;transition:all .2s;">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" style="stroke:#06101a;stroke-width:3.4;stroke-linecap:round;stroke-linejoin:round;opacity:{{ o.checkOp }};"><path d="M5 12l5 5 9-11"/></svg>
+              </span>
+              <span style="flex:1;font:700 13px 'Archivo';">{{ o.name }}</span>
+              <span style="width:22px;height:4px;border-radius:99px;background:{{ o.sw }};opacity:{{ o.dashOp }};"></span>
+            </button>
+          </sc-for>
+        </div>
+
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:2px;">
+          <span style="font:700 13px 'Archivo';color:#9FB0C5;">Sound</span>
+          <button onClick="{{ toggleSwitch }}" class="hk-press" style="position:relative;width:50px;height:28px;border-radius:99px;border:0;cursor:pointer;background:{{ switchBg }};transition:background .25s;">
+            <span style="position:absolute;top:3px;left:{{ knobLeft }};width:22px;height:22px;border-radius:50%;background:#fff;transition:left .25s cubic-bezier(.3,.8,.3,1);box-shadow:0 2px 6px rgba(0,0,0,.4);"></span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- CHIPS -->
+    <section class="fa-in" style="border-radius:18px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);padding:20px 22px;animation-delay:.08s;">
+      <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.2em;color:var(--accent,#A78BFA);margin-bottom:16px;">03 · CHIPS &amp; TAGS</div>
+      <div style="display:flex;flex-wrap:wrap;gap:10px;">
+        <span style="display:inline-flex;align-items:center;gap:7px;padding:6px 13px;border-radius:9px;border:1px solid rgba(120,140,166,.26);background:rgba(10,16,28,.5);font:700 11px 'IBM Plex Mono';letter-spacing:.08em;color:#9FB0C5;">HIGH LINE</span>
+        <span style="display:inline-flex;align-items:center;gap:7px;padding:6px 13px;border-radius:9px;border:1px solid rgba(255,176,32,.4);background:rgba(255,176,32,.1);font:700 11px 'IBM Plex Mono';letter-spacing:.08em;color:#FFB020;">CHANCE</span>
+        <span style="display:inline-flex;align-items:center;gap:7px;padding:6px 13px;border-radius:9px;border:1px solid rgba(59,224,122,.4);background:rgba(59,224,122,.1);font:700 11px 'IBM Plex Mono';letter-spacing:.08em;color:#3BE07A;"><span style="width:6px;height:6px;border-radius:50%;background:#3BE07A;box-shadow:0 0 6px #3BE07A;"></span>VALID</span>
+        <span style="display:inline-flex;align-items:center;gap:7px;padding:6px 13px;border-radius:9px;border:1px solid rgba(255,90,110,.4);background:rgba(255,90,110,.1);font:700 11px 'IBM Plex Mono';letter-spacing:.08em;color:#FF8A97;">TURNOVER</span>
+        <span style="display:inline-flex;align-items:center;gap:7px;padding:6px 13px;border-radius:99px;border:1px solid color-mix(in srgb,var(--accent,#A78BFA) 45%,transparent);background:color-mix(in srgb,var(--accent,#A78BFA) 12%,transparent);font:700 11px 'IBM Plex Mono';letter-spacing:.08em;color:var(--accent,#A78BFA);">ORACLE</span>
+        <span style="display:inline-flex;align-items:center;gap:7px;padding:6px 13px;border-radius:9px;border:1px solid rgba(120,140,166,.26);background:rgba(10,16,28,.5);font:700 11px 'IBM Plex Mono';letter-spacing:.08em;color:#7688a0;">SCENE 04 / 10</span>
+      </div>
+    </section>
+
+    <!-- BARS & METERS -->
+    <section class="fa-in" style="border-radius:18px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);padding:20px 22px;grid-column:1 / -1;animation-delay:.12s;">
+      <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.2em;color:var(--accent,#A78BFA);margin-bottom:18px;">04 · BARS &amp; METERS</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:26px 34px;">
+
+        <div>
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;">
+            <span style="font:600 9px 'IBM Plex Mono';letter-spacing:.14em;color:#7688a0;">xG · SHOOT NOW</span>
+            <span style="font:800 14px 'IBM Plex Mono';color:#EAF2FB;">0.01</span>
+          </div>
+          <div style="height:6px;border-radius:99px;background:rgba(120,140,166,.18);overflow:hidden;"><div style="height:100%;width:6%;border-radius:99px;background:#7688a0;"></div></div>
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin:16px 0 8px;">
+            <span style="font:600 9px 'IBM Plex Mono';letter-spacing:.14em;color:#7688a0;">xG · BEST PASS</span>
+            <span style="font:800 14px 'IBM Plex Mono';color:var(--accent,#A78BFA);">0.09</span>
+          </div>
+          <div style="height:6px;border-radius:99px;background:rgba(120,140,166,.18);overflow:hidden;"><div style="height:100%;width:34%;border-radius:99px;background:var(--accent,#A78BFA);box-shadow:0 0 10px -2px var(--accent,#A78BFA);"></div></div>
+        </div>
+
+        <div>
+          <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.14em;color:#7688a0;margin-bottom:12px;">OCCLUSION SCALE</div>
+          <div style="position:relative;height:9px;border-radius:99px;background:linear-gradient(90deg,#7688a0 0%,#7688a0 28%,#FFB020 52%,#3BE07A 78%,#3BE07A 100%);">
+            <div style="position:absolute;top:-5px;width:3px;height:19px;border-radius:2px;background:#EAF2FB;box-shadow:0 0 10px rgba(255,255,255,.85);animation:fa-sweep 3.4s ease-in-out infinite;"></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;margin-top:9px;font:600 8.5px 'IBM Plex Mono';letter-spacing:.12em;color:#61748c;"><span>EARLY</span><span>CONTACT</span><span>LATE</span></div>
+          <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.14em;color:#7688a0;margin:20px 0 10px;">DECISION TIMER</div>
+          <div style="height:8px;border-radius:99px;background:rgba(120,140,166,.18);overflow:hidden;"><div style="height:100%;border-radius:99px;background:linear-gradient(90deg,#FF5A6E,#FFB020);animation:fa-deplete 4s linear infinite;"></div></div>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:22px;">
+          <div style="position:relative;width:96px;height:96px;flex:0 0 auto;">
+            <svg width="96" height="96" viewBox="0 0 96 96" style="transform:rotate(-90deg);">
+              <circle cx="48" cy="48" r="40" fill="none" stroke="rgba(120,140,166,.18)" stroke-width="9"/>
+              <circle cx="48" cy="48" r="40" fill="none" stroke="var(--accent,#A78BFA)" stroke-width="9" stroke-linecap="round" stroke-dasharray="251.2" stroke-dashoffset="{{ ringOffset }}" style="filter:drop-shadow(0 0 6px var(--accent,#A78BFA));"/>
+            </svg>
+            <div style="position:absolute;inset:0;display:grid;place-items:center;"><span style="font:800 24px 'IBM Plex Mono';color:#EAF2FB;">73</span></div>
+          </div>
+          <div>
+            <div style="font:800 14px 'Archivo';margin-bottom:3px;">Technique</div>
+            <div style="font:400 12px/1.5 'Archivo';color:#9FB0C5;max-width:150px;">Radial score meter for a single headline number.</div>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:14px;">
+          <div>
+            <div style="display:flex;justify-content:space-between;font:700 11px 'Archivo';color:#EAF2FB;margin-bottom:6px;"><span>You</span><span style="color:var(--accent,#A78BFA);font-family:'IBM Plex Mono';">73</span></div>
+            <div style="position:relative;height:9px;border-radius:99px;background:rgba(120,140,166,.16);overflow:hidden;"><div style="height:100%;width:73%;border-radius:99px;background:var(--accent,#A78BFA);"></div></div>
+            <div style="position:relative;height:0;"><div style="position:absolute;left:88%;top:-13px;width:2px;height:15px;background:#3BE07A;box-shadow:0 0 6px #3BE07A;" title="elite target"></div></div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;font:700 11px 'Archivo';color:#9FB0C5;margin-bottom:6px;"><span>Elite target</span><span style="color:#3BE07A;font-family:'IBM Plex Mono';">88</span></div>
+            <div style="position:relative;height:9px;border-radius:99px;background:rgba(120,140,166,.16);overflow:hidden;"><div style="height:100%;width:88%;border-radius:99px;background:repeating-linear-gradient(90deg,#3BE07A 0 6px,transparent 6px 11px);"></div></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:9px;margin-top:2px;">
+            <span style="display:inline-flex;align-items:center;gap:5px;white-space:nowrap;padding:5px 10px;border-radius:8px;border:1px solid rgba(255,90,110,.35);background:rgba(255,90,110,.1);font:800 11px 'IBM Plex Mono';color:#FF8A97;">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;"><path d="M12 19V5M5 12l7-7 7 7"/></svg>+15
+            </span>
+            <span style="font:400 11.5px 'Archivo';color:#7688a0;">gap to the elite benchmark</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- STAT READOUTS -->
+    <section class="fa-in" style="border-radius:18px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);padding:20px 22px;grid-column:1 / -1;animation-delay:.16s;">
+      <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.2em;color:var(--accent,#A78BFA);margin-bottom:18px;">05 · STAT READOUTS</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:16px;">
+        <div style="padding:16px;border-radius:14px;border:1px solid rgba(120,140,166,.2);background:rgba(6,10,18,.4);">
+          <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.16em;color:#7688a0;margin-bottom:9px;">BEST PASS</div>
+          <div style="font:800 26px 'Archivo';color:var(--accent,#A78BFA);line-height:1;">DM</div>
+        </div>
+        <div style="padding:16px;border-radius:14px;border:1px solid rgba(120,140,166,.2);background:rgba(6,10,18,.4);">
+          <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.16em;color:#7688a0;margin-bottom:9px;">FREE MAN</div>
+          <div style="font:800 26px 'Archivo';color:#3BE07A;line-height:1;">DM</div>
+        </div>
+        <div style="padding:16px;border-radius:14px;border:1px solid rgba(120,140,166,.2);background:rgba(6,10,18,.4);display:flex;flex-direction:column;justify-content:space-between;">
+          <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.16em;color:#7688a0;">MEDIAN RT</div>
+          <div style="display:flex;align-items:baseline;gap:4px;"><span style="font:800 26px 'IBM Plex Mono';color:#EAF2FB;line-height:1;">412</span><span style="font:600 11px 'IBM Plex Mono';color:#7688a0;">ms</span></div>
+        </div>
+        <div style="padding:16px;border-radius:14px;border:1px solid color-mix(in srgb,var(--accent,#A78BFA) 30%,transparent);background:color-mix(in srgb,var(--accent,#A78BFA) 8%,transparent);display:flex;flex-direction:column;justify-content:space-between;">
+          <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.16em;color:var(--accent,#A78BFA);">ACCURACY</div>
+          <div style="display:flex;align-items:baseline;gap:3px;"><span style="font:800 26px 'IBM Plex Mono';color:#fff;line-height:1;">82</span><span style="font:600 13px 'IBM Plex Mono';color:var(--accent,#A78BFA);">%</span></div>
+        </div>
+        <div style="grid-column:span 1;padding:16px;border-radius:14px;border:1px solid rgba(120,140,166,.2);background:rgba(6,10,18,.4);display:flex;align-items:center;justify-content:space-around;">
+          <div style="text-align:center;"><div style="font:800 22px 'IBM Plex Mono';color:#EAF2FB;">7</div><div style="font:600 8px 'IBM Plex Mono';letter-spacing:.14em;color:#7688a0;margin-top:4px;">MATES</div></div>
+          <div style="text-align:center;"><div style="font:800 22px 'IBM Plex Mono';color:#FF8A97;">4</div><div style="font:600 8px 'IBM Plex Mono';letter-spacing:.14em;color:#7688a0;margin-top:4px;">OPP</div></div>
+          <div style="text-align:center;"><div style="font:800 22px 'IBM Plex Mono';color:var(--accent,#A78BFA);">3</div><div style="font:600 8px 'IBM Plex Mono';letter-spacing:.14em;color:#7688a0;margin-top:4px;">LANES</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DIFFICULTY SELECTOR -->
+    <section class="fa-in" style="border-radius:18px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);padding:20px 22px;grid-column:1 / -1;animation-delay:.2s;">
+      <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.2em;color:var(--accent,#A78BFA);margin-bottom:18px;">06 · DIFFICULTY SELECTOR</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;">
+        <sc-for list="{{ diffs }}" as="d" hint-placeholder-count="3">
+          <button onClick="{{ d.pick }}" class="hk-press" style="text-align:left;padding:16px 18px;border-radius:15px;border:1px solid {{ d.border }};background:{{ d.bg }};cursor:pointer;position:relative;overflow:hidden;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+              <span style="font:800 16px 'Archivo';color:{{ d.title }};">{{ d.name }}</span>
+              <span style="width:14px;height:14px;border-radius:50%;border:2px solid {{ d.dot }};display:grid;place-items:center;"><span style="width:6px;height:6px;border-radius:50%;background:{{ d.dotFill }};"></span></span>
+            </div>
+            <div style="font:400 11.5px/1.45 'Archivo';color:#9FB0C5;">{{ d.desc }}</div>
+          </button>
+        </sc-for>
+      </div>
+    </section>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1200,&quot;height&quot;:900},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#A78BFA&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#A78BFA&quot;,&quot;#22D3EE&quot;,&quot;#C6FF3A&quot;,&quot;#FF7A45&quot;,&quot;#FF4D8D&quot;]}}">
+class Component extends DCLogic {
+  state = { seg:0, count:6, sound:true, overlays:{best:true,lanes:false,free:true}, diff:1, ring:0 };
+
+  componentDidMount(){
+    // animate the radial ring once, then hold
+    let t=0; this._iv=setInterval(()=>{ t=Math.min(1,t+0.04); this.setState({ring:t}); if(t>=1) clearInterval(this._iv); },24);
+  }
+  componentWillUnmount(){ clearInterval(this._iv); }
+
+  renderVals(){
+    const acc=this.props.accent??'#A78BFA';
+    const S=this.state;
+    const mix=(c,p)=>`color-mix(in srgb, ${c} ${p}%, transparent)`;
+
+    const ovDefs=[ {k:'best',name:'Best pass',sw:acc}, {k:'lanes',name:'Viable lanes',sw:'#9FB0C5'}, {k:'free',name:'Free man',sw:'#3BE07A'} ];
+    const overlays=ovDefs.map(o=>{ const on=S.overlays[o.k]; return {
+      name:o.name, sw:o.sw,
+      toggle:()=>this.setState(s=>({overlays:{...s.overlays,[o.k]:!s.overlays[o.k]}})),
+      border:on?mix(o.sw,45):'rgba(120,140,166,.22)',
+      bg:on?mix(o.sw,9):'rgba(10,16,28,.4)',
+      mark:on?o.sw:'rgba(120,140,166,.5)',
+      fill:on?o.sw:'transparent',
+      checkOp:on?1:0, dashOp:on?1:0.3
+    };});
+
+    const diffDefs=[ {name:'Academy',desc:'Generous windows. Learn the reads.'}, {name:'Pro',desc:'Match-realistic timing and pressure.'}, {name:'Elite',desc:'Ruthless. Split-second decisions only.'} ];
+    const diffs=diffDefs.map((d,i)=>{ const on=S.diff===i; return {
+      name:d.name, desc:d.desc, pick:()=>this.setState({diff:i}),
+      border:on?mix(acc,55):'rgba(120,140,166,.22)',
+      bg:on?mix(acc,10):'rgba(10,16,28,.4)',
+      title:on?acc:'#EAF2FB', dot:on?acc:'rgba(120,140,166,.5)', dotFill:on?acc:'transparent'
+    };});
+
+    const R=40, C=2*Math.PI*R;
+    return {
+      accent:acc,
+      count:S.count, inc:()=>this.setState(s=>({count:Math.min(20,s.count+1)})), dec:()=>this.setState(s=>({count:Math.max(0,s.count-1)})),
+      segLeft:S.seg===0?'4px':'50%', segA:()=>this.setState({seg:0}), segB:()=>this.setState({seg:1}),
+      segAColor:S.seg===0?'#0b0518':'#9FB0C5', segBColor:S.seg===1?'#0b0518':'#9FB0C5',
+      overlays,
+      toggleSwitch:()=>this.setState(s=>({sound:!s.sound})),
+      switchBg:S.sound?acc:'rgba(120,140,166,.3)', knobLeft:S.sound?'25px':'3px',
+      ringOffset:C*(1-0.73*S.ring),
+      diffs
+    };
+  }
+}
+</script>
+</body>
+</html>

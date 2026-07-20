@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="./fa-pitch.js"></script>
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:#04060c;}
+  a{color:var(--accent,#A78BFA);text-decoration:none;} a:hover{color:#c4b0ff;}
+  @keyframes fa-rise{0%{transform:translateY(14px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-scan{0%{top:-30%;}100%{top:130%;}}
+  .fa-in{opacity:0;animation:fa-rise .55s cubic-bezier(.2,.7,.2,1) forwards;}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;}.fa-in{opacity:1!important;transform:none!important;}}
+</style>
+</helmet>
+<div style="position:relative;min-height:100dvh;width:100%;background:radial-gradient(120% 90% at 50% 6%,#0e1a2d 0%,#080e1a 44%,#04060c 100%);color:#EAF2FB;font-family:'Archivo',system-ui,sans-serif;--accent:{{ accent }};padding:34px clamp(20px,3.4vw,56px) 80px;overflow:hidden;">
+  <div style="position:absolute;inset:0;pointer-events:none;opacity:.4;background:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0px,rgba(255,255,255,.02) 1px,transparent 1px,transparent 4px);"></div>
+  <sc-if value="{{ motionOn }}" hint-placeholder-val="{{ true }}">
+    <div style="position:absolute;left:0;right:0;height:22%;pointer-events:none;z-index:0;background:linear-gradient(180deg,transparent,rgba(120,170,210,.04) 50%,transparent);animation:fa-scan 9s linear infinite;"></div>
+  </sc-if>
+
+  <header style="position:relative;z-index:2;display:flex;align-items:center;gap:11px;margin-bottom:6px;">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" style="stroke:var(--accent,#A78BFA);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;"><rect x="3" y="3" width="8" height="18" rx="1.5"/><rect x="14" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="15" width="7" height="6" rx="1.5"/></svg>
+    <span style="font:800 14px 'Archivo';letter-spacing:.05em;">LAYOUT <span style="color:var(--accent,#A78BFA);">KIT</span></span>
+    <span style="margin-left:8px;font:600 10px 'IBM Plex Mono';letter-spacing:.14em;color:#61748c;">FIELD-PROMINENT PLAY LAYOUTS · fa-pitch.js</span>
+  </header>
+  <p style="position:relative;z-index:2;max-width:840px;margin:0 0 14px;font:400 14px/1.6 'Archivo';color:#9FB0C5;text-wrap:pretty;">Every game wears the same chrome and swaps a <b style="color:#cdd8e6;">&lt;main&gt;</b> between screens. What changes game-to-game is the <b style="color:#cdd8e6;">play screen</b> — and in all of them the <b style="color:#cdd8e6;">field is the hero</b>. Each play screen composes four panel classes:</p>
+  <div style="position:relative;z-index:2;display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px;">
+    <sc-for list="{{ legend }}" as="l" hint-placeholder-count="4">
+      <span style="display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border-radius:9px;border:1px solid {{ l.border }};background:rgba(6,12,22,.5);font:700 10px 'IBM Plex Mono';letter-spacing:.06em;color:#cdd8e6;"><span style="width:10px;height:10px;border-radius:3px;background:{{ l.dot }};"></span>{{ l.name }}</span>
+    </sc-for>
+  </div>
+
+  <!-- ===================== THE SHELL ===================== -->
+  <section class="fa-in" style="position:relative;z-index:2;border-radius:18px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);padding:20px 22px;margin-bottom:30px;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+      <span style="font:800 11px 'IBM Plex Mono';letter-spacing:.2em;color:var(--accent,#A78BFA);">THE SHELL</span>
+      <span style="font:600 10px 'IBM Plex Mono';letter-spacing:.12em;color:#61748c;">CONSTANT ACROSS EVERY GAME</span>
+      <div style="flex:1;height:1px;background:linear-gradient(90deg,rgba(120,140,166,.24),transparent);"></div>
+    </div>
+    <p style="margin:0;font:400 12.5px/1.6 'Archivo';color:#9FB0C5;max-width:820px;text-wrap:pretty;">Navy radial background · scanline · corner brackets · Archivo + IBM&nbsp;Plex&nbsp;Mono. A top bar holds <b style="color:#cdd8e6;">Back</b>, the game name, a sound toggle and scan/round progress. The layouts below only redesign the <b style="color:#cdd8e6;">play screen</b>; intro, result and embedded-done reuse the Focus and Results archetypes.</p>
+  </section>
+
+  <div style="position:relative;z-index:2;display:flex;flex-direction:column;gap:24px;">
+
+    <!-- ===================== 01 · ARENA ===================== -->
+    <section class="fa-in" style="display:flex;flex-wrap:wrap;gap:26px;align-items:center;border-radius:18px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.4);padding:22px;">
+      <div style="flex:1 1 250px;max-width:330px;">
+        <div style="display:flex;align-items:baseline;gap:11px;margin-bottom:8px;"><span style="font:800 13px 'IBM Plex Mono';letter-spacing:.12em;color:var(--accent,#A78BFA);">01</span><span style="font:800 22px 'Archivo';letter-spacing:-0.015em;">Arena</span></div>
+        <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.14em;color:#7688a0;margin-bottom:13px;">BANNER · HERO FIELD · CONTROL DOCK</div>
+        <p style="margin:0 0 14px;font:400 13px/1.65 'Archivo';color:#9FB0C5;text-wrap:pretty;">The workhorse. A slim prompt banner (title + one-line context + stat chips) spans the top, the field claims <b style="color:#cdd8e6;">every pixel</b> beneath it, and the answers dock full-width under the thumb. Reads top-to-bottom: <b style="color:#cdd8e6;">prompt → field → act.</b></p>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;">
+          <sc-for list="{{ tagArena }}" as="t" hint-placeholder-count="3"><span style="padding:5px 10px;border-radius:7px;border:1px solid rgba(120,140,166,.24);background:rgba(6,12,22,.5);font:700 9px 'IBM Plex Mono';letter-spacing:.06em;color:#9FB0C5;">{{ t }}</span></sc-for>
+        </div>
+        <p style="margin:13px 0 0;font:400 11px/1.5 'Archivo';color:#61748c;text-wrap:pretty;">↳ Field <b style="color:#7688a0;">flex:1</b> fills the height; dock full-width, <b style="color:#7688a0;">safe center</b> so CTAs never clip.</p>
+      </div>
+      <div style="flex:2.4 1 500px;position:relative;aspect-ratio:16/10;border-radius:14px;overflow:hidden;border:1px solid rgba(120,140,166,.18);background:#070d18;">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:0 11px;height:30px;border-bottom:1px solid rgba(120,140,166,.12);">
+          <span style="font:600 7.5px 'IBM Plex Mono';letter-spacing:.12em;color:#7688a0;">‹ BACK</span>
+          <span style="display:inline-flex;align-items:center;gap:5px;font:800 8px 'Archivo';letter-spacing:.05em;"><span style="width:8px;height:8px;border-radius:2px;background:var(--accent,#A78BFA);"></span>HIGH PRESSURE</span>
+          <span style="font:600 7px 'IBM Plex Mono';letter-spacing:.12em;color:#7688a0;">CALL 4 / 10</span>
+        </div>
+        <div style="position:absolute;top:30px;left:0;right:0;bottom:0;display:flex;flex-direction:column;gap:8px;padding:9px;">
+          <div style="flex:0 0 auto;display:flex;align-items:center;gap:9px;padding:8px 11px;border-radius:10px;border:1px solid rgba(120,140,166,.16);background:rgba(10,16,28,.62);">
+            <span style="padding:3px 8px;border-radius:6px;border:1px solid color-mix(in srgb,var(--accent,#A78BFA) 40%,transparent);background:color-mix(in srgb,var(--accent,#A78BFA) 10%,transparent);font:700 6.5px 'IBM Plex Mono';letter-spacing:.14em;color:var(--accent,#A78BFA);white-space:nowrap;">THE CALL</span>
+            <div style="flex:1;font:700 11px 'Archivo';color:#F2F8FE;">Striker breaks in behind — come or hold?</div>
+            <span style="font:800 13px 'IBM Plex Mono';color:#FFB020;">2.4s</span>
+          </div>
+          <div style="flex:1;position:relative;border-radius:11px;overflow:hidden;border:1px solid rgba(120,140,166,.16);min-height:0;">
+            <canvas data-mock="arena" style="display:block;width:100%;height:100%;"></canvas>
+            <span style="position:absolute;left:10px;top:8px;font:600 6.5px 'IBM Plex Mono';letter-spacing:.2em;color:rgba(200,215,232,.5);">FIELD · HERO</span>
+            <span style="position:absolute;right:10px;bottom:7px;font:600 6.5px 'IBM Plex Mono';letter-spacing:.2em;color:rgba(200,215,232,.42);">ATTACK ↑</span>
+          </div>
+          <div style="flex:0 0 auto;display:flex;gap:8px;">
+            <div style="flex:1;padding:10px 0;border-radius:9px;border:1px solid rgba(120,140,166,.26);background:rgba(10,16,28,.6);text-align:center;font:700 10px 'Archivo';color:#EAF2FB;">Hold line</div>
+            <div style="flex:1;padding:10px 0;border-radius:9px;border:0;background:var(--accent,#A78BFA);text-align:center;font:800 10px 'Archivo';color:#0b0518;">Come out</div>
+            <div style="flex:1;padding:10px 0;border-radius:9px;border:1px solid rgba(120,140,166,.26);background:rgba(10,16,28,.6);text-align:center;font:700 10px 'Archivo';color:#EAF2FB;">Set feet</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== 02 · IMMERSIVE ===================== -->
+    <section class="fa-in" style="display:flex;flex-wrap:wrap;gap:26px;align-items:center;border-radius:18px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.4);padding:22px;">
+      <div style="flex:1 1 250px;max-width:330px;">
+        <div style="display:flex;align-items:baseline;gap:11px;margin-bottom:8px;"><span style="font:800 13px 'IBM Plex Mono';letter-spacing:.12em;color:var(--accent,#A78BFA);">02</span><span style="font:800 22px 'Archivo';letter-spacing:-0.015em;">Immersive</span></div>
+        <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.14em;color:#7688a0;margin-bottom:13px;">FULL-BLEED FIELD · FLOATING HUD</div>
+        <p style="margin:0 0 14px;font:400 13px/1.65 'Archivo';color:#9FB0C5;text-wrap:pretty;">The most field-forward layout: the pitch fills the <b style="color:#cdd8e6;">entire</b> main. Title and stats float as translucent HUD chips top-left, feedback appears as a toast, and the action buttons ride a frosted bar over the grass. For fast, single-decision reads where nothing should pull the eye off the field.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;">
+          <sc-for list="{{ tagImmersive }}" as="t" hint-placeholder-count="3"><span style="padding:5px 10px;border-radius:7px;border:1px solid rgba(120,140,166,.24);background:rgba(6,12,22,.5);font:700 9px 'IBM Plex Mono';letter-spacing:.06em;color:#9FB0C5;">{{ t }}</span></sc-for>
+        </div>
+        <p style="margin:13px 0 0;font:400 11px/1.5 'Archivo';color:#61748c;text-wrap:pretty;">↳ Overlays are <b style="color:#7688a0;">absolute</b> on the field; keep them to the safe corners.</p>
+      </div>
+      <div style="flex:2.4 1 500px;position:relative;aspect-ratio:16/10;border-radius:14px;overflow:hidden;border:1px solid rgba(120,140,166,.18);background:#070d18;">
+        <div style="position:absolute;inset:0;"><canvas data-mock="immersive" style="display:block;width:100%;height:100%;"></canvas></div>
+        <!-- floating top bar -->
+        <div style="position:absolute;top:9px;left:9px;right:9px;display:flex;align-items:center;justify-content:space-between;gap:8px;">
+          <div style="display:flex;align-items:center;gap:7px;padding:6px 10px;border-radius:9px;background:rgba(6,11,20,.6);backdrop-filter:blur(6px);border:1px solid rgba(120,140,166,.2);">
+            <span style="width:8px;height:8px;border-radius:2px;background:var(--accent,#A78BFA);"></span>
+            <span style="font:800 8px 'Archivo';letter-spacing:.05em;color:#EAF2FB;">GHOST RUN</span>
+            <span style="font:600 7px 'IBM Plex Mono';letter-spacing:.12em;color:#7688a0;">· 6 / 10</span>
+          </div>
+          <div style="display:flex;gap:6px;">
+            <div style="padding:5px 9px;border-radius:8px;background:rgba(6,11,20,.6);backdrop-filter:blur(6px);border:1px solid rgba(120,140,166,.2);text-align:center;"><div style="font:800 11px 'IBM Plex Mono';color:#EAF2FB;line-height:1;">×3</div><div style="font:600 5.5px 'IBM Plex Mono';letter-spacing:.1em;color:#7688a0;">COMBO</div></div>
+            <div style="padding:5px 9px;border-radius:8px;background:rgba(6,11,20,.6);backdrop-filter:blur(6px);border:1px solid rgba(255,176,32,.35);text-align:center;"><div style="font:800 11px 'IBM Plex Mono';color:#FFB020;line-height:1;">1.2s</div><div style="font:600 5.5px 'IBM Plex Mono';letter-spacing:.1em;color:#7688a0;">WINDOW</div></div>
+          </div>
+        </div>
+        <!-- feedback toast -->
+        <div style="position:absolute;top:44px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:7px;padding:6px 13px;border-radius:999px;background:rgba(4,10,18,.72);backdrop-filter:blur(6px);border:1px solid rgba(59,224,122,.45);"><span style="font:800 9px 'Archivo';letter-spacing:.06em;color:#3BE07A;">UNMARKED — GO NOW</span></div>
+        <!-- frosted action bar -->
+        <div style="position:absolute;left:9px;right:9px;bottom:9px;display:flex;gap:8px;padding:8px;border-radius:12px;background:rgba(6,11,20,.5);backdrop-filter:blur(8px);border:1px solid rgba(120,140,166,.18);">
+          <div style="flex:1;padding:10px 0;border-radius:9px;border:1px solid rgba(120,140,166,.28);text-align:center;font:700 10px 'Archivo';color:#EAF2FB;">Hold the run</div>
+          <div style="flex:1.3;padding:10px 0;border-radius:9px;border:0;background:var(--accent,#A78BFA);text-align:center;font:800 10px 'Archivo';color:#0b0518;">Burst in behind ›</div>
+        </div>
+        <span style="position:absolute;left:12px;bottom:64px;font:600 6.5px 'IBM Plex Mono';letter-spacing:.2em;color:rgba(200,215,232,.4);">FULL-BLEED FIELD</span>
+      </div>
+    </section>
+
+    <!-- ===================== 03 · COCKPIT ===================== -->
+    <section class="fa-in" style="display:flex;flex-wrap:wrap;gap:26px;align-items:center;border-radius:18px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.4);padding:22px;">
+      <div style="flex:1 1 250px;max-width:330px;">
+        <div style="display:flex;align-items:baseline;gap:11px;margin-bottom:8px;"><span style="font:800 13px 'IBM Plex Mono';letter-spacing:.12em;color:var(--accent,#A78BFA);">03</span><span style="font:800 22px 'Archivo';letter-spacing:-0.015em;">Cockpit</span></div>
+        <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.14em;color:#7688a0;margin-bottom:13px;">HERO FIELD · SIDE RAIL</div>
+        <p style="margin:0 0 14px;font:400 13px/1.65 'Archivo';color:#9FB0C5;text-wrap:pretty;">The field is still the hero — a wide panel on the left — with a rail on the right carrying the title, a legend, live stats/records and feedback. The richest layout: use it when the player <b style="color:#cdd8e6;">inspects</b> a scene and there's a lot to read.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;">
+          <sc-for list="{{ tagCockpit }}" as="t" hint-placeholder-count="2"><span style="padding:5px 10px;border-radius:7px;border:1px solid rgba(120,140,166,.24);background:rgba(6,12,22,.5);font:700 9px 'IBM Plex Mono';letter-spacing:.06em;color:#9FB0C5;">{{ t }}</span></sc-for>
+        </div>
+        <p style="margin:13px 0 0;font:400 11px/1.5 'Archivo';color:#61748c;text-wrap:pretty;">↳ Rail collapses <b style="color:#7688a0;">below</b> the field on narrow / portrait.</p>
+      </div>
+      <div style="flex:2.4 1 500px;position:relative;aspect-ratio:16/10;border-radius:14px;overflow:hidden;border:1px solid rgba(120,140,166,.18);background:#070d18;">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:0 11px;height:30px;border-bottom:1px solid rgba(120,140,166,.12);">
+          <span style="font:600 7.5px 'IBM Plex Mono';letter-spacing:.12em;color:#7688a0;">‹ BACK</span>
+          <span style="display:inline-flex;align-items:center;gap:5px;font:800 8px 'Archivo';letter-spacing:.05em;"><span style="width:8px;height:8px;border-radius:2px;background:var(--accent,#A78BFA);"></span>POSITIONING MASTER</span>
+          <span style="font:600 7px 'IBM Plex Mono';letter-spacing:.12em;color:#3BE07A;">SCENE 7</span>
+        </div>
+        <div style="position:absolute;top:30px;left:0;right:0;bottom:0;display:flex;gap:18px;padding:9px;">
+          <div style="flex:2.3;position:relative;border-radius:11px;overflow:hidden;border:1px solid rgba(120,140,166,.16);min-height:0;">
+            <canvas data-mock="cockpit" style="display:block;width:100%;height:100%;"></canvas>
+            <span style="position:absolute;left:9px;bottom:7px;font:600 6.5px 'IBM Plex Mono';letter-spacing:.2em;color:rgba(200,215,232,.45);">FIELD · HERO</span>
+            <span style="position:absolute;right:9px;bottom:7px;font:600 6.5px 'IBM Plex Mono';letter-spacing:.2em;color:rgba(200,215,232,.4);">ATTACK →</span>
+          </div>
+          <div style="flex:1;display:flex;flex-direction:column;gap:7px;">
+            <div style="padding:9px 10px;border-radius:9px;border:1px solid rgba(120,140,166,.18);background:rgba(10,16,28,.6);">
+              <div style="font:800 10px 'Archivo';color:#F2F8FE;margin-bottom:4px;">Drop the runner in</div>
+              <div style="font:400 7.5px/1.4 'Archivo';color:#8698ad;">Cut the through-ball, hold your shape.</div>
+            </div>
+            <div style="padding:9px 10px;border-radius:9px;border:1px solid rgba(120,140,166,.18);background:rgba(10,16,28,.6);display:flex;flex-direction:column;gap:6px;">
+              <div style="display:flex;align-items:center;gap:7px;"><span style="width:11px;height:11px;border-radius:3px;background:var(--accent,#A78BFA);"></span><span style="flex:1;font:700 8px 'Archivo';color:#EAF2FB;">Best pass</span></div>
+              <div style="display:flex;align-items:center;gap:7px;"><span style="width:11px;height:11px;border-radius:3px;border:1.5px solid rgba(120,140,166,.5);"></span><span style="flex:1;font:700 8px 'Archivo';color:#9FB0C5;">Viable lanes</span></div>
+              <div style="display:flex;align-items:center;gap:7px;"><span style="width:11px;height:11px;border-radius:3px;border:1.5px solid #3BE07A;"></span><span style="flex:1;font:700 8px 'Archivo';color:#9FB0C5;">Free man</span></div>
+            </div>
+            <div style="flex:1;padding:9px 10px;border-radius:9px;border:1px solid rgba(120,140,166,.18);background:rgba(10,16,28,.6);position:relative;">
+              <div style="font:600 6.5px 'IBM Plex Mono';letter-spacing:.16em;color:#7688a0;margin-bottom:6px;">READOUT</div>
+              <div style="height:4px;border-radius:99px;background:rgba(120,140,166,.18);margin-bottom:6px;"><div style="height:100%;width:64%;border-radius:99px;background:var(--accent,#A78BFA);"></div></div>
+              <div style="height:4px;border-radius:99px;background:rgba(120,140,166,.18);"><div style="height:100%;width:28%;border-radius:99px;background:#7688a0;"></div></div>
+              <span style="position:absolute;right:9px;bottom:7px;font:600 6.5px 'IBM Plex Mono';letter-spacing:.16em;color:rgba(200,215,232,.4);">RAIL</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== 04 · SPLIT ===================== -->
+    <section class="fa-in" style="display:flex;flex-wrap:wrap;gap:26px;align-items:center;border-radius:18px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.4);padding:22px;">
+      <div style="flex:1 1 250px;max-width:330px;">
+        <div style="display:flex;align-items:baseline;gap:11px;margin-bottom:8px;"><span style="font:800 13px 'IBM Plex Mono';letter-spacing:.12em;color:var(--accent,#A78BFA);">04</span><span style="font:800 22px 'Archivo';letter-spacing:-0.015em;">Split Field</span></div>
+        <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.14em;color:#7688a0;margin-bottom:13px;">TWO FIELD VIEWS · CONTROL STRIP</div>
+        <p style="margin:0 0 14px;font:400 13px/1.65 'Archivo';color:#9FB0C5;text-wrap:pretty;">Two field views sit side by side — a <b style="color:#cdd8e6;">wide read</b> and a <b style="color:#cdd8e6;">zoomed detail</b> (or a body diagram and the goal) — over a full-width control strip. For games with two information surfaces the player must reconcile before acting.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;">
+          <sc-for list="{{ tagSplit }}" as="t" hint-placeholder-count="2"><span style="padding:5px 10px;border-radius:7px;border:1px solid rgba(120,140,166,.24);background:rgba(6,12,22,.5);font:700 9px 'IBM Plex Mono';letter-spacing:.06em;color:#9FB0C5;">{{ t }}</span></sc-for>
+        </div>
+        <p style="margin:13px 0 0;font:400 11px/1.5 'Archivo';color:#61748c;text-wrap:pretty;">↳ Panels <b style="color:#7688a0;">flex-wrap</b> and stack; the strip stays full-width.</p>
+      </div>
+      <div style="flex:2.4 1 500px;position:relative;aspect-ratio:16/10;border-radius:14px;overflow:hidden;border:1px solid rgba(120,140,166,.18);background:#070d18;">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:0 11px;height:30px;border-bottom:1px solid rgba(120,140,166,.12);">
+          <span style="font:600 7.5px 'IBM Plex Mono';letter-spacing:.12em;color:#7688a0;">‹ BACK</span>
+          <span style="display:inline-flex;align-items:center;gap:5px;font:800 8px 'Archivo';letter-spacing:.05em;"><span style="width:8px;height:8px;border-radius:2px;background:var(--accent,#A78BFA);"></span>THE FINISH</span>
+          <span style="font:600 7px 'IBM Plex Mono';letter-spacing:.12em;color:#7688a0;">3 / 8</span>
+        </div>
+        <div style="position:absolute;top:30px;left:0;right:0;bottom:0;display:flex;flex-direction:column;gap:8px;padding:9px;">
+          <div style="flex:1;display:flex;gap:8px;min-height:0;">
+            <div style="flex:1;position:relative;border-radius:10px;overflow:hidden;border:1px solid rgba(120,140,166,.16);"><canvas data-mock="splitA" style="display:block;width:100%;height:100%;"></canvas><span style="position:absolute;left:8px;top:7px;font:600 6px 'IBM Plex Mono';letter-spacing:.18em;color:rgba(200,215,232,.5);">READ — WIDE</span></div>
+            <div style="flex:1;position:relative;border-radius:10px;overflow:hidden;border:1px solid rgba(120,140,166,.16);"><canvas data-mock="splitB" style="display:block;width:100%;height:100%;"></canvas><span style="position:absolute;left:8px;top:7px;font:600 6px 'IBM Plex Mono';letter-spacing:.18em;color:rgba(200,215,232,.5);">ZOOM — BOX</span></div>
+          </div>
+          <div style="flex:0 0 auto;position:relative;padding:8px 10px;border-radius:10px;border:1px solid rgba(120,140,166,.16);background:rgba(10,16,28,.62);">
+            <div style="height:5px;border-radius:99px;background:linear-gradient(90deg,#7688a0,#FFB020 55%,#3BE07A);margin-bottom:7px;position:relative;"><span style="position:absolute;left:52%;top:-3px;width:2px;height:11px;background:#fff;box-shadow:0 0 6px #fff;"></span></div>
+            <div style="display:flex;gap:6px;"><span style="flex:1;padding:6px 0;border-radius:7px;border:1px solid rgba(120,140,166,.26);text-align:center;font:800 8px 'Archivo';color:#EAF2FB;">Near post</span><span style="flex:1;padding:6px 0;border-radius:7px;border:0;background:var(--accent,#A78BFA);text-align:center;font:800 8px 'Archivo';color:#0b0518;">Far corner</span><span style="flex:1;padding:6px 0;border-radius:7px;border:1px solid rgba(120,140,166,.26);text-align:center;font:800 8px 'Archivo';color:#EAF2FB;">Squared</span></div>
+            <span style="position:absolute;right:9px;top:7px;font:600 6px 'IBM Plex Mono';letter-spacing:.16em;color:rgba(200,215,232,.35);">CONTROL STRIP</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== 05 · PENALTY / POV ===================== -->
+    <section class="fa-in" style="display:flex;flex-wrap:wrap;gap:26px;align-items:center;border-radius:18px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.4);padding:22px;">
+      <div style="flex:1 1 250px;max-width:330px;">
+        <div style="display:flex;align-items:baseline;gap:11px;margin-bottom:8px;"><span style="font:800 13px 'IBM Plex Mono';letter-spacing:.12em;color:var(--accent,#A78BFA);">05</span><span style="font:800 22px 'Archivo';letter-spacing:-0.015em;">Penalty POV</span></div>
+        <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.14em;color:#7688a0;margin-bottom:13px;">SHOOTER'S-EYE FIELD · TIMING DOCK</div>
+        <p style="margin:0 0 14px;font:400 13px/1.65 'Archivo';color:#9FB0C5;text-wrap:pretty;">The perspective field is the whole screen — goal at the north, shooter's-eye — with a single stat pinned top and a placement / timing dock at the foot. For penalties, 1v1 finishing and point-blank shot-placement reads.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;">
+          <sc-for list="{{ tagPenalty }}" as="t" hint-placeholder-count="2"><span style="padding:5px 10px;border-radius:7px;border:1px solid rgba(120,140,166,.24);background:rgba(6,12,22,.5);font:700 9px 'IBM Plex Mono';letter-spacing:.06em;color:#9FB0C5;">{{ t }}</span></sc-for>
+        </div>
+        <p style="margin:13px 0 0;font:400 11px/1.5 'Archivo';color:#61748c;text-wrap:pretty;">↳ <b style="color:#7688a0;">penaltyPOV(elev, cam)</b> — one call, any camera height / closeness.</p>
+      </div>
+      <div style="flex:2.4 1 500px;position:relative;aspect-ratio:16/10;border-radius:14px;overflow:hidden;border:1px solid rgba(120,140,166,.18);background:#070d18;">
+        <div style="position:absolute;inset:0;"><canvas data-mock="penalty" style="display:block;width:100%;height:100%;"></canvas></div>
+        <div style="position:absolute;top:9px;left:9px;right:9px;display:flex;align-items:center;justify-content:space-between;gap:8px;">
+          <div style="display:flex;align-items:center;gap:7px;padding:6px 10px;border-radius:9px;background:rgba(6,11,20,.6);backdrop-filter:blur(6px);border:1px solid rgba(120,140,166,.2);">
+            <span style="width:8px;height:8px;border-radius:2px;background:var(--accent,#A78BFA);"></span>
+            <span style="font:800 8px 'Archivo';letter-spacing:.05em;color:#EAF2FB;">THE SPOT</span>
+            <span style="font:600 7px 'IBM Plex Mono';letter-spacing:.12em;color:#7688a0;">· PK 5 / 8</span>
+          </div>
+          <div style="padding:5px 9px;border-radius:8px;background:rgba(6,11,20,.6);backdrop-filter:blur(6px);border:1px solid rgba(255,176,32,.35);text-align:center;"><div style="font:800 11px 'IBM Plex Mono';color:#FFB020;line-height:1;">GK</div><div style="font:600 5.5px 'IBM Plex Mono';letter-spacing:.1em;color:#7688a0;">READ</div></div>
+        </div>
+        <div style="position:absolute;left:9px;right:9px;bottom:9px;display:flex;flex-direction:column;gap:7px;padding:8px;border-radius:12px;background:rgba(6,11,20,.5);backdrop-filter:blur(8px);border:1px solid rgba(120,140,166,.18);">
+          <div style="height:5px;border-radius:99px;background:rgba(120,140,166,.2);position:relative;"><span style="position:absolute;left:38%;top:-3px;width:2px;height:11px;background:var(--accent,#A78BFA);box-shadow:0 0 6px var(--accent,#A78BFA);"></span></div>
+          <div style="display:flex;gap:8px;">
+            <div style="flex:1;padding:9px 0;border-radius:9px;border:1px solid rgba(120,140,166,.28);text-align:center;font:800 10px 'Archivo';color:#EAF2FB;">L</div>
+            <div style="flex:1;padding:9px 0;border-radius:9px;border:1px solid rgba(120,140,166,.28);text-align:center;font:800 10px 'Archivo';color:#EAF2FB;">Centre</div>
+            <div style="flex:1;padding:9px 0;border-radius:9px;border:0;background:var(--accent,#A78BFA);text-align:center;font:800 10px 'Archivo';color:#0b0518;">R</div>
+          </div>
+        </div>
+        <span style="position:absolute;left:12px;top:44px;font:600 6.5px 'IBM Plex Mono';letter-spacing:.2em;color:rgba(200,215,232,.4);">SHOOTER'S-EYE FIELD</span>
+      </div>
+    </section>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:2050},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#A78BFA&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#A78BFA&quot;,&quot;#22D3EE&quot;,&quot;#C6FF3A&quot;,&quot;#FF7A45&quot;,&quot;#FF4D8D&quot;]},&quot;motion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  SCENE = {
+    carrier:{ x:0.60, y:0.54, role:'AM' },
+    best:{ x:0.80, y:0.72, role:'LW' },
+    mates:[ { x:0.76, y:0.24, role:'RW' }, { x:0.46, y:0.44, role:'CM' }, { x:0.84, y:0.50, role:'ST' } ],
+    opps:[ { x:0.72, y:0.40, role:'CB' }, { x:0.86, y:0.62, role:'RB' }, { x:0.66, y:0.72, role:'LB' } ]
+  };
+  MOCKS = [
+    { key:'arena',     crop:'attacking-half', orient:'ns', attackDir:'ltr' },
+    { key:'immersive', crop:'final-third',    orient:'ns', attackDir:'ltr' },
+    { key:'cockpit',   crop:'full',           orient:'ew', attackDir:'ltr' },
+    { key:'splitA',    crop:'middle-third',   orient:'ns', attackDir:'ltr' },
+    { key:'splitB',    crop:'box',            orient:'ns', attackDir:'ltr' },
+    { key:'penalty',   pov:true, elev:0.24, cam:15 }
+  ];
+
+  componentDidMount(){
+    this._onResize = () => this._drawAll();
+    window.addEventListener('resize', this._onResize);
+    this._boot(0);
+  }
+  componentWillUnmount(){ window.removeEventListener('resize', this._onResize); this._running=false; if(this._raf) cancelAnimationFrame(this._raf); }
+  _boot(t){ if(!window.FAPitch){ if(t<40) setTimeout(()=>this._boot(t+1),60); return; } this._running=true; this._loop(); }
+  _loop(){ if(!this._running) return; this._raf=requestAnimationFrame(()=>this._loop()); this._drawAll(performance.now()); }
+
+  _canvas(key){ return document.querySelector('canvas[data-mock="'+key+'"]'); }
+  _resize(cv){ const r=cv.getBoundingClientRect(); const dpr=Math.min(2,window.devicePixelRatio||1); cv.width=Math.max(2,Math.round(r.width*dpr)); cv.height=Math.max(2,Math.round(r.height*dpr)); return {w:r.width,h:r.height,dpr}; }
+
+  _scene(ctx, fit, acc, now){
+    const FP=window.FAPitch, S=this.SCENE;
+    ctx.save(); ctx.beginPath(); ctx.rect(fit.ox,fit.oy,fit.drawW,fit.drawH); ctx.clip();
+    S.mates.forEach(m=>{ if(m===S.best) return; FP.passLane(ctx,fit,S.carrier,m,{}); });
+    FP.passLane(ctx,fit,S.carrier,S.best,{best:true,accent:acc});
+    const pulse=0.5+0.5*Math.sin(now/320);
+    S.opps.forEach(o=>FP.chevron(ctx,fit,o.x,o.y,{role:o.role}));
+    S.mates.forEach(m=>FP.token(ctx,fit,m.x,m.y,{role:m.role,kind:'us'}));
+    FP.token(ctx,fit,S.best.x,S.best.y,{role:S.best.role,kind:'us',best:true,free:true,pulse,accent:acc});
+    FP.token(ctx,fit,S.carrier.x,S.carrier.y,{role:S.carrier.role,kind:'carrier',accent:acc});
+    FP.ball(ctx,fit,S.carrier.x+0.02,S.carrier.y+0.012,{});
+    ctx.restore();
+  }
+
+  _drawAll(now){
+    const FP=window.FAPitch; if(!FP) return;
+    now = now || performance.now();
+    const acc=this.props.accent ?? '#A78BFA';
+    this.MOCKS.forEach(m=>{
+      const cv=this._canvas(m.key); if(!cv) return;
+      const {w,h,dpr}=this._resize(cv); if(!w||!h) return;
+      const ctx=cv.getContext('2d'); ctx.save(); ctx.scale(dpr,dpr); ctx.clearRect(0,0,w,h);
+      if(m.pov){ FP.penaltyPOV(ctx,w,h,{accent:acc,elev:m.elev,cam:m.cam}); ctx.restore(); return; }
+      const fit=FP.fit(w,h,{crop:m.crop,orient:m.orient,attackDir:m.attackDir});
+      FP.pitch(ctx,fit);
+      ctx.restore();
+    });
+  }
+
+  renderVals(){
+    const acc=this.props.accent ?? '#A78BFA';
+    return {
+      accent:acc,
+      motionOn: this.props.motion ?? true,
+      legend:[
+        { name:'Field of play', dot:acc, border:'color-mix(in srgb,'+acc+' 40%,transparent)' },
+        { name:'Action buttons', dot:'#3BE07A', border:'rgba(59,224,122,.4)' },
+        { name:'Stats / records / feedback', dot:'#FFB020', border:'rgba(255,176,32,.4)' },
+        { name:'Title / content text', dot:'#8698ad', border:'rgba(120,140,166,.4)' }
+      ],
+      tagArena:['Aerial Supremacy','High Pressure','xG Dilemma'],
+      tagImmersive:['Ghost Run','Half-Turn','Break the Pattern'],
+      tagCockpit:['Positioning Master','Scene Lab'],
+      tagSplit:['Eye Spy · Penalty','Aerial (command)'],
+      tagPenalty:['Penalty games','Panic Clock']
+    };
+  }
+}
+</script>
+</body>
+</html>
