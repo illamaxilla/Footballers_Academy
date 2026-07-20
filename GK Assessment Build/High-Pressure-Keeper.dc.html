@@ -465,61 +465,6 @@ class Component extends DCLogic {
   _stopLoop(){ this._loopOn = false; if (this._loopRaf) cancelAnimationFrame(this._loopRaf); this._loopRaf = null; }
   _advanceFlight(){ const fl = this._flight; if (!fl) return; const el = this._now() - fl.t0; const p = Math.min(1, el / fl.dur); this._ball = { x: fl.from.x + (fl.to.x - fl.from.x) * p, y: fl.from.y + (fl.to.y - fl.from.y) * p }; this._trail = [...(this._trail || []), this._ball].slice(-8); if (p >= 1) { this._flight = null; if (fl.cb) fl.cb(); } }
 
-  /* tiny hex->rgba helper (accent glows without pulling in fa-pitch internals) */
-  _hexA(hex, a){ if (!hex || hex[0] !== '#') return hex || 'rgba(255,255,255,' + a + ')'; const n = parseInt(hex.slice(1), 16); return 'rgba(' + ((n >> 16) & 255) + ',' + ((n >> 8) & 255) + ',' + (n & 255) + ',' + a + ')'; }
-
-  /* flat HUD ball — a crisp disc with a thin rim, no 3D gloss. Soft glow only
-   * while in flight. (Local to this game so fa-pitch stays untouched.) */
-  _drawBall(ctx, fit, nx, ny, o){
-    o = o || {};
-    const P = fit.px(nx, ny), x = P[0], y = P[1], r = o.r || Math.max(4, fit.m(0.62));
-    ctx.save();
-    if (o.flight) { ctx.shadowColor = 'rgba(220,240,255,.55)'; ctx.shadowBlur = fit.m(0.8); }
-    ctx.fillStyle = o.color || '#F2F8FE';
-    ctx.beginPath(); ctx.arc(x, y, r, 0, 7); ctx.fill();
-    ctx.shadowBlur = 0;
-    ctx.strokeStyle = 'rgba(9,20,34,.42)'; ctx.lineWidth = Math.max(1, r * 0.14);
-    ctx.beginPath(); ctx.arc(x, y, r * 0.93, 0, 7); ctx.stroke();
-    ctx.restore();
-  }
-
-  /* keeper token — glowing HUD jersey block with a facing notch + dive lean.
-   * o: { face (rad, notch toward ball), lean (rad, dive tilt), alpha, scale } */
-  _keeper(ctx, fit, nx, ny, o){
-    o = o || {};
-    const P = fit.px(nx, ny), x = P[0], y = P[1];
-    const acc = this.props.accent || '#22D3EE';
-    const s = Math.max(10, fit.m(1.7)) * (o.scale || 1), rr = s * 0.3;
-    const alpha = o.alpha == null ? 1 : o.alpha, lean = o.lean || 0;
-    ctx.save(); ctx.globalAlpha = alpha;
-    // grounded shadow (shifts with the lean)
-    ctx.fillStyle = 'rgba(0,0,0,.42)';
-    ctx.beginPath(); ctx.ellipse(x + lean * s * 0.6, y + s * 0.55, s * 0.58, s * 0.2, 0, 0, 7); ctx.fill();
-    ctx.translate(x, y); if (lean) ctx.rotate(lean);
-    // jersey block (+ accent glow when solid)
-    if (alpha > 0.5) { ctx.shadowColor = acc; ctx.shadowBlur = fit.m(1.0); }
-    const g = ctx.createLinearGradient(0, -s / 2, 0, s / 2);
-    g.addColorStop(0, '#EAFBFF'); g.addColorStop(1, '#8fd8e6');
-    ctx.fillStyle = g; ctx.strokeStyle = this._hexA(acc, 0.9); ctx.lineWidth = Math.max(1.4, fit.m(0.07));
-    const rx = -s / 2, ry = -s / 2;
-    ctx.beginPath();
-    ctx.moveTo(rx + rr, ry);
-    ctx.arcTo(rx + s, ry, rx + s, ry + s, rr); ctx.arcTo(rx + s, ry + s, rx, ry + s, rr);
-    ctx.arcTo(rx, ry + s, rx, ry, rr); ctx.arcTo(rx, ry, rx + s, ry, rr); ctx.closePath();
-    ctx.fill(); ctx.stroke(); ctx.shadowBlur = 0;
-    // facing notch — a bright pip on the edge pointing at the ball
-    if (o.face != null) {
-      const fr = s * 0.5;
-      ctx.fillStyle = this._hexA(acc, 0.95);
-      ctx.beginPath(); ctx.arc(Math.cos(o.face) * fr, Math.sin(o.face) * fr, Math.max(2, fit.m(0.17)), 0, 7); ctx.fill();
-    }
-    // GK label
-    ctx.fillStyle = '#06202a'; ctx.font = "800 " + Math.max(8, fit.font * 0.96) + "px 'IBM Plex Mono'";
-    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    ctx.fillText('GK', 0, 0.5); ctx.textBaseline = 'alphabetic';
-    ctx.restore();
-  }
-
   _draw(){
     const cv = this._canvas, ctx = cv && cv.getContext('2d'); if (!ctx) return;
     const W = this._W, H = this._H, dpr = this._dpr || 1; if (!W || !H || !isFinite(W) || !isFinite(H)) return;
@@ -549,7 +494,7 @@ class Component extends DCLogic {
     let cy1 = Math.min(1, maxY);
     const fit = FP.fit(W, H, { cropRect:[cx0, cx1, cy0, cy1], orient:'ns', attackDir:'rtl', inset:0.025 }); this._fit = fit;
     FP.pitch(ctx, fit);
-    this._fieldHUD(ctx, fit, acc, now, reduce);          // floodlight + radar grid + frame
+    FP.fieldHUD(ctx, fit, { accent:acc });               // floodlight + corner brackets
 
     const phase = this.state.phase;
     const live = phase === 'live' || phase === 'ready';
@@ -599,18 +544,18 @@ class Component extends DCLogic {
     // dive (wider across the goal than in depth), so it reads narrower than the
     // 7.32m mouth: the exposed corners are the whole point of the read.
     const cvPulse = live && !reduce ? (0.5 + 0.5 * osc) : 0.5;
-    this._coverage(ctx, fit, this._kpos.x, this._kpos.y, acc, cvPulse);
+    FP.coverage(ctx, fit, this._kpos.x, this._kpos.y, { accent:acc, pulse:cvPulse });
 
     // LIVE threat read — the "scan": angle to cover, the shot lane, shooter menace, ball lock
     if (live) {
       FP.angleCone(ctx, fit, ballPos, { end:1, optimal:true, color:acc });
-      this._threatLine(ctx, fit, ballPos, goalC, stress, now, reduce);
+      FP.threatLine(ctx, fit, ballPos, goalC, { stress:stress, dashOffset: reduce ? 0 : -((now / 55) % 13) });
       FP.pressure(ctx, fit, shooter.x, shooter.y, { intensity: 0.35 + stress / 150, color:'#FF5A6E', r: Math.max(9, fit.m(1.7)) });
-      this._reticle(ctx, fit, ballPos, acc, now, reduce);
+      FP.reticle(ctx, fit, ballPos.x, ballPos.y, { accent:acc, rot: reduce ? 0 : (now / 1600) % (Math.PI * 2) });
     }
 
     // the shooter — a red opponent token on the ball, facing our goal
-    this._shooter(ctx, fit, shooter.x, shooter.y, { role: live ? 'SHOOTER' : null });
+    FP.shooterToken(ctx, fit, shooter.x, shooter.y, { role: live ? 'SHOOTER' : null, goal:goalC });
 
     // dive motion trail — after-images from the set spot to now sell the lunge
     if (committed && this._setPos && !reduce) {
@@ -618,7 +563,7 @@ class Component extends DCLogic {
         const f = gI / 4;
         const gx2 = this._setPos.x + (this._kpos.x - this._setPos.x) * f;
         const gy2 = this._setPos.y + (this._kpos.y - this._setPos.y) * f;
-        this._keeper(ctx, fit, gx2, gy2, { alpha: 0.05 + f * 0.12, scale: 0.88 + f * 0.1 });
+        FP.keeperToken(ctx, fit, gx2, gy2, { accent:acc, alpha: 0.05 + f * 0.12, scale: 0.88 + f * 0.1 });
       }
     }
 
@@ -634,13 +579,13 @@ class Component extends DCLogic {
         kScale = 1 + 0.2 * pop * pop;
       }
     }
-    this._keeper(ctx, fit, this._kpos.x, this._kpos.y, { face, lean, alpha:kAlpha, scale:kScale });
+    FP.keeperToken(ctx, fit, this._kpos.x, this._kpos.y, { accent:acc, face:face, lean:lean, alpha:kAlpha, scale:kScale });
 
     // ball trail — ONLY while the ball is actually in flight (never at rest)
     const ballR = Math.max(4, fit.m(0.62));
     if (resolving) {
       const tr = this._trail || [];
-      tr.forEach((p, i) => { const f = (i + 1) / tr.length; ctx.globalAlpha = f * 0.4; this._drawBall(ctx, fit, p.x, p.y, { r: ballR * (0.4 + f * 0.5) }); });
+      tr.forEach((p, i) => { const f = (i + 1) / tr.length; ctx.globalAlpha = f * 0.4; FP.ballFlat(ctx, fit, p.x, p.y, { r: ballR * (0.4 + f * 0.5) }); });
       ctx.globalAlpha = 1;
     }
     const hover = live && !reduce ? osc * 0.004 : 0;
@@ -652,146 +597,18 @@ class Component extends DCLogic {
       by = ballPos.y + (this._kpos.y - ballPos.y) * tuck * 0.85;
       br = ballR * (1 - 0.3 * tuck);
     }
-    this._drawBall(ctx, fit, bx, by, { flight: resolving, r: br });
+    FP.ballFlat(ctx, fit, bx, by, { flight: resolving, r: br });
 
     // impact — a clean GATHER on a save, a shockwave (+ verdict) when beaten
     if (this._impact) {
-      if (this._impact.kind === 'save') this._catchBurst(ctx, fit, this._impact, now);
+      const _im = this._impact, _il = Math.min(1, (now - (_im.t0 || now)) / (_im.kind === 'save' ? 470 : 560));
+      if (_im.kind === 'save') FP.catchBurst(ctx, fit, _im.x, _im.y, { accent:acc, life:_il });
       else {
-        this._impactBurst(ctx, fit, this._impact, now);
-        FP.verdict(ctx, fit, this._impact.x, this._impact.y, { kind: this._impact.kind === 'froze' ? 'missed' : 'wrong' });
+        FP.impactBurst(ctx, fit, _im.x, _im.y, { accent:acc, kind:_im.kind, life:_il });
+        FP.verdict(ctx, fit, _im.x, _im.y, { kind: _im.kind === 'froze' ? 'missed' : 'wrong' });
       }
     }
     ctx.restore();
-  }
-
-  /* ---------- HUD scene helpers (Canvas 2D — portable to any stack) ---------- */
-  // floodlight pool at the goal mouth + corner brackets (grid + scan sweep removed)
-  _fieldHUD(ctx, fit, acc, now, reduce){
-    const ox = fit.ox, oy = fit.oy, dw = fit.drawW, dh = fit.drawH;
-    ctx.save();
-    ctx.beginPath(); ctx.rect(ox, oy, dw, dh); ctx.clip();
-    // floodlight from the goal
-    const G = fit.px(1, 0.5);
-    const fl = ctx.createRadialGradient(G[0], G[1], fit.m(2), G[0], G[1], Math.max(dw, dh) * 0.95);
-    fl.addColorStop(0, this._hexA(acc, 0.1)); fl.addColorStop(0.5, this._hexA(acc, 0.03)); fl.addColorStop(1, 'rgba(0,0,0,0)');
-    ctx.fillStyle = fl; ctx.fillRect(ox, oy, dw, dh);
-    // inner corner brackets
-    ctx.strokeStyle = this._hexA(acc, 0.5); ctx.lineWidth = 1.5;
-    const b = 14;
-    [[ox, oy, 1, 1], [ox + dw, oy, -1, 1], [ox, oy + dh, 1, -1], [ox + dw, oy + dh, -1, -1]].forEach(c => {
-      ctx.beginPath(); ctx.moveTo(c[0] + b * c[2], c[1]); ctx.lineTo(c[0], c[1]); ctx.lineTo(c[0], c[1] + b * c[3]); ctx.stroke();
-    });
-    ctx.restore();
-  }
-  // dashed, marching shot lane from ball to goal — brighter/redder as stress climbs
-  _threatLine(ctx, fit, from, to, stress, now, reduce){
-    const A = fit.px(from.x, from.y), B = fit.px(to.x, to.y);
-    ctx.save();
-    ctx.strokeStyle = 'rgba(255,90,110,' + (0.3 + 0.35 * stress / 100).toFixed(3) + ')';
-    ctx.lineWidth = Math.max(1.6, fit.m(0.08)); ctx.setLineDash([6, 7]);
-    ctx.lineDashOffset = reduce ? 0 : -((now / 55) % 13);
-    ctx.beginPath(); ctx.moveTo(A[0], A[1]); ctx.lineTo(B[0], B[1]); ctx.stroke();
-    ctx.setLineDash([]); ctx.restore();
-  }
-  // rotating target-lock brackets + faint ring around the ball
-  _reticle(ctx, fit, p, acc, now, reduce){
-    const P = fit.px(p.x, p.y), x = P[0], y = P[1], r = Math.max(11, fit.m(1.5));
-    ctx.save(); ctx.translate(x, y); if (!reduce) ctx.rotate((now / 1600) % (Math.PI * 2));
-    ctx.strokeStyle = this._hexA(acc, 0.9); ctx.lineWidth = Math.max(1.3, fit.m(0.06)); ctx.lineCap = 'round';
-    const bk = r * 0.5;
-    [[1, 1], [-1, 1], [-1, -1], [1, -1]].forEach(s => { ctx.beginPath(); ctx.moveTo(s[0] * r, s[1] * r - s[1] * bk); ctx.lineTo(s[0] * r, s[1] * r); ctx.lineTo(s[0] * r - s[0] * bk, s[1] * r); ctx.stroke(); });
-    ctx.restore();
-    ctx.save(); ctx.strokeStyle = this._hexA(acc, 0.22); ctx.lineWidth = 1; ctx.beginPath(); ctx.arc(x, y, r * 0.7, 0, 7); ctx.stroke(); ctx.restore();
-  }
-  // expanding shockwave rings + radial sparks at the point of contact
-  _impactBurst(ctx, fit, imp, now){
-    const life = Math.min(1, (now - (imp.t0 || now)) / 560); if (life >= 1) return;
-    const P = fit.px(imp.x, imp.y), x = P[0], y = P[1];
-    const acc = this.props.accent || '#22D3EE';
-    const col = imp.kind === 'save' ? acc : (imp.kind === 'goal' ? '#FF5A6E' : '#8AA0B8');
-    const ease = 1 - Math.pow(1 - life, 2);
-    ctx.save();
-    ctx.strokeStyle = this._hexA(col, 0.7 * (1 - life)); ctx.lineWidth = Math.max(2, fit.m(0.12));
-    ctx.beginPath(); ctx.arc(x, y, fit.m(0.5) + ease * fit.m(3.4), 0, 7); ctx.stroke();
-    ctx.strokeStyle = this._hexA(col, 0.4 * (1 - life)); ctx.lineWidth = Math.max(1.4, fit.m(0.07));
-    ctx.beginPath(); ctx.arc(x, y, fit.m(0.5) + ease * fit.m(5.4), 0, 7); ctx.stroke();
-    const N = imp.kind === 'goal' ? 10 : 8;
-    ctx.strokeStyle = this._hexA(col, 0.85 * (1 - life)); ctx.lineWidth = Math.max(1.4, fit.m(0.06)); ctx.lineCap = 'round';
-    for (let i = 0; i < N; i++) {
-      const a = (i / N) * Math.PI * 2 + (imp.kind === 'goal' ? 0.3 : 0);
-      const r0 = fit.m(0.7) + ease * fit.m(2.0), r1 = r0 + fit.m(1.5) * (1 - life * 0.4);
-      ctx.beginPath(); ctx.moveTo(x + Math.cos(a) * r0, y + Math.sin(a) * r0); ctx.lineTo(x + Math.cos(a) * r1, y + Math.sin(a) * r1); ctx.stroke();
-    }
-    ctx.restore();
-  }
-  // the ball is GATHERED: a soft flash + a ring that contracts INWARD (energy
-  // pulled in, not blown out) + brief grip ticks — reads as a clean catch.
-  _catchBurst(ctx, fit, imp, now){
-    const life = Math.min(1, (now - (imp.t0 || now)) / 470); if (life >= 1) return;
-    const P = fit.px(imp.x, imp.y), x = P[0], y = P[1];
-    const acc = this.props.accent || '#22D3EE';
-    const ease = 1 - Math.pow(1 - life, 2);
-    ctx.save();
-    // bright flash on contact, gone by ~45% of the life
-    const fa = 0.62 * Math.max(0, 1 - life / 0.45);
-    if (fa > 0) { const g = ctx.createRadialGradient(x, y, 0, x, y, fit.m(3.6)); g.addColorStop(0, this._hexA(acc, fa)); g.addColorStop(0.5, this._hexA(acc, fa * 0.4)); g.addColorStop(1, this._hexA(acc, 0)); ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, fit.m(3.6), 0, 7); ctx.fill(); }
-    // ring contracting toward the ball (the opposite of an explosion)
-    const rr = fit.m(0.55) + (1 - ease) * fit.m(3.0);
-    ctx.strokeStyle = this._hexA(acc, 0.85 * (1 - life)); ctx.lineWidth = Math.max(2, fit.m(0.12));
-    ctx.beginPath(); ctx.arc(x, y, rr, 0, 7); ctx.stroke();
-    // brief grip ticks closing on the gathered ball
-    if (life < 0.6) {
-      ctx.strokeStyle = this._hexA(acc, 0.9 * (1 - life / 0.6)); ctx.lineWidth = Math.max(1.6, fit.m(0.08)); ctx.lineCap = 'round';
-      for (let i = 0; i < 6; i++) { const a = (i / 6) * Math.PI * 2; const r0 = fit.m(0.9), r1 = fit.m(1.4); ctx.beginPath(); ctx.moveTo(x + Math.cos(a) * r0, y + Math.sin(a) * r0); ctx.lineTo(x + Math.cos(a) * r1, y + Math.sin(a) * r1); ctx.stroke(); }
-    }
-    ctx.restore();
-  }
-  // keeper reach footprint — an ELLIPSE, wider across the goal (lateral dive)
-  // than in depth (a step out/back). Half-axes are real metres via fit.m(),
-  // so it stays honest against the 7.32m goal at any zoom.
-  _coverage(ctx, fit, nx, ny, acc, pulse){
-    const P = fit.px(nx, ny), x = P[0], y = P[1];
-    const rx = fit.m(2.95) + pulse * fit.m(0.22);   // lateral reach along the goal line
-    const ry = fit.m(2.05) + pulse * fit.m(0.16);   // shorter forward/back reach
-    ctx.save();
-    const g = ctx.createRadialGradient(x, y, Math.min(rx, ry) * 0.25, x, y, Math.max(rx, ry));
-    g.addColorStop(0, this._hexA(acc, 0.14)); g.addColorStop(1, this._hexA(acc, 0));
-    ctx.fillStyle = g; ctx.beginPath(); ctx.ellipse(x, y, rx, ry, 0, 0, 7); ctx.fill();
-    ctx.strokeStyle = this._hexA(acc, 0.5); ctx.lineWidth = Math.max(1.4, fit.m(0.05)); ctx.setLineDash([5, 5]);
-    ctx.beginPath(); ctx.ellipse(x, y, rx, ry, 0, 0, 7); ctx.stroke(); ctx.setLineDash([]);
-    ctx.restore();
-  }
-  // shooter — a red opponent token (mirrors the keeper's block) with a white
-  // pip on the goal-facing edge so the attack direction still reads.
-  _shooter(ctx, fit, nx, ny, o){
-    o = o || {};
-    const P = fit.px(nx, ny), x = P[0], y = P[1], red = '#FF5A6E';
-    const s = Math.max(10, fit.m(1.6)) * (o.scale || 1), rr = s * 0.3;
-    const G = fit.px(1, 0.5), ang = Math.atan2(G[1] - y, G[0] - x);   // toward our goal
-    ctx.save();
-    ctx.fillStyle = 'rgba(0,0,0,.42)';
-    ctx.beginPath(); ctx.ellipse(x, y + s * 0.55, s * 0.55, s * 0.2, 0, 0, 7); ctx.fill();
-    ctx.shadowColor = red; ctx.shadowBlur = fit.m(0.8);
-    const g = ctx.createLinearGradient(x, y - s / 2, x, y + s / 2);
-    g.addColorStop(0, '#FF8593'); g.addColorStop(1, '#E23A4F');
-    ctx.fillStyle = g; ctx.strokeStyle = 'rgba(255,190,198,.85)'; ctx.lineWidth = Math.max(1.4, fit.m(0.06));
-    const rx = x - s / 2, ry = y - s / 2;
-    ctx.beginPath();
-    ctx.moveTo(rx + rr, ry); ctx.arcTo(rx + s, ry, rx + s, ry + s, rr); ctx.arcTo(rx + s, ry + s, rx, ry + s, rr);
-    ctx.arcTo(rx, ry + s, rx, ry, rr); ctx.arcTo(rx, ry, rx + s, ry, rr); ctx.closePath();
-    ctx.fill(); ctx.stroke(); ctx.shadowBlur = 0;
-    // attack-direction pip on the goal-facing edge
-    const er = s * 0.5, ex = x + Math.cos(ang) * er, ey = y + Math.sin(ang) * er;
-    ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(ex, ey, Math.max(2, fit.m(0.16)), 0, 7); ctx.fill();
-    ctx.restore();
-    if (o.role) {
-      // label sits ABOVE the token (away from goal) so the ball at the striker's
-      // feet never covers it
-      ctx.save(); ctx.fillStyle = 'rgba(255,150,160,.85)';
-      ctx.font = "700 " + Math.max(8, fit.font * 0.9) + "px 'IBM Plex Mono'";
-      ctx.textAlign = 'center'; ctx.fillText(o.role, x, y - s * 0.5 - fit.font * 0.55); ctx.restore();
-    }
   }
 
   /* ---------- audio: removed for now. _sfx is a no-op so the existing call
