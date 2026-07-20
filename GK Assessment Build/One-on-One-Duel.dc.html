@@ -112,7 +112,7 @@
   <!-- ============ DRILL · ARENA LAYOUT ============ -->
   <sc-if value="{{ isDrill }}" hint-placeholder-val="{{ true }}">
     <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:8px clamp(16px,2.4vw,42px) 16px;">
-      <div style="width:100%;max-width:1180px;flex:1;min-height:0;display:flex;flex-direction:column;gap:10px;">
+      <div style="width:100%;max-width:740px;flex:1;min-height:0;display:flex;flex-direction:column;gap:10px;">
 
         <!-- ==== PROMPT BANNER ==== -->
         <div class="fa-in-sm" style="flex:0 0 auto;display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:11px 15px;border-radius:13px;border:1px solid rgba(120,140,166,.18);background:rgba(10,16,28,.55);">
@@ -138,7 +138,7 @@
         </div>
 
         <!-- ==== FIELD ==== -->
-        <div style="position:relative;flex:1 1 120px;min-height:120px;border-radius:16px;overflow:hidden;border:1px solid rgba(120,140,166,.18);background:radial-gradient(130% 100% at 50% 100%,#0d1c2e 0%,#091324 52%,#050c17 100%);box-shadow:inset 0 0 60px rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;{{ vizShake }}">
+        <div style="position:relative;flex:0 0 auto;align-self:center;width:auto;height:clamp(300px,50vh,470px);aspect-ratio:3/2;max-width:100%;border-radius:16px;overflow:hidden;border:1px solid rgba(120,140,166,.18);background:radial-gradient(130% 100% at 50% 100%,#0d1c2e 0%,#091324 52%,#050c17 100%);box-shadow:inset 0 0 60px rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;{{ vizShake }}">
           <canvas ref="{{ canvasRef }}" style="position:absolute;inset:0;width:100%;height:100%;display:block;z-index:1;"></canvas>
 
           <span style="position:absolute;left:12px;top:10px;font:600 8px 'IBM Plex Mono';letter-spacing:.2em;color:rgba(200,215,232,.4);pointer-events:none;z-index:9;">GK CAM</span>
@@ -150,14 +150,6 @@
             </div>
           </sc-if>
 
-          <!-- feedback card floats over the field bottom -->
-          <sc-if value="{{ resolved }}" hint-placeholder-val="{{ false }}">
-            <div style="position:absolute;left:12px;right:12px;bottom:12px;z-index:10;padding:11px 14px;border-radius:12px;border:1px solid {{ feedBorder }};background:{{ feedBg }};backdrop-filter:blur(7px);animation:fa-cardin .5s cubic-bezier(.2,.7,.2,1) both;">
-              <div style="font:600 8.5px 'IBM Plex Mono';letter-spacing:.22em;color:{{ feedColor }};margin-bottom:5px;">{{ feedKicker }}</div>
-              <div style="font:500 12.5px/1.5 'Archivo';color:#DCE7F3;text-wrap:pretty;">{{ feedText }}</div>
-              <div style="margin-top:6px;font:600 10px 'IBM Plex Mono';letter-spacing:.04em;color:#8698ad;">{{ eliteNote }}</div>
-            </div>
-          </sc-if>
         </div>
 
         <!-- ==== CONTROL DOCK ==== -->
@@ -217,9 +209,14 @@
             </div>
           </sc-if>
 
-          <!-- resolved -> next -->
+          <!-- resolved -> feedback card + next -->
           <sc-if value="{{ resolved }}" hint-placeholder-val="{{ false }}">
-            <div style="min-height:88px;display:flex;justify-content:center;align-items:center;">
+            <div style="padding:12px 15px;border-radius:12px;border:1px solid {{ feedBorder }};background:{{ feedBg }};animation:fa-cardin .5s cubic-bezier(.2,.7,.2,1) both;">
+              <div style="font:600 8.5px 'IBM Plex Mono';letter-spacing:.22em;color:{{ feedColor }};margin-bottom:5px;">{{ feedKicker }}</div>
+              <div style="font:500 12.5px/1.5 'Archivo';color:#DCE7F3;text-wrap:pretty;">{{ feedText }}</div>
+              <div style="margin-top:6px;font:600 10px 'IBM Plex Mono';letter-spacing:.04em;color:#8698ad;">{{ eliteNote }}</div>
+            </div>
+            <div style="display:flex;justify-content:center;margin-top:3px;">
               <button onClick="{{ next }}" style="display:inline-flex;align-items:center;gap:11px;padding:13px 30px;border-radius:12px;border:0;cursor:pointer;background:var(--accent,#22D3EE);color:#03121a;font:700 15px 'Archivo';box-shadow:0 12px 36px color-mix(in srgb,var(--accent,#22D3EE) 40%,transparent);transition:transform .16s ease,box-shadow .16s ease;animation:fa-rise-sm .4s cubic-bezier(.2,.7,.2,1) both;" style-hover="transform:translateY(-2px);box-shadow:0 18px 48px color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);" style-active="transform:translateY(0) scale(.98);">
                 {{ nextLabel }}
                 <svg width="17" height="17" viewBox="0 0 24 24" fill="none" style="stroke:#03121a;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12h13M12 6l6 6-6 6"/></svg>
