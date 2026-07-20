@@ -202,7 +202,7 @@
     o = o || {}; var A = f.px(from.x, from.y), B = f.px(to.x, to.y);
     ctx.save();
     if (o.best) {
-      var acc = o.accent || '#A78BFA';
+      var acc = o.accent || '#22D3EE';
       ctx.strokeStyle = acc; ctx.lineWidth = Math.max(2.4, f.m(0.09));
       ctx.shadowColor = acc; ctx.shadowBlur = 10;
       ctx.beginPath(); ctx.moveTo(A[0], A[1]); ctx.lineTo(B[0], B[1]); ctx.stroke(); ctx.shadowBlur = 0;
@@ -224,7 +224,7 @@
   /* ---- TOKEN (labelled disc, our team) ------------------------------------*/
   function token(ctx, f, nx, ny, o) {
     o = o || {}; var P = f.px(nx, ny), x = P[0], y = P[1], r = o.r || f.r;
-    var acc = o.accent || '#A78BFA';
+    var acc = o.accent || '#22D3EE';
     var fill = o.kind === 'carrier' ? acc : (o.fill || COL.us);
     var ringOn = o.best || o.kind === 'best';
     ctx.save(); ctx.globalAlpha = o.alpha == null ? 1 : o.alpha;
@@ -306,7 +306,7 @@
     o = o || {};
     var A = f.px(from.x, from.y), B = f.px(to.x, to.y);
     var kind = o.kind || 'ground';
-    var col = o.color || (kind === 'shot' ? '#FFB020' : (o.accent || '#A78BFA'));
+    var col = o.color || (kind === 'shot' ? '#FFB020' : (o.accent || '#22D3EE'));
     var ang = Math.atan2(B[1] - A[1], B[0] - A[0]);
     var lift = kind === 'lofted' ? Math.hypot(B[0] - A[0], B[1] - A[1]) * 0.22 : 0;
     // control point for a quadratic arc (lofted lifts perpendicular)
@@ -353,7 +353,7 @@
   function engage(ctx, f, nx, ny, o) {
     o = o || {}; var P = f.px(nx, ny), x = P[0], y = P[1];
     var base = o.r || f.r + 6, pulse = o.pulse == null ? 0 : o.pulse;
-    var col = o.color || o.accent || '#A78BFA';
+    var col = o.color || o.accent || '#22D3EE';
     ctx.save();
     ctx.strokeStyle = col; ctx.lineWidth = Math.max(2, f.m(0.08));
     ctx.globalAlpha = 0.9; ctx.beginPath(); ctx.arc(x, y, base, 0, 7); ctx.stroke();
@@ -374,7 +374,7 @@
   /* ---- DIRECTION ARROW (choice / movement cue) ----------------------------*/
   function arrow(ctx, f, nx, ny, angle, o) {
     o = o || {}; var P = f.px(nx, ny), x = P[0], y = P[1];
-    var len = o.len || f.r * 2.2, col = o.color || o.accent || '#A78BFA';
+    var len = o.len || f.r * 2.2, col = o.color || o.accent || '#22D3EE';
     var ex = x + Math.cos(angle) * len, ey = y + Math.sin(angle) * len, hl = Math.max(9, f.m(0.7));
     ctx.save();
     ctx.strokeStyle = col; ctx.fillStyle = col; ctx.lineCap = 'round';
@@ -406,7 +406,7 @@
   /* ---- BADGE (decision chip pinned above a token: SHOOT / PASS / HOLD) ----*/
   function badge(ctx, f, nx, ny, text, o) {
     o = o || {}; var P = f.px(nx, ny), x = P[0], y = P[1] - (o.dy || f.r + 14);
-    var col = o.color || o.accent || '#A78BFA';
+    var col = o.color || o.accent || '#22D3EE';
     var fs = o.font || Math.max(9, f.font * 0.95);
     ctx.save(); ctx.font = "800 " + fs + "px 'IBM Plex Mono'";
     var tw = ctx.measureText(text).width, padX = fs * 0.7, w = tw + padX * 2, h = fs + fs * 0.7;
@@ -426,7 +426,7 @@
 
   /* ---- TIMING GAUGE (linear bar with a moving needle + sweet-spot band) ----*/
   function gauge(ctx, f, x, y, w, o) {
-    o = o || {}; var h = o.h || 12, col = o.color || o.accent || '#A78BFA';
+    o = o || {}; var h = o.h || 12, col = o.color || o.accent || '#22D3EE';
     ctx.save();
     ctx.fillStyle = 'rgba(10,16,28,.85)'; ctx.strokeStyle = 'rgba(120,140,166,.4)'; ctx.lineWidth = 1;
     roundRect(ctx, x, y, w, h, h / 2); ctx.fill(); ctx.stroke();
@@ -517,7 +517,7 @@
   /* ---- COUNTDOWN (radial decision clock; turns red when low) --------------*/
   function countdown(ctx, f, nx, ny, o) {
     o = o || {}; var P = f.px(nx, ny), x = P[0], y = P[1], r = o.r || f.r + 8;
-    var p = Math.max(0, Math.min(1, o.progress == null ? 1 : o.progress)), col = o.color || o.accent || '#A78BFA';
+    var p = Math.max(0, Math.min(1, o.progress == null ? 1 : o.progress)), col = o.color || o.accent || '#22D3EE';
     ctx.save();
     ctx.strokeStyle = 'rgba(120,140,166,.3)'; ctx.lineWidth = Math.max(2.4, f.m(0.1));
     ctx.beginPath(); ctx.arc(x, y, r, 0, 7); ctx.stroke();
@@ -550,7 +550,7 @@
     }
     if (o.thirds) { [1 / 3, 2 / 3].forEach(function (xx) { seg(xx, 0, xx, 1, 'rgba(120,180,220,.18)', [4, 6]); }); }
     if (o.zone14) {
-      var acc = o.accent || '#A78BFA', a = f.px(0.63, 0.37), b = f.px(0.75, 0.63);
+      var acc = o.accent || '#22D3EE', a = f.px(0.63, 0.37), b = f.px(0.75, 0.63);
       var rx = Math.min(a[0], b[0]), ry = Math.min(a[1], b[1]), rw = Math.abs(b[0] - a[0]), rh = Math.abs(b[1] - a[1]);
       ctx.fillStyle = hexA(acc, 0.16); ctx.fillRect(rx, ry, rw, rh);
       ctx.strokeStyle = hexA(acc, 0.55); ctx.setLineDash([3, 4]); ctx.strokeRect(rx, ry, rw, rh); ctx.setLineDash([]);
@@ -588,7 +588,7 @@
   }
   // Command / press radius (dashed circle of influence)
   function radius(ctx, f, nx, ny, o) {
-    o = o || {}; var P = f.px(nx, ny), x = P[0], y = P[1], col = o.color || o.accent || '#A78BFA';
+    o = o || {}; var P = f.px(nx, ny), x = P[0], y = P[1], col = o.color || o.accent || '#22D3EE';
     var rad = f.m((o.reach != null ? o.reach : 0.09) * L);
     ctx.save(); ctx.fillStyle = hexA(col, 0.08); ctx.strokeStyle = hexA(col, 0.55);
     ctx.lineWidth = Math.max(1.5, f.m(0.05)); ctx.setLineDash([5, 6]);

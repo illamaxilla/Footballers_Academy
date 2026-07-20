@@ -20,7 +20,7 @@ module can be brought up to it.
   no logos, no clutter. `ATTACK →` micro-label in a corner.
 - Players are **labelled tokens**, position on the token (GK/CB/DM/AM/LW…):
   - teammate = cyan disc `#3aa8c4` with a soft drop-shadow ellipse + dark label.
-  - carrier = accent-filled disc (purple `#A78BFA`), dark label.
+  - carrier = accent-filled disc (electric blue `#22D3EE`), dark label.
   - opponent = **red chevron** `#FF5A6E` pointing at our goal + faint red role label.
   - free man = pulsing green halo `#3BE07A`; best-pass target = accent ring.
 - **Ball** (the animation everyone likes): white radial-gradient dot

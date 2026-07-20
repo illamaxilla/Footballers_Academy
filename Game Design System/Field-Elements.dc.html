@@ -22,8 +22,8 @@
   <div style="position:absolute;inset:0;pointer-events:none;opacity:.4;background:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0px,rgba(255,255,255,.02) 1px,transparent 1px,transparent 4px);"></div>
 
   <header style="position:relative;display:flex;align-items:center;gap:11px;margin-bottom:6px;">
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" style="stroke:var(--accent,#A78BFA);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18"/></svg>
-    <span style="font:800 14px 'Archivo';letter-spacing:.05em;">FIELD <span style="color:var(--accent,#A78BFA);">ELEMENTS</span></span>
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" style="stroke:var(--accent,#22D3EE);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18"/></svg>
+    <span style="font:800 14px 'Archivo';letter-spacing:.05em;">FIELD <span style="color:var(--accent,#22D3EE);">ELEMENTS</span></span>
     <span style="margin-left:8px;font:600 10px 'IBM Plex Mono';letter-spacing:.14em;color:#61748c;">SHARED RENDERER · fa-pitch.js</span>
   </header>
   <p style="position:relative;max-width:760px;margin:0 0 28px;font:400 14px/1.6 'Archivo';color:#9FB0C5;">Every on-field element, isolated on its own swatch. All drawn by the shared renderer so games stay identical. Live pieces animate.</p>
@@ -31,7 +31,7 @@
   <sc-for list="{{ groups }}" as="g" hint-placeholder-count="5">
     <section style="position:relative;margin-bottom:34px;">
       <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
-        <span style="font:800 12px 'IBM Plex Mono';letter-spacing:.18em;color:var(--accent,#A78BFA);">{{ g.tag }}</span>
+        <span style="font:800 12px 'IBM Plex Mono';letter-spacing:.18em;color:var(--accent,#22D3EE);">{{ g.tag }}</span>
         <span style="font:700 17px 'Archivo';letter-spacing:-0.01em;">{{ g.title }}</span>
         <div style="flex:1;height:1px;background:linear-gradient(90deg,rgba(120,140,166,.28),transparent);"></div>
       </div>
@@ -52,7 +52,7 @@
   </sc-for>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1200,&quot;height&quot;:900},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#A78BFA&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#A78BFA&quot;,&quot;#22D3EE&quot;,&quot;#C6FF3A&quot;,&quot;#FF7A45&quot;,&quot;#FF4D8D&quot;]}}">
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1200,&quot;height&quot;:900},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#22D3EE&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#22D3EE&quot;,&quot;#C6FF3A&quot;,&quot;#FF7A45&quot;,&quot;#FF4D8D&quot;]}}">
 class Component extends DCLogic {
   GROUPS = [
     { tag:'01', title:'The ball', items:[
@@ -133,7 +133,7 @@ class Component extends DCLogic {
 
   _drawAll(now){
     const FP=window.FAPitch; if(!FP) return;
-    const acc=this.props.accent??'#A78BFA';
+    const acc=this.props.accent??'#22D3EE';
     const cvs=document.querySelectorAll('canvas[data-el]');
     const pulse=0.5+0.5*Math.sin(now/420);
     const loop=(now%2600)/2600;           // 0..1 travel loop
@@ -212,7 +212,7 @@ class Component extends DCLogic {
   }
 
   renderVals(){
-    const acc=this.props.accent??'#A78BFA';
+    const acc=this.props.accent??'#22D3EE';
     return { accent:acc, groups:this.GROUPS };
   }
 }
