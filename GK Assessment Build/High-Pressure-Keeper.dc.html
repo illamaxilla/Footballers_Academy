@@ -564,14 +564,18 @@ class Component extends DCLogic {
     const dvx = ballPos.x - goalC.x, dvy = ballPos.y - goalC.y, dvm = Math.hypot(dvx, dvy) || 1;
     const ktx = goalC.x + (dvx / dvm) * 0.052;
     const kty = 0.5 + (ballPos.y - 0.5) * 0.5;
-    // dive target on resolve: reach across on a save, half-commit on a goal
+    // Once the ball is struck (resolving) the keeper EXPLODES toward the save
+    // point so he meets it in flight, rather than reacting after it lands. On a
+    // save he arrives on the ball (gather); when beaten he dives but falls short.
+    const committed = (resolving || resolved) && last && !last.froze;
     let tgt = { x:ktx, y:kty };
-    if (resolved && last && !last.froze) {
-      tgt = last.success ? { x:0.985, y:0.5 + (ballPos.y - 0.5) * 0.72 } : { x:0.985, y:0.5 + (ballPos.y - 0.5) * 0.34 };
+    if (committed) {
+      tgt = (last.success && this._savePoint) ? { x: this._savePoint.x + 0.012, y: this._savePoint.y }
+          : { x:0.985, y:0.5 + (this._savePoint ? this._savePoint.y - 0.5 : 0) * 0.9 };
     }
     if (this._kposCi !== this.state.ci) { this._kpos = { x:ktx, y:kty }; this._kposCi = this.state.ci; }  // snap on new card
     if (!this._kpos) this._kpos = { x:ktx, y:kty };
-    const ease = reduce ? 1 : (resolved ? 0.3 : 0.14);
+    const ease = reduce ? 1 : (committed ? 0.24 : 0.14);
     this._kpos.x += (tgt.x - this._kpos.x) * ease;
     this._kpos.y += (tgt.y - this._kpos.y) * ease;
     if (live) this._setPos = { x:ktx, y:kty };           // remember set spot for the dive afterimage
@@ -593,33 +597,29 @@ class Component extends DCLogic {
     // the shooter — a red opponent token on the ball, facing our goal
     this._shooter(ctx, fit, shooter.x, shooter.y, { role: live ? 'SHOOTER' : null });
 
-    // dive afterimage — a faint ghost at the set spot sells the explosive move
-    if (resolved && last && !last.froze && this._setPos) this._keeper(ctx, fit, this._setPos.x, this._setPos.y, { alpha:0.14 });
+    // dive motion trail — after-images from the set spot to now sell the lunge
+    if (committed && this._setPos && !reduce) {
+      for (let gI = 1; gI <= 3; gI++) {
+        const f = gI / 4;
+        const gx2 = this._setPos.x + (this._kpos.x - this._setPos.x) * f;
+        const gy2 = this._setPos.y + (this._kpos.y - this._setPos.y) * f;
+        this._keeper(ctx, fit, gx2, gy2, { alpha: 0.05 + f * 0.12, scale: 0.88 + f * 0.1 });
+      }
+    }
 
-    // keeper: faces the ball while live, leans into the dive on resolve
+    // keeper: faces the ball while live, leans into the dive, and pops on the catch
     const KPs = fit.px(this._kpos.x, this._kpos.y), BPs = fit.px(ballPos.x, ballPos.y);
     const face = live ? Math.atan2(BPs[1] - KPs[1], BPs[0] - KPs[0]) : null;
-    let lean = 0, kAlpha = 1;
-    if (resolved && last) {
-      if (last.froze) kAlpha = 0.72;
-      else lean = (this._kpos.y < 0.5 ? -1 : 1) * Math.min(0.5, Math.abs(this._kpos.y - 0.5) * 1.7);
+    let lean = 0, kAlpha = 1, kScale = live && !reduce ? (1 + osc * 0.02) : 1;
+    if (resolved && last && last.froze) kAlpha = 0.72;
+    else if (committed) {
+      lean = (this._kpos.y < 0.5 ? -1 : 1) * Math.min(0.5, Math.abs(this._kpos.y - 0.5) * 1.7);
+      if (last.success && resolved && !reduce) {          // squash-stretch punch as he gathers it
+        const pop = Math.max(0, 1 - (now - (this._resolveT0 || now)) / 220);
+        kScale = 1 + 0.2 * pop * pop;
+      }
     }
-    const kScale = live && !reduce ? (1 + osc * 0.02) : 1;
     this._keeper(ctx, fit, this._kpos.x, this._kpos.y, { face, lean, alpha:kAlpha, scale:kScale });
-
-    // reach arm + glove flung toward the ball on a committed dive
-    if (resolved && last && !last.froze) {
-      const reachAmt = Math.min(1, (now - (this._resolveT0 || now)) / 240);
-      const land = this._impact ? { x:this._impact.x, y:this._impact.y } : ballPos;
-      const LP = fit.px(land.x, land.y);
-      const gx = KPs[0] + (LP[0] - KPs[0]) * 0.82 * reachAmt, gy = KPs[1] + (LP[1] - KPs[1]) * 0.82 * reachAmt;
-      const arm = last.success ? acc : '#FF8A8A';
-      ctx.save(); ctx.strokeStyle = arm; ctx.lineCap = 'round';
-      ctx.lineWidth = Math.max(2.4, fit.m(0.17)); ctx.shadowColor = arm; ctx.shadowBlur = fit.m(0.8); ctx.globalAlpha = 0.92;
-      ctx.beginPath(); ctx.moveTo(KPs[0], KPs[1]); ctx.lineTo(gx, gy); ctx.stroke();
-      ctx.beginPath(); ctx.arc(gx, gy, Math.max(3, fit.m(0.5)), 0, 7); ctx.fillStyle = arm; ctx.fill();
-      ctx.restore();
-    }
 
     // ball trail (flight) + ball (idle hover while live sells the "held breath")
     const ballR = Math.max(4, fit.m(0.62));
@@ -629,12 +629,23 @@ class Component extends DCLogic {
       ctx.globalAlpha = 1;
     }
     const hover = live && !reduce ? osc * 0.004 : 0;
-    FP.ball(ctx, fit, ballPos.x, ballPos.y + hover, { flight: resolving, r: ballR });
+    let bx = ballPos.x, by = ballPos.y + hover, br = ballR;
+    if (resolved && last && last.success && !reduce) {
+      // gather: pull the caught ball into the keeper's chest and shrink it (secured)
+      const tuck = Math.min(1, (now - (this._resolveT0 || now)) / 200);
+      bx = ballPos.x + (this._kpos.x - ballPos.x) * tuck * 0.85;
+      by = ballPos.y + (this._kpos.y - ballPos.y) * tuck * 0.85;
+      br = ballR * (1 - 0.3 * tuck);
+    }
+    FP.ball(ctx, fit, bx, by, { flight: resolving, r: br });
 
-    // impact — expanding burst + verdict mark
+    // impact — a clean GATHER on a save, a shockwave (+ verdict) when beaten
     if (this._impact) {
-      this._impactBurst(ctx, fit, this._impact, now);
-      FP.verdict(ctx, fit, this._impact.x, this._impact.y, { kind: this._impact.kind === 'save' ? 'correct' : (this._impact.kind === 'froze' ? 'missed' : 'wrong') });
+      if (this._impact.kind === 'save') this._catchBurst(ctx, fit, this._impact, now);
+      else {
+        this._impactBurst(ctx, fit, this._impact, now);
+        FP.verdict(ctx, fit, this._impact.x, this._impact.y, { kind: this._impact.kind === 'froze' ? 'missed' : 'wrong' });
+      }
     }
     ctx.restore();
   }
@@ -696,6 +707,28 @@ class Component extends DCLogic {
       const a = (i / N) * Math.PI * 2 + (imp.kind === 'goal' ? 0.3 : 0);
       const r0 = fit.m(0.7) + ease * fit.m(2.0), r1 = r0 + fit.m(1.5) * (1 - life * 0.4);
       ctx.beginPath(); ctx.moveTo(x + Math.cos(a) * r0, y + Math.sin(a) * r0); ctx.lineTo(x + Math.cos(a) * r1, y + Math.sin(a) * r1); ctx.stroke();
+    }
+    ctx.restore();
+  }
+  // the ball is GATHERED: a soft flash + a ring that contracts INWARD (energy
+  // pulled in, not blown out) + brief grip ticks — reads as a clean catch.
+  _catchBurst(ctx, fit, imp, now){
+    const life = Math.min(1, (now - (imp.t0 || now)) / 470); if (life >= 1) return;
+    const P = fit.px(imp.x, imp.y), x = P[0], y = P[1];
+    const acc = this.props.accent || '#22D3EE';
+    const ease = 1 - Math.pow(1 - life, 2);
+    ctx.save();
+    // bright flash on contact, gone by ~45% of the life
+    const fa = 0.62 * Math.max(0, 1 - life / 0.45);
+    if (fa > 0) { const g = ctx.createRadialGradient(x, y, 0, x, y, fit.m(3.6)); g.addColorStop(0, this._hexA(acc, fa)); g.addColorStop(0.5, this._hexA(acc, fa * 0.4)); g.addColorStop(1, this._hexA(acc, 0)); ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, fit.m(3.6), 0, 7); ctx.fill(); }
+    // ring contracting toward the ball (the opposite of an explosion)
+    const rr = fit.m(0.55) + (1 - ease) * fit.m(3.0);
+    ctx.strokeStyle = this._hexA(acc, 0.85 * (1 - life)); ctx.lineWidth = Math.max(2, fit.m(0.12));
+    ctx.beginPath(); ctx.arc(x, y, rr, 0, 7); ctx.stroke();
+    // brief grip ticks closing on the gathered ball
+    if (life < 0.6) {
+      ctx.strokeStyle = this._hexA(acc, 0.9 * (1 - life / 0.6)); ctx.lineWidth = Math.max(1.6, fit.m(0.08)); ctx.lineCap = 'round';
+      for (let i = 0; i < 6; i++) { const a = (i / 6) * Math.PI * 2; const r0 = fit.m(0.9), r1 = fit.m(1.4); ctx.beginPath(); ctx.moveTo(x + Math.cos(a) * r0, y + Math.sin(a) * r0); ctx.lineTo(x + Math.cos(a) * r1, y + Math.sin(a) * r1); ctx.stroke(); }
     }
     ctx.restore();
   }
@@ -825,6 +858,7 @@ class Component extends DCLogic {
     if (rec.froze) { to = { x:1.0, y:0.5 }; dur = 540; }
     else if (rec.success) { to = { x:0.955, y: 0.5 + (from.y - 0.5) * 0.5 }; dur = 430; }
     else { to = { x:1.0, y: from.y < 0.5 ? 0.30 : 0.70 }; dur = 470; }
+    this._savePoint = to;           // where the ball ends up — the keeper dives to meet it
     this._trail = [];
     this._flight = { from, to, dur, t0:this._now(), cb:() => this._land(rec, to) };
   }
