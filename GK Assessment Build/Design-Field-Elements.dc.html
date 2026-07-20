@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="assets/vendor/fonts/fonts.css" rel="stylesheet">
+<script src="./fa-pitch.js"></script>
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:#04060c;}
+  @keyframes fa-rise{0%{transform:translateY(14px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  .fa-in{opacity:0;animation:fa-rise .5s cubic-bezier(.2,.7,.2,1) forwards;}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;}.fa-in{opacity:1!important;transform:none!important;}}
+</style>
+</helmet>
+<div style="position:relative;min-height:100dvh;width:100%;background:radial-gradient(120% 90% at 50% 4%,#0b1626 0%,#070d18 46%,#04070e 100%);color:#E6EEF8;font-family:'Archivo',system-ui,sans-serif;--accent:{{ accent }};padding:32px clamp(20px,3.4vw,56px) 72px;">
+  <div style="position:absolute;inset:0;pointer-events:none;opacity:.5;background:repeating-linear-gradient(0deg,rgba(255,255,255,.015) 0px,rgba(255,255,255,.015) 1px,transparent 1px,transparent 5px);"></div>
+
+  <header style="position:relative;display:flex;align-items:center;gap:11px;margin-bottom:6px;">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" style="stroke:var(--accent,#22D3EE);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;"><path d="M12 3l7 4v6l-7 4-7-4V7z"/><path d="M12 12v5M12 12L5 8M12 12l7-4"/></svg>
+    <span style="font:800 14px 'Archivo';letter-spacing:.05em;">FIELD <span style="color:var(--accent,#22D3EE);">ELEMENTS</span></span>
+    <span style="margin-left:8px;font:600 10px 'IBM Plex Mono';letter-spacing:.16em;color:#5c7086;">HUD SYSTEM · v2 MINIMAL</span>
+  </header>
+  <p style="position:relative;max-width:780px;margin:0 0 30px;font:400 14px/1.6 'Archivo';color:#8fa2b8;">A minimalist, future-tech HUD language. Hollow wireframe units with target-lock ticks, open opponent chevrons, hairline lanes and a crisp flat ball. Colour carries meaning only — accent = focus/ours, red = opponent/danger, amber = warning, green = free/correct. Everything else is cool hairline on navy.</p>
+
+  <sc-for list="{{ groups }}" as="g" hint-placeholder-count="10">
+    <section style="position:relative;margin-bottom:32px;">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+        <span style="font:700 11px 'IBM Plex Mono';letter-spacing:.2em;color:var(--accent,#22D3EE);">{{ g.tag }}</span>
+        <span style="font:700 16px 'Archivo';letter-spacing:-0.01em;">{{ g.title }}</span>
+        <div style="flex:1;height:1px;background:linear-gradient(90deg,rgba(122,162,204,.24),transparent);"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px;">
+        <sc-for list="{{ g.items }}" as="it" hint-placeholder-count="4">
+          <div class="fa-in" style="border-radius:14px;border:1px solid rgba(122,162,204,.16);background:rgba(9,16,27,.5);overflow:hidden;">
+            <div style="position:relative;aspect-ratio:4/3;">
+              <canvas data-el="{{ it.key }}" style="display:block;width:100%;height:100%;"></canvas>
+              <span style="position:absolute;left:9px;top:8px;font:600 7.5px 'IBM Plex Mono';letter-spacing:.18em;color:rgba(140,162,184,.45);pointer-events:none;">{{ it.tag }}</span>
+            </div>
+            <div style="padding:10px 13px 13px;border-top:1px solid rgba(122,162,204,.1);">
+              <div style="font:700 12.5px 'Archivo';">{{ it.name }}</div>
+              <div style="font:400 11px/1.4 'Archivo';color:#6c7f95;margin-top:3px;">{{ it.note }}</div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+  </sc-for>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1200,&quot;height&quot;:900},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#22D3EE&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#22D3EE&quot;,&quot;#A78BFA&quot;,&quot;#C6FF3A&quot;,&quot;#FF7A45&quot;,&quot;#FF4D8D&quot;]}}">
+class Component extends DCLogic {
+  GROUPS = [
+    { tag:'01', title:'The ball', items:[
+      { key:'ball-rest',   tag:'REST',   name:'At rest',      note:'Crisp flat disc with a thin rim.' },
+      { key:'ball-flight', tag:'FLIGHT', name:'In flight',    note:'Soft glow while travelling.' },
+      { key:'ball-trail',  tag:'TRAIL',  name:'Motion trail', note:'Fading echo behind a fast ball.' }
+    ]},
+    { tag:'02', title:'Ball trajectory', items:[
+      { key:'traj-ground', tag:'PASS',   name:'Ground pass',  note:'Hairline dashed lane — an option.' },
+      { key:'traj-driven', tag:'DRIVEN', name:'Driven pass',  note:'Solid thin line, open arrowhead.' },
+      { key:'traj-lofted', tag:'LOFT',   name:'Lofted / cross',note:'Curved dotted arc.' },
+      { key:'traj-shot',   tag:'SHOT',   name:'Shot',         note:'Bold amber line into goal.' },
+      { key:'traj-ghost',  tag:'LEAD',   name:'Lead the run', note:'Ghost target ring at the meeting point.' }
+    ]},
+    { tag:'03', title:'Players', items:[
+      { key:'ply-us',      tag:'OURS',   name:'My team',      note:'Hollow ring, faint fill, mono label.' },
+      { key:'ply-carrier', tag:'BALL',   name:'Ball carrier', note:'Accent ring + glow + lock ticks.' },
+      { key:'ply-them',    tag:'OPP',    name:'Opponent',     note:'Open red chevron toward our goal.' },
+      { key:'ply-free',    tag:'FREE',   name:'Free man',     note:'Pulsing green outer ring.' },
+      { key:'ply-best',    tag:'TARGET', name:'Best target',  note:'Accent-lit ring, the right receiver.' },
+      { key:'ply-danger',  tag:'MARKED', name:'Danger / marked',note:'Dashed red ring — pressured.' },
+      { key:'ply-keeper',  tag:'GK',     name:'Keeper',       note:'Double ring, accent — the last line.' }
+    ]},
+    { tag:'04', title:'Action indicators', items:[
+      { key:'ind-engage',  tag:'TAP',    name:'Engage',       note:'Pulsing lock — tap this unit.' },
+      { key:'ind-arrows',  tag:'CHOICE', name:'Choice arrows',note:'Directional decision cues.' },
+      { key:'ind-zone',    tag:'SPACE',  name:'Space marker', note:'Crosshair + faint blob — move here.' },
+      { key:'ind-badge',   tag:'CALL',   name:'Decision chip',note:'SHOOT / PASS / HOLD pinned to a unit.' },
+      { key:'ind-gauge',   tag:'TIMING', name:'Timing gauge', note:'Needle + sweet-spot window.' }
+    ]},
+    { tag:'05', title:'Space & pressure', items:[
+      { key:'sp-cover',    tag:'SHADOW', name:'Cover shadow', note:'The lane a defender cuts off.' },
+      { key:'sp-pressure', tag:'PRESS',  name:'Under pressure',note:'Tightening rings — urgency.' },
+      { key:'sp-blocked',  tag:'CUT',    name:'Lane cut off', note:'Dashed red + X at the intercept.' }
+    ]},
+    { tag:'06', title:'Motion & depth', items:[
+      { key:'mo-run',      tag:'RUN',    name:'Off-ball run', note:'Chevron trail — movement, not a pass.' },
+      { key:'mo-facing',   tag:'FACE',   name:'Body orientation',note:'Notch shows which way a unit faces.' },
+      { key:'de-high',     tag:'AIR',    name:'Ball in the air',note:'Detached shadow sells the height.' }
+    ]},
+    { tag:'07', title:'Time & judgment', items:[
+      { key:'tj-countdown',tag:'CLOCK',  name:'Decision clock',note:'Radial timer, reddens as it runs out.' },
+      { key:'tj-correct',  tag:'YES',    name:'Correct',      note:'Green check ring — right call.' },
+      { key:'tj-wrong',    tag:'NO',     name:'Wrong',        note:'Red cross ring — wrong call.' },
+      { key:'tj-missed',   tag:'MISS',   name:'Should-have',  note:'Amber ghost — the option passed up.' }
+    ]},
+    { tag:'08', title:'Positional reference', items:[
+      { key:'pr-channels', tag:'LANES',  name:'Channels',     note:'Five vertical lanes / halfspaces.' },
+      { key:'pr-thirds',   tag:'BANDS',  name:'Thirds',       note:'Defensive / middle / attacking.' }
+    ]},
+    { tag:'09', title:'Goalkeeper', items:[
+      { key:'gk-angle',    tag:'ANGLE',  name:'Narrow the angle',note:'Cone to both posts; keeper bisector.' },
+      { key:'gk-coverage', tag:'REACH',  name:'Dive reach',   note:'The area the keeper can get to.' },
+      { key:'gk-scene',    tag:'SCENE',  name:'Keeper cam',   note:'Goal, keeper, shooter, threat line.' },
+      { key:'gk-save',     tag:'SAVE',   name:'The save',     note:'Catch burst — gathered clean.' },
+      { key:'gk-goal',     tag:'BEATEN', name:'Beaten',       note:'Impact shockwave in the net.' },
+      { key:'gk-face',     tag:'FRONT',  name:'Goal face',    note:'Front elevation, zones, keeper set.' },
+      { key:'gk-dive',     tag:'FRONT',  name:'Front dive',   note:'Front keeper diving to a corner.' }
+    ]},
+    { tag:'10', title:'Defending', items:[
+      { key:'df-line',     tag:'LINE',   name:'Back line',    note:'The unit held as one shape.' },
+      { key:'df-offside',  tag:'OFF',    name:'Offside line', note:'Amber line; the runner beyond it.' },
+      { key:'df-mark',     tag:'MARK',   name:'Marking',      note:'Tether from defender to man.' },
+      { key:'df-gap',      tag:'GAP',    name:'Gap / distance',note:'Measured space between defenders.' }
+    ]}
+  ];
+
+  componentDidMount(){ this._boot(0); }
+  componentWillUnmount(){ this._running=false; if(this._raf) cancelAnimationFrame(this._raf); }
+  _boot(t){ if(!window.FAPitch){ if(t<40) setTimeout(()=>this._boot(t+1),60); return; } this._running=true; this._loop(); }
+  _loop(){ if(!this._running) return; this._raf=requestAnimationFrame(()=>this._loop()); this._drawAll(performance.now()); }
+  _resize(cv){ const r=cv.getBoundingClientRect(); const dpr=Math.min(2,window.devicePixelRatio||1); cv.width=Math.max(2,Math.round(r.width*dpr)); cv.height=Math.max(2,Math.round(r.height*dpr)); return {w:r.width,h:r.height,dpr}; }
+
+  /* ================= minimalist HUD element kit ================= */
+  _hexA(hex,a){ if(hex[0]!=='#') return hex; const n=parseInt(hex.slice(1),16); return 'rgba('+((n>>16)&255)+','+((n>>8)&255)+','+(n&255)+','+a+')'; }
+  H(){ return { L:'rgba(126,168,208,.16)', LD:'rgba(126,168,208,.09)', ring:'rgba(160,190,222,.62)', ink:'#E6EEF8', dim:'#8497ad', faint:'#57697f', red:'#FF6076', amber:'#FFB020', green:'#3FE0A0' }; }
+
+  // faint HUD graph-paper backdrop for every swatch
+  _grid(ctx,w,h){ ctx.save(); ctx.fillStyle='rgba(126,168,208,.05)'; const g=20; for(let x=g;x<w;x+=g){ for(let y=g;y<h;y+=g){ ctx.fillRect(x-0.5,y-0.5,1,1); } } ctx.restore(); }
+
+  // flat ball — crisp disc + thin rim, glow only in flight
+  _ball(ctx,f,nx,ny,o){ o=o||{}; const P=f.px(nx,ny),x=P[0],y=P[1],r=o.r||Math.max(3.4,f.m(0.42));
+    ctx.save();
+    if(o.trail && o.dir){ const d=o.dir,m=Math.hypot(d[0],d[1])||1,ux=d[0]/m,uy=d[1]/m; for(let t=4;t>=1;t--){ ctx.globalAlpha=0.14*(5-t)/4; ctx.fillStyle='#EEF5FC'; ctx.beginPath(); ctx.arc(x-ux*r*1.7*t,y-uy*r*1.7*t,r*(1-t*0.13),0,7); ctx.fill(); } ctx.globalAlpha=1; }
+    if(o.flight){ ctx.shadowColor='rgba(220,240,255,.6)'; ctx.shadowBlur=8; }
+    ctx.fillStyle='#EEF5FC'; ctx.beginPath(); ctx.arc(x,y,r,0,7); ctx.fill(); ctx.shadowBlur=0;
+    ctx.strokeStyle='rgba(9,20,34,.42)'; ctx.lineWidth=Math.max(1,r*0.14); ctx.beginPath(); ctx.arc(x,y,r*0.9,0,7); ctx.stroke();
+    ctx.restore(); }
+
+  // hollow ring unit (our team). o: accent, role, kind('carrier'|'keeper'), state('free'|'best'|'danger'), alpha, pulse, scale, facing
+  _unit(ctx,f,nx,ny,o){ o=o||{}; const H=this.H(); const P=f.px(nx,ny),x=P[0],y=P[1],acc=o.accent||'#22D3EE';
+    const r=(o.r||Math.max(11,f.m(1.6)))*(o.scale||1);
+    const focal=o.kind==='carrier'||o.kind==='keeper'||o.state==='best';
+    const stroke=focal?acc:H.ring;
+    ctx.save(); ctx.globalAlpha=o.alpha==null?1:o.alpha;
+    // shadow ellipse for grounding
+    ctx.fillStyle='rgba(0,0,0,.3)'; ctx.beginPath(); ctx.ellipse(x,y+r*0.92,r*0.72,r*0.22,0,0,7); ctx.fill();
+    // faint fill
+    ctx.fillStyle=focal?this._hexA(acc,0.1):'rgba(126,168,208,.055)'; ctx.beginPath(); ctx.arc(x,y,r,0,7); ctx.fill();
+    // ring
+    if(focal){ ctx.shadowColor=acc; ctx.shadowBlur=Math.max(6,r*0.55); }
+    ctx.strokeStyle=stroke; ctx.lineWidth=Math.max(1.4,r*0.1); ctx.beginPath(); ctx.arc(x,y,r,0,7); ctx.stroke(); ctx.shadowBlur=0;
+    if(o.kind==='keeper'){ ctx.strokeStyle=this._hexA(acc,0.5); ctx.lineWidth=1; ctx.beginPath(); ctx.arc(x,y,r*0.68,0,7); ctx.stroke(); }
+    // target-lock cardinal ticks for focal
+    if(focal && o.ticks!==false){ ctx.strokeStyle=this._hexA(acc,0.85); ctx.lineWidth=Math.max(1.2,r*0.09); ctx.lineCap='round'; const g=r*1.32,t=r*0.34; [[0,-1],[0,1],[-1,0],[1,0]].forEach(d=>{ ctx.beginPath(); ctx.moveTo(x+d[0]*g,y+d[1]*g); ctx.lineTo(x+d[0]*(g+t),y+d[1]*(g+t)); ctx.stroke(); }); ctx.lineCap='butt'; }
+    // free-man pulsing green ring
+    if(o.state==='free'){ const p=o.pulse||0; ctx.strokeStyle=this._hexA(H.green,0.32+0.42*p); ctx.lineWidth=Math.max(1.4,r*0.09); ctx.beginPath(); ctx.arc(x,y,r+3+p*5,0,7); ctx.stroke(); }
+    // danger dashed red ring
+    if(o.state==='danger'){ ctx.strokeStyle=this._hexA(H.red,0.75); ctx.lineWidth=Math.max(1.4,r*0.1); ctx.setLineDash([3,3]); ctx.beginPath(); ctx.arc(x,y,r+4,0,7); ctx.stroke(); ctx.setLineDash([]); }
+    // facing notch
+    if(o.facing!=null){ ctx.fillStyle=this._hexA(focal?acc:H.ring,0.95); ctx.beginPath(); ctx.arc(x+Math.cos(o.facing)*r,y+Math.sin(o.facing)*r,Math.max(1.6,r*0.13),0,7); ctx.fill(); }
+    // label
+    if(o.role){ ctx.fillStyle=focal?H.ink:H.dim; ctx.font="700 "+Math.max(7.5,r*0.6)+"px 'IBM Plex Mono'"; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(o.role,x,y+0.5); ctx.textBaseline='alphabetic'; }
+    ctx.restore(); }
+
+  // open opponent chevron (outline)
+  _chevron(ctx,f,nx,ny,o){ o=o||{}; const H=this.H(); const P=f.px(nx,ny),x=P[0],y=P[1];
+    const r=o.r||Math.max(9,f.m(1.5));
+    const ang=f.orient==='ew'?(f.attackDir==='rtl'?0:Math.PI):(f.attackDir==='rtl'?Math.PI/2:-Math.PI/2);
+    ctx.save(); ctx.globalAlpha=o.alpha==null?1:o.alpha; ctx.translate(x,y); ctx.rotate(ang);
+    ctx.fillStyle=this._hexA(H.red,0.08); ctx.strokeStyle=H.red; ctx.lineWidth=Math.max(1.5,r*0.15); ctx.lineJoin='round'; ctx.lineCap='round';
+    ctx.beginPath(); ctx.moveTo(-r*0.92,0); ctx.lineTo(r*0.5,-r*0.82); ctx.lineTo(r*0.16,0); ctx.lineTo(r*0.5,r*0.82); ctx.closePath(); ctx.fill(); ctx.stroke();
+    ctx.restore();
+    if(o.role){ ctx.save(); ctx.fillStyle=this._hexA(H.red,0.82); ctx.font="600 "+Math.max(7.5,f.m(0.9))+"px 'IBM Plex Mono'"; ctx.textAlign='center'; ctx.fillText(o.role,x,y+r+f.m(0.9)+2); ctx.restore(); } }
+
+  // hairline trajectory
+  _traj(ctx,f,a,b,o){ o=o||{}; const H=this.H(); const A=f.px(a.x,a.y),B=f.px(b.x,b.y),kind=o.kind||'ground';
+    const acc=o.color||(kind==='shot'?H.amber:(o.accent||'#22D3EE')); const ang=Math.atan2(B[1]-A[1],B[0]-A[0]);
+    const lift=kind==='lofted'?Math.hypot(B[0]-A[0],B[1]-A[1])*0.24:0, cx=(A[0]+B[0])/2, cy=(A[1]+B[1])/2-lift;
+    ctx.save(); ctx.strokeStyle=acc; ctx.lineCap='round'; ctx.lineJoin='round';
+    if(kind==='ground'){ ctx.lineWidth=1.4; ctx.globalAlpha=0.55; ctx.setLineDash([2,5]); }
+    else if(kind==='driven'){ ctx.lineWidth=1.8; ctx.shadowColor=acc; ctx.shadowBlur=6; }
+    else if(kind==='lofted'){ ctx.lineWidth=1.5; ctx.globalAlpha=0.75; ctx.setLineDash([2,6]); }
+    else if(kind==='shot'){ ctx.lineWidth=2.4; ctx.shadowColor=acc; ctx.shadowBlur=9; }
+    ctx.beginPath(); ctx.moveTo(A[0],A[1]); if(kind==='lofted') ctx.quadraticCurveTo(cx,cy,B[0],B[1]); else ctx.lineTo(B[0],B[1]); ctx.stroke();
+    ctx.setLineDash([]); ctx.shadowBlur=0; ctx.globalAlpha=1;
+    if(kind==='driven'||kind==='shot'){ const hl=Math.max(7,f.m(0.7)); ctx.lineWidth=Math.max(1.6,kind==='shot'?2.4:1.8); ctx.beginPath(); ctx.moveTo(B[0]-Math.cos(ang-0.5)*hl,B[1]-Math.sin(ang-0.5)*hl); ctx.lineTo(B[0],B[1]); ctx.lineTo(B[0]-Math.cos(ang+0.5)*hl,B[1]-Math.sin(ang+0.5)*hl); ctx.stroke(); }
+    if(o.ghost){ ctx.globalAlpha=0.85; ctx.lineWidth=1.3; ctx.setLineDash([2,3]); ctx.beginPath(); ctx.arc(B[0],B[1],Math.max(5,f.m(0.95)),0,7); ctx.stroke(); ctx.setLineDash([]); }
+    ctx.restore();
+    if(o.progress!=null){ const t=Math.max(0,Math.min(1,o.progress)); let px,py; if(kind==='lofted'){ const u=1-t; px=u*u*A[0]+2*u*t*cx+t*t*B[0]; py=u*u*A[1]+2*u*t*cy+t*t*B[1]; } else { px=A[0]+(B[0]-A[0])*t; py=A[1]+(B[1]-A[1])*t; } this._ball(ctx,{px:()=>[px,py],m:f.m},0,0,{flight:true,r:Math.max(3.4,f.m(0.42))}); } }
+
+  // target-lock brackets (engage)
+  _lock(ctx,f,nx,ny,o){ o=o||{}; const P=f.px(nx,ny),x=P[0],y=P[1],acc=o.accent||'#22D3EE',r=o.r||Math.max(13,f.m(2.1)); const p=o.pulse||0;
+    ctx.save(); ctx.strokeStyle=this._hexA(acc,0.9); ctx.lineWidth=Math.max(1.4,f.m(0.07)); ctx.lineCap='round'; const b=r*0.46;
+    [[1,1],[-1,1],[-1,-1],[1,-1]].forEach(s=>{ ctx.beginPath(); ctx.moveTo(x+s[0]*r,y+s[1]*r-s[1]*b); ctx.lineTo(x+s[0]*r,y+s[1]*r); ctx.lineTo(x+s[0]*r-s[0]*b,y+s[1]*r); ctx.stroke(); });
+    ctx.globalAlpha=0.5*(1-p); ctx.strokeStyle=acc; ctx.lineWidth=1.3; ctx.beginPath(); ctx.arc(x,y,r*0.5+p*r*0.7,0,7); ctx.stroke(); ctx.restore(); }
+
+  _arrow(ctx,f,nx,ny,ang,o){ o=o||{}; const P=f.px(nx,ny),x=P[0],y=P[1],acc=o.color||o.accent||'#22D3EE',len=o.len||f.m(2.4),hl=Math.max(6,f.m(0.6));
+    const ex=x+Math.cos(ang)*len,ey=y+Math.sin(ang)*len;
+    ctx.save(); ctx.globalAlpha=o.alpha==null?1:o.alpha; ctx.strokeStyle=acc; ctx.lineWidth=Math.max(1.5,f.m(0.08)); ctx.lineCap='round'; if(o.glow){ ctx.shadowColor=acc; ctx.shadowBlur=7; }
+    ctx.beginPath(); ctx.moveTo(x,y); ctx.lineTo(ex,ey); ctx.stroke(); ctx.shadowBlur=0;
+    ctx.beginPath(); ctx.moveTo(ex-Math.cos(ang-0.5)*hl,ey-Math.sin(ang-0.5)*hl); ctx.lineTo(ex,ey); ctx.lineTo(ex-Math.cos(ang+0.5)*hl,ey-Math.sin(ang+0.5)*hl); ctx.stroke(); ctx.restore(); }
+
+  _zone(ctx,f,nx,ny,o){ o=o||{}; const P=f.px(nx,ny),x=P[0],y=P[1],col=o.color||this.H().green,r=o.r||f.m(4);
+    ctx.save(); const g=ctx.createRadialGradient(x,y,0,x,y,r); g.addColorStop(0,this._hexA(col,0.16)); g.addColorStop(1,this._hexA(col,0)); ctx.fillStyle=g; ctx.beginPath(); ctx.arc(x,y,r,0,7); ctx.fill();
+    ctx.strokeStyle=this._hexA(col,0.7); ctx.lineWidth=1.3; ctx.lineCap='round'; const c=r*0.34; ctx.beginPath(); ctx.moveTo(x-c,y); ctx.lineTo(x+c,y); ctx.moveTo(x,y-c); ctx.lineTo(x,y+c); ctx.stroke();
+    ctx.setLineDash([2,3]); ctx.globalAlpha=0.6; ctx.beginPath(); ctx.arc(x,y,r*0.5,0,7); ctx.stroke(); ctx.restore(); }
+
+  _badge(ctx,f,nx,ny,text,o){ o=o||{}; const P=f.px(nx,ny),col=o.color||o.accent||'#22D3EE',fs=o.font||Math.max(8.5,f.m(1.05)); const x=P[0],y=P[1]-(o.dy||f.m(2.6));
+    ctx.save(); ctx.font="700 "+fs+"px 'IBM Plex Mono'"; const tw=ctx.measureText(text).width,padX=fs*0.7,w=tw+padX*2,h=fs+fs*0.8,rx=x-w/2,ry=y-h/2,rr=h*0.32;
+    ctx.fillStyle='rgba(7,13,22,.9)'; ctx.strokeStyle=this._hexA(col,0.85); ctx.lineWidth=1.3; this._rr(ctx,rx,ry,w,h,rr); ctx.fill(); ctx.stroke();
+    ctx.fillStyle='rgba(7,13,22,.9)'; ctx.beginPath(); ctx.moveTo(x-4,ry+h); ctx.lineTo(x+4,ry+h); ctx.lineTo(x,ry+h+5); ctx.closePath(); ctx.fill();
+    ctx.fillStyle=col; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(text,x,y+0.5); ctx.restore(); }
+  _rr(ctx,x,y,w,h,r){ ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); }
+
+  _gauge(ctx,f,x,y,w,o){ o=o||{}; const H=this.H(),h=o.h||10,col=o.accent||'#22D3EE'; ctx.save();
+    ctx.fillStyle='rgba(9,16,27,.7)'; ctx.strokeStyle='rgba(126,168,208,.3)'; ctx.lineWidth=1; this._rr(ctx,x,y,w,h,h/2); ctx.fill(); ctx.stroke();
+    const s0=o.band?o.band[0]:0.6,s1=o.band?o.band[1]:0.8; ctx.fillStyle=this._hexA(H.green,0.4); this._rr(ctx,x+w*s0,y,w*(s1-s0),h,h/3); ctx.fill();
+    const p=Math.max(0,Math.min(1,o.progress==null?0.5:o.progress)),nx=x+w*p; ctx.strokeStyle=col; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(nx,y-3); ctx.lineTo(nx,y+h+3); ctx.stroke(); ctx.fillStyle='#EAF2FB'; ctx.beginPath(); ctx.arc(nx,y+h/2,h*0.38,0,7); ctx.fill(); ctx.restore(); }
+
+  _coverShadow(ctx,f,nx,ny,o){ o=o||{}; const H=this.H(),P=f.px(nx,ny),x=P[0],y=P[1]; let ang; if(o.toward){ const T=f.px(o.toward.x,o.toward.y); ang=Math.atan2(T[1]-y,T[0]-x);} else { ang=f.orient==='ew'?(f.attackDir==='rtl'?0:Math.PI):(f.attackDir==='rtl'?Math.PI/2:-Math.PI/2);} const reach=f.m((o.reach||0.22)*105),spread=o.spread||0.5;
+    ctx.save(); const g=ctx.createRadialGradient(x,y,0,x,y,reach); g.addColorStop(0,this._hexA(H.red,o.strength||0.22)); g.addColorStop(1,this._hexA(H.red,0)); ctx.fillStyle=g; ctx.beginPath(); ctx.moveTo(x,y); ctx.arc(x,y,reach,ang-spread,ang+spread); ctx.closePath(); ctx.fill(); ctx.restore(); }
+
+  _pressure(ctx,f,nx,ny,o){ o=o||{}; const H=this.H(),P=f.px(nx,ny),x=P[0],y=P[1],inten=o.intensity==null?0.6:o.intensity,base=(o.r||f.m(1.6))+4;
+    ctx.save(); for(let i=0;i<3;i++){ ctx.strokeStyle=this._hexA(H.red,(0.5-i*0.14)*(0.4+0.6*inten)); ctx.lineWidth=Math.max(1.4,f.m(0.06)); ctx.beginPath(); ctx.arc(x,y,base+i*(8-inten*4),0,7); ctx.stroke(); } ctx.restore(); }
+
+  _laneBlocked(ctx,f,a,b,o){ o=o||{}; const H=this.H(),A=f.px(a.x,a.y),B=f.px(b.x,b.y),t=o.at==null?0.5:o.at,mx=A[0]+(B[0]-A[0])*t,my=A[1]+(B[1]-A[1])*t;
+    ctx.save(); ctx.strokeStyle=this._hexA(H.red,0.65); ctx.lineWidth=1.5; ctx.setLineDash([3,4]); ctx.beginPath(); ctx.moveTo(A[0],A[1]); ctx.lineTo(B[0],B[1]); ctx.stroke(); ctx.setLineDash([]);
+    const s=Math.max(5,f.m(0.55)); ctx.strokeStyle=H.red; ctx.lineWidth=2; ctx.lineCap='round'; ctx.beginPath(); ctx.moveTo(mx-s,my-s); ctx.lineTo(mx+s,my+s); ctx.moveTo(mx+s,my-s); ctx.lineTo(mx-s,my+s); ctx.stroke(); ctx.restore(); }
+
+  _run(ctx,f,a,b,o){ o=o||{}; const col=o.color||'rgba(160,190,222,.7)',A=f.px(a.x,a.y),B=f.px(b.x,b.y),ang=Math.atan2(B[1]-A[1],B[0]-A[0]),dist=Math.hypot(B[0]-A[0],B[1]-A[1]),curve=o.curve||0;
+    const mx=(A[0]+B[0])/2-Math.sin(ang)*curve*dist,my=(A[1]+B[1])/2+Math.cos(ang)*curve*dist;
+    const at=(tt)=>{ const u=1-tt; return [u*u*A[0]+2*u*tt*mx+tt*tt*B[0],u*u*A[1]+2*u*tt*my+tt*tt*B[1]]; };
+    ctx.save(); ctx.strokeStyle=this._hexA(col[0]==='#'?col:'#A0BEDE',0.85); ctx.strokeStyle=col; ctx.lineWidth=1.5; ctx.setLineDash([2,6]); ctx.lineCap='round'; ctx.beginPath(); ctx.moveTo(A[0],A[1]); ctx.quadraticCurveTo(mx,my,B[0],B[1]); ctx.stroke(); ctx.setLineDash([]);
+    ctx.fillStyle=col; for(let k=1;k<=3;k++){ const tt=k/4,p=at(tt),p2=at(Math.min(1,tt+0.02)),a2=Math.atan2(p2[1]-p[1],p2[0]-p[0]),hl=Math.max(4,f.m(0.4)); ctx.beginPath(); ctx.moveTo(p[0]+Math.cos(a2)*hl,p[1]+Math.sin(a2)*hl); ctx.lineTo(p[0]+Math.cos(a2+2.4)*hl,p[1]+Math.sin(a2+2.4)*hl); ctx.lineTo(p[0]+Math.cos(a2-2.4)*hl,p[1]+Math.sin(a2-2.4)*hl); ctx.closePath(); ctx.fill(); } ctx.restore(); return at; }
+
+  _ballHigh(ctx,f,nx,ny,o){ o=o||{}; const P=f.px(nx,ny),x=P[0],y=P[1],hgt=o.height==null?0.5:Math.max(0,Math.min(1,o.height)),r=o.r||Math.max(3.4,f.m(0.42)),lift=r*4.4*hgt;
+    ctx.save(); ctx.fillStyle='rgba(0,0,0,'+(0.34-0.16*hgt).toFixed(2)+')'; ctx.beginPath(); ctx.ellipse(x,y,r*(1+0.4*hgt),r*(0.5+0.2*hgt),0,0,7); ctx.fill(); ctx.restore();
+    this._ball(ctx,{px:()=>[x,y-lift],m:f.m},0,0,{flight:true,r:r*(1+0.12*hgt)}); }
+
+  _countdown(ctx,f,nx,ny,o){ o=o||{}; const P=f.px(nx,ny),x=P[0],y=P[1],r=o.r||f.m(2.4),p=Math.max(0,Math.min(1,o.progress==null?1:o.progress)),acc=o.accent||'#22D3EE';
+    ctx.save(); ctx.strokeStyle='rgba(126,168,208,.28)'; ctx.lineWidth=Math.max(2,f.m(0.09)); ctx.beginPath(); ctx.arc(x,y,r,0,7); ctx.stroke();
+    ctx.strokeStyle=p<0.3?'#FF6076':acc; ctx.lineCap='round'; ctx.beginPath(); ctx.arc(x,y,r,-Math.PI/2,-Math.PI/2+p*Math.PI*2); ctx.stroke(); ctx.restore(); }
+
+  _verdict(ctx,f,nx,ny,o){ o=o||{}; const H=this.H(),P=f.px(nx,ny),x=P[0],y=P[1],kind=o.kind||'correct',r=o.r||f.m(2.2); const col=kind==='correct'?H.green:kind==='wrong'?H.red:H.amber;
+    ctx.save(); ctx.strokeStyle=col; ctx.lineWidth=Math.max(1.8,f.m(0.09)); ctx.lineCap='round'; if(kind==='missed') ctx.setLineDash([3,4]); ctx.beginPath(); ctx.arc(x,y,r,0,7); ctx.stroke(); ctx.setLineDash([]); const s=r*0.5;
+    if(kind==='correct'){ ctx.beginPath(); ctx.moveTo(x-s*0.7,y); ctx.lineTo(x-s*0.1,y+s*0.6); ctx.lineTo(x+s*0.8,y-s*0.6); ctx.stroke(); }
+    else if(kind==='wrong'){ ctx.beginPath(); ctx.moveTo(x-s*0.6,y-s*0.6); ctx.lineTo(x+s*0.6,y+s*0.6); ctx.moveTo(x+s*0.6,y-s*0.6); ctx.lineTo(x-s*0.6,y+s*0.6); ctx.stroke(); }
+    ctx.restore(); }
+
+  _grid5(ctx,f,mode,acc){ ctx.save(); ctx.beginPath(); ctx.rect(f.ox,f.oy,f.drawW,f.drawH); ctx.clip(); const seg=(ax,ay,bx,by)=>{ const A=f.px(ax,ay),B=f.px(bx,by); ctx.beginPath(); ctx.moveTo(A[0],A[1]); ctx.lineTo(B[0],B[1]); ctx.stroke(); };
+    ctx.strokeStyle='rgba(126,168,208,.2)'; ctx.lineWidth=1; ctx.setLineDash([4,6]);
+    if(mode==='channels'){ [0.2,0.37,0.63,0.8].forEach(yy=>seg(0,yy,1,yy)); ctx.setLineDash([]); const A=f.px(0,0.37),B=f.px(1,0.63); ctx.fillStyle='rgba(126,168,208,.05)'; ctx.fillRect(Math.min(A[0],B[0]),Math.min(A[1],B[1]),Math.abs(B[0]-A[0]),Math.abs(B[1]-A[1])); }
+    else if(mode==='thirds'){ [1/3,2/3].forEach(xx=>seg(xx,0,xx,1)); }
+    ctx.setLineDash([]); ctx.restore(); }
+
+  // minimal chalk backdrop for field-context swatches
+  _field(ctx,f){ FAPitch.pitch(ctx,f); }
+
+  _line(ctx,f,pts,o){ o=o||{}; const col=o.offside?'#FFB020':(o.color||'rgba(160,190,222,.5)'); ctx.save(); ctx.strokeStyle=col; ctx.lineWidth=Math.max(1.5,f.m(0.06)); if(o.offside) ctx.setLineDash([6,5]); ctx.beginPath(); pts.forEach((p,i)=>{ const P=f.px(p.x,p.y); i?ctx.lineTo(P[0],P[1]):ctx.moveTo(P[0],P[1]); }); ctx.stroke(); ctx.setLineDash([]); ctx.restore(); }
+  _marking(ctx,f,a,b){ const A=f.px(a.x,a.y),B=f.px(b.x,b.y); ctx.save(); ctx.strokeStyle='rgba(255,96,118,.6)'; ctx.lineWidth=1.4; ctx.setLineDash([2,4]); ctx.beginPath(); ctx.moveTo(A[0],A[1]); ctx.lineTo(B[0],B[1]); ctx.stroke(); ctx.setLineDash([]); ctx.restore(); }
+  _gap(ctx,f,a,b,o){ o=o||{}; const H=this.H(),A=f.px(a.x,a.y),B=f.px(b.x,b.y); ctx.save(); ctx.strokeStyle=H.amber; ctx.lineWidth=1.3; ctx.setLineDash([3,3]); ctx.beginPath(); ctx.moveTo(A[0],A[1]); ctx.lineTo(B[0],B[1]); ctx.stroke(); ctx.setLineDash([]); const ang=Math.atan2(B[1]-A[1],B[0]-A[0])+Math.PI/2,tk=Math.max(4,f.m(0.4)); [A,B].forEach(P=>{ ctx.beginPath(); ctx.moveTo(P[0]+Math.cos(ang)*tk,P[1]+Math.sin(ang)*tk); ctx.lineTo(P[0]-Math.cos(ang)*tk,P[1]-Math.sin(ang)*tk); ctx.stroke(); }); if(o.label){ const mx=(A[0]+B[0])/2,my=(A[1]+B[1])/2; ctx.fillStyle=H.amber; ctx.font="700 "+Math.max(8,f.m(0.95))+"px 'IBM Plex Mono'"; ctx.fillText(o.label,mx+8,my); } ctx.restore(); }
+
+  _drawAll(now){ const FP=window.FAPitch; if(!FP) return; const acc=this.props.accent??'#22D3EE';
+    const pulse=0.5+0.5*Math.sin(now/460), loop=(now%2600)/2600, osc=Math.sin(now/900);
+    document.querySelectorAll('canvas[data-el]').forEach(cv=>{ const {w,h,dpr}=this._resize(cv); if(!w||!h) return; const ctx=cv.getContext('2d'); ctx.save(); ctx.scale(dpr,dpr); ctx.clearRect(0,0,w,h); this._grid(ctx,w,h);
+      const f=FP.fit(w,h,{crop:'full',orient:'ew',inset:0.16});
+      this._el(FP,ctx,f,cv.getAttribute('data-el'),{acc,pulse,loop,now,w,h,osc}); ctx.restore(); }); }
+
+  _el(FP,ctx,f,key,s){ const acc=s.acc,C=0.5,H=this.H(); const A={x:0.24,y:0.64},B={x:0.76,y:0.36};
+    const gkfit=(crop)=>FP.fit(s.w,s.h,{crop:crop||'gk',orient:'ns',attackDir:'rtl',inset:0.12});
+    switch(key){
+      case 'ball-rest':   this._unit(ctx,f,0.42,0.5,{role:'AM',kind:'carrier',accent:acc}); this._ball(ctx,f,0.52,0.56,{}); break;
+      case 'ball-flight': this._ball(ctx,f,0.5,0.5,{flight:true,r:Math.max(4,f.m(0.5))}); break;
+      case 'ball-trail':  this._ball(ctx,f,0.3+0.42*s.loop,0.5,{flight:true,trail:true,dir:[1,0]}); break;
+
+      case 'traj-ground': this._traj(ctx,f,A,B,{kind:'ground',accent:acc}); this._unit(ctx,f,A.x,A.y,{role:'CM',kind:'carrier',accent:acc}); this._unit(ctx,f,B.x,B.y,{role:'RW',accent:acc}); this._ball(ctx,f,A.x+0.02,A.y+0.03,{}); break;
+      case 'traj-driven': this._traj(ctx,f,A,B,{kind:'driven',accent:acc,progress:s.loop}); this._unit(ctx,f,A.x,A.y,{role:'CM',kind:'carrier',accent:acc}); this._unit(ctx,f,B.x,B.y,{role:'ST',state:'best',accent:acc}); break;
+      case 'traj-lofted': this._traj(ctx,f,A,B,{kind:'lofted',accent:acc,progress:s.loop}); this._unit(ctx,f,A.x,A.y,{role:'LW',kind:'carrier',accent:acc}); this._unit(ctx,f,B.x,B.y,{role:'ST',accent:acc}); break;
+      case 'traj-shot':   { const G={x:0.94,y:0.5}; this._traj(ctx,f,{x:0.6,y:0.5},G,{kind:'shot',progress:s.loop}); this._unit(ctx,f,0.56,0.5,{role:'ST',kind:'carrier',accent:acc}); break; }
+      case 'traj-ghost':  { const run={x:0.72,y:0.3}; this._traj(ctx,f,A,run,{kind:'driven',accent:acc,ghost:true}); this._unit(ctx,f,A.x,A.y,{role:'AM',kind:'carrier',accent:acc}); this._unit(ctx,f,0.56,0.52,{role:'ST',accent:acc,alpha:.85}); break; }
+
+      case 'ply-us':      this._unit(ctx,f,C,0.5,{role:'CB',accent:acc}); break;
+      case 'ply-carrier': this._unit(ctx,f,C,0.5,{role:'AM',kind:'carrier',accent:acc}); this._ball(ctx,f,C+0.08,0.57,{}); break;
+      case 'ply-them':    this._chevron(ctx,f,C,0.46,{role:'CB'}); break;
+      case 'ply-free':    this._unit(ctx,f,C,0.5,{role:'RW',state:'free',pulse:s.pulse,accent:acc}); break;
+      case 'ply-best':    this._unit(ctx,f,C,0.5,{role:'ST',state:'best',accent:acc}); break;
+      case 'ply-danger':  this._unit(ctx,f,0.42,0.5,{role:'CM',state:'danger',accent:acc}); this._chevron(ctx,f,0.62,0.44,{role:''}); break;
+      case 'ply-keeper':  this._unit(ctx,f,C,0.5,{role:'GK',kind:'keeper',accent:acc}); break;
+
+      case 'ind-engage':  this._unit(ctx,f,C,0.5,{role:'AM',accent:acc}); this._lock(ctx,f,C,0.5,{accent:acc,pulse:s.loop}); break;
+      case 'ind-arrows':  this._unit(ctx,f,C,0.5,{role:'AM',kind:'carrier',accent:acc}); [-0.9,0,0.9].forEach(a=>this._arrow(ctx,f,C,0.5,a,{accent:acc,len:f.m(3),alpha:.9})); break;
+      case 'ind-zone':    this._zone(ctx,f,0.66,0.4,{r:f.m(4)}); this._unit(ctx,f,0.32,0.6,{role:'LW',kind:'carrier',accent:acc}); this._arrow(ctx,f,0.4,0.56,-0.5,{color:H.green,len:f.m(3.4),glow:true}); break;
+      case 'ind-badge':   this._unit(ctx,f,C,0.56,{role:'ST',kind:'carrier',accent:acc}); this._badge(ctx,f,C,0.56,'SHOOT',{color:H.amber}); break;
+      case 'ind-gauge':   { const P0=f.px(0.2,0.5),P1=f.px(0.8,0.5); this._gauge(ctx,f,P0[0],P0[1]-5,P1[0]-P0[0],{accent:acc,progress:s.loop,band:[0.6,0.8]}); break; }
+
+      case 'sp-cover':    { const D={x:0.6,y:0.42}; this._coverShadow(ctx,f,D.x,D.y,{reach:0.3,spread:0.5}); this._unit(ctx,f,0.28,0.55,{role:'AM',kind:'carrier',accent:acc}); this._chevron(ctx,f,D.x,D.y,{role:'CB'}); break; }
+      case 'sp-pressure': this._pressure(ctx,f,C,0.5,{intensity:0.4+0.5*s.pulse}); this._unit(ctx,f,C,0.5,{role:'CM',kind:'carrier',accent:acc}); this._chevron(ctx,f,C+0.15,0.43,{role:''}); break;
+      case 'sp-blocked':  { const A2={x:0.26,y:0.6},B2={x:0.74,y:0.4}; this._laneBlocked(ctx,f,A2,B2,{at:0.52}); this._chevron(ctx,f,0.5,0.5,{role:'DM'}); this._unit(ctx,f,A2.x,A2.y,{role:'CM',kind:'carrier',accent:acc}); this._unit(ctx,f,B2.x,B2.y,{role:'ST',accent:acc,alpha:.8}); break; }
+
+      case 'mo-run':      { const A3={x:0.32,y:0.64},B3={x:0.72,y:0.34}; this._run(ctx,f,A3,B3,{}); this._unit(ctx,f,A3.x,A3.y,{role:'LW',accent:acc}); break; }
+      case 'mo-facing':   { const a=-0.5+0.6*Math.sin(s.now/700); this._arrow(ctx,f,C,0.5,a,{accent:acc,len:f.m(2),alpha:.4}); this._unit(ctx,f,C,0.5,{role:'CM',kind:'carrier',accent:acc,facing:a}); break; }
+      case 'de-high':     this._ballHigh(ctx,f,C,0.55,{height:0.5+0.5*Math.sin(s.now/520)}); break;
+
+      case 'tj-countdown':this._countdown(ctx,f,C,0.5,{progress:1-s.loop,accent:acc,r:f.m(2.6)}); this._unit(ctx,f,C,0.5,{role:'AM',kind:'carrier',accent:acc,ticks:false}); break;
+      case 'tj-correct':  this._unit(ctx,f,C,0.5,{role:'ST',accent:acc,ticks:false}); this._verdict(ctx,f,C,0.5,{kind:'correct',r:f.m(2.4)}); break;
+      case 'tj-wrong':    this._unit(ctx,f,C,0.5,{role:'ST',accent:acc,ticks:false}); this._verdict(ctx,f,C,0.5,{kind:'wrong',r:f.m(2.4)}); break;
+      case 'tj-missed':   { const car={x:0.28,y:0.52},should={x:0.72,y:0.36}; this._traj(ctx,f,car,should,{kind:'driven',color:H.amber,ghost:true}); this._unit(ctx,f,car.x,car.y,{role:'AM',kind:'carrier',accent:acc}); this._verdict(ctx,f,should.x,should.y,{kind:'missed',r:f.m(2)}); break; }
+
+      case 'pr-channels': this._grid5(ctx,f,'channels',acc); break;
+      case 'pr-thirds':   this._grid5(ctx,f,'thirds',acc); break;
+
+      case 'gk-angle':    { const g=gkfit('gk'); this._field(ctx,g); const b={x:0.86,y:0.4}; FP.angleCone(ctx,g,b,{end:1,optimal:true,color:acc}); this._chevron(ctx,g,b.x,b.y,{role:''}); this._unit(ctx,g,0.94,0.5,{role:'GK',kind:'keeper',accent:acc}); this._ball(ctx,g,b.x-0.03,b.y+0.02,{}); break; }
+      case 'gk-coverage': { const g=gkfit('gk'); this._field(ctx,g); const k={x:0.9,y:0.5}; FP.coverage(ctx,g,k.x,k.y,{accent:acc,pulse:s.pulse}); this._unit(ctx,g,k.x,k.y,{role:'GK',kind:'keeper',accent:acc}); break; }
+      case 'gk-scene':    { const g=gkfit('gk'); this._field(ctx,g); const b={x:0.7,y:0.42},goal={x:1,y:0.5}; FP.threatLine(ctx,g,b,goal,{stress:55,dashOffset:-(s.now/55)%13}); FP.reticle(ctx,g,b.x,b.y,{accent:acc,rot:(s.now/1600)%(Math.PI*2)}); this._chevron(ctx,g,b.x,b.y,{role:''}); this._unit(ctx,g,0.92,0.5,{role:'GK',kind:'keeper',accent:acc}); this._ball(ctx,g,b.x-0.02,b.y+0.02,{flight:true}); break; }
+      case 'gk-save':     { const g=gkfit('gk-18'); this._field(ctx,g); const k={x:0.95,y:0.5}; this._unit(ctx,g,k.x,k.y,{role:'GK',kind:'keeper',accent:acc}); FP.catchBurst(ctx,g,k.x,k.y-0.03,{accent:acc,life:s.loop}); this._ball(ctx,g,k.x,k.y-0.03,{}); break; }
+      case 'gk-goal':     { const g=gkfit('gk-18'); this._field(ctx,g); this._unit(ctx,g,0.9,0.42,{role:'GK',kind:'keeper',accent:acc,alpha:.75}); FP.impactBurst(ctx,g,1.01,0.55,{accent:acc,kind:'goal',life:s.loop}); this._ball(ctx,g,1.01,0.55,{}); break; }
+      case 'gk-face':     { const gw=s.w*0.62,gh=gw/3,box={x:(s.w-gw)/2,y:s.h*0.3,w:gw,h:gh}; FP.goalFace(ctx,box,{cols:3,rows:2}); FP.keeperFront(ctx,box.x+box.w*0.5,box.y+box.h,box.h,{dive:0}); break; }
+      case 'gk-dive':     { const gw=s.w*0.62,gh=gw/3,box={x:(s.w-gw)/2,y:s.h*0.3,w:gw,h:gh}; FP.goalFace(ctx,box,{cols:3,rows:2,zone:2,zoneColor:acc}); FP.keeperFront(ctx,box.x+box.w*0.5,box.y+box.h,box.h,{dive:1}); this._ball(ctx,{px:()=>[box.x+box.w*0.82,box.y+box.h*0.42],m:(v)=>v*(gh*0.5)},0,0,{r:Math.max(4,gh*0.09)}); break; }
+
+      case 'df-line':     { const bl=[{x:0.28,y:0.2},{x:0.3,y:0.4},{x:0.3,y:0.6},{x:0.28,y:0.8}]; this._line(ctx,f,bl,{color:this._hexA(acc,0.45)}); bl.forEach((p,i)=>this._unit(ctx,f,p.x,p.y,{role:['LB','CB','CB','RB'][i],accent:acc,scale:0.9})); break; }
+      case 'df-offside':  { const ol=0.62; this._line(ctx,f,[{x:ol,y:0.06},{x:ol,y:0.94}],{offside:true}); [0.32,0.5,0.68].forEach(y=>this._unit(ctx,f,0.58,y,{role:'CB',accent:acc,scale:0.85})); this._chevron(ctx,f,0.72,0.5,{role:''}); break; }
+      case 'df-mark':     { const att={x:0.66,y:0.42},def={x:0.54,y:0.46}; this._marking(ctx,f,def,att); this._chevron(ctx,f,att.x,att.y,{role:''}); this._unit(ctx,f,def.x,def.y,{role:'CB',accent:acc,facing:0.2}); break; }
+      case 'df-gap':      { const a={x:0.4,y:0.34},b={x:0.42,y:0.66}; this._gap(ctx,f,a,b,{label:'12m'}); this._unit(ctx,f,a.x,a.y,{role:'CB',accent:acc,scale:0.9}); this._unit(ctx,f,b.x,b.y,{role:'RB',accent:acc,scale:0.9}); this._chevron(ctx,f,0.58,0.52,{role:''}); break; }
+    }
+  }
+
+  renderVals(){ return { accent:this.props.accent??'#22D3EE', groups:this.GROUPS }; }
+}
+</script>
+</body>
+</html>
