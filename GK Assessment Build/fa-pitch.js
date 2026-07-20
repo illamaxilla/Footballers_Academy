@@ -853,6 +853,78 @@
     ctx.restore();
   }
 
+  /* ---- PENALTY POV (3D shooter's-eye) — minimalist HUD reskin ----------------
+   * Perspective goal view from the spot. No mowing bands — pure chalk-on-navy
+   * with hairline markings, a soft accent floodlight behind the goal, and a
+   * few faint constant-depth reference lines instead of grass. o.elev raises
+   * the eye-line, o.cam sets how far back the camera sits, o.accent tints. */
+  function penaltyPOV(ctx, W, H, o) {
+    o = o || {};
+    var acc = o.accent || '#22D3EE';
+    var elev = o.elev == null ? 0.26 : o.elev, cx = W * 0.5;
+    var dCam = o.cam || 16, hCam = 1.9 + elev * 7, tilt = 0.05 + elev * 0.28;
+    var f = H * 1.12, horizon = H * (0.24 + elev * 0.14), maxD = dCam - 1.4;
+    var cosT = Math.cos(tilt), sinT = Math.sin(tilt);
+    function proj(d, x, h) {
+      h = h || 0; var Z = dCam - d, Y = hCam - h;
+      var z2 = Z * cosT + Y * sinT, y2 = -Z * sinT + Y * cosT;
+      return [cx + f * x / z2, horizon + f * y2 / z2];
+    }
+    function yAt(d) { return proj(d, 0, 0)[1]; }
+    function vis(d) { return d <= maxD; }
+    ctx.save(); ctx.beginPath(); ctx.rect(0, 0, W, H); ctx.clip();
+
+    var yHoriz = horizon, yGL = yAt(0);
+    // sky/backdrop + ground: flat navy, no stripes
+    var sg = ctx.createLinearGradient(0, 0, 0, yHoriz);
+    sg.addColorStop(0, '#05080f'); sg.addColorStop(1, '#0a1420');
+    ctx.fillStyle = sg; ctx.fillRect(0, 0, W, yHoriz + 1);
+    var gg = ctx.createLinearGradient(0, yHoriz, 0, H);
+    gg.addColorStop(0, '#0b1826'); gg.addColorStop(0.6, '#081320'); gg.addColorStop(1, '#050b14');
+    ctx.fillStyle = gg; ctx.fillRect(0, yHoriz, W, H - yHoriz);
+    // soft accent floodlight pooling up from the goal
+    var fl = ctx.createRadialGradient(cx, yGL, W * 0.02, cx, yGL, W * 0.6);
+    fl.addColorStop(0, hexA(acc, 0.09)); fl.addColorStop(0.5, hexA(acc, 0.02)); fl.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = fl; ctx.fillRect(0, 0, W, H);
+    // faint constant-depth reference lines (a hint of ground, not grass)
+    ctx.strokeStyle = 'rgba(126,168,208,.05)'; ctx.lineWidth = 1;
+    for (var d0 = 2; d0 < maxD; d0 += 4) { var yy = yAt(d0); ctx.beginPath(); ctx.moveTo(0, yy); ctx.lineTo(W, yy); ctx.stroke(); }
+    // edge vignette
+    var vg = ctx.createRadialGradient(cx, H * 0.55, W * 0.08, cx, H * 0.6, W * 0.85);
+    vg.addColorStop(0, 'rgba(0,0,0,0)'); vg.addColorStop(1, 'rgba(2,5,10,.55)');
+    ctx.fillStyle = vg; ctx.fillRect(0, 0, W, H);
+
+    ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+    var w1 = Math.max(1.2, W * 0.0026);
+    function poly(pts, col, w, close) { ctx.strokeStyle = col; ctx.lineWidth = w; ctx.beginPath(); pts.forEach(function (p, i) { i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]); }); if (close) ctx.closePath(); ctx.stroke(); }
+    var LN = COL.line, DIM = COL.lineDim, PW = 20.15, PD = 16.5, SW = 9.16, SD = 5.5;
+
+    var paFar = Math.min(PD, maxD);
+    poly([proj(0, -PW), proj(paFar, -PW)], DIM, w1);
+    poly([proj(0, PW), proj(paFar, PW)], DIM, w1);
+    if (vis(PD)) poly([proj(PD, -PW), proj(PD, PW)], DIM, w1);
+    if (vis(20.15)) { var dp = []; for (var a = -0.927; a <= 0.927; a += 0.927 / 9) dp.push(proj(11 + 9.15 * Math.cos(a), 9.15 * Math.sin(a))); poly(dp, DIM, w1); }
+    ctx.strokeStyle = hexA('#96c4e8', 0.34); ctx.lineWidth = Math.max(1.3, W * 0.0036);
+    ctx.beginPath(); ctx.moveTo(0, yGL); ctx.lineTo(W, yGL); ctx.stroke();
+    if (vis(SD)) poly([proj(0, -SW), proj(SD, -SW), proj(SD, SW), proj(0, SW)], LN, w1);
+    if (vis(11)) { var sp = proj(11, 0); ctx.fillStyle = 'rgba(162,202,236,.7)'; ctx.beginPath(); ctx.arc(sp[0], sp[1], Math.max(2.4, W * 0.0045), 0, 7); ctx.fill(); }
+
+    // GOAL: net + posts + crossbar (real height + depth)
+    var GH = 2.44, GX = 3.66, backD = -2.2;
+    var flL = proj(0, -GX, 0), flLt = proj(0, -GX, GH), flR = proj(0, GX, 0), flRt = proj(0, GX, GH);
+    var blL = proj(backD, -GX, 0), blLt = proj(backD, -GX, GH), blR = proj(backD, GX, 0), blRt = proj(backD, GX, GH);
+    ctx.fillStyle = 'rgba(150,185,215,.05)';
+    ctx.beginPath();
+    ctx.moveTo(flLt[0], flLt[1]); ctx.lineTo(flRt[0], flRt[1]); ctx.lineTo(blRt[0], blRt[1]); ctx.lineTo(blLt[0], blLt[1]); ctx.closePath();
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(150,185,215,.14)'; ctx.lineWidth = 1;
+    for (var c = 1; c < 6; c++) { var t = c / 6; ctx.beginPath(); ctx.moveTo(blLt[0] + (blRt[0] - blLt[0]) * t, blLt[1] + (blRt[1] - blLt[1]) * t); ctx.lineTo(blL[0] + (blR[0] - blL[0]) * t, blL[1] + (blR[1] - blL[1]) * t); ctx.stroke(); }
+    for (var rr = 1; rr < 4; rr++) { var s = rr / 4; ctx.beginPath(); ctx.moveTo(blLt[0] + (blL[0] - blLt[0]) * s, blLt[1] + (blL[1] - blLt[1]) * s); ctx.lineTo(blRt[0] + (blR[0] - blRt[0]) * s, blRt[1] + (blR[1] - blRt[1]) * s); ctx.stroke(); }
+    poly([flL, flLt, flRt, flR], 'rgba(232,242,252,.9)', Math.max(2.4, W * 0.0058));
+    ctx.restore();
+    return { proj: proj, cx: cx, yGL: yGL };
+  }
+
   // ---- small helpers ----
   function roundRect(ctx, x, y, w, h, r) {
     ctx.beginPath();
@@ -865,7 +937,7 @@
     return 'rgba(' + r + ',' + g + ',' + b + ',' + a + ')';
   }
 
-  var API = { fit: fit, pitch: pitch, goal: goal, grid: grid, passLane: passLane, trajectory: trajectory, coverShadow: coverShadow, pressure: pressure, laneBlocked: laneBlocked, run: run, token: token, chevron: chevron, ball: ball, ballHigh: ballHigh, engage: engage, arrow: arrow, zone: zone, badge: badge, gauge: gauge, countdown: countdown, verdict: verdict, angleCone: angleCone, keeperReach: keeperReach, radius: radius, goalFace: goalFace, keeperFront: keeperFront, line: line, marking: marking, block: block, gap: gap,
+  var API = { fit: fit, pitch: pitch, goal: goal, grid: grid, penaltyPOV: penaltyPOV, passLane: passLane, trajectory: trajectory, coverShadow: coverShadow, pressure: pressure, laneBlocked: laneBlocked, run: run, token: token, chevron: chevron, ball: ball, ballHigh: ballHigh, engage: engage, arrow: arrow, zone: zone, badge: badge, gauge: gauge, countdown: countdown, verdict: verdict, angleCone: angleCone, keeperReach: keeperReach, radius: radius, goalFace: goalFace, keeperFront: keeperFront, line: line, marking: marking, block: block, gap: gap,
     ballFlat: ballFlat, keeperToken: keeperToken, shooterToken: shooterToken, coverage: coverage, fieldHUD: fieldHUD, threatLine: threatLine, reticle: reticle, impactBurst: impactBurst, catchBurst: catchBurst,
     CROPS: CROPS, COL: COL, L: L, WD: WD };
   if (typeof module !== 'undefined' && module.exports) module.exports = API;
