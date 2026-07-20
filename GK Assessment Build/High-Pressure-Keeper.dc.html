@@ -586,7 +586,7 @@ class Component extends DCLogic {
     let tgt = { x:ktx, y:kty };
     if (committed) {
       tgt = (last.success && this._savePoint) ? { x: this._savePoint.x + 0.012, y: this._savePoint.y }
-          : { x:0.955, y:0.5 + (this._savePoint ? this._savePoint.y - 0.5 : 0) * 0.6 };  // beaten: dives but comes up short of the net
+          : { x:0.945, y:0.5 + (this._savePoint ? this._savePoint.y - 0.5 : 0) * 0.6 };  // beaten: stays in FRONT of the line as it goes past
     }
     if (this._kposCi !== this.state.ci) { this._kpos = { x:ktx, y:kty }; this._kposCi = this.state.ci; }  // snap on new card
     if (!this._kpos) this._kpos = { x:ktx, y:kty };
@@ -636,9 +636,9 @@ class Component extends DCLogic {
     }
     this._keeper(ctx, fit, this._kpos.x, this._kpos.y, { face, lean, alpha:kAlpha, scale:kScale });
 
-    // ball trail (flight) + ball (idle hover while live sells the "held breath")
+    // ball trail — ONLY while the ball is actually in flight (never at rest)
     const ballR = Math.max(4, fit.m(0.62));
-    if (resolving || resolved) {
+    if (resolving) {
       const tr = this._trail || [];
       tr.forEach((p, i) => { const f = (i + 1) / tr.length; ctx.globalAlpha = f * 0.4; this._drawBall(ctx, fit, p.x, p.y, { r: ballR * (0.4 + f * 0.5) }); });
       ctx.globalAlpha = 1;
@@ -872,9 +872,9 @@ class Component extends DCLogic {
     let to, dur;
     // net sits between the goal line (x=1.0) and its back (~x=1.023); beaten
     // shots finish INSIDE it. Saves finish just in front of the line (gathered).
-    if (rec.froze) { to = { x:1.014, y:0.5 }; dur = 560; }                       // trickles into the middle
+    if (rec.froze) { to = { x:1.021, y:0.5 }; dur = 560; }                       // rolls to the back of the net
     else if (rec.success) { to = { x:0.955, y: 0.5 + (from.y - 0.5) * 0.5 }; dur = 430; }
-    else { to = { x:1.015, y: from.y < 0.5 ? 0.455 : 0.545 }; dur = 480; }       // buries a corner
+    else { to = { x:1.022, y: from.y < 0.5 ? 0.46 : 0.54 }; dur = 480; }         // buries it in the back corner
     this._savePoint = to;           // where the ball ends up — the keeper dives to meet it
     this._trail = [];
     this._flight = { from, to, dur, t0:this._now(), cb:() => this._land(rec, to) };
