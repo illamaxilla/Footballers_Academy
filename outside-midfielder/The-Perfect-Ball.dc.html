@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:#04060c;}
+  a{color:var(--accent,#22D3EE);text-decoration:none;}
+  a:hover{opacity:.92;}
+  @keyframes fa-blink{0%,100%{opacity:1;}50%{opacity:.25;}}
+  @keyframes fa-rise{0%{transform:translateY(16px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-rise-sm{0%{transform:translateY(10px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-bar{from{transform:scaleX(0);}to{transform:scaleX(1);}}
+  @keyframes fa-ping{0%{transform:translate(-50%,-50%) scale(.6);opacity:.9;}100%{transform:translate(-50%,-50%) scale(2.2);opacity:0;}}
+  .fa-in{opacity:0;animation:fa-rise .6s cubic-bezier(.2,.7,.2,1) forwards;}
+  .fa-in-sm{opacity:0;animation:fa-rise-sm .5s cubic-bezier(.2,.7,.2,1) forwards;}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;}.fa-in,.fa-in-sm{opacity:1!important;transform:none!important;}}
+</style>
+</helmet>
+<div data-screen-label="The Perfect Ball" style="position:relative;display:flex;flex-direction:column;min-height:100dvh;width:100%;overflow:hidden;background:radial-gradient(120% 90% at 50% 6%,#0e1a2d 0%,#080e1a 44%,#04060c 100%);color:#EAF2FB;font-family:'Archivo',system-ui,sans-serif;--accent:{{ accent }};">
+
+  <div style="position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.4;background:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0px,rgba(255,255,255,.02) 1px,transparent 1px,transparent 4px);"></div>
+  <div style="position:absolute;top:20px;left:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;top:20px;right:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;left:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;right:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+
+  <sc-if value="{{ showChrome }}" hint-placeholder-val="{{ true }}">
+    <header style="position:relative;z-index:6;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px clamp(24px,3.4vw,54px);">
+      <div style="min-width:110px;display:flex;"><a href="Assessment.dc.html" style="display:inline-flex;align-items:center;gap:8px;color:#8EA1B8;font:600 12.5px 'Archivo';"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M15 5l-7 7 7 7"/></svg>Back to the scan</a></div>
+      <div style="display:flex;align-items:center;gap:11px;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" style="stroke:var(--accent,#22D3EE);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M3 18c6-10 12-10 18 0"/><path d="M18 6l3-1-1 3"/></svg><span style="font:800 13px 'Archivo';letter-spacing:.05em;">THE PERFECT <span style="color:var(--accent,#22D3EE);">BALL</span></span></div>
+      <div style="display:flex;align-items:center;gap:12px;min-width:110px;justify-content:flex-end;">
+        <button onClick="{{ toggleSound }}" title="{{ soundTitle }}" style="display:grid;place-items:center;width:28px;height:28px;border-radius:8px;border:1px solid rgba(120,140,166,.24);background:rgba(10,16,28,.5);cursor:pointer;color:{{ soundColor }};">
+          <sc-if value="{{ soundOn }}" hint-placeholder-val="{{ true }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></sc-if>
+          <sc-if value="{{ soundOff }}" hint-placeholder-val="{{ false }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M22 9l-6 6M16 9l6 6"/></svg></sc-if>
+        </button>
+      </div>
+    </header>
+  </sc-if>
+
+  <!-- INTRO -->
+  <sc-if value="{{ isIntro }}" hint-placeholder-val="{{ true }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;text-align:center;padding:14px clamp(24px,4vw,54px) 54px;">
+      <div class="fa-in" style="display:inline-flex;align-items:center;gap:10px;margin-bottom:18px;font:600 12px 'IBM Plex Mono';letter-spacing:.4em;color:var(--accent,#22D3EE);"><span style="width:6px;height:6px;border-radius:50%;background:var(--accent,#22D3EE);box-shadow:0 0 8px var(--accent,#22D3EE);animation:fa-blink 1.6s ease-in-out infinite;"></span>HANG IT ON HIS HEAD</div>
+      <h1 class="fa-in" style="margin:0 0 14px;font:800 clamp(34px,5.2vw,68px)/0.98 'Archivo';letter-spacing:-0.03em;text-wrap:balance;max-width:760px;animation-delay:.05s;">Find the run. Lead it.</h1>
+      <p class="fa-in" style="margin:0 0 26px;max-width:540px;font:400 clamp(14px,1.25vw,17px)/1.6 'Archivo';color:#9FB0C5;text-wrap:pretty;animation-delay:.1s;">The striker is already moving. <strong style="color:#EAF2FB;">Drag from the ball</strong> to drop your cross where he&rsquo;s going to be &mdash; not where he is. Farther drag, longer ball. Get it into the danger zone, onto his run, and it&rsquo;s a goal.</p>
+      <div class="fa-in" style="width:100%;max-width:440px;margin-bottom:24px;animation-delay:.16s;">
+        <div style="font:600 10px 'IBM Plex Mono';letter-spacing:.24em;color:#61748c;margin-bottom:12px;text-align:left;">CHOOSE YOUR LEVEL</div>
+        <div style="display:flex;gap:10px;">
+          <sc-for list="{{ levels }}" as="lv" hint-placeholder-count="3">
+            <button onClick="{{ lv.onPick }}" style="flex:1;padding:16px 10px;border-radius:13px;cursor:pointer;font:700 14px 'Archivo';transition:all .16s ease;border:1px solid {{ lv.border }};background:{{ lv.bg }};color:{{ lv.fg }};">{{ lv.label }}<div style="font:500 9.5px 'IBM Plex Mono';letter-spacing:.08em;margin-top:5px;color:{{ lv.subColor }};">{{ lv.sub }}</div></button>
+          </sc-for>
+        </div>
+      </div>
+      <button onClick="{{ start }}" class="fa-in" style="display:inline-flex;align-items:center;gap:12px;padding:17px 42px;border-radius:13px;border:0;background:var(--accent,#22D3EE);color:#04160d;font:700 16px 'Archivo';cursor:pointer;box-shadow:0 14px 44px color-mix(in srgb,var(--accent,#22D3EE) 42%,transparent);transition:transform .16s ease;animation-delay:.22s;" style-hover="transform:translateY(-2px);">Whip the first one in<svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12h13M12 6l6 6-6 6"/></svg></button>
+      <div class="fa-in" style="margin-top:16px;font:500 10px 'IBM Plex Mono';letter-spacing:.14em;color:#4f627a;animation-delay:.3s;">{{ bestLine }}</div>
+    </main>
+  </sc-if>
+
+  <!-- PLAY -->
+  <sc-if value="{{ isPlay }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:6px clamp(18px,3.5vw,54px) 34px;">
+      <div style="width:100%;max-width:1040px;margin:0 auto;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+          <span style="font:600 9.5px 'IBM Plex Mono';letter-spacing:.2em;color:var(--accent,#22D3EE);">CROSS {{ crossLabel }}</span>
+          <span style="flex:1;height:1px;background:rgba(120,140,166,.16);"></span>
+          <span style="font:600 9.5px 'IBM Plex Mono';letter-spacing:.14em;color:#61748c;">{{ scoreLabel }}</span>
+        </div>
+
+        <div style="text-align:center;font:700 clamp(14px,1.8vw,19px)/1.3 'Archivo';margin-bottom:12px;min-height:24px;color:{{ headColor }};">{{ headText }}</div>
+
+        <!-- pitch (drag surface) -->
+        <div onPointerDown="{{ onDown }}" onPointerMove="{{ onMove }}" onPointerUp="{{ onUp }}" onPointerLeave="{{ onUp }}" style="position:relative;height:min(60vh,540px);aspect-ratio:16/10;max-width:100%;margin:0 auto;align-self:center;border-radius:16px;overflow:hidden;border:1px solid rgba(120,140,166,.18);background:radial-gradient(120% 130% at 100% 50%,#0d1c2e,#091324,#050c17);touch-action:none;cursor:crosshair;user-select:none;">
+          <div style="position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent 0,transparent 20%,rgba(120,180,220,.04) 20%,rgba(120,180,220,.04) 40%);"></div>
+          <!-- box -->
+          <div style="position:absolute;top:22%;bottom:22%;right:0;width:26%;border:1px solid rgba(120,180,220,.16);border-right:0;"></div>
+          <div style="position:absolute;top:36%;bottom:36%;right:0;width:12%;border:1px solid rgba(120,180,220,.12);border-right:0;"></div>
+
+          <!-- danger zone -->
+          <div style="position:absolute;top:{{ dzY }};left:{{ dzX }};transform:translate(-50%,-50%);width:{{ dzSize }};height:{{ dzSize }};border-radius:50%;border:1.5px dashed color-mix(in srgb,var(--accent,#22D3EE) 45%,transparent);background:color-mix(in srgb,var(--accent,#22D3EE) 6%,transparent);"></div>
+
+          <!-- run arrow -->
+          <svg viewBox="0 0 160 100" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;">
+            <path d="{{ runPath }}" fill="none" stroke="rgba(224,65,60,.5)" stroke-width="0.7" stroke-dasharray="2 2"/>
+          </svg>
+
+          <!-- aim preview -->
+          <sc-if value="{{ showAim }}" hint-placeholder-val="{{ false }}">
+            <svg viewBox="0 0 160 100" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;">
+              <path d="{{ aimPath }}" fill="none" stroke="color-mix(in srgb,var(--accent,#22D3EE) 80%,transparent)" stroke-width="0.8" stroke-dasharray="1.5 1.5"/>
+            </svg>
+            <div style="position:absolute;top:{{ aimY }};left:{{ aimX }};transform:translate(-50%,-50%);width:26px;height:26px;border-radius:50%;border:2px solid var(--accent,#22D3EE);box-shadow:0 0 12px color-mix(in srgb,var(--accent,#22D3EE) 60%,transparent);pointer-events:none;"></div>
+          </sc-if>
+
+          <!-- lead ghost (academy aid) -->
+          <sc-if value="{{ showGhost }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;top:{{ ghostY }};left:{{ ghostX }};transform:translate(-50%,-50%);width:15px;height:15px;border-radius:50%;border:1.5px dashed rgba(224,65,60,.7);pointer-events:none;"></div>
+          </sc-if>
+
+          <!-- striker -->
+          <div style="position:absolute;top:{{ strY }};left:{{ strX }};transform:translate(-50%,-50%);width:0;height:0;border-left:8px solid transparent;border-right:8px solid transparent;border-bottom:15px solid #E0413C;filter:drop-shadow(0 0 6px rgba(224,65,60,.55));transition:top {{ strDur }} linear,left {{ strDur }} linear;z-index:3;"></div>
+
+          <!-- ball -->
+          <div style="position:absolute;top:{{ ballY }};left:{{ ballX }};transform:translate(-50%,-50%);width:12px;height:12px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,#c9d6e2);box-shadow:0 0 10px rgba(255,255,255,.85);transition:top {{ ballDur }} cubic-bezier(.2,.5,.4,1),left {{ ballDur }} cubic-bezier(.2,.5,.4,1);z-index:4;"></div>
+
+          <!-- landing reveal -->
+          <sc-if value="{{ showLand }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;top:{{ landY }};left:{{ landX }};width:30px;height:30px;transform:translate(-50%,-50%);border-radius:50%;border:2px solid {{ landColor }};box-shadow:0 0 16px {{ landColor }};z-index:5;"></div>
+          </sc-if>
+        </div>
+
+        <div style="text-align:center;margin-top:10px;font:500 10px 'IBM Plex Mono';letter-spacing:.14em;color:#5c6e85;">DRAG FROM THE BALL &middot; RELEASE TO CROSS</div>
+
+        <sc-if value="{{ showFeedback }}" hint-placeholder-val="{{ false }}">
+          <div class="fa-in-sm" style="margin-top:12px;padding:13px 18px;border-radius:13px;border:1px solid {{ fbBorder }};background:{{ fbBg }};text-align:center;">
+            <span style="font:700 15px 'Archivo';color:{{ fbColor }};">{{ fbText }}</span>
+            <span style="font:400 13px 'Archivo';color:#B4C2D4;"> &mdash; {{ fbSub }}</span>
+          </div>
+        </sc-if>
+      </div>
+    </main>
+  </sc-if>
+
+  <!-- RESULT -->
+  <sc-if value="{{ isResult }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:10px clamp(20px,4vw,54px) 64px;">
+      <div style="width:100%;max-width:600px;">
+        <div class="fa-in" style="text-align:center;margin-bottom:22px;">
+          <div style="font:600 11px 'IBM Plex Mono';letter-spacing:.4em;color:#7688a0;margin-bottom:12px;">YOUR DELIVERY</div>
+          <div style="font:900 clamp(60px,12vw,104px)/0.9 'Archivo';letter-spacing:-0.03em;color:var(--accent,#22D3EE);text-shadow:0 0 48px color-mix(in srgb,var(--accent,#22D3EE) 45%,transparent);">{{ scoreBig }}</div>
+          <div style="margin-top:6px;font:600 clamp(15px,1.7vw,20px) 'Archivo';color:#DCE6F2;">{{ resultHeadline }}</div>
+        </div>
+        <div class="fa-in" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:22px;animation-delay:.06s;">
+          <div style="padding:16px;border-radius:13px;border:1px solid rgba(120,140,166,.18);background:rgba(10,16,28,.45);text-align:center;"><div style="font:800 22px 'Archivo';color:#22C776;">{{ statGoals }}</div><div style="font:600 8.5px 'IBM Plex Mono';letter-spacing:.14em;color:#61748c;margin-top:4px;">GOALS</div></div>
+          <div style="padding:16px;border-radius:13px;border:1px solid rgba(120,140,166,.18);background:rgba(10,16,28,.45);text-align:center;"><div style="font:800 22px 'Archivo';color:#EAF2FB;">{{ statDanger }}</div><div style="font:600 8.5px 'IBM Plex Mono';letter-spacing:.14em;color:#61748c;margin-top:4px;">REACHED DANGER ZONE</div></div>
+        </div>
+        <div class="fa-in" style="padding-left:16px;border-left:3px solid var(--accent,#22D3EE);margin-bottom:24px;animation-delay:.12s;">
+          <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:#61748c;margin-bottom:7px;">A SOFT READ</div>
+          <p style="margin:0;font:500 clamp(15px,1.7vw,18px)/1.5 'Archivo';color:#EAF2FB;text-wrap:pretty;">{{ softRead }}</p>
+        </div>
+        <div class="fa-in" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:12px;animation-delay:.2s;">
+          <button onClick="{{ again }}" style="display:inline-flex;align-items:center;gap:10px;padding:15px 30px;border-radius:12px;border:0;background:var(--accent,#22D3EE);color:#04160d;font:700 15px 'Archivo';cursor:pointer;box-shadow:0 12px 36px color-mix(in srgb,var(--accent,#22D3EE) 40%,transparent);transition:transform .16s ease;" style-hover="transform:translateY(-2px);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:#04160d;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>Cross again</button>
+          <a href="Assessment.dc.html" style="display:inline-flex;align-items:center;gap:9px;padding:15px 24px;border-radius:12px;border:1px solid rgba(157,176,198,.28);background:rgba(12,18,30,.4);color:#C6D3E2;font:600 14px 'Archivo';" style-hover="border-color:color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);color:#EAF2FB;">Back to the scan</a>
+        </div>
+      </div>
+    </main>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:940,&quot;height&quot;:720},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#22D3EE&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#22D3EE&quot;,&quot;#A78BFA&quot;,&quot;#C6FF3A&quot;,&quot;#FF7A45&quot;,&quot;#FF4D8D&quot;]},&quot;motion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;embedded&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;level&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;pro&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;academy&quot;,&quot;pro&quot;,&quot;elite&quot;]}}">
+class Component extends DCLogic {
+  LEVELS = {
+    academy:{ label:'Academy', sub:'SLOW RUN', spd:16, goal:9, good:15, ghost:true },
+    pro:    { label:'Pro',     sub:'GAME PACE',spd:24, goal:7, good:12, ghost:false },
+    elite:  { label:'Elite',   sub:'FLYING',   spd:33, goal:5, good:9.5, ghost:false },
+  };
+  FLIGHT_K = 0.016; // seconds per % distance
+
+  // crosses. ball on flank; striker start + run destination; danger zone target.
+  CR = [
+    { ball:{x:82,y:16}, str:{x:52,y:64}, run:{x:80,y:44}, dz:{x:80,y:44} },
+    { ball:{x:80,y:84}, str:{x:50,y:36}, run:{x:78,y:56}, dz:{x:78,y:56} },
+    { ball:{x:86,y:24}, str:{x:58,y:70}, run:{x:70,y:38}, dz:{x:70,y:38} },
+    { ball:{x:78,y:80}, str:{x:46,y:48}, run:{x:82,y:40}, dz:{x:82,y:40} },
+    { ball:{x:84,y:14}, str:{x:44,y:56}, run:{x:74,y:60}, dz:{x:74,y:60} },
+    { ball:{x:82,y:86}, str:{x:54,y:30}, run:{x:84,y:50}, dz:{x:84,y:50} },
+  ];
+
+  state = { view:'intro', level:'pro', idx:0, phase:'aim', score:0, goals:0, danger:0,
+    ballX:'82%', ballY:'16%', ballDur:'0s', strX:'52%', strY:'64%', strDur:'0s',
+    showAim:false, aimX:'0%', aimY:'0%', showGhost:false, ghostX:'0%', ghostY:'0%',
+    showLand:false, landX:'0%', landY:'0%', landColor:'#22C776',
+    showFeedback:false, fbText:'', fbSub:'', fbColor:'#22C776', headText:'', headColor:'#EAF2FB' };
+
+  componentDidMount(){
+    try{ this._soundOn=localStorage.getItem('fa_sound')!=='0'; }catch(e){ this._soundOn=true; }
+    try{ const b=JSON.parse(localStorage.getItem('fa_om_perfectball')||'null'); this._best=b&&typeof b.bestGoals==='number'?b.bestGoals:null; }catch(e){ this._best=null; }
+    this._level=this.props.level||'pro';
+    this._embedded=this.props.embedded===true;
+    if(this._embedded){ this._begin(); } else this.forceUpdate();
+  }
+  componentWillUnmount(){ [this._t1,this._t2].forEach(t=>clearTimeout(t)); }
+
+  _audio(){ if(this._actx===undefined){ try{ this._actx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ this._actx=null; } } if(this._actx&&this._actx.state==='suspended') this._actx.resume(); return this._actx; }
+  _tone(f,d,t,g){ const c=this._audio(); if(!c||this._soundOn===false) return; const o=c.createOscillator(),a=c.createGain(); o.type=t||'sine'; o.frequency.value=f; o.connect(a); a.connect(c.destination); const n=c.currentTime; a.gain.setValueAtTime(0,n); a.gain.linearRampToValueAtTime(g||0.05,n+0.01); a.gain.exponentialRampToValueAtTime(0.0001,n+d); o.start(n); o.stop(n+d); }
+  _sfx(k){ if(this._soundOn===false) return; if(k==='goal'){ this._tone(560,0.12,'triangle',0.05); setTimeout(()=>this._tone(760,0.12,'triangle',0.05),90); setTimeout(()=>this._tone(1000,0.22,'triangle',0.05),190);} else if(k==='good') this._tone(620,0.12,'triangle',0.045); else if(k==='off') this._tone(220,0.18,'sawtooth',0.04); else if(k==='whip') this._tone(500,0.09,'sine',0.04); else if(k==='whistle') this._tone(900,0.16,'sine',0.05); else if(k==='end'){ this._tone(520,0.14,'triangle',0.05); setTimeout(()=>this._tone(720,0.14,'triangle',0.05),120); setTimeout(()=>this._tone(940,0.26,'triangle',0.05),240);} else this._tone(430,0.08,'sine',0.04); }
+  _toggleSound(){ const on=this._soundOn===false; this._soundOn=on; try{ localStorage.setItem('fa_sound', on?'1':'0'); }catch(e){} if(on){ this._audio(); this._sfx('click'); } this.forceUpdate(); }
+
+  _pickLevel(k){ this._sfx('click'); this._level=k; this.setState({ level:k }); }
+  _begin(){ this._sfx('whistle'); this._order=this._shuffle(this.CR.map((_,i)=>i)); this.setState({ view:'play', idx:0, score:0, goals:0, danger:0 },()=>this._runCross()); }
+  _shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+  _cur(){ return this.CR[this._order[this.state.idx]]; }
+
+  _runCross(){
+    [this._t1,this._t2].forEach(t=>clearTimeout(t));
+    const c=this._cur();
+    this._launched=false;
+    this.setState({ phase:'aim', showAim:false, showLand:false, showFeedback:false, showGhost:false,
+      ballDur:'0s', ballX:c.ball.x+'%', ballY:c.ball.y+'%', strDur:'0s', strX:c.str.x+'%', strY:c.str.y+'%',
+      headText:'Pick his run. Lead it.', headColor:this.props.accent ?? '#22D3EE' });
+  }
+
+  _rel(e){ const r=e.currentTarget.getBoundingClientRect(); return { x:Math.max(0,Math.min(100,(e.clientX-r.left)/r.width*100)), y:Math.max(0,Math.min(100,(e.clientY-r.top)/r.height*100)) }; }
+  _dist(a,b){ const dx=a.x-b.x, dy=a.y-b.y; return Math.sqrt(dx*dx+dy*dy); }
+
+  _onDown(e){ if(this.state.phase!=='aim') return; const p=this._rel(e); this._dragging=true; try{ e.currentTarget.setPointerCapture(e.pointerId); }catch(_){}
+    this._updateAim(p); }
+  _onMove(e){ if(!this._dragging||this.state.phase!=='aim') return; this._updateAim(this._rel(e)); }
+  _onUp(e){ if(!this._dragging||this.state.phase!=='aim') return; this._dragging=false; const p=this._rel(e); this._launch(p); }
+
+  _updateAim(p){
+    const c=this._cur(); const L=this.LEVELS[this._level];
+    // predicted flight + lead ghost
+    const flight=this._dist(p,c.ball)*this.FLIGHT_K;
+    const g=this._strikerAt(flight);
+    this.setState({ showAim:true, aimX:p.x+'%', aimY:p.y+'%',
+      showGhost:L.ghost, ghostX:g.x+'%', ghostY:g.y+'%' });
+    this._aimPath='M'+(c.ball.x*1.6).toFixed(1)+' '+(c.ball.y).toFixed(1)+' L'+(p.x*1.6).toFixed(1)+' '+(p.y).toFixed(1);
+    this._aimPt=p;
+  }
+
+  _strikerAt(t){
+    const c=this._cur(); const L=this.LEVELS[this._level];
+    const dir={ x:c.run.x-c.str.x, y:c.run.y-c.str.y }; const len=Math.sqrt(dir.x*dir.x+dir.y*dir.y)||1;
+    const travel=Math.min(len, L.spd*t);
+    return { x:c.str.x+dir.x/len*travel, y:c.str.y+dir.y/len*travel };
+  }
+
+  _launch(p){
+    if(this._launched) return; this._launched=true;
+    const c=this._cur(); const L=this.LEVELS[this._level];
+    this._sfx('whip');
+    const flight=this._dist(p,c.ball)*this.FLIGHT_K;
+    const strEnd=this._strikerAt(flight);
+    const err=this._dist(p,strEnd);
+    const inBox = p.x>58;
+    const inDanger = this._dist(p,c.dz)<14 && inBox;
+    let tier, pts;
+    if(err<=L.goal && inBox){ tier='goal'; pts=100; }
+    else if(err<=L.good && inBox){ tier='good'; pts=60; }
+    else { tier='off'; pts=0; }
+    // animate ball to landing, striker to end
+    const dur=Math.max(0.3,flight).toFixed(2)+'s';
+    this.setState({ phase:'flight', showAim:false, showGhost:false,
+      ballDur:dur, ballX:p.x+'%', ballY:p.y+'%', strDur:dur, strX:strEnd.x+'%', strY:strEnd.y+'%' });
+    this._t1=setTimeout(()=>this._resolve(tier,pts,inDanger,p),Math.max(320,flight*1000)+40);
+  }
+
+  _resolve(tier,pts,inDanger,p){
+    const good=tier!=='off';
+    if(tier==='goal') this._sfx('goal'); else if(tier==='good') this._sfx('good'); else this._sfx('off');
+    this.setState({ phase:'feedback', showLand:true, landX:p.x+'%', landY:p.y+'%',
+      landColor: tier==='goal'?'#22C776': tier==='good'?'#FFB020':'#FF5A6E',
+      showFeedback:true,
+      fbText: tier==='goal'?'GOAL!': tier==='good'?'On his head':'Overhit it',
+      fbSub: tier==='goal'?'right onto the run': tier==='good'?'in the zone, half a yard off':'nobody there',
+      fbColor: tier==='goal'?'#22C776': tier==='good'?'#FFB020':'#FF5A6E',
+      score:this.state.score+pts, goals:this.state.goals+(tier==='goal'?1:0), danger:this.state.danger+((good||inDanger)?1:0),
+      headText: good?'Delivered.':'Missed the run.', headColor: good?'#22C776':'#FF5A6E' });
+    this._t2=setTimeout(()=>{
+      const next=this.state.idx+1;
+      if(next>=this._order.length){ this._end(); return; }
+      this.setState({ idx:next },()=>this._runCross());
+    }, good?1500:2000);
+  }
+
+  _end(){
+    this._sfx('end');
+    const total=this._order.length;
+    const counts={ deliverer:this.state.goals*2 + this.state.danger };
+    const meta={ goals:this.state.goals, danger:this.state.danger, total, score:this.state.score, counts, level:this._level };
+    this._meta=meta;
+    if(!this._embedded){ try{ const best=Math.max(this._best||0,this.state.goals); localStorage.setItem('fa_om_perfectball', JSON.stringify({ bestGoals:best, lastGoals:this.state.goals, at:new Date().toISOString(), weight:0 })); this._best=best; }catch(e){} }
+    this.setState({ view:'result' });
+    if(this._embedded && typeof this.props.onDone==='function'){ this.props.onDone(counts, meta); }
+  }
+  _again(){ this._begin(); }
+
+  renderVals(){
+    const accent=this.props.accent ?? '#22D3EE';
+    const V=this.state.view;
+    const soundOn=this._soundOn!==false;
+    const base={
+      accent, showChrome:!this._embedded && V!=='play',
+      isIntro:V==='intro', isPlay:V==='play', isResult:V==='result',
+      soundOn, soundOff:!soundOn, soundColor:soundOn?accent:'#61748c', soundTitle:soundOn?'Sound on':'Sound off',
+      toggleSound:()=>this._toggleSound(), start:()=>this._begin(), again:()=>this._again(),
+      onDown:(e)=>this._onDown(e), onMove:(e)=>this._onMove(e), onUp:(e)=>this._onUp(e),
+      bestLine: this._best!=null? ('YOUR BEST \u00b7 '+this._best+' GOALS') : 'FIRST RUN \u00b7 6 CROSSES',
+    };
+    base.levels=Object.keys(this.LEVELS).map(k=>{ const L=this.LEVELS[k]; const on=this.state.level===k;
+      return { key:k, label:L.label, sub:L.sub, onPick:()=>this._pickLevel(k),
+        bg:on?'color-mix(in srgb,'+accent+' 16%,transparent)':'rgba(10,16,28,.5)',
+        border:on?'color-mix(in srgb,'+accent+' 60%,transparent)':'rgba(120,140,166,.22)',
+        fg:on?'#F2F8FE':'#C6D3E2', subColor:on?accent:'#61748c' }; });
+
+    const c=(V==='play')?this._cur():this.CR[0];
+    base.crossLabel=(this.state.idx+1)+' / '+((this._order&&this._order.length)||6);
+    base.scoreLabel=this.state.score+' PTS';
+    base.headText=this.state.headText; base.headColor=this.state.headColor;
+    base.dzX=c.dz.x+'%'; base.dzY=c.dz.y+'%'; base.dzSize='72px';
+    base.runPath='M'+(c.str.x*1.6).toFixed(1)+' '+c.str.y.toFixed(1)+' L'+(c.run.x*1.6).toFixed(1)+' '+c.run.y.toFixed(1);
+    base.ballX=this.state.ballX; base.ballY=this.state.ballY; base.ballDur=this.state.ballDur;
+    base.strX=this.state.strX; base.strY=this.state.strY; base.strDur=this.state.strDur;
+    base.showAim=this.state.showAim; base.aimX=this.state.aimX; base.aimY=this.state.aimY; base.aimPath=this._aimPath||'';
+    base.showGhost=this.state.showGhost; base.ghostX=this.state.ghostX; base.ghostY=this.state.ghostY;
+    base.showLand=this.state.showLand; base.landX=this.state.landX; base.landY=this.state.landY; base.landColor=this.state.landColor;
+    base.showFeedback=this.state.showFeedback; base.fbText=this.state.fbText; base.fbSub=this.state.fbSub; base.fbColor=this.state.fbColor;
+    base.fbBorder='color-mix(in srgb,'+this.state.fbColor+' 34%,transparent)';
+    base.fbBg='color-mix(in srgb,'+this.state.fbColor+' 8%,transparent)';
+
+    const m=this._meta;
+    if(m){
+      base.scoreBig=m.score;
+      base.resultHeadline= m.goals>=5?'Unplayable delivery.': m.goals>=3?'A real crossing threat.': m.goals>=1?'The range is coming.':'Keep leading the run.';
+      base.statGoals=m.goals; base.statDanger=m.danger+'/'+m.total;
+      base.softRead= m.goals>=3? 'You put the ball where the striker was going, not where he was \u2014 the Deliverer\u2019s gift: your weapon is the flight of the ball, not your legs. A soft observation about your delivery, not a verdict; your archetype comes from the scan.' : 'Leading the run is the whole art of crossing \u2014 drop it ahead of the striker so he runs onto it. Keep whipping them in and the timing comes. This doesn\u2019t set your archetype.';
+    } else { base.scoreBig=0; base.resultHeadline=''; base.statGoals=0; base.statDanger='0/6'; base.softRead=''; }
+
+    return base;
+  }
+}
+</script>
+</body>
+</html>

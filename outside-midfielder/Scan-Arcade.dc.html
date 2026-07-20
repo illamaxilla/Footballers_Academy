@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:#04060c;}
+  a{color:var(--accent,#22D3EE);text-decoration:none;}
+  a:hover{opacity:.92;}
+  @keyframes fa-blink{0%,100%{opacity:1;}50%{opacity:.25;}}
+  @keyframes fa-rise{0%{transform:translateY(16px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-rise-sm{0%{transform:translateY(10px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-bar{from{transform:scaleX(0);}to{transform:scaleX(1);}}
+  @keyframes fa-ping{0%{transform:translate(-50%,-50%) scale(.6);opacity:.9;}100%{transform:translate(-50%,-50%) scale(2.1);opacity:0;}}
+  .fa-in{opacity:0;animation:fa-rise .6s cubic-bezier(.2,.7,.2,1) forwards;}
+  .fa-in-sm{opacity:0;animation:fa-rise-sm .5s cubic-bezier(.2,.7,.2,1) forwards;}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;}.fa-in,.fa-in-sm{opacity:1!important;transform:none!important;}}
+</style>
+</helmet>
+<div data-screen-label="Scan Arcade" style="position:relative;display:flex;flex-direction:column;min-height:100dvh;width:100%;overflow:hidden;background:radial-gradient(120% 90% at 50% 6%,#0e1a2d 0%,#080e1a 44%,#04060c 100%);color:#EAF2FB;font-family:'Archivo',system-ui,sans-serif;--accent:{{ accent }};">
+
+  <div style="position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.4;background:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0px,rgba(255,255,255,.02) 1px,transparent 1px,transparent 4px);"></div>
+  <div style="position:absolute;top:20px;left:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;top:20px;right:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;left:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;right:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+
+  <sc-if value="{{ showChrome }}" hint-placeholder-val="{{ true }}">
+    <header style="position:relative;z-index:6;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px clamp(24px,3.4vw,54px);">
+      <div style="min-width:110px;display:flex;"><a href="Assessment.dc.html" style="display:inline-flex;align-items:center;gap:8px;color:#8EA1B8;font:600 12.5px 'Archivo';"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M15 5l-7 7 7 7"/></svg>Back to the scan</a></div>
+      <div style="display:flex;align-items:center;gap:11px;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" style="stroke:var(--accent,#22D3EE);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg><span style="font:800 13px 'Archivo';letter-spacing:.05em;">SCAN <span style="color:var(--accent,#22D3EE);">ARCADE</span></span></div>
+      <div style="display:flex;align-items:center;gap:12px;min-width:110px;justify-content:flex-end;">
+        <button onClick="{{ toggleSound }}" title="{{ soundTitle }}" style="display:grid;place-items:center;width:28px;height:28px;border-radius:8px;border:1px solid rgba(120,140,166,.24);background:rgba(10,16,28,.5);cursor:pointer;color:{{ soundColor }};">
+          <sc-if value="{{ soundOn }}" hint-placeholder-val="{{ true }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></sc-if>
+          <sc-if value="{{ soundOff }}" hint-placeholder-val="{{ false }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M22 9l-6 6M16 9l6 6"/></svg></sc-if>
+        </button>
+      </div>
+    </header>
+  </sc-if>
+
+  <!-- INTRO -->
+  <sc-if value="{{ isIntro }}" hint-placeholder-val="{{ true }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;text-align:center;padding:14px clamp(24px,4vw,54px) 54px;">
+      <div class="fa-in" style="display:inline-flex;align-items:center;gap:10px;margin-bottom:18px;font:600 12px 'IBM Plex Mono';letter-spacing:.4em;color:var(--accent,#22D3EE);"><span style="width:6px;height:6px;border-radius:50%;background:var(--accent,#22D3EE);box-shadow:0 0 8px var(--accent,#22D3EE);animation:fa-blink 1.6s ease-in-out infinite;"></span>SCAN BEFORE YOU RECEIVE</div>
+      <h1 class="fa-in" style="margin:0 0 14px;font:800 clamp(34px,5.2vw,68px)/0.98 'Archivo';letter-spacing:-0.03em;text-wrap:balance;max-width:760px;animation-delay:.05s;">Take the picture. Then play.</h1>
+      <p class="fa-in" style="margin:0 0 26px;max-width:540px;font:400 clamp(14px,1.25vw,17px)/1.6 'Archivo';color:#9FB0C5;text-wrap:pretty;animation-delay:.1s;">The ball&rsquo;s coming to you. For a split second you see the whole picture &mdash; then it&rsquo;s gone. Answer from what you scanned: how many defenders, where the free man was, whether the overlap was on. The best wide players see all of it before the ball arrives.</p>
+      <div class="fa-in" style="width:100%;max-width:440px;margin-bottom:24px;animation-delay:.16s;">
+        <div style="font:600 10px 'IBM Plex Mono';letter-spacing:.24em;color:#61748c;margin-bottom:12px;text-align:left;">CHOOSE YOUR LEVEL</div>
+        <div style="display:flex;gap:10px;">
+          <sc-for list="{{ levels }}" as="lv" hint-placeholder-count="3">
+            <button onClick="{{ lv.onPick }}" style="flex:1;padding:16px 10px;border-radius:13px;cursor:pointer;font:700 14px 'Archivo';transition:all .16s ease;border:1px solid {{ lv.border }};background:{{ lv.bg }};color:{{ lv.fg }};">{{ lv.label }}<div style="font:500 9.5px 'IBM Plex Mono';letter-spacing:.08em;margin-top:5px;color:{{ lv.subColor }};">{{ lv.sub }}</div></button>
+          </sc-for>
+        </div>
+      </div>
+      <button onClick="{{ start }}" class="fa-in" style="display:inline-flex;align-items:center;gap:12px;padding:17px 42px;border-radius:13px;border:0;background:var(--accent,#22D3EE);color:#04222a;font:700 16px 'Archivo';cursor:pointer;box-shadow:0 14px 44px color-mix(in srgb,var(--accent,#22D3EE) 42%,transparent);transition:transform .16s ease;animation-delay:.22s;" style-hover="transform:translateY(-2px);">Start scanning<svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12h13M12 6l6 6-6 6"/></svg></button>
+      <div class="fa-in" style="margin-top:16px;font:500 10px 'IBM Plex Mono';letter-spacing:.14em;color:#4f627a;animation-delay:.3s;">{{ bestLine }}</div>
+    </main>
+  </sc-if>
+
+  <!-- PLAY -->
+  <sc-if value="{{ isPlay }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:6px clamp(18px,3.5vw,54px) 34px;">
+      <div style="width:100%;max-width:1040px;margin:0 auto;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+          <span style="font:600 9.5px 'IBM Plex Mono';letter-spacing:.2em;color:var(--accent,#22D3EE);">SCAN {{ roundLabel }}</span>
+          <span style="flex:1;height:1px;background:rgba(120,140,166,.16);"></span>
+          <span style="font:600 9.5px 'IBM Plex Mono';letter-spacing:.14em;color:#61748c;">{{ scoreLabel }}</span>
+        </div>
+
+        <div style="text-align:center;font:700 clamp(15px,2vw,21px)/1.3 'Archivo';margin-bottom:12px;min-height:26px;color:{{ headColor }};">{{ headText }}</div>
+
+        <!-- pitch / scene -->
+        <div style="position:relative;height:min(60vh,540px);aspect-ratio:16/10;max-width:100%;margin:0 auto;align-self:center;border-radius:16px;overflow:hidden;border:1px solid rgba(120,140,166,.18);background:radial-gradient(130% 120% at 50% 100%,#0d1c2e,#091324,#050c17);">
+          <div style="position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0,transparent 12.5%,rgba(120,180,220,.045) 12.5%,rgba(120,180,220,.045) 25%);"></div>
+
+          <!-- tokens (visible only during flash) -->
+          <sc-if value="{{ showScene }}" hint-placeholder-val="{{ false }}">
+            <sc-for list="{{ tokens }}" as="tk" hint-placeholder-count="7">
+              <div style="position:absolute;top:{{ tk.y }};left:{{ tk.x }};transform:translate(-50%,-50%);{{ tk.look }}"></div>
+            </sc-for>
+            <div style="position:absolute;top:{{ youY }};left:{{ youX }};transform:translate(-50%,-50%);width:0;height:0;border-left:8px solid transparent;border-right:8px solid transparent;border-bottom:15px solid var(--accent,#22D3EE);filter:drop-shadow(0 0 6px color-mix(in srgb,var(--accent,#22D3EE) 70%,transparent));"></div>
+            <div style="position:absolute;top:{{ ballY }};left:{{ ballX }};transform:translate(-50%,-50%);width:10px;height:10px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,#c9d6e2);box-shadow:0 0 9px rgba(255,255,255,.85);"></div>
+          </sc-if>
+
+          <!-- occluded overlay -->
+          <sc-if value="{{ occluded }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;inset:0;display:grid;place-items:center;background:rgba(6,10,18,.94);backdrop-filter:blur(2px);">
+              <span style="font:700 12px 'IBM Plex Mono';letter-spacing:.3em;color:#4f627a;">{{ occludeText }}</span>
+            </div>
+          </sc-if>
+
+          <!-- free-man tappable zones (answer phase, type free) -->
+          <sc-if value="{{ showFreeZones }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;inset:0;background:rgba(6,10,18,.9);"></div>
+            <sc-for list="{{ freeZones }}" as="z" hint-placeholder-count="4">
+              <button onClick="{{ z.onPick }}" style="position:absolute;top:{{ z.y }};left:{{ z.x }};transform:translate(-50%,-50%);width:36px;height:36px;border-radius:50%;cursor:pointer;border:2px dashed rgba(120,180,220,.5);background:rgba(34,211,238,.06);z-index:4;transition:all .14s ease;" style-hover="border-color:var(--accent,#22D3EE);background:color-mix(in srgb,var(--accent,#22D3EE) 20%,transparent);"></button>
+            </sc-for>
+          </sc-if>
+
+          <!-- reveal -->
+          <sc-if value="{{ showReveal }}" hint-placeholder-val="{{ false }}">
+            <sc-for list="{{ tokens }}" as="tk" hint-placeholder-count="7">
+              <div style="position:absolute;top:{{ tk.y }};left:{{ tk.x }};transform:translate(-50%,-50%);opacity:.85;{{ tk.look }}"></div>
+            </sc-for>
+            <div style="position:absolute;top:{{ youY }};left:{{ youX }};transform:translate(-50%,-50%);width:0;height:0;border-left:8px solid transparent;border-right:8px solid transparent;border-bottom:15px solid var(--accent,#22D3EE);"></div>
+            <sc-if value="{{ hasFreeMarker }}" hint-placeholder-val="{{ false }}">
+              <div style="position:absolute;top:{{ freeMY }};left:{{ freeMX }};width:36px;height:36px;transform:translate(-50%,-50%);border-radius:50%;border:2px solid #22C776;box-shadow:0 0 16px #22C776;z-index:5;"></div>
+              <div style="position:absolute;top:{{ freeMY }};left:{{ freeMX }};width:36px;height:36px;border-radius:50%;background:#22C776;opacity:.4;z-index:4;animation:fa-ping .9s ease-out infinite;"></div>
+            </sc-if>
+          </sc-if>
+        </div>
+
+        <!-- answer controls -->
+        <sc-if value="{{ showCount }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;gap:10px;margin-top:16px;justify-content:center;">
+            <sc-for list="{{ countOpts }}" as="c" hint-placeholder-count="4">
+              <button onClick="{{ c.onPick }}" style="width:64px;height:56px;border-radius:13px;border:1px solid rgba(120,140,166,.24);background:rgba(10,16,28,.55);color:#EAF2FB;font:800 22px 'Archivo';cursor:pointer;transition:all .14s ease;" style-hover="border-color:var(--accent,#22D3EE);background:rgba(16,20,37,.85);transform:translateY(-2px);">{{ c.n }}</button>
+            </sc-for>
+          </div>
+        </sc-if>
+        <sc-if value="{{ showYesNo }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;gap:10px;margin-top:16px;justify-content:center;">
+            <button onClick="{{ pickYes }}" style="min-width:130px;padding:16px;border-radius:13px;border:1px solid rgba(120,140,166,.24);background:rgba(10,16,28,.55);color:#EAF2FB;font:700 16px 'Archivo';cursor:pointer;" style-hover="border-color:var(--accent,#22D3EE);background:rgba(16,20,37,.85);">Yes, overlap</button>
+            <button onClick="{{ pickNo }}" style="min-width:130px;padding:16px;border-radius:13px;border:1px solid rgba(120,140,166,.24);background:rgba(10,16,28,.55);color:#EAF2FB;font:700 16px 'Archivo';cursor:pointer;" style-hover="border-color:var(--accent,#22D3EE);background:rgba(16,20,37,.85);">No overlap</button>
+          </div>
+        </sc-if>
+
+        <!-- feedback -->
+        <sc-if value="{{ showFeedback }}" hint-placeholder-val="{{ false }}">
+          <div class="fa-in-sm" style="margin-top:14px;padding:13px 18px;border-radius:13px;border:1px solid {{ fbBorder }};background:{{ fbBg }};text-align:center;">
+            <span style="font:700 14px 'Archivo';color:{{ fbColor }};">{{ fbText }}</span>
+          </div>
+        </sc-if>
+      </div>
+    </main>
+  </sc-if>
+
+  <!-- RESULT -->
+  <sc-if value="{{ isResult }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:10px clamp(20px,4vw,54px) 64px;">
+      <div style="width:100%;max-width:600px;">
+        <div class="fa-in" style="text-align:center;margin-bottom:22px;">
+          <div style="font:600 11px 'IBM Plex Mono';letter-spacing:.4em;color:#7688a0;margin-bottom:12px;">YOUR SCAN</div>
+          <div style="font:900 clamp(60px,12vw,104px)/0.9 'Archivo';letter-spacing:-0.03em;color:var(--accent,#22D3EE);text-shadow:0 0 48px color-mix(in srgb,var(--accent,#22D3EE) 45%,transparent);">{{ scoreBig }}</div>
+          <div style="margin-top:6px;font:600 clamp(15px,1.7vw,20px) 'Archivo';color:#DCE6F2;">{{ resultHeadline }}</div>
+        </div>
+        <div class="fa-in" style="padding-left:16px;border-left:3px solid var(--accent,#22D3EE);margin-bottom:24px;animation-delay:.1s;">
+          <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:#61748c;margin-bottom:7px;">A SOFT READ</div>
+          <p style="margin:0;font:500 clamp(15px,1.7vw,18px)/1.5 'Archivo';color:#EAF2FB;text-wrap:pretty;">{{ softRead }}</p>
+        </div>
+        <div class="fa-in" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:12px;animation-delay:.18s;">
+          <button onClick="{{ again }}" style="display:inline-flex;align-items:center;gap:10px;padding:15px 30px;border-radius:12px;border:0;background:var(--accent,#22D3EE);color:#04222a;font:700 15px 'Archivo';cursor:pointer;box-shadow:0 12px 36px color-mix(in srgb,var(--accent,#22D3EE) 40%,transparent);transition:transform .16s ease;" style-hover="transform:translateY(-2px);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:#04222a;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>Scan again</button>
+          <a href="Assessment.dc.html" style="display:inline-flex;align-items:center;gap:9px;padding:15px 24px;border-radius:12px;border:1px solid rgba(157,176,198,.28);background:rgba(12,18,30,.4);color:#C6D3E2;font:600 14px 'Archivo';" style-hover="border-color:color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);color:#EAF2FB;">Back to the scan</a>
+        </div>
+      </div>
+    </main>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:940,&quot;height&quot;:720},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#22D3EE&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#22D3EE&quot;,&quot;#A78BFA&quot;,&quot;#C6FF3A&quot;,&quot;#FF7A45&quot;,&quot;#FF4D8D&quot;]},&quot;motion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;embedded&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;level&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;pro&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;academy&quot;,&quot;pro&quot;,&quot;elite&quot;]}}">
+class Component extends DCLogic {
+  LEVELS = {
+    academy:{ label:'Academy', sub:'1.2S GLIMPSE', flash:1200 },
+    pro:    { label:'Pro',     sub:'0.8S GLIMPSE', flash:800 },
+    elite:  { label:'Elite',   sub:'0.55S GLIMPSE',flash:550 },
+  };
+
+  // scenes. mates cyan circle, opps red square. you=chevron near right.
+  // q: 'count' (# opponents), 'free' (tap the unmarked mate), 'overlap' (yes/no)
+  SC = [
+    { q:'count', you:{x:'72%',y:'52%'}, ball:{x:'20%',y:'40%'},
+      mates:[{x:'46%',y:'30%'},{x:'58%',y:'70%'}],
+      opps:[{x:'40%',y:'46%'},{x:'54%',y:'56%'},{x:'64%',y:'38%'}] },
+    { q:'free', you:{x:'70%',y:'50%'}, ball:{x:'24%',y:'52%'},
+      mates:[{x:'50%',y:'26%',free:true},{x:'44%',y:'64%'},{x:'62%',y:'72%'}],
+      opps:[{x:'40%',y:'44%'},{x:'56%',y:'50%'},{x:'52%',y:'70%'}] },
+    { q:'overlap', you:{x:'68%',y:'44%'}, ball:{x:'26%',y:'46%'},
+      mates:[{x:'82%',y:'30%',overlap:true},{x:'48%',y:'64%'}],
+      opps:[{x:'44%',y:'40%'},{x:'58%',y:'52%'}], overlap:true },
+    { q:'count', you:{x:'74%',y:'56%'}, ball:{x:'18%',y:'54%'},
+      mates:[{x:'52%',y:'34%'},{x:'60%',y:'66%'}],
+      opps:[{x:'38%',y:'48%'},{x:'50%',y:'40%'},{x:'56%',y:'60%'},{x:'66%',y:'46%'}] },
+    { q:'free', you:{x:'72%',y:'48%'}, ball:{x:'22%',y:'42%'},
+      mates:[{x:'46%',y:'32%'},{x:'58%',y:'28%'},{x:'54%',y:'70%',free:true}],
+      opps:[{x:'42%',y:'46%'},{x:'50%',y:'54%'},{x:'60%',y:'40%'}] },
+    { q:'overlap', you:{x:'66%',y:'52%'}, ball:{x:'28%',y:'50%'},
+      mates:[{x:'44%',y:'34%'},{x:'52%',y:'66%'}],
+      opps:[{x:'46%',y:'44%'},{x:'56%',y:'50%'},{x:'60%',y:'62%'}], overlap:false },
+    { q:'count', you:{x:'70%',y:'46%'}, ball:{x:'20%',y:'44%'},
+      mates:[{x:'48%',y:'28%'},{x:'56%',y:'70%'},{x:'40%',y:'58%'}],
+      opps:[{x:'44%',y:'42%'},{x:'54%',y:'52%'}] },
+    { q:'free', you:{x:'74%',y:'54%'}, ball:{x:'24%',y:'56%'},
+      mates:[{x:'50%',y:'30%'},{x:'62%',y:'40%',free:true},{x:'46%',y:'68%'},{x:'58%',y:'72%'}],
+      opps:[{x:'42%',y:'44%'},{x:'52%',y:'54%'},{x:'54%',y:'66%'}] },
+    { q:'overlap', you:{x:'68%',y:'48%'}, ball:{x:'26%',y:'46%'},
+      mates:[{x:'84%',y:'34%',overlap:true},{x:'50%',y:'62%'},{x:'44%',y:'40%'}],
+      opps:[{x:'46%',y:'44%'},{x:'58%',y:'54%'},{x:'54%',y:'66%'}], overlap:true },
+    { q:'count', you:{x:'72%',y:'50%'}, ball:{x:'18%',y:'48%'},
+      mates:[{x:'50%',y:'32%'},{x:'58%',y:'68%'}],
+      opps:[{x:'40%',y:'46%'},{x:'48%',y:'38%'},{x:'56%',y:'56%'},{x:'62%',y:'44%'},{x:'52%',y:'64%'}] },
+  ];
+
+  state = { view:'intro', level:'pro', idx:0, sub:'ready', correct:0,
+    showScene:false, occluded:false, showFreeZones:false, showReveal:false, showFeedback:false,
+    showCount:false, showYesNo:false, hasFreeMarker:false, freeMX:'0%', freeMY:'0%',
+    headText:'', headColor:'#EAF2FB', fbText:'', lastGood:false };
+
+  componentDidMount(){
+    try{ this._soundOn=localStorage.getItem('fa_sound')!=='0'; }catch(e){ this._soundOn=true; }
+    try{ const b=JSON.parse(localStorage.getItem('fa_om_scan')||'null'); this._best=b&&typeof b.bestPct==='number'?b.bestPct:null; }catch(e){ this._best=null; }
+    this._level=this.props.level||'pro';
+    this._embedded=this.props.embedded===true;
+    if(this._embedded){ this._begin(); } else this.forceUpdate();
+  }
+  componentWillUnmount(){ [this._t1,this._t2,this._t3].forEach(t=>clearTimeout(t)); }
+
+  _audio(){ if(this._actx===undefined){ try{ this._actx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ this._actx=null; } } if(this._actx&&this._actx.state==='suspended') this._actx.resume(); return this._actx; }
+  _tone(f,d,t,g){ const c=this._audio(); if(!c||this._soundOn===false) return; const o=c.createOscillator(),a=c.createGain(); o.type=t||'sine'; o.frequency.value=f; o.connect(a); a.connect(c.destination); const n=c.currentTime; a.gain.setValueAtTime(0,n); a.gain.linearRampToValueAtTime(g||0.05,n+0.01); a.gain.exponentialRampToValueAtTime(0.0001,n+d); o.start(n); o.stop(n+d); }
+  _sfx(k){ if(this._soundOn===false) return; if(k==='good'){ this._tone(640,0.1,'triangle',0.05); setTimeout(()=>this._tone(880,0.12,'triangle',0.045),55);} else if(k==='bad') this._tone(220,0.18,'sawtooth',0.04); else if(k==='flash') this._tone(720,0.06,'sine',0.035); else if(k==='whistle') this._tone(900,0.16,'sine',0.05); else if(k==='end'){ this._tone(520,0.14,'triangle',0.05); setTimeout(()=>this._tone(720,0.14,'triangle',0.05),120); setTimeout(()=>this._tone(940,0.26,'triangle',0.05),240);} else this._tone(430,0.08,'sine',0.04); }
+  _toggleSound(){ const on=this._soundOn===false; this._soundOn=on; try{ localStorage.setItem('fa_sound', on?'1':'0'); }catch(e){} if(on){ this._audio(); this._sfx('click'); } this.forceUpdate(); }
+
+  _pickLevel(k){ this._sfx('click'); this._level=k; this.setState({ level:k }); }
+  _begin(){ this._sfx('whistle'); this._order=this._shuffle(this.SC.map((_,i)=>i)); this._byType={count:0,free:0,overlap:0}; this._okType={count:0,free:0,overlap:0}; this.setState({ view:'play', idx:0, correct:0 },()=>this._runRound()); }
+  _shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+  _cur(){ return this.SC[this._order[this.state.idx]]; }
+
+  _runRound(){
+    [this._t1,this._t2,this._t3].forEach(t=>clearTimeout(t));
+    const L=this.LEVELS[this._level];
+    this._answered=false;
+    this.setState({ sub:'ready', showScene:false, occluded:false, showFreeZones:false, showReveal:false, showFeedback:false, showCount:false, showYesNo:false, hasFreeMarker:false, headText:'Scan\u2026', headColor:this.props.accent ?? '#22D3EE' },()=>{
+      this._t1=setTimeout(()=>{ this._sfx('flash'); this.setState({ sub:'flash', showScene:true }); },500);
+      this._t2=setTimeout(()=>{ this.setState({ sub:'occlude', showScene:false, occluded:true, headText:'\u2026gone.' }); this._t3=setTimeout(()=>this._ask(),400); },500+L.flash);
+    });
+  }
+
+  _ask(){
+    const s=this._cur();
+    if(s.q==='count'){
+      this.setState({ sub:'answer', occluded:false, showCount:true, headText:'How many defenders did you see?', headColor:'#EAF2FB' });
+    } else if(s.q==='free'){
+      this.setState({ sub:'answer', occluded:false, showFreeZones:true, headText:'Tap where the free man was.', headColor:'#EAF2FB' });
+    } else {
+      this.setState({ sub:'answer', occluded:false, showYesNo:true, headText:'Was your full-back overlapping?', headColor:'#EAF2FB' });
+    }
+  }
+
+  _resolve(good){
+    if(this._answered) return; this._answered=true;
+    const s=this._cur();
+    this._byType[s.q]+=1; if(good) this._okType[s.q]+=1;
+    if(good) this._sfx('good'); else this._sfx('bad');
+    const free=s.mates.find(m=>m.free);
+    this.setState({ sub:'feedback', showCount:false, showYesNo:false, showFreeZones:false, showReveal:true, showFeedback:true,
+      hasFreeMarker: s.q==='free' && !!free, freeMX: free?free.x:'0%', freeMY: free?free.y:'0%',
+      fbText: good?'Scanned it.':'Missed that one.', lastGood:good,
+      correct:this.state.correct+(good?1:0), headText: good?'Good scan.':'Not quite.', headColor: good?'#22C776':'#FF5A6E' });
+    this._t3=setTimeout(()=>{
+      const next=this.state.idx+1;
+      if(next>=this._order.length){ this._end(); return; }
+      this.setState({ idx:next },()=>this._runRound());
+    }, good?1400:2100);
+  }
+
+  _pickCount(n){ if(this.state.sub!=='answer') return; const s=this._cur(); this._resolve(n===s.opps.length); }
+  _pickFree(m){ if(this.state.sub!=='answer') return; this._resolve(!!m.free); }
+  _pickOverlap(v){ if(this.state.sub!=='answer') return; const s=this._cur(); this._resolve(v===!!s.overlap); }
+
+  _end(){
+    this._sfx('end');
+    const total=this._order.length;
+    const pct=Math.round(this.state.correct/total*100);
+    const counts={ weaver:this.state.correct };
+    const meta={ correct:this.state.correct, total, pct, byType:this._byType, okType:this._okType, counts, level:this._level };
+    this._meta=meta;
+    if(!this._embedded){ try{ const best=Math.max(this._best||0,pct); localStorage.setItem('fa_om_scan', JSON.stringify({ bestPct:best, lastPct:pct, at:new Date().toISOString(), weight:0 })); this._best=best; }catch(e){} }
+    this.setState({ view:'result' });
+    if(this._embedded && typeof this.props.onDone==='function'){ this.props.onDone(counts, meta); }
+  }
+  _again(){ this._begin(); }
+
+  renderVals(){
+    const accent=this.props.accent ?? '#22D3EE';
+    const V=this.state.view;
+    const soundOn=this._soundOn!==false;
+    const base={
+      accent, showChrome:!this._embedded && V!=='play',
+      isIntro:V==='intro', isPlay:V==='play', isResult:V==='result',
+      soundOn, soundOff:!soundOn, soundColor:soundOn?accent:'#61748c', soundTitle:soundOn?'Sound on':'Sound off',
+      toggleSound:()=>this._toggleSound(), start:()=>this._begin(), again:()=>this._again(),
+      pickYes:()=>this._pickOverlap(true), pickNo:()=>this._pickOverlap(false),
+      bestLine: this._best!=null? ('YOUR BEST \u00b7 '+this._best+'% SCANNED') : 'FIRST RUN \u00b7 10 SCANS',
+    };
+    base.levels=Object.keys(this.LEVELS).map(k=>{ const L=this.LEVELS[k]; const on=this.state.level===k;
+      return { key:k, label:L.label, sub:L.sub, onPick:()=>this._pickLevel(k),
+        bg:on?'color-mix(in srgb,'+accent+' 16%,transparent)':'rgba(10,16,28,.5)',
+        border:on?'color-mix(in srgb,'+accent+' 60%,transparent)':'rgba(120,140,166,.22)',
+        fg:on?'#F2F8FE':'#C6D3E2', subColor:on?accent:'#61748c' }; });
+
+    const s=(V==='play')?this._cur():this.SC[0];
+    base.roundLabel=(this.state.idx+1)+' / '+((this._order&&this._order.length)||10);
+    base.scoreLabel=this.state.correct+' SCANNED';
+    base.headText=this.state.headText; base.headColor=this.state.headColor;
+    base.showScene=this.state.showScene; base.occluded=this.state.occluded; base.occludeText='HELD IN YOUR HEAD';
+    base.showFreeZones=this.state.showFreeZones; base.showReveal=this.state.showReveal; base.showFeedback=this.state.showFeedback;
+    base.showCount=this.state.showCount; base.showYesNo=this.state.showYesNo;
+    base.hasFreeMarker=this.state.hasFreeMarker; base.freeMX=this.state.freeMX; base.freeMY=this.state.freeMY;
+    base.youX=s.you.x; base.youY=s.you.y; base.ballX=s.ball.x; base.ballY=s.ball.y;
+
+    base.tokens=[
+      ...s.mates.map(m=>({ x:m.x, y:m.y, look:'width:13px;height:13px;border-radius:50%;background:#8fd8e6;box-shadow:0 0 6px rgba(143,216,230,.5);' })),
+      ...s.opps.map(o=>({ x:o.x, y:o.y, look:'width:14px;height:14px;border-radius:3px;background:#E0413C;box-shadow:0 0 6px rgba(224,65,60,.5);' })),
+    ];
+    base.freeZones=s.mates.map(m=>({ x:m.x, y:m.y, onPick:()=>this._pickFree(m) }));
+    base.countOpts=[2,3,4,5].map(n=>({ n, onPick:()=>this._pickCount(n) }));
+
+    base.fbText=this.state.fbText;
+    base.fbColor= this.state.lastGood?'#22C776':'#FF5A6E';
+    base.fbBorder= this.state.lastGood?'color-mix(in srgb,#22C776 34%,transparent)':'color-mix(in srgb,#FF5A6E 34%,transparent)';
+    base.fbBg= this.state.lastGood?'color-mix(in srgb,#22C776 8%,transparent)':'color-mix(in srgb,#FF5A6E 8%,transparent)';
+
+    const m=this._meta;
+    if(m){
+      base.scoreBig=m.correct+'/'+m.total;
+      base.resultHeadline= m.pct>=88?'Eyes everywhere. You see it all.': m.pct>=63?'A strong scanner.': m.pct>=38?'The picture is building.':'Scan more \u2014 look before it arrives.';
+      base.softRead= m.pct>=60? 'You take in the whole picture before the ball arrives \u2014 the scanning habit that lets a Weaver receive on the half-turn and always know the next pass. An observation about how you see the game, not a verdict; your archetype comes from the scan.' : 'Scanning is the most trainable habit in football \u2014 a glance over each shoulder before you receive. The more you do it, the more the picture stays with you. Come back and beat this.';
+    } else { base.scoreBig='0/10'; base.resultHeadline=''; base.softRead=''; }
+
+    return base;
+  }
+}
+</script>
+</body>
+</html>

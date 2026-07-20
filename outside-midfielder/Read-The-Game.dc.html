@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:#04060c;}
+  a{color:var(--accent,#22D3EE);text-decoration:none;}
+  a:hover{opacity:.92;}
+  @keyframes fa-blink{0%,100%{opacity:1;}50%{opacity:.25;}}
+  @keyframes fa-rise{0%{transform:translateY(16px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-rise-sm{0%{transform:translateY(10px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-bar{from{transform:scaleX(0);}to{transform:scaleX(1);}}
+  @keyframes fa-ping{0%{transform:translate(-50%,-50%) scale(.6);opacity:.9;}100%{transform:translate(-50%,-50%) scale(2.2);opacity:0;}}
+  @keyframes fa-pulse{0%,100%{transform:translate(-50%,-50%) scale(1);}50%{transform:translate(-50%,-50%) scale(1.14);}}
+  .fa-in{opacity:0;animation:fa-rise .6s cubic-bezier(.2,.7,.2,1) forwards;}
+  .fa-in-sm{opacity:0;animation:fa-rise-sm .5s cubic-bezier(.2,.7,.2,1) forwards;}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;}.fa-in,.fa-in-sm{opacity:1!important;transform:none!important;}}
+</style>
+</helmet>
+<div data-screen-label="Read the Game" style="position:relative;display:flex;flex-direction:column;min-height:100dvh;width:100%;overflow:hidden;background:radial-gradient(120% 90% at 50% 6%,#0e1a2d 0%,#080e1a 44%,#04060c 100%);color:#EAF2FB;font-family:'Archivo',system-ui,sans-serif;--accent:{{ accent }};">
+
+  <div style="position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.4;background:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0px,rgba(255,255,255,.02) 1px,transparent 1px,transparent 4px);"></div>
+  <div style="position:absolute;top:20px;left:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;top:20px;right:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;left:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;right:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+
+  <!-- TOP BAR -->
+  <sc-if value="{{ showChrome }}" hint-placeholder-val="{{ true }}">
+    <header style="position:relative;z-index:6;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px clamp(24px,3.4vw,54px);">
+      <div style="min-width:110px;display:flex;">
+        <a href="Assessment.dc.html" style="display:inline-flex;align-items:center;gap:8px;color:#8EA1B8;font:600 12.5px 'Archivo';"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M15 5l-7 7 7 7"/></svg>Back to the scan</a>
+      </div>
+      <div style="display:flex;align-items:center;gap:11px;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" style="stroke:var(--accent,#22D3EE);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
+        <span style="font:800 13px 'Archivo';letter-spacing:.05em;">READ THE <span style="color:var(--accent,#22D3EE);">GAME</span></span>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;min-width:110px;justify-content:flex-end;">
+        <button onClick="{{ toggleSound }}" title="{{ soundTitle }}" style="display:grid;place-items:center;width:28px;height:28px;border-radius:8px;border:1px solid rgba(120,140,166,.24);background:rgba(10,16,28,.5);cursor:pointer;color:{{ soundColor }};">
+          <sc-if value="{{ soundOn }}" hint-placeholder-val="{{ true }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></sc-if>
+          <sc-if value="{{ soundOff }}" hint-placeholder-val="{{ false }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M22 9l-6 6M16 9l6 6"/></svg></sc-if>
+        </button>
+      </div>
+    </header>
+  </sc-if>
+
+  <!-- INTRO -->
+  <sc-if value="{{ isIntro }}" hint-placeholder-val="{{ true }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;text-align:center;padding:14px clamp(24px,4vw,54px) 54px;">
+      <div class="fa-in" style="display:inline-flex;align-items:center;gap:10px;margin-bottom:18px;font:600 12px 'IBM Plex Mono';letter-spacing:.4em;color:var(--accent,#22D3EE);"><span style="width:6px;height:6px;border-radius:50%;background:var(--accent,#22D3EE);box-shadow:0 0 8px var(--accent,#22D3EE);animation:fa-blink 1.6s ease-in-out infinite;"></span>{{ dailyBadge }}</div>
+      <h1 class="fa-in" style="margin:0 0 14px;font:800 clamp(34px,5.2vw,68px)/0.98 'Archivo';letter-spacing:-0.03em;text-wrap:balance;max-width:760px;animation-delay:.05s;">See it before it happens.</h1>
+      <p class="fa-in" style="margin:0 0 30px;max-width:540px;font:400 clamp(14px,1.25vw,17px)/1.6 'Archivo';color:#9FB0C5;text-wrap:pretty;animation-delay:.1s;">A move builds and freezes at the decisive instant. Read the picture and tap where the danger goes next &mdash; where the ball is played, or who&rsquo;s about to be free. The earlier and truer you read it, the better.</p>
+      <div class="fa-in" style="width:100%;max-width:440px;margin-bottom:26px;animation-delay:.16s;">
+        <div style="font:600 10px 'IBM Plex Mono';letter-spacing:.24em;color:#61748c;margin-bottom:12px;text-align:left;">CHOOSE YOUR LEVEL</div>
+        <div style="display:flex;gap:10px;">
+          <sc-for list="{{ levels }}" as="lv" hint-placeholder-count="3">
+            <button onClick="{{ lv.onPick }}" style="flex:1;padding:16px 10px;border-radius:13px;cursor:pointer;font:700 14px 'Archivo';transition:all .16s ease;border:1px solid {{ lv.border }};background:{{ lv.bg }};color:{{ lv.fg }};">{{ lv.label }}<div style="font:500 9.5px 'IBM Plex Mono';letter-spacing:.08em;margin-top:5px;color:{{ lv.subColor }};">{{ lv.sub }}</div></button>
+          </sc-for>
+        </div>
+      </div>
+      <button onClick="{{ start }}" class="fa-in" style="display:inline-flex;align-items:center;gap:12px;padding:17px 42px;border-radius:13px;border:0;background:var(--accent,#22D3EE);color:#0b0805;font:700 16px 'Archivo';cursor:pointer;box-shadow:0 14px 44px color-mix(in srgb,var(--accent,#22D3EE) 42%,transparent);transition:transform .16s ease;animation-delay:.22s;" style-hover="transform:translateY(-2px);">Read the game<svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12h13M12 6l6 6-6 6"/></svg></button>
+      <div class="fa-in" style="margin-top:16px;font:500 10px 'IBM Plex Mono';letter-spacing:.14em;color:#4f627a;animation-delay:.3s;">{{ bestLine }}</div>
+    </main>
+  </sc-if>
+
+  <!-- PLAY -->
+  <sc-if value="{{ isPlay }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:6px clamp(18px,3.5vw,54px) 40px;">
+      <div style="width:100%;max-width:1040px;margin:0 auto;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+          <span style="font:600 9.5px 'IBM Plex Mono';letter-spacing:.2em;color:var(--accent,#22D3EE);">PUZZLE {{ puzzleLabel }}</span>
+          <span style="flex:1;height:1px;background:rgba(120,140,166,.16);"></span>
+          <span style="font:600 9.5px 'IBM Plex Mono';letter-spacing:.14em;color:#61748c;">{{ scoreLabel }}</span>
+        </div>
+
+        <div style="text-align:center;font:700 clamp(15px,1.9vw,20px)/1.3 'Archivo';margin-bottom:12px;min-height:26px;color:{{ promptColor }};">{{ playPrompt }}</div>
+
+        <!-- pitch -->
+        <div style="position:relative;height:min(60vh,540px);aspect-ratio:16/10;max-width:100%;margin:0 auto;align-self:center;border-radius:16px;overflow:hidden;border:1px solid rgba(120,140,166,.18);background:radial-gradient(130% 120% at 50% 100%,#0d1c2e,#091324,#050c17);">
+          <div style="position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0,transparent 12.5%,rgba(120,180,220,.045) 12.5%,rgba(120,180,220,.045) 25%);"></div>
+          <div style="position:absolute;top:6%;bottom:6%;right:6%;width:34%;border:1px solid rgba(120,180,220,.12);border-right:0;border-radius:6px 0 0 6px;"></div>
+
+          <!-- pass trail -->
+          <sc-if value="{{ showTrail }}" hint-placeholder-val="{{ false }}">
+            <svg viewBox="0 0 160 100" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;"><path d="{{ trailPath }}" fill="none" stroke="color-mix(in srgb,var(--accent,#22D3EE) 60%,transparent)" stroke-width="0.7" stroke-dasharray="2 2"/></svg>
+          </sc-if>
+
+          <!-- teammates / opponents -->
+          <sc-for list="{{ tokens }}" as="tk" hint-placeholder-count="6">
+            <div style="position:absolute;top:{{ tk.y }};left:{{ tk.x }};transform:translate(-50%,-50%);{{ tk.look }}"></div>
+          </sc-for>
+
+          <!-- ball -->
+          <div style="position:absolute;top:{{ ballY }};left:{{ ballX }};transform:translate(-50%,-50%);width:11px;height:11px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,#c9d6e2);box-shadow:0 0 10px rgba(255,255,255,.85);transition:top {{ ballDur }} cubic-bezier(.3,.6,.4,1),left {{ ballDur }} cubic-bezier(.3,.6,.4,1);z-index:3;"></div>
+
+          <!-- tappable zones -->
+          <sc-if value="{{ showZones }}" hint-placeholder-val="{{ false }}">
+            <sc-for list="{{ zones }}" as="z" hint-placeholder-count="3">
+              <button onClick="{{ z.onPick }}" style="position:absolute;top:{{ z.y }};left:{{ z.x }};transform:translate(-50%,-50%);width:{{ z.size }};height:{{ z.size }};border-radius:50%;cursor:pointer;border:2px dashed {{ z.border }};background:{{ z.bg }};z-index:4;transition:all .14s ease;" style-hover="border-color:var(--accent,#22D3EE);background:color-mix(in srgb,var(--accent,#22D3EE) 18%,transparent);"></button>
+            </sc-for>
+          </sc-if>
+
+          <!-- reveal marker -->
+          <sc-if value="{{ showReveal }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;top:{{ answerY }};left:{{ answerX }};width:34px;height:34px;transform:translate(-50%,-50%);border-radius:50%;border:2px solid {{ revealColor }};box-shadow:0 0 16px {{ revealColor }};z-index:5;"></div>
+            <div style="position:absolute;top:{{ answerY }};left:{{ answerX }};width:34px;height:34px;border-radius:50%;background:{{ revealColor }};opacity:.5;z-index:4;animation:fa-ping .9s ease-out infinite;"></div>
+            <sc-if value="{{ showPick }}" hint-placeholder-val="{{ false }}">
+              <div style="position:absolute;top:{{ pickY }};left:{{ pickX }};width:28px;height:28px;transform:translate(-50%,-50%);border-radius:50%;border:2px solid #FF5A6E;z-index:5;"></div>
+            </sc-if>
+          </sc-if>
+        </div>
+
+        <!-- feedback -->
+        <sc-if value="{{ showFeedback }}" hint-placeholder-val="{{ false }}">
+          <div class="fa-in-sm" style="margin-top:14px;padding:14px 18px;border-radius:13px;border:1px solid {{ fbBorder }};background:{{ fbBg }};">
+            <div style="font:700 14px 'Archivo';color:{{ fbColor }};margin-bottom:4px;">{{ fbTitle }}</div>
+            <p style="margin:0;font:400 13px/1.5 'Archivo';color:#B4C2D4;text-wrap:pretty;">{{ fbBody }}</p>
+          </div>
+        </sc-if>
+      </div>
+    </main>
+  </sc-if>
+
+  <!-- RESULT -->
+  <sc-if value="{{ isResult }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:10px clamp(20px,4vw,54px) 64px;">
+      <div style="width:100%;max-width:600px;">
+        <div class="fa-in" style="text-align:center;margin-bottom:22px;">
+          <div style="font:600 11px 'IBM Plex Mono';letter-spacing:.4em;color:#7688a0;margin-bottom:12px;">YOU READ THE GAME</div>
+          <div style="font:900 clamp(60px,12vw,104px)/0.9 'Archivo';letter-spacing:-0.03em;color:var(--accent,#22D3EE);text-shadow:0 0 48px color-mix(in srgb,var(--accent,#22D3EE) 45%,transparent);">{{ scoreBig }}</div>
+          <div style="margin-top:6px;font:600 clamp(15px,1.7vw,20px) 'Archivo';color:#DCE6F2;">{{ resultHeadline }}</div>
+        </div>
+
+        <div class="fa-in" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:22px;animation-delay:.06s;">
+          <div style="padding:16px;border-radius:13px;border:1px solid rgba(120,140,166,.18);background:rgba(10,16,28,.45);text-align:center;"><div style="font:800 22px 'Archivo';color:#EAF2FB;">{{ statAcc }}</div><div style="font:600 8.5px 'IBM Plex Mono';letter-spacing:.14em;color:#61748c;margin-top:4px;">READS CORRECT</div></div>
+          <div style="padding:16px;border-radius:13px;border:1px solid rgba(120,140,166,.18);background:rgba(10,16,28,.45);text-align:center;"><div style="font:800 22px 'Archivo';color:#EAF2FB;">{{ statEarly }}</div><div style="font:600 8.5px 'IBM Plex Mono';letter-spacing:.14em;color:#61748c;margin-top:4px;">EARLY READS</div></div>
+        </div>
+
+        <div class="fa-in" style="padding-left:16px;border-left:3px solid var(--accent,#22D3EE);margin-bottom:24px;animation-delay:.12s;">
+          <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:#61748c;margin-bottom:7px;">A SOFT READ</div>
+          <p style="margin:0;font:500 clamp(15px,1.7vw,18px)/1.5 'Archivo';color:#EAF2FB;text-wrap:pretty;">{{ softRead }}</p>
+        </div>
+
+        <div class="fa-in" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:12px;animation-delay:.2s;">
+          <button onClick="{{ again }}" style="display:inline-flex;align-items:center;gap:10px;padding:15px 30px;border-radius:12px;border:0;background:var(--accent,#22D3EE);color:#0b0805;font:700 15px 'Archivo';cursor:pointer;box-shadow:0 12px 36px color-mix(in srgb,var(--accent,#22D3EE) 40%,transparent);transition:transform .16s ease;" style-hover="transform:translateY(-2px);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:#0b0805;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>Play again</button>
+          <a href="Assessment.dc.html" style="display:inline-flex;align-items:center;gap:9px;padding:15px 24px;border-radius:12px;border:1px solid rgba(157,176,198,.28);background:rgba(12,18,30,.4);color:#C6D3E2;font:600 14px 'Archivo';" style-hover="border-color:color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);color:#EAF2FB;">Back to the scan</a>
+        </div>
+      </div>
+    </main>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:940,&quot;height&quot;:720},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#22D3EE&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#22D3EE&quot;,&quot;#A78BFA&quot;,&quot;#C6FF3A&quot;,&quot;#FF7A45&quot;,&quot;#FF4D8D&quot;]},&quot;motion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;embedded&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;level&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;pro&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;academy&quot;,&quot;pro&quot;,&quot;elite&quot;]}}">
+class Component extends DCLogic {
+  LEVELS = {
+    academy:{ label:'Academy', sub:'FREEZE LATE', think:5000, decoyJitter:0 },
+    pro:    { label:'Pro',     sub:'FREEZE MID',  think:3600, decoyJitter:1 },
+    elite:  { label:'Elite',   sub:'FREEZE EARLY',think:2600, decoyJitter:2 },
+  };
+
+  // Each puzzle: pass sequence (ball waypoints, %), tokens, candidate zones (one correct),
+  // and a short "why". kind maps to a reading axis (sentinel=danger, deliverer=run).
+  P = [
+    { prompt:'Where does the next ball go?', kind:'deliverer',
+      path:[{x:'10%',y:'52%'},{x:'30%',y:'40%'},{x:'48%',y:'34%'}],
+      tokens:[ {t:'op',x:'56%',y:'40%'},{t:'op',x:'62%',y:'58%'},{t:'mate',x:'80%',y:'24%'},{t:'mate',x:'70%',y:'70%'} ],
+      zones:[ {x:'82%',y:'24%',c:true},{x:'70%',y:'70%',c:false},{x:'55%',y:'52%',c:false} ],
+      why:'The striker is peeling to the back post and the near defender is ball-watching \u2014 the early cross to his run was on.' },
+    { prompt:'Who\u2019s about to be free?', kind:'sentinel',
+      path:[{x:'14%',y:'30%'},{x:'34%',y:'44%'},{x:'50%',y:'56%'}],
+      tokens:[ {t:'op',x:'44%',y:'40%'},{t:'op',x:'58%',y:'50%'},{t:'mate',x:'72%',y:'42%'},{t:'mate',x:'66%',y:'74%'} ],
+      zones:[ {x:'72%',y:'42%',c:true},{x:'66%',y:'74%',c:false},{x:'58%',y:'30%',c:false} ],
+      why:'As the ball travelled, the far midfielder drifted into the pocket behind the line \u2014 that\u2019s the free man.' },
+    { prompt:'Where does the danger go?', kind:'sentinel',
+      path:[{x:'88%',y:'46%'},{x:'70%',y:'40%'},{x:'54%',y:'44%'}],
+      tokens:[ {t:'op',x:'46%',y:'36%'},{t:'op',x:'40%',y:'60%'},{t:'op',x:'60%',y:'70%'},{t:'mate',x:'30%',y:'48%'} ],
+      zones:[ {x:'34%',y:'66%',c:true},{x:'46%',y:'32%',c:false},{x:'60%',y:'50%',c:false} ],
+      why:'Their winger has started the run in behind on your blind side \u2014 the through ball into that channel is the threat.' },
+    { prompt:'Where does the next ball go?', kind:'deliverer',
+      path:[{x:'12%',y:'66%'},{x:'32%',y:'58%'},{x:'46%',y:'48%'}],
+      tokens:[ {t:'op',x:'52%',y:'42%'},{t:'op',x:'58%',y:'62%'},{t:'mate',x:'74%',y:'56%'},{t:'mate',x:'50%',y:'26%'} ],
+      zones:[ {x:'74%',y:'56%',c:true},{x:'50%',y:'26%',c:false},{x:'62%',y:'44%',c:false} ],
+      why:'The overlap outside you arrives just as the ball does \u2014 releasing him is the higher-value read.' },
+    { prompt:'Who\u2019s about to be free?', kind:'sentinel',
+      path:[{x:'86%',y:'30%'},{x:'66%',y:'38%'},{x:'52%',y:'50%'}],
+      tokens:[ {t:'op',x:'44%',y:'44%'},{t:'op',x:'56%',y:'64%'},{t:'mate',x:'32%',y:'36%'},{t:'mate',x:'40%',y:'72%'} ],
+      zones:[ {x:'32%',y:'36%',c:true},{x:'40%',y:'72%',c:false},{x:'48%',y:'54%',c:false} ],
+      why:'The switch is coming: the weak-side player is unmarked because the whole line has shifted ball-ward.' },
+    { prompt:'Where does the next ball go?', kind:'deliverer',
+      path:[{x:'10%',y:'44%'},{x:'28%',y:'36%'},{x:'44%',y:'30%'}],
+      tokens:[ {t:'op',x:'52%',y:'34%'},{t:'op',x:'50%',y:'56%'},{t:'mate',x:'78%',y:'40%'},{t:'mate',x:'64%',y:'62%'} ],
+      zones:[ {x:'64%',y:'62%',c:true},{x:'78%',y:'40%',c:false},{x:'54%',y:'44%',c:false} ],
+      why:'The cutback is the pass \u2014 the runner arriving late at the top of the box is the one nobody has picked up.' },
+    { prompt:'Where does the danger go?', kind:'sentinel',
+      path:[{x:'88%',y:'58%'},{x:'68%',y:'52%'},{x:'54%',y:'46%'}],
+      tokens:[ {t:'op',x:'48%',y:'40%'},{t:'op',x:'44%',y:'62%'},{t:'op',x:'60%',y:'30%'},{t:'mate',x:'34%',y:'54%'} ],
+      zones:[ {x:'44%',y:'62%',c:true},{x:'60%',y:'30%',c:false},{x:'50%',y:'46%',c:false} ],
+      why:'The overlap on their right is the danger \u2014 hold and read it, don\u2019t dive at the man on the ball.' },
+    { prompt:'Who\u2019s about to be free?', kind:'deliverer',
+      path:[{x:'14%',y:'54%'},{x:'34%',y:'46%'},{x:'50%',y:'40%'}],
+      tokens:[ {t:'op',x:'46%',y:'34%'},{t:'op',x:'58%',y:'52%'},{t:'mate',x:'76%',y:'30%'},{t:'mate',x:'70%',y:'60%'} ],
+      zones:[ {x:'76%',y:'30%',c:true},{x:'70%',y:'60%',c:false},{x:'56%',y:'40%',c:false} ],
+      why:'The striker\u2019s first movement is across the front post \u2014 that near-post run is the one to feed.' },
+  ];
+
+  state = { view:'intro', level:'pro', idx:0, sub:'watch', correct:0, early:0,
+    ballX:'10%', ballY:'50%', ballDur:'0.5s', showZones:false, showReveal:false, showFeedback:false,
+    showPick:false, pickX:'0%', pickY:'0%', lastGood:false, lastFast:false, showTrail:false };
+
+  componentDidMount(){
+    try{ this._soundOn=localStorage.getItem('fa_sound')!=='0'; }catch(e){ this._soundOn=true; }
+    try{ const b=JSON.parse(localStorage.getItem('fa_om_readgame')||'null'); this._best=b&&typeof b.bestPct==='number'?b.bestPct:null; }catch(e){ this._best=null; }
+    this._level=this.props.level||'pro';
+    this._embedded=this.props.embedded===true;
+    if(this._embedded){ this._begin(); } else this.forceUpdate();
+  }
+  componentWillUnmount(){ [this._t1,this._t2,this._t3,this._t4,this._think].forEach(t=>clearTimeout(t)); }
+
+  _audio(){ if(this._actx===undefined){ try{ this._actx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ this._actx=null; } } if(this._actx&&this._actx.state==='suspended') this._actx.resume(); return this._actx; }
+  _tone(f,d,t,g){ const c=this._audio(); if(!c||this._soundOn===false) return; const o=c.createOscillator(),a=c.createGain(); o.type=t||'sine'; o.frequency.value=f; o.connect(a); a.connect(c.destination); const n=c.currentTime; a.gain.setValueAtTime(0,n); a.gain.linearRampToValueAtTime(g||0.05,n+0.01); a.gain.exponentialRampToValueAtTime(0.0001,n+d); o.start(n); o.stop(n+d); }
+  _sfx(k){ if(this._soundOn===false) return; if(k==='good'){ this._tone(620,0.1,'triangle',0.05); setTimeout(()=>this._tone(860,0.12,'triangle',0.045),60);} else if(k==='bad') this._tone(220,0.18,'sawtooth',0.04); else if(k==='whistle') this._tone(900,0.16,'sine',0.05); else if(k==='pass') this._tone(480,0.06,'sine',0.03); else if(k==='end'){ this._tone(520,0.14,'triangle',0.05); setTimeout(()=>this._tone(720,0.14,'triangle',0.05),120); setTimeout(()=>this._tone(940,0.26,'triangle',0.05),240);} else this._tone(430,0.08,'sine',0.04); }
+  _toggleSound(){ const on=this._soundOn===false; this._soundOn=on; try{ localStorage.setItem('fa_sound', on?'1':'0'); }catch(e){} if(on){ this._audio(); this._sfx('click'); } this.forceUpdate(); }
+
+  _pickLevel(k){ this._sfx('click'); this._level=k; this.setState({ level:k }); }
+  _begin(){ this._sfx('whistle'); this._order=this._shuffle(this.P.map((_,i)=>i)); this.setState({ view:'play', idx:0, correct:0, early:0 },()=>this._runPuzzle()); }
+  _shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+  _cur(){ return this.P[this._order[this.state.idx]]; }
+
+  _runPuzzle(){
+    [this._t1,this._t2,this._t3,this._t4,this._think].forEach(t=>clearTimeout(t));
+    const p=this._cur();
+    const start=p.path[0];
+    // reset ball to start, no zones
+    this.setState({ sub:'watch', showZones:false, showReveal:false, showFeedback:false, showPick:false, showTrail:false, ballDur:'0s', ballX:start.x, ballY:start.y },()=>{
+      // animate through waypoints
+      let step=1;
+      const walk=()=>{
+        if(step>=p.path.length){ this._freeze(); return; }
+        const w=p.path[step]; this._sfx('pass');
+        this.setState({ ballDur:'0.5s', ballX:w.x, ballY:w.y });
+        step+=1;
+        this._t1=setTimeout(walk,620);
+      };
+      this._t2=setTimeout(walk,320);
+    });
+  }
+
+  _freeze(){
+    this._sfx('whistle');
+    this._answered=false;
+    this._freezeAt=Date.now();
+    const think=this.LEVELS[this._level].think;
+    this.setState({ sub:'call', showZones:true, showTrail:true });
+    this._think=setTimeout(()=>{ if(!this._answered) this._resolve(null); }, think);
+  }
+
+  _pickZone(z,zx,zy){
+    if(this._answered||this.state.sub!=='call') return; this._answered=true; clearTimeout(this._think);
+    this._resolve({ z, zx, zy });
+  }
+
+  _resolve(sel){
+    const p=this._cur();
+    const ans=p.zones.find(z=>z.c);
+    const good = sel && sel.z && sel.z.c;
+    const elapsed = sel? (Date.now()-this._freezeAt) : 99999;
+    const fast = good && elapsed < this.LEVELS[this._level].think*0.5;
+    if(good) this._sfx('good'); else this._sfx('bad');
+    // reveal: move ball to answer
+    this.setState({
+      sub:'feedback', showZones:false, showReveal:true, ballDur:'0.45s', ballX:ans.x, ballY:ans.y,
+      answerX:ans.x, answerY:ans.y,
+      showPick: !!(sel&&sel.z&&!sel.z.c), pickX: sel?sel.zx:'0%', pickY: sel?sel.zy:'0%',
+      showFeedback:true, lastGood:good, lastFast:fast,
+      correct:this.state.correct+(good?1:0), early:this.state.early+(fast?1:0),
+    });
+    // track shape
+    if(!this._counts) this._counts={ sentinel:0, deliverer:0 };
+    if(good) this._counts[p.kind]+=1;
+    this._t3=setTimeout(()=>{
+      const next=this.state.idx+1;
+      if(next>=this._order.length){ this._end(); return; }
+      this.setState({ idx:next },()=>this._runPuzzle());
+    }, good?1500:2300);
+  }
+
+  _end(){
+    this._sfx('end');
+    const total=this._order.length;
+    const pct=Math.round(this.state.correct/total*100);
+    const meta={ correct:this.state.correct, total, pct, early:this.state.early,
+      counts:this._counts||{sentinel:0,deliverer:0}, level:this._level };
+    this._meta=meta;
+    if(!this._embedded){ try{ const best=Math.max(this._best||0,pct); localStorage.setItem('fa_om_readgame', JSON.stringify({ bestPct:best, lastPct:pct, at:new Date().toISOString(), weight:0 })); this._best=best; }catch(e){} }
+    this.setState({ view:'result' });
+    if(this._embedded && typeof this.props.onDone==='function'){ this.props.onDone(meta.counts, meta); }
+  }
+  _again(){ this._begin(); }
+
+  renderVals(){
+    const accent=this.props.accent ?? '#22D3EE';
+    const V=this.state.view;
+    const soundOn=this._soundOn!==false;
+    const base={
+      accent, showChrome:!this._embedded && V!=='play',
+      isIntro:V==='intro', isPlay:V==='play', isResult:V==='result',
+      soundOn, soundOff:!soundOn, soundColor:soundOn?accent:'#61748c', soundTitle:soundOn?'Sound on':'Sound off',
+      toggleSound:()=>this._toggleSound(), start:()=>this._begin(), again:()=>this._again(),
+      dailyBadge:'READ THE GAME \u00b7 DAILY',
+      bestLine: this._best!=null? ('YOUR BEST \u00b7 '+this._best+'% READS') : 'FIRST RUN \u00b7 8 PUZZLES',
+    };
+    base.levels=Object.keys(this.LEVELS).map(k=>{ const L=this.LEVELS[k]; const on=this.state.level===k;
+      return { key:k, label:L.label, sub:L.sub, onPick:()=>this._pickLevel(k),
+        bg:on?'color-mix(in srgb,'+accent+' 16%,transparent)':'rgba(10,16,28,.5)',
+        border:on?'color-mix(in srgb,'+accent+' 60%,transparent)':'rgba(120,140,166,.22)',
+        fg:on?'#F2F8FE':'#C6D3E2', subColor:on?accent:'#61748c' }; });
+
+    // play
+    const p=(V==='play')?this._cur():this.P[0];
+    base.puzzleLabel=(this.state.idx+1)+' / '+((this._order&&this._order.length)||8);
+    base.scoreLabel=this.state.correct+' READ';
+    base.playPrompt= this.state.sub==='watch'?'Watch the move\u2026': this.state.sub==='call'?p.prompt: (this.state.lastGood?'Read it.':'Missed it.');
+    base.promptColor= this.state.sub==='feedback'? (this.state.lastGood?'#22C776':'#FF5A6E'):'#EAF2FB';
+    base.ballX=this.state.ballX; base.ballY=this.state.ballY; base.ballDur=this.state.ballDur;
+    base.showZones=this.state.showZones; base.showReveal=this.state.showReveal; base.showFeedback=this.state.showFeedback;
+    base.showTrail=this.state.showTrail;
+    base.answerX=this.state.answerX; base.answerY=this.state.answerY;
+    base.showPick=this.state.showPick; base.pickX=this.state.pickX; base.pickY=this.state.pickY;
+    base.revealColor='#22C776';
+
+    // trail path (viewBox 160x100)
+    const toXY=(s)=>parseFloat(s)/100;
+    base.trailPath = p.path.map((w,i)=> (i===0?'M':'L')+(toXY(w.x)*160).toFixed(1)+' '+(toXY(w.y)*100).toFixed(1)).join(' ');
+
+    // tokens
+    base.tokens=p.tokens.map(t=>({ x:t.x, y:t.y,
+      look: t.t==='op'
+        ? 'width:14px;height:14px;border-radius:3px;background:#E0413C;box-shadow:0 0 6px rgba(224,65,60,.55);'
+        : 'width:13px;height:13px;border-radius:50%;background:#8fd8e6;opacity:.85;' }));
+
+    // zones
+    const jit=this.LEVELS[this.state.level].decoyJitter;
+    const zsize= jit>=2?'11%': jit>=1?'13%':'16%';
+    base.zones=p.zones.map(z=>({ x:z.x, y:z.y, size:zsize,
+      border:'rgba(214,164,33,.55)', bg:'color-mix(in srgb,var(--accent,#22D3EE) 8%,transparent)',
+      onPick:()=>this._pickZone(z,z.x,z.y) }));
+
+    // feedback
+    base.fbTitle= this.state.lastGood? (this.state.lastFast?'Read early. Elite.':'Correct read.') : 'Not this time.';
+    base.fbBody=p.why;
+    base.fbColor= this.state.lastGood?'#22C776':'#FF5A6E';
+    base.fbBorder= this.state.lastGood?'color-mix(in srgb,#22C776 34%,transparent)':'color-mix(in srgb,#FF5A6E 34%,transparent)';
+    base.fbBg= this.state.lastGood?'color-mix(in srgb,#22C776 8%,transparent)':'color-mix(in srgb,#FF5A6E 8%,transparent)';
+
+    // result
+    const m=this._meta;
+    if(m){
+      base.scoreBig=m.correct+'/'+m.total;
+      base.resultHeadline= m.pct>=88?'You see it before it happens.': m.pct>=63?'A sharp reader of the game.': m.pct>=38?'The picture is coming to you.':'Keep watching \u2014 the reads will come.';
+      base.statAcc=m.pct+'%'; base.statEarly=m.early;
+      const lean = (m.counts.sentinel||0) > (m.counts.deliverer||0) ? 'reading danger before it forms \u2014 a defensive, Sentinel-ish eye' : (m.counts.deliverer||0) > (m.counts.sentinel||0) ? 'spotting the run before the striker commits \u2014 a Deliverer\u2019s eye for the ball' : 'reading both ends of the move';
+      base.softRead= m.pct>=50? ('You were strongest at '+lean+'. That\u2019s an observation about how you watch a game \u2014 not a verdict. Your archetype comes from the scan.') : 'Anticipation is trainable \u2014 the more moves you watch, the earlier the picture arrives. Come back tomorrow.';
+    } else { base.scoreBig='0/8'; base.resultHeadline=''; base.statAcc='0%'; base.statEarly=0; base.softRead=''; }
+
+    return base;
+  }
+}
+</script>
+</body>
+</html>
