@@ -1,6 +1,19 @@
 // GENERATED from dc-runtime/src/*.ts — do not edit. Rebuild with `cd dc-runtime && bun run build`.
 "use strict";
 (() => {
+  // --- Footballer's Academy: local vendored runtime (offline-capable) ---------
+  // Maps the runtime's CDN URLs to files under assets/vendor/ so the games load
+  // React/ReactDOM/Babel from disk instead of unpkg. cdnScriptFor() reads this
+  // map first (falling back to the CDN only when a URL is absent). Set here,
+  // ahead of loadReactUmd(), and guarded so an embedding host can still override.
+  if (typeof window !== "undefined" && !window.__resources) {
+    window.__resources = {
+      "https://unpkg.com/react@18.3.1/umd/react.production.min.js": "assets/vendor/react.production.min.js",
+      "https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js": "assets/vendor/react-dom.production.min.js",
+      "https://unpkg.com/@babel/standalone@7.29.0/babel.min.js": "assets/vendor/babel.min.js"
+    };
+  }
+  // ---------------------------------------------------------------------------
   var __defProp = Object.defineProperty;
   var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
   var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);

@@ -8,9 +8,7 @@
 <body>
 <x-dc>
 <helmet>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="assets/vendor/fonts/fonts.css" rel="stylesheet">
 <script src="./fa-pitch.js"></script>
 <style>
   *{box-sizing:border-box;}
@@ -250,18 +248,26 @@
             </div>
             <p style="margin:11px 0 0;font:400 14px/1.55 'Archivo';color:#9FB0C5;text-wrap:pretty;">{{ scoreNote }}</p>
           </div>
-          <div style="display:flex;gap:10px;">
-            <div style="flex:1;padding:13px;border-radius:11px;border:1px solid rgba(120,140,166,.18);background:rgba(6,12,22,.5);text-align:center;">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+            <div style="padding:12px 13px;border-radius:11px;border:1px solid rgba(120,140,166,.18);background:rgba(6,12,22,.5);text-align:center;">
               <div style="font:800 20px 'Archivo';color:{{ deltaColor }};">{{ deltaText }}</div>
               <div style="font:600 8px 'IBM Plex Mono';letter-spacing:.1em;color:#7688a0;margin-top:3px;">PRESSURE DELTA</div>
+              <div style="font:500 7.5px 'IBM Plex Mono';letter-spacing:.08em;color:#4f627a;margin-top:2px;">{{ deltaVs }}</div>
             </div>
-            <div style="flex:1;padding:13px;border-radius:11px;border:1px solid rgba(120,140,166,.18);background:rgba(6,12,22,.5);text-align:center;">
+            <div style="padding:12px 13px;border-radius:11px;border:1px solid rgba(120,140,166,.18);background:rgba(6,12,22,.5);text-align:center;">
               <div style="font:800 20px 'Archivo';color:#EAF2FB;">{{ braveryText }}</div>
               <div style="font:600 8px 'IBM Plex Mono';letter-spacing:.1em;color:#7688a0;margin-top:3px;">BRAVERY</div>
+              <div style="font:500 7.5px 'IBM Plex Mono';letter-spacing:.08em;color:#4f627a;margin-top:2px;">{{ braveryVs }}</div>
             </div>
-            <div style="flex:1;padding:13px;border-radius:11px;border:1px solid rgba(120,140,166,.18);background:rgba(6,12,22,.5);text-align:center;">
+            <div style="padding:12px 13px;border-radius:11px;border:1px solid rgba(120,140,166,.18);background:rgba(6,12,22,.5);text-align:center;">
               <div style="font:800 20px 'Archivo';color:#EAF2FB;">{{ hesitationText }}</div>
               <div style="font:600 8px 'IBM Plex Mono';letter-spacing:.1em;color:#7688a0;margin-top:3px;">HESITATION</div>
+              <div style="font:500 7.5px 'IBM Plex Mono';letter-spacing:.08em;color:#4f627a;margin-top:2px;">{{ hesitationVs }}</div>
+            </div>
+            <div style="padding:12px 13px;border-radius:11px;border:1px solid rgba(120,140,166,.18);background:rgba(6,12,22,.5);text-align:center;">
+              <div style="font:800 20px 'Archivo';color:#EAF2FB;">{{ consistencyText }}</div>
+              <div style="font:600 8px 'IBM Plex Mono';letter-spacing:.1em;color:#7688a0;margin-top:3px;">CONSISTENCY</div>
+              <div style="font:500 7.5px 'IBM Plex Mono';letter-spacing:.08em;color:#4f627a;margin-top:2px;">{{ consistencyVs }}</div>
             </div>
           </div>
           <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding-top:4px;border-top:1px solid rgba(120,140,166,.14);">
@@ -276,7 +282,10 @@
         <div class="fa-in" style="flex:1 1 300px;max-width:420px;display:flex;flex-direction:column;gap:14px;padding:24px;border-radius:16px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);animation-delay:.18s;">
           <div style="display:flex;align-items:center;justify-content:space-between;">
             <div style="font:600 9.5px 'IBM Plex Mono';letter-spacing:.22em;color:#61748c;">HOLDING UP UNDER STRESS</div>
-            <div style="font:800 14px 'Archivo';color:var(--accent,#22D3EE);">{{ resilienceText }}%</div>
+            <div style="display:flex;align-items:baseline;gap:7px;">
+              <span style="font:700 8.5px 'IBM Plex Mono';letter-spacing:.14em;color:{{ resColor }};">{{ resTag }}</span>
+              <span style="font:800 14px 'Archivo';color:{{ resColor }};">{{ resilienceText }}%</span>
+            </div>
           </div>
           <div style="position:relative;aspect-ratio:16/10;border-radius:12px;overflow:hidden;background:rgba(6,12,22,.5);border:1px solid rgba(120,140,166,.16);">
             <svg viewBox="0 0 100 100" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;">
@@ -289,7 +298,7 @@
               </defs>
               <rect x="0" y="0" width="100" height="100" fill="url(#hpStress)"/>
               <line x1="0" y1="50" x2="100" y2="50" stroke="rgba(150,170,196,.14)" stroke-width="0.4" stroke-dasharray="2 2"/>
-              <polyline points="{{ sparkPoints }}" fill="none" stroke="var(--accent,#22D3EE)" stroke-width="1.1" stroke-linejoin="round" stroke-linecap="round" style="filter:drop-shadow(0 0 3px color-mix(in srgb,var(--accent,#22D3EE) 60%,transparent));stroke-dasharray:320;stroke-dashoffset:320;animation:fa-draw 1.15s cubic-bezier(.4,.7,.3,1) .15s forwards;"/>
+              <polyline ref="{{ sparkRef }}" points="" fill="none" stroke="var(--accent,#22D3EE)" stroke-width="1.1" stroke-linejoin="round" stroke-linecap="round" style="filter:drop-shadow(0 0 3px color-mix(in srgb,var(--accent,#22D3EE) 60%,transparent));stroke-dasharray:320;stroke-dashoffset:320;animation:fa-draw 1.15s cubic-bezier(.4,.7,.3,1) .15s forwards;"/>
             </svg>
             <sc-for list="{{ sparkMarkers }}" as="m" hint-placeholder-count="10">
               <div style="position:absolute;width:9px;height:9px;border-radius:50%;border:1.5px solid #050c17;{{ m.look }}{{ m.pos }}"></div>
@@ -348,6 +357,10 @@ class Component extends DCLogic {
 
   ORDER = ['oracle','sentinel','catalyst','bastion','wall'];
   AX = { oracle:'ANTICIPATION', sentinel:'COMMAND', catalyst:'DISTRIBUTION', bastion:'REFLEX', wall:'PRESENCE' };
+  // Elite reference points (from the game spec §5.2) — shown next to each stat
+  // so a score has context. These are honest, labelled benchmarks, not faked
+  // percentiles; the footer still notes real percentiles arrive with more data.
+  ELITE = { delta:-8, bravery:55, hesitation:12, consistency:88 };
 
   SCN = [
     { min:'89:12', tag:'LONG-RANGE STRIKE', stress:10,
@@ -860,28 +873,55 @@ class Component extends DCLogic {
     const m = this.state._meta || (view === 'result' || view === 'done' ? this._meta() : null);
     const cu = (view === 'result' || view === 'done') ? (this.state.cu != null ? this.state.cu : 1) : 1;
     const D = (v) => Math.round(v * cu);
-    let score = m ? m.score : 0, resilience = m ? m.resilience : 0;
+    const score = m ? m.score : 0, resilience = m ? m.resilience : 0;
     let scoreText = '0', resilienceText = '0';
     let scoreNote = '', deltaText = '', deltaColor = accent, braveryText = '', hesitationText = '',
-        doneHeadline = '', doneNote = '', sparkPoints = '', sparkMarkers = [], bands = [], leanChips = [];
+        consistencyText = '', resTag = '', resColor = accent,
+        deltaVs = '', braveryVs = '', hesitationVs = '', consistencyVs = '',
+        doneHeadline = '', doneNote = '', sparkMarkers = [], bands = [], leanChips = [];
     if (m) {
       scoreText = '' + D(score);
       resilienceText = '' + D(resilience);
-      scoreNote = score >= 78 ? 'Ice in your veins. Stress barely touched your game \u2014 elite composure under the lights.'
-        : score >= 60 ? 'Composed. You held most of your quality as the pressure climbed on you.'
-        : score >= 42 ? 'You feel it. Sharp early, but the biggest moments shaved your edge.'
-        : 'The pressure got to you. Good news: composure is the most trainable edge there is.';
-      doneHeadline = score >= 78 ? 'Unshakeable.' : score >= 60 ? 'Held your nerve.' : score >= 42 ? 'Wobbled late.' : 'Rattled under fire.';
-      doneNote = score >= 60 ? 'Your decision quality stayed intact as the clock and the crowd turned up.'
+      // Two independent axes: composure LEVEL (absolute quality) and how it
+      // TRENDED as stress climbed. The headline and notes combine both so they
+      // can never contradict the numbers (the old copy keyed only off score,
+      // which clashed with a flat/rising resilience reading).
+      const dvRaw = m.pressureDelta;
+      const trend = dvRaw >= 4 ? 'up' : (dvRaw > -5 ? 'flat' : 'down');
+      const band = score >= 72 ? 'elite' : (score >= 50 ? 'solid' : 'shaky');
+      const HEAD = {
+        elite: { up:'Unshakeable.', flat:'Unshakeable.', down:'Elite \u2014 until it bit late.' },
+        solid: { up:'Grew into the storm.', flat:'Held your nerve.', down:'Wobbled late.' },
+        shaky: { up:'Slow start, found it late.', flat:'Steady, but below your ceiling.', down:'Rattled under fire.' },
+      };
+      doneHeadline = HEAD[band][trend];
+      // Level-only copy (the headline carries the trend) so the two never clash.
+      scoreNote = band === 'elite' ? 'Ice in your veins \u2014 elite composure under the lights.'
+        : band === 'solid' ? 'Composed under the lights \u2014 a solid foundation to build on.'
+        : 'The pressure told. Good news: composure is the most trainable edge there is.';
+      doneNote = trend === 'up' ? 'You sharpened when it mattered most \u2014 your best calls came under the heaviest pressure.'
+        : trend === 'flat' ? 'Your decision quality held its line as the clock and the crowd turned up.'
         : 'Your quality dipped as the stress rose \u2014 the late, high-stakes calls are where to train.';
+      // resilience tag mirrors the same trend, so tag + number + headline agree
+      resTag = trend === 'up' ? 'STRONGER LATE' : trend === 'flat' ? 'HELD FIRM' : (dvRaw >= -15 ? 'FADED LATE' : 'DROPPED OFF');
+      resColor = trend === 'up' ? '#7FE0C4' : trend === 'flat' ? accent : (dvRaw >= -15 ? '#FFB020' : '#FF5A6E');
       const dv = D(m.pressureDelta);
       deltaText = (dv > 0 ? '+' : '') + dv;
       deltaColor = m.pressureDelta >= 0 ? accent : (m.pressureDelta >= -15 ? '#FFB020' : '#FF5A6E');
       braveryText = D(m.braveryIndex) + '%';
       hesitationText = D(m.hesitationIndex) + '%';
+      consistencyText = D(m.consistency) + '%';
+      // labelled elite reference points (see ELITE + spec \u00a75.2)
+      deltaVs = 'ELITE ' + (this.ELITE.delta > 0 ? '+' : '') + this.ELITE.delta;
+      braveryVs = 'ELITE ' + this.ELITE.bravery + '%';
+      hesitationVs = 'ELITE ' + this.ELITE.hesitation + '%';
+      consistencyVs = 'ELITE ' + this.ELITE.consistency + '%';
       const ev = m.events;
       const n = ev.length || 1;
-      sparkPoints = ev.map((r, i) => {
+      // Stored on the instance and written to the <polyline> via sparkRef rather
+      // than interpolated into the `points` attribute — keeping raw {{ }} out of
+      // an SVG numeric attribute avoids the browser's parse-time console error.
+      this._sparkPoints = ev.map((r, i) => {
         const x = n > 1 ? (i / (n - 1)) * 100 : 50;
         const y = 100 - Math.max(0, Math.min(100, r.score));
         return x.toFixed(1) + ',' + y.toFixed(1);
@@ -937,6 +977,7 @@ class Component extends DCLogic {
       canvasRef: this._canvasRefFn || (this._canvasRefFn = (el) => this._cvRef(el)),
       barRef: this._barRefFn || (this._barRefFn = (el) => { this._barEl = el; }),
       hintRef: this._hintRefFn || (this._hintRefFn = (el) => { this._hintEl = el; }),
+      sparkRef: this._sparkRefFn || (this._sparkRefFn = (el) => { this._sparkEl = el; if (el && this._sparkPoints) el.setAttribute('points', this._sparkPoints); }),
       verdictWord, verdictColor, verdictBorder, verdictGlow,
       timerColor, timerPct, subHint, subHintColor,
       safe, bold,
@@ -944,7 +985,8 @@ class Component extends DCLogic {
       nextLabel: ci < this.SCN.length - 1 ? 'Next decision' : (embedded ? 'Finish' : 'Final whistle'),
       scoreText, resilienceText, scoreNote, doneHeadline, doneNote,
       deltaText, deltaColor, braveryText, hesitationText,
-      sparkPoints, sparkMarkers, bands, leanChips,
+      consistencyText, resTag, resColor, deltaVs, braveryVs, hesitationVs, consistencyVs,
+      sparkMarkers, bands, leanChips,
       showBest, bestText,
       begin: () => this._begin(), next: () => this._next(), retake: () => this._retake(), emit: () => this._emit(),
       back: () => { window.location.href = 'Landing.dc.html'; },
