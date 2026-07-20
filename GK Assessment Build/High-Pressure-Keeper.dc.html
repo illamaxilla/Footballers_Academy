@@ -475,30 +475,43 @@ class Component extends DCLogic {
   _stopLoop(){ this._loopOn = false; if (this._loopRaf) cancelAnimationFrame(this._loopRaf); this._loopRaf = null; }
   _advanceFlight(){ const fl = this._flight; if (!fl) return; const el = this._now() - fl.t0; const p = Math.min(1, el / fl.dur); this._ball = { x: fl.from.x + (fl.to.x - fl.from.x) * p, y: fl.from.y + (fl.to.y - fl.from.y) * p }; this._trail = [...(this._trail || []), this._ball].slice(-8); if (p >= 1) { this._flight = null; if (fl.cb) fl.cb(); } }
 
-  /* square, proportional keeper token (the "GK" jersey block) */
-  _keeper(ctx, fit, nx, ny){
+  /* tiny hex->rgba helper (accent glows without pulling in fa-pitch internals) */
+  _hexA(hex, a){ if (!hex || hex[0] !== '#') return hex || 'rgba(255,255,255,' + a + ')'; const n = parseInt(hex.slice(1), 16); return 'rgba(' + ((n >> 16) & 255) + ',' + ((n >> 8) & 255) + ',' + (n & 255) + ',' + a + ')'; }
+
+  /* keeper token — glowing HUD jersey block with a facing notch + dive lean.
+   * o: { face (rad, notch toward ball), lean (rad, dive tilt), alpha, scale } */
+  _keeper(ctx, fit, nx, ny, o){
+    o = o || {};
     const P = fit.px(nx, ny), x = P[0], y = P[1];
-    // sized off pitch metres so the keeper stays realistic vs the 7.32m goal:
-    // ~1.6m footprint. fit.m() maps metres->px.
-    const s = Math.max(10, fit.m(1.6)), w = s, h = s, rr = s * 0.30;
-    ctx.save();
-    // grounded shadow
-    ctx.fillStyle = 'rgba(0,0,0,.36)';
-    ctx.beginPath(); ctx.ellipse(x, y + h * 0.52, w * 0.5, h * 0.2, 0, 0, 7); ctx.fill();
-    // jersey block
-    const g = ctx.createLinearGradient(x, y - h / 2, x, y + h / 2);
+    const acc = this.props.accent || '#22D3EE';
+    const s = Math.max(10, fit.m(1.7)) * (o.scale || 1), rr = s * 0.3;
+    const alpha = o.alpha == null ? 1 : o.alpha, lean = o.lean || 0;
+    ctx.save(); ctx.globalAlpha = alpha;
+    // grounded shadow (shifts with the lean)
+    ctx.fillStyle = 'rgba(0,0,0,.42)';
+    ctx.beginPath(); ctx.ellipse(x + lean * s * 0.6, y + s * 0.55, s * 0.58, s * 0.2, 0, 0, 7); ctx.fill();
+    ctx.translate(x, y); if (lean) ctx.rotate(lean);
+    // jersey block (+ accent glow when solid)
+    if (alpha > 0.5) { ctx.shadowColor = acc; ctx.shadowBlur = fit.m(1.0); }
+    const g = ctx.createLinearGradient(0, -s / 2, 0, s / 2);
     g.addColorStop(0, '#EAFBFF'); g.addColorStop(1, '#8fd8e6');
-    ctx.fillStyle = g; ctx.strokeStyle = 'rgba(6,16,20,.55)'; ctx.lineWidth = Math.max(1.4, fit.m(0.06));
-    const rx = x - w / 2, ry = y - h / 2;
+    ctx.fillStyle = g; ctx.strokeStyle = this._hexA(acc, 0.9); ctx.lineWidth = Math.max(1.4, fit.m(0.07));
+    const rx = -s / 2, ry = -s / 2;
     ctx.beginPath();
     ctx.moveTo(rx + rr, ry);
-    ctx.arcTo(rx + w, ry, rx + w, ry + h, rr); ctx.arcTo(rx + w, ry + h, rx, ry + h, rr);
-    ctx.arcTo(rx, ry + h, rx, ry, rr); ctx.arcTo(rx, ry, rx + w, ry, rr); ctx.closePath();
-    ctx.fill(); ctx.stroke();
+    ctx.arcTo(rx + s, ry, rx + s, ry + s, rr); ctx.arcTo(rx + s, ry + s, rx, ry + s, rr);
+    ctx.arcTo(rx, ry + s, rx, ry, rr); ctx.arcTo(rx, ry, rx + s, ry, rr); ctx.closePath();
+    ctx.fill(); ctx.stroke(); ctx.shadowBlur = 0;
+    // facing notch — a bright pip on the edge pointing at the ball
+    if (o.face != null) {
+      const fr = s * 0.5;
+      ctx.fillStyle = this._hexA(acc, 0.95);
+      ctx.beginPath(); ctx.arc(Math.cos(o.face) * fr, Math.sin(o.face) * fr, Math.max(2, fit.m(0.17)), 0, 7); ctx.fill();
+    }
     // GK label
     ctx.fillStyle = '#06202a'; ctx.font = "800 " + Math.max(8, fit.font * 0.96) + "px 'IBM Plex Mono'";
     ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    ctx.fillText('GK', x, y + 0.5); ctx.textBaseline = 'alphabetic';
+    ctx.fillText('GK', 0, 0.5); ctx.textBaseline = 'alphabetic';
     ctx.restore();
   }
 
@@ -507,8 +520,13 @@ class Component extends DCLogic {
     const W = this._W, H = this._H, dpr = this._dpr || 1; if (!W || !H || !isFinite(W) || !isFinite(H)) return;
     const FP = window.FAPitch; if (!FP) return;
     const acc = this.props.accent || '#22D3EE';
+    const now = this._now();
+    const motion = this.props.motion !== false;
+    const reduce = !motion || (window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches);
+    const osc = reduce ? 0 : Math.sin(now / 900);       // slow ambient oscillator -1..1
     ctx.save(); ctx.scale(dpr, dpr); ctx.clearRect(0, 0, W, H);
     const t = this.SCN[this.state.ci] || this.SCN[0];
+    const stress = t.stress || 0;
     // ---- dynamic crop: always frame the WHOLE 18-yard box (back line + both
     //      sides + 6-yard + spot + D-arc), expanding only when the shooter/ball
     //      sits further out. Our goal is at x=1; the box back line is at
@@ -526,38 +544,167 @@ class Component extends DCLogic {
     let cy1 = Math.min(1, maxY);
     const fit = FP.fit(W, H, { cropRect:[cx0, cx1, cy0, cy1], orient:'ns', attackDir:'rtl', inset:0.025 }); this._fit = fit;
     FP.pitch(ctx, fit);
+    this._fieldHUD(ctx, fit, acc, now, reduce);          // floodlight + radar grid + frame
+
     const phase = this.state.phase;
-    const resolved = phase === 'resolved', resolving = phase === 'resolving';
+    const live = phase === 'live' || phase === 'ready';
+    const resolving = phase === 'resolving', resolved = phase === 'resolved';
     const last = this.state.results[this.state.results.length - 1];
     const sceneBall = this._P(t.ball);
     const ballPos = this._ball || sceneBall;
     const atk = this._P(t.atk);
-    const keeper = this._P({ x:50, y:93 });
-    // shooting angle the keeper has to cover (live only)
-    if (phase === 'live' || phase === 'ready') FP.angleCone(ctx, fit, ballPos, { end:1, optimal:true, color:acc });
-    // attacker chevron (points at our goal) — metre-sized to match the keeper
-    const shooterR = Math.max(9, fit.m(1.6));
-    FP.chevron(ctx, fit, atk.x, atk.y, { r: shooterR });
-    // keeper (+ dive on resolve)
-    let kx = keeper.x, ky = keeper.y, kAlpha = 1;
-    if (resolved && last) {
-      if (last.froze) kAlpha = 0.85;
-      else if (last.success) { ky = 0.5 + (ballPos.y - 0.5) * 0.78; kx = 0.985; }
-      else ky = 0.5 + (ballPos.y - 0.5) * 0.35;
+    const goalC = { x:1, y:0.5 };
+
+    // keeper's optimal set position — on the goal-centre→ball bisector, shading
+    // toward the ball's side so he visibly reads each shot's angle.
+    const dvx = ballPos.x - goalC.x, dvy = ballPos.y - goalC.y, dvm = Math.hypot(dvx, dvy) || 1;
+    const ktx = goalC.x + (dvx / dvm) * 0.052;
+    const kty = 0.5 + (ballPos.y - 0.5) * 0.5;
+    // dive target on resolve: reach across on a save, half-commit on a goal
+    let tgt = { x:ktx, y:kty };
+    if (resolved && last && !last.froze) {
+      tgt = last.success ? { x:0.985, y:0.5 + (ballPos.y - 0.5) * 0.72 } : { x:0.985, y:0.5 + (ballPos.y - 0.5) * 0.34 };
     }
-    ctx.globalAlpha = kAlpha;
-    this._keeper(ctx, fit, kx, ky);
-    ctx.globalAlpha = 1;
-    // ball trail (flight only) — metre-sized so it matches the zoom
+    if (this._kposCi !== this.state.ci) { this._kpos = { x:ktx, y:kty }; this._kposCi = this.state.ci; }  // snap on new card
+    if (!this._kpos) this._kpos = { x:ktx, y:kty };
+    const ease = reduce ? 1 : (resolved ? 0.3 : 0.14);
+    this._kpos.x += (tgt.x - this._kpos.x) * ease;
+    this._kpos.y += (tgt.y - this._kpos.y) * ease;
+    if (live) this._setPos = { x:ktx, y:kty };           // remember set spot for the dive afterimage
+
+    // command-presence radius around the keeper (subtle pulse while live)
+    const ringPulse = live && !reduce ? (0.5 + 0.5 * osc) : 0.5;
+    FP.radius(ctx, fit, this._kpos.x, this._kpos.y, { reach: 0.085 + ringPulse * 0.014, color: acc });
+
+    // LIVE threat read — the "scan": angle to cover, the shot lane, shooter menace, ball lock
+    if (live) {
+      FP.angleCone(ctx, fit, ballPos, { end:1, optimal:true, color:acc });
+      this._threatLine(ctx, fit, ballPos, goalC, stress, now, reduce);
+      FP.pressure(ctx, fit, atk.x, atk.y, { intensity: 0.35 + stress / 150, color:'#FF5A6E', r: Math.max(9, fit.m(1.6)) });
+      this._reticle(ctx, fit, ballPos, acc, now, reduce);
+    }
+
+    // attacker (shooter) chevron, labelled while the call is live
+    const shooterR = Math.max(9, fit.m(1.6));
+    FP.chevron(ctx, fit, atk.x, atk.y, { r: shooterR, role: live ? 'SHOOTER' : null });
+
+    // dive afterimage — a faint ghost at the set spot sells the explosive move
+    if (resolved && last && !last.froze && this._setPos) this._keeper(ctx, fit, this._setPos.x, this._setPos.y, { alpha:0.14 });
+
+    // keeper: faces the ball while live, leans into the dive on resolve
+    const KPs = fit.px(this._kpos.x, this._kpos.y), BPs = fit.px(ballPos.x, ballPos.y);
+    const face = live ? Math.atan2(BPs[1] - KPs[1], BPs[0] - KPs[0]) : null;
+    let lean = 0, kAlpha = 1;
+    if (resolved && last) {
+      if (last.froze) kAlpha = 0.72;
+      else lean = (this._kpos.y < 0.5 ? -1 : 1) * Math.min(0.5, Math.abs(this._kpos.y - 0.5) * 1.7);
+    }
+    const kScale = live && !reduce ? (1 + osc * 0.02) : 1;
+    this._keeper(ctx, fit, this._kpos.x, this._kpos.y, { face, lean, alpha:kAlpha, scale:kScale });
+
+    // reach arm + glove flung toward the ball on a committed dive
+    if (resolved && last && !last.froze) {
+      const reachAmt = Math.min(1, (now - (this._resolveT0 || now)) / 240);
+      const land = this._impact ? { x:this._impact.x, y:this._impact.y } : ballPos;
+      const LP = fit.px(land.x, land.y);
+      const gx = KPs[0] + (LP[0] - KPs[0]) * 0.82 * reachAmt, gy = KPs[1] + (LP[1] - KPs[1]) * 0.82 * reachAmt;
+      const arm = last.success ? acc : '#FF8A8A';
+      ctx.save(); ctx.strokeStyle = arm; ctx.lineCap = 'round';
+      ctx.lineWidth = Math.max(2.4, fit.m(0.17)); ctx.shadowColor = arm; ctx.shadowBlur = fit.m(0.8); ctx.globalAlpha = 0.92;
+      ctx.beginPath(); ctx.moveTo(KPs[0], KPs[1]); ctx.lineTo(gx, gy); ctx.stroke();
+      ctx.beginPath(); ctx.arc(gx, gy, Math.max(3, fit.m(0.5)), 0, 7); ctx.fillStyle = arm; ctx.fill();
+      ctx.restore();
+    }
+
+    // ball trail (flight) + ball (idle hover while live sells the "held breath")
     const ballR = Math.max(4, fit.m(0.62));
     if (resolving || resolved) {
       const tr = this._trail || [];
       tr.forEach((p, i) => { const f = (i + 1) / tr.length; ctx.globalAlpha = f * 0.4; FP.ball(ctx, fit, p.x, p.y, { r: ballR * (0.4 + f * 0.5) }); });
       ctx.globalAlpha = 1;
     }
-    FP.ball(ctx, fit, ballPos.x, ballPos.y, { flight: resolving, r: ballR });
-    // impact verdict ring
-    if (this._impact) FP.verdict(ctx, fit, this._impact.x, this._impact.y, { kind: this._impact.kind === 'save' ? 'correct' : 'wrong' });
+    const hover = live && !reduce ? osc * 0.004 : 0;
+    FP.ball(ctx, fit, ballPos.x, ballPos.y + hover, { flight: resolving, r: ballR });
+
+    // impact — expanding burst + verdict mark
+    if (this._impact) {
+      this._impactBurst(ctx, fit, this._impact, now);
+      FP.verdict(ctx, fit, this._impact.x, this._impact.y, { kind: this._impact.kind === 'save' ? 'correct' : (this._impact.kind === 'froze' ? 'missed' : 'wrong') });
+    }
+    ctx.restore();
+  }
+
+  /* ---------- HUD scene helpers (Canvas 2D — portable to any stack) ---------- */
+  // floodlight pool at the goal mouth + faint radar grid + downward scan sweep + corner brackets
+  _fieldHUD(ctx, fit, acc, now, reduce){
+    const ox = fit.ox, oy = fit.oy, dw = fit.drawW, dh = fit.drawH;
+    ctx.save();
+    ctx.beginPath(); ctx.rect(ox, oy, dw, dh); ctx.clip();
+    // floodlight from the goal
+    const G = fit.px(1, 0.5);
+    const fl = ctx.createRadialGradient(G[0], G[1], fit.m(2), G[0], G[1], Math.max(dw, dh) * 0.95);
+    fl.addColorStop(0, this._hexA(acc, 0.1)); fl.addColorStop(0.5, this._hexA(acc, 0.03)); fl.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = fl; ctx.fillRect(ox, oy, dw, dh);
+    // faint HUD grid
+    ctx.strokeStyle = this._hexA(acc, 0.06); ctx.lineWidth = 1;
+    const step = Math.max(34, Math.min(dw, dh) / 7);
+    for (let gx = ox + step; gx < ox + dw; gx += step) { ctx.beginPath(); ctx.moveTo(gx, oy); ctx.lineTo(gx, oy + dh); ctx.stroke(); }
+    for (let gy = oy + step; gy < oy + dh; gy += step) { ctx.beginPath(); ctx.moveTo(ox, gy); ctx.lineTo(ox + dw, gy); ctx.stroke(); }
+    // radar scan sweep (downward)
+    if (!reduce) {
+      const sy = oy + ((now / 2600) % 1) * dh;
+      const grd = ctx.createLinearGradient(0, sy - 18, 0, sy + 18);
+      grd.addColorStop(0, 'rgba(0,0,0,0)'); grd.addColorStop(0.5, this._hexA(acc, 0.16)); grd.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = grd; ctx.fillRect(ox, sy - 18, dw, 36);
+      ctx.strokeStyle = this._hexA(acc, 0.4); ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(ox, sy); ctx.lineTo(ox + dw, sy); ctx.stroke();
+    }
+    // inner corner brackets
+    ctx.strokeStyle = this._hexA(acc, 0.5); ctx.lineWidth = 1.5;
+    const b = 14;
+    [[ox, oy, 1, 1], [ox + dw, oy, -1, 1], [ox, oy + dh, 1, -1], [ox + dw, oy + dh, -1, -1]].forEach(c => {
+      ctx.beginPath(); ctx.moveTo(c[0] + b * c[2], c[1]); ctx.lineTo(c[0], c[1]); ctx.lineTo(c[0], c[1] + b * c[3]); ctx.stroke();
+    });
+    ctx.restore();
+  }
+  // dashed, marching shot lane from ball to goal — brighter/redder as stress climbs
+  _threatLine(ctx, fit, from, to, stress, now, reduce){
+    const A = fit.px(from.x, from.y), B = fit.px(to.x, to.y);
+    ctx.save();
+    ctx.strokeStyle = 'rgba(255,90,110,' + (0.3 + 0.35 * stress / 100).toFixed(3) + ')';
+    ctx.lineWidth = Math.max(1.6, fit.m(0.08)); ctx.setLineDash([6, 7]);
+    ctx.lineDashOffset = reduce ? 0 : -((now / 55) % 13);
+    ctx.beginPath(); ctx.moveTo(A[0], A[1]); ctx.lineTo(B[0], B[1]); ctx.stroke();
+    ctx.setLineDash([]); ctx.restore();
+  }
+  // rotating target-lock brackets + faint ring around the ball
+  _reticle(ctx, fit, p, acc, now, reduce){
+    const P = fit.px(p.x, p.y), x = P[0], y = P[1], r = Math.max(11, fit.m(1.5));
+    ctx.save(); ctx.translate(x, y); if (!reduce) ctx.rotate((now / 1600) % (Math.PI * 2));
+    ctx.strokeStyle = this._hexA(acc, 0.9); ctx.lineWidth = Math.max(1.3, fit.m(0.06)); ctx.lineCap = 'round';
+    const bk = r * 0.5;
+    [[1, 1], [-1, 1], [-1, -1], [1, -1]].forEach(s => { ctx.beginPath(); ctx.moveTo(s[0] * r, s[1] * r - s[1] * bk); ctx.lineTo(s[0] * r, s[1] * r); ctx.lineTo(s[0] * r - s[0] * bk, s[1] * r); ctx.stroke(); });
+    ctx.restore();
+    ctx.save(); ctx.strokeStyle = this._hexA(acc, 0.22); ctx.lineWidth = 1; ctx.beginPath(); ctx.arc(x, y, r * 0.7, 0, 7); ctx.stroke(); ctx.restore();
+  }
+  // expanding shockwave rings + radial sparks at the point of contact
+  _impactBurst(ctx, fit, imp, now){
+    const life = Math.min(1, (now - (imp.t0 || now)) / 560); if (life >= 1) return;
+    const P = fit.px(imp.x, imp.y), x = P[0], y = P[1];
+    const acc = this.props.accent || '#22D3EE';
+    const col = imp.kind === 'save' ? acc : (imp.kind === 'goal' ? '#FF5A6E' : '#8AA0B8');
+    const ease = 1 - Math.pow(1 - life, 2);
+    ctx.save();
+    ctx.strokeStyle = this._hexA(col, 0.7 * (1 - life)); ctx.lineWidth = Math.max(2, fit.m(0.12));
+    ctx.beginPath(); ctx.arc(x, y, fit.m(0.5) + ease * fit.m(3.4), 0, 7); ctx.stroke();
+    ctx.strokeStyle = this._hexA(col, 0.4 * (1 - life)); ctx.lineWidth = Math.max(1.4, fit.m(0.07));
+    ctx.beginPath(); ctx.arc(x, y, fit.m(0.5) + ease * fit.m(5.4), 0, 7); ctx.stroke();
+    const N = imp.kind === 'goal' ? 10 : 8;
+    ctx.strokeStyle = this._hexA(col, 0.85 * (1 - life)); ctx.lineWidth = Math.max(1.4, fit.m(0.06)); ctx.lineCap = 'round';
+    for (let i = 0; i < N; i++) {
+      const a = (i / N) * Math.PI * 2 + (imp.kind === 'goal' ? 0.3 : 0);
+      const r0 = fit.m(0.7) + ease * fit.m(2.0), r1 = r0 + fit.m(1.5) * (1 - life * 0.4);
+      ctx.beginPath(); ctx.moveTo(x + Math.cos(a) * r0, y + Math.sin(a) * r0); ctx.lineTo(x + Math.cos(a) * r1, y + Math.sin(a) * r1); ctx.stroke();
+    }
     ctx.restore();
   }
 
@@ -688,7 +835,8 @@ class Component extends DCLogic {
   }
   _land(rec, to){
     const screenFx = rec.success ? 'save' : 'goal';
-    this._impact = { x:to.x, y:to.y, kind: rec.success ? 'save' : 'goal' };
+    this._impact = { x:to.x, y:to.y, kind: rec.froze ? 'froze' : (rec.success ? 'save' : 'goal'), t0:this._now() };
+    this._resolveT0 = this._now();
     this.setState({ phase:'resolved', screenFx });
     this._sfx(rec.froze ? 'buzzer' : (rec.success ? 'save' : 'goal'));
     this._h.push(setTimeout(() => this.setState({ screenFx:null }), 760));
