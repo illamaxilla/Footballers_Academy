@@ -9,6 +9,7 @@
 <x-dc>
 <helmet>
 <link href="assets/vendor/fonts/fonts.css" rel="stylesheet">
+<script src="./fa-pitch.js"></script>
 <style>
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;background:#04060c;}
@@ -107,27 +108,12 @@
         <div style="position:relative;flex:1 1 460px;max-width:760px;min-width:300px;aspect-ratio:16/9;max-height:clamp(300px,54vh,470px);border-radius:16px;overflow:hidden;background:radial-gradient(130% 100% at 50% 100%,#0d1c2e 0%,#091324 52%,#050c17 100%);border:1px solid rgba(120,140,166,.18);box-shadow:inset 0 0 60px rgba(0,0,0,.45);">
           <div style="position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.5;background:repeating-linear-gradient(90deg,rgba(140,200,220,.035) 0px,rgba(140,200,220,.035) 1px,transparent 1px,transparent 44px);"></div>
 
-          <!-- pitch markings -->
-          <svg viewBox="0 0 150 100" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;z-index:1;">
-            <rect x="15" y="30" width="120" height="70" fill="none" stroke="rgba(150,200,220,.28)" stroke-width="0.5"/>
-            <rect x="50" y="74" width="50" height="26" fill="none" stroke="rgba(150,200,220,.28)" stroke-width="0.5"/>
-            <path d="M43.5,30 A39,39 0 0 1 106.5,30" fill="none" stroke="rgba(150,200,220,.2)" stroke-width="0.5"/>
-            <circle cx="75" cy="54" r="1.1" fill="rgba(180,220,235,.65)"/>
-            <line x1="62" y1="99" x2="88" y2="99" stroke="#7fdfe9" stroke-width="1.1" stroke-linecap="round"/>
-            <line x1="62" y1="96.5" x2="62" y2="99" stroke="#7fdfe9" stroke-width="0.9"/>
-            <line x1="88" y1="96.5" x2="88" y2="99" stroke="#7fdfe9" stroke-width="0.9"/>
-          </svg>
+          <!-- pitch + tokens (canvas) -->
+          <canvas ref="{{ canvasRef }}" style="position:absolute;inset:0;width:100%;height:100%;display:block;z-index:1;"></canvas>
 
           <!-- corner ticks -->
           <div style="position:absolute;top:10px;left:10px;width:14px;height:14px;border-top:1.5px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:1.5px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:2;"></div>
           <div style="position:absolute;top:10px;right:10px;width:14px;height:14px;border-top:1.5px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-right:1.5px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:2;"></div>
-
-          <!-- attacker + ball -->
-          <div style="position:absolute;z-index:4;transform:translate(-50%,-50%);{{ attackerStyle }}">
-            <div style="position:relative;width:0;height:0;border-left:8px solid transparent;border-right:8px solid transparent;border-top:13px solid #FF5A6E;filter:drop-shadow(0 0 8px rgba(255,90,110,.55));"></div>
-            <sc-if value="{{ motion }}" hint-placeholder-val="{{ true }}"><div style="position:absolute;left:0;top:-6px;width:34px;height:34px;transform:translate(-50%,-50%);border-radius:50%;border:1.5px solid rgba(255,90,110,.5);animation:fa-ring 1.8s ease-in-out infinite;"></div></sc-if>
-          </div>
-          <div style="position:absolute;z-index:4;transform:translate(-50%,-50%);width:12px;height:12px;border-radius:50%;background:radial-gradient(circle at 34% 30%,#fff,#bcc9d4);box-shadow:0 0 10px rgba(255,255,255,.5),0 2px 4px rgba(0,0,0,.4);{{ ballStyle }}"></div>
 
           <!-- candidate positions -->
           <sc-for list="{{ targets }}" as="t" hint-placeholder-count="5">
@@ -139,9 +125,6 @@
               <span style="font:700 9.5px 'IBM Plex Mono';letter-spacing:.12em;padding:2px 7px;border-radius:5px;white-space:nowrap;transition:all .18s ease;{{ t.chip }}">{{ t.verb }}</span>
             </button>
           </sc-for>
-
-          <!-- keeper token -->
-          <div style="position:absolute;transform:translate(-50%,-50%);z-index:5;display:grid;place-items:center;width:34px;height:34px;border-radius:10px;background:linear-gradient(180deg,#EAFBFF,#8fd8e6);color:#04202a;font:800 11px 'Archivo';letter-spacing:.04em;box-shadow:0 6px 20px rgba(0,0,0,.5),0 0 0 2px rgba(255,255,255,.18),0 0 18px color-mix(in srgb,var(--accent,#22D3EE) 45%,transparent);transition:left .5s cubic-bezier(.34,.8,.3,1),top .5s cubic-bezier(.34,.8,.3,1);{{ keeperStyle }}">GK</div>
 
           <!-- outcome chip -->
           <sc-if value="{{ resolved }}" hint-placeholder-val="{{ false }}">
@@ -331,7 +314,73 @@ class Component extends DCLogic {
     clearTimeout(this._nudgeT);
     this._nudgeT = setTimeout(() => { if (this.state.phase === 'reading') { this.setState({ nudge:true }); this._sfx('alert'); } }, 4600);
   }
-  componentWillUnmount() { clearTimeout(this._nudgeT); clearTimeout(this._fx); if(this._raf) cancelAnimationFrame(this._raf); }
+  componentWillUnmount() { clearTimeout(this._nudgeT); clearTimeout(this._fx); if(this._raf) cancelAnimationFrame(this._raf); this._stopLoop(); }
+
+  /* ---- canvas scene (top-down, goal at bottom; candidate dots stay HTML) ---- */
+  _cvRef(el){ if (el === this._canvas) return; this._canvas = el; if (el) requestAnimationFrame(() => { this._resize(); this._startLoop(); }); }
+  _resize(){ const cv=this._canvas; if(!cv) return; const r=cv.getBoundingClientRect(); if(!r.width) return; const dpr=Math.min(2,window.devicePixelRatio||1); const w=Math.max(2,Math.round(r.width*dpr)),h=Math.max(2,Math.round(r.height*dpr)); if(cv.width!==w||cv.height!==h){cv.width=w;cv.height=h;} this._dpr=dpr; this._W=r.width; this._H=r.height; }
+  _startLoop(){ if(this._loopOn) return; this._loopOn=true; const step=()=>{ if(!this._loopOn) return; this._loopRaf=requestAnimationFrame(step); if((!this._W||!this._H)&&this._canvas) this._resize(); this._draw(); }; this._loopRaf=requestAnimationFrame(step); }
+  _stopLoop(){ this._loopOn=false; if(this._loopRaf) cancelAnimationFrame(this._loopRaf); this._loopRaf=null; }
+
+  _draw(){
+    const cv=this._canvas; if(!cv) return;
+    const FP=window.FAPitch; if(!FP) return;
+    const ctx=cv.getContext('2d'); if(!ctx) return;
+    const W=this._W, H=this._H, dpr=this._dpr||1; if(!W||!H) return;
+    ctx.setTransform(dpr,0,0,dpr,0,0); ctx.clearRect(0,0,W,H);
+    const acc=this.props.accent ?? '#22D3EE';
+    const reduce=!(this.props.motion ?? true);
+    const now=this._now();
+    const s=this.state, scn=this.SCN[s.si]||this.SCN[0];
+    const selected=s.selected, resolved=s.phase==='resolved';
+    // markings in 150x100 space, players in 0..100 (% width/height)
+    const M=(x,y)=>[x/150*W, y/100*H];
+    const X=(v)=>v/100*W, Y=(v)=>v/100*H;
+    const md=Math.min(W,H);
+    const stroke=(pts,col,lw,dash)=>{ ctx.save(); ctx.strokeStyle=col; ctx.lineWidth=lw; if(dash)ctx.setLineDash(dash); ctx.beginPath(); pts.forEach((p,i)=>{const q=M(p[0],p[1]); i?ctx.lineTo(q[0],q[1]):ctx.moveTo(q[0],q[1]);}); ctx.stroke(); ctx.restore(); };
+
+    const line=Math.max(1,md*0.004);
+    // outer + six-yard boxes
+    const rect=(x,y,w,h,col)=>{ const a=M(x,y),b=M(x+w,y+h); ctx.save(); ctx.strokeStyle=col; ctx.lineWidth=line; ctx.strokeRect(a[0],a[1],b[0]-a[0],b[1]-a[1]); ctx.restore(); };
+    rect(15,30,120,70,'rgba(150,185,215,.22)');
+    rect(50,74,50,26,'rgba(150,185,215,.22)');
+    // penalty arc (top of the box)
+    ctx.save(); ctx.strokeStyle='rgba(150,185,215,.16)'; ctx.lineWidth=line; ctx.beginPath();
+    { const c=M(75,30); const rX=(106.5-43.5)/2/150*W, rY=18/100*H; ctx.ellipse(c[0],c[1],rX,rY,0,Math.PI*0.14,Math.PI*0.86); }
+    ctx.stroke(); ctx.restore();
+    // penalty spot
+    ctx.save(); ctx.fillStyle='rgba(180,220,235,.6)'; const sp=M(75,54); ctx.beginPath(); ctx.arc(sp[0],sp[1],Math.max(1.2,md*0.0016),0,7); ctx.fill(); ctx.restore();
+
+    // goal (bright frame + short net) at bottom
+    ctx.save();
+    const gA=M(62,99), gB=M(88,99), pA=M(62,95.4), pB=M(88,95.4);
+    ctx.fillStyle='rgba(150,185,215,.06)'; ctx.beginPath(); ctx.moveTo(gA[0],gA[1]); ctx.lineTo(pA[0],pA[1]); ctx.lineTo(pB[0],pB[1]); ctx.lineTo(gB[0],gB[1]); ctx.closePath(); ctx.fill();
+    ctx.strokeStyle='rgba(150,185,215,.14)'; ctx.lineWidth=1;
+    for(let k=1;k<4;k++){ const t=k/4; ctx.beginPath(); const a=[gA[0]+(gB[0]-gA[0])*t,gA[1]], bq=[pA[0]+(pB[0]-pA[0])*t,pA[1]]; ctx.moveTo(a[0],a[1]); ctx.lineTo(bq[0],bq[1]); ctx.stroke(); }
+    ctx.strokeStyle='rgba(232,242,252,.85)'; ctx.lineWidth=Math.max(2,md*0.006); ctx.lineCap='round';
+    ctx.beginPath(); ctx.moveTo(pA[0],pA[1]); ctx.lineTo(gA[0],gA[1]); ctx.lineTo(gB[0],gB[1]); ctx.lineTo(pB[0],pB[1]); ctx.stroke();
+    ctx.lineCap='butt'; ctx.restore();
+
+    // proxy fit so fa-pitch tokens draw in %-space (aligns with HTML dots)
+    const f={ px:(nx,ny)=>[X(nx),Y(ny)], m:(v)=>v*(md*0.05), font:Math.max(8,md*0.02), orient:'ns', attackDir:'rtl', ballR:Math.max(3.2,md*0.013), r:14 };
+
+    // attacker chevron + threat ring, ball at its feet
+    const at=scn.attacker, bl=scn.ball;
+    if(!reduce){ ctx.save(); const rp=0.5+0.5*Math.sin(now/700); ctx.strokeStyle='rgba(255,90,110,'+(0.18+0.22*rp)+')'; ctx.lineWidth=Math.max(1.2,md*0.004);
+      ctx.beginPath(); ctx.arc(X(at.x),Y(at.y),md*(0.02+0.006*rp),0,7); ctx.stroke(); ctx.restore(); }
+    FP.chevron(ctx,f,at.x,at.y,{ scale:0.95 });
+    FP.ballFlat(ctx,f,bl.x,bl.y,{ r:f.ballR });
+
+    // keeper token — eased toward selected target (or base 50,90)
+    const sel=selected!=null?scn.targets.find(x=>x.k===selected):null;
+    const kG=sel?{x:sel.x,y:sel.y}:{x:50,y:90};
+    const kk=this._keyRead!==(''+s.si+selected);
+    if(kk){ this._keyRead=''+s.si+selected; if(!this._rk) this._rk={...kG}; }
+    if(!this._rk) this._rk={...kG};
+    const ez=reduce?1:0.18;
+    this._rk.x+=(kG.x-this._rk.x)*ez; this._rk.y+=(kG.y-this._rk.y)*ez;
+    FP.keeperToken(ctx,f,this._rk.x,this._rk.y,{ accent:acc, scale:0.92 });
+  }
   componentDidMount() {
     let soundOn = true; try { if (localStorage.getItem('fa_sound') === '0') soundOn = false; } catch(e) {}
     if (soundOn !== this.state.soundOn) this.setState({ soundOn });
@@ -508,6 +557,7 @@ class Component extends DCLogic {
       proPct:proPct + '%', proLabel, plots, plotPoints, statLine,
       begin:() => this._begin(), next:() => this._next(), retake:() => this._retake(),
       back:() => { window.location.href = 'Assessment.dc.html'; },
+      canvasRef: this._cvRefFn || (this._cvRefFn = (el) => this._cvRef(el)),
     };
   }
 }
