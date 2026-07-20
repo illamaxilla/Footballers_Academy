@@ -343,7 +343,7 @@
   &quot;onDone&quot;: {&quot;editor&quot;:null,&quot;tsType&quot;:&quot;(counts: Record&lt;string, number&gt;, meta?: object) =&gt; void&quot;}
 }">
 class Component extends DCLogic {
-  state = { view:'intro', ci:0, phase:'live', picked:null, tLeft:1, results:[],
+  state = { view:'intro', ci:0, phase:'live', results:[],
     counts:{oracle:0,sentinel:0,catalyst:0,bastion:0,wall:0}, _meta:null,
     screenFx:null, swapping:false, cu:1 };
 
@@ -807,7 +807,7 @@ class Component extends DCLogic {
     this._t0 = this._now();
     this._ball = this._P(t.ball); this._trail = []; this._impact = null; this._flight = null;
     this._startLoop();
-    this.setState({ phase:'live', picked:null, tLeft:1, screenFx:null });
+    this.setState({ phase:'live', screenFx:null });
     const dur = this._dur(this.state.ci);
     const acc = this.props.accent || '#22D3EE';
     const arm = () => {
@@ -822,7 +822,6 @@ class Component extends DCLogic {
         if (this._lastTick > 0.26 && tLeft <= 0.26) this._sfx('tick');
         if (this._lastTick > 0.12 && tLeft <= 0.12) this._sfx('tick');
         this._lastTick = tLeft;
-        this._tLeft = tLeft;
         const col = tLeft > 0.5 ? acc : (tLeft > 0.25 ? '#FFB020' : '#FF5A6E');
         if (this._barEl) { this._barEl.style.width = Math.round(tLeft * 100) + '%'; this._barEl.style.background = col; this._barEl.style.boxShadow = '0 0 10px ' + col; }
         if (this._hintEl && tLeft <= 0.3) { this._hintEl.textContent = 'COMMIT NOW'; this._hintEl.style.color = '#FF5A6E'; }
@@ -855,14 +854,14 @@ class Component extends DCLogic {
     clearInterval(this._tick); if (this._timerRaf) cancelAnimationFrame(this._timerRaf); this._timerRaf = null;
     const { rec, counts } = this._record(kind);
     this._sfx('commit');
-    this.setState({ phase:'resolving', picked:kind, counts, results:[...this.state.results, rec] });
+    this.setState({ phase:'resolving', counts, results:[...this.state.results, rec] });
     this._runShot(rec);
   }
   _timeout(){
     this._clear();
     const { rec, counts } = this._record('miss');
     this._sfx('buzzer');
-    this.setState({ phase:'resolving', picked:'miss', counts, results:[...this.state.results, rec] });
+    this.setState({ phase:'resolving', counts, results:[...this.state.results, rec] });
     this._runShot(rec);
   }
 
