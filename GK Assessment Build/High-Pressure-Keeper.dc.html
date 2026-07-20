@@ -542,8 +542,22 @@ class Component extends DCLogic {
     const last = this.state.results[this.state.results.length - 1];
     const sceneBall = this._P(t.ball);
     const ballPos = this._ball || sceneBall;
-    const atk = this._P(t.atk);
+    const atk = this._P(t.atk);            // authored attacker — used only to pick the strike side
     const goalC = { x:1, y:0.5 };
+
+    // The shooter is the player ON the ball. Place the token a stride behind the
+    // ball along the TRUE ball->goal line (computed in screen space so the angle
+    // is correct despite the non-square pitch mapping), nudged slightly to one
+    // side. This makes "the shooter struck this ball at goal" geometrically exact
+    // instead of the authored attacker floating 4–20m off the shot line.
+    const _bS = fit.px(sceneBall.x, sceneBall.y), _gS = fit.px(goalC.x, goalC.y);
+    let _ux = _gS[0] - _bS[0], _uy = _gS[1] - _bS[1]; const _um = Math.hypot(_ux, _uy) || 1;
+    _ux /= _um; _uy /= _um;                // unit vector toward goal (screen space)
+    const _aS = fit.px(atk.x, atk.y);
+    const _side = Math.sign(_ux * (_aS[1] - _bS[1]) - _uy * (_aS[0] - _bS[0])) || 1;
+    const _back = fit.m(1.15), _lat = fit.m(0.95) * _side;
+    const _shN = fit.inv(_bS[0] - _ux * _back - _uy * _lat, _bS[1] - _uy * _back + _ux * _lat);
+    const shooter = { x: _shN[0], y: _shN[1] };
 
     // keeper's optimal set position — on the goal-centre→ball bisector, shading
     // toward the ball's side so he visibly reads each shot's angle.
@@ -572,12 +586,12 @@ class Component extends DCLogic {
     if (live) {
       FP.angleCone(ctx, fit, ballPos, { end:1, optimal:true, color:acc });
       this._threatLine(ctx, fit, ballPos, goalC, stress, now, reduce);
-      FP.pressure(ctx, fit, atk.x, atk.y, { intensity: 0.35 + stress / 150, color:'#FF5A6E', r: Math.max(9, fit.m(1.7)) });
+      FP.pressure(ctx, fit, shooter.x, shooter.y, { intensity: 0.35 + stress / 150, color:'#FF5A6E', r: Math.max(9, fit.m(1.7)) });
       this._reticle(ctx, fit, ballPos, acc, now, reduce);
     }
 
-    // the shooter — a red opponent token facing our goal (was an abstract arrow)
-    this._shooter(ctx, fit, atk.x, atk.y, { role: live ? 'SHOOTER' : null });
+    // the shooter — a red opponent token on the ball, facing our goal
+    this._shooter(ctx, fit, shooter.x, shooter.y, { role: live ? 'SHOOTER' : null });
 
     // dive afterimage — a faint ghost at the set spot sells the explosive move
     if (resolved && last && !last.froze && this._setPos) this._keeper(ctx, fit, this._setPos.x, this._setPos.y, { alpha:0.14 });
@@ -724,9 +738,11 @@ class Component extends DCLogic {
     ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(ex, ey, Math.max(2, fit.m(0.16)), 0, 7); ctx.fill();
     ctx.restore();
     if (o.role) {
+      // label sits ABOVE the token (away from goal) so the ball at the striker's
+      // feet never covers it
       ctx.save(); ctx.fillStyle = 'rgba(255,150,160,.85)';
       ctx.font = "700 " + Math.max(8, fit.font * 0.9) + "px 'IBM Plex Mono'";
-      ctx.textAlign = 'center'; ctx.fillText(o.role, x, y + s * 0.5 + fit.font * 1.1); ctx.restore();
+      ctx.textAlign = 'center'; ctx.fillText(o.role, x, y - s * 0.5 - fit.font * 0.55); ctx.restore();
     }
   }
 
