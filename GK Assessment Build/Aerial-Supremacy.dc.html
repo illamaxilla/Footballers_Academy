@@ -9,6 +9,7 @@
 <x-dc>
 <helmet>
 <link href="assets/vendor/fonts/fonts.css" rel="stylesheet">
+<script src="./fa-pitch.js"></script>
 <style>
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;background:#04060c;}
@@ -143,84 +144,12 @@
 
         <!-- ==== FIELD ==== -->
         <div style="position:relative;flex:1 1 120px;min-height:120px;border-radius:16px;overflow:hidden;border:1px solid rgba(120,140,166,.18);background:radial-gradient(130% 100% at 50% 100%,#0d1c2e 0%,#091324 52%,#050c17 100%);box-shadow:inset 0 0 60px rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;{{ vizShake }}">
-          <div style="position:relative;height:100%;aspect-ratio:3/2;max-width:100%;">
-            <div style="position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.5;background:repeating-linear-gradient(90deg,rgba(140,200,220,.03) 0px,rgba(140,200,220,.03) 1px,transparent 1px,transparent 42px);"></div>
+          <canvas ref="{{ canvasRef }}" style="position:absolute;inset:0;width:100%;height:100%;display:block;z-index:1;"></canvas>
 
-            <svg viewBox="0 0 150 100" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;z-index:1;">
-              <rect x="18" y="44" width="114" height="54" fill="none" stroke="rgba(150,200,220,.20)" stroke-width="0.5"/>
-              <rect x="54" y="78" width="42" height="20" fill="none" stroke="rgba(150,200,220,.22)" stroke-width="0.5"/>
-              <path d="M60,44 A24,24 0 0 0 90,44" fill="none" stroke="rgba(150,200,220,.14)" stroke-width="0.5"/>
-              <circle cx="75" cy="64" r="1.1" fill="rgba(180,220,235,.6)"/>
-              <line x1="57" y1="98" x2="93" y2="98" stroke="#7fdfe9" stroke-width="1.2" stroke-linecap="round"/>
-              <line x1="57" y1="94.5" x2="57" y2="98" stroke="#7fdfe9" stroke-width="1"/>
-              <line x1="93" y1="94.5" x2="93" y2="98" stroke="#7fdfe9" stroke-width="1"/>
-              <!-- cross trajectory -->
-              <sc-if value="{{ trajShow }}" hint-placeholder-val="{{ true }}">
-                <path d="{{ trajD }}" fill="none" stroke="{{ trajColor }}" stroke-width="0.7" stroke-dasharray="2.4 2.4" stroke-linecap="round" opacity="0.7"/>
-              </sc-if>
-            </svg>
-
-            <!-- depth ladder guide (command) -->
-            <sc-if value="{{ showLadder }}" hint-placeholder-val="{{ false }}">
-              <div style="position:absolute;z-index:2;left:24%;right:24%;top:89%;height:0;border-top:1px dashed rgba(120,140,166,.3);pointer-events:none;"></div>
-              <div style="position:absolute;z-index:2;left:24%;right:24%;top:80%;height:0;border-top:1px dashed rgba(120,140,166,.24);pointer-events:none;"></div>
-              <div style="position:absolute;z-index:2;left:24%;right:24%;top:71%;height:0;border-top:1px dashed rgba(120,140,166,.24);pointer-events:none;"></div>
-              <div style="position:absolute;z-index:2;left:24%;right:24%;top:62%;height:0;border-top:1px dashed rgba(120,140,166,.24);pointer-events:none;"></div>
-              <div style="position:absolute;z-index:2;left:25%;top:89%;transform:translate(-100%,-50%);padding-right:6px;font:600 7px 'IBM Plex Mono';letter-spacing:.08em;color:#5c6f88;">LINE</div>
-              <div style="position:absolute;z-index:2;left:25%;top:62%;transform:translate(-100%,-50%);padding-right:6px;font:600 7px 'IBM Plex Mono';letter-spacing:.08em;color:#5c6f88;">6M</div>
-            </sc-if>
-
-            <!-- contact target ring -->
-            <sc-if value="{{ contactShow }}" hint-placeholder-val="{{ true }}">
-              <div style="position:absolute;z-index:3;border-radius:50%;border:1.4px dashed color-mix(in srgb,var(--accent,#22D3EE) 62%,transparent);animation:fa-zonepulse 1.5s ease-in-out infinite;pointer-events:none;{{ contactStyle }}"></div>
-            </sc-if>
-
-            <!-- your / elite depth rings (resolved) -->
-            <sc-if value="{{ resolved }}" hint-placeholder-val="{{ false }}">
-              <div style="position:absolute;z-index:3;border-radius:50%;border:1.4px dashed #3AE0A0;pointer-events:none;{{ eliteRingStyle }}"></div>
-              <div style="position:absolute;z-index:3;transform:translate(-50%,-50%);font:700 7px 'IBM Plex Mono';letter-spacing:.1em;color:#3AE0A0;{{ eliteLabelStyle }}">ELITE</div>
-            </sc-if>
-
-            <!-- ball shadow -->
-            <div style="position:absolute;z-index:3;width:15px;height:6px;border-radius:50%;background:rgba(0,0,0,.5);filter:blur(1px);pointer-events:none;transition:{{ ballTransition }};{{ shadowStyle }}"></div>
-
-            <!-- shot / action tag -->
-            <sc-if value="{{ actionTagShow }}" hint-placeholder-val="{{ false }}">
-              <div style="position:absolute;top:12px;left:50%;transform:translateX(-50%);z-index:9;padding:5px 13px;border-radius:999px;background:rgba(4,10,18,.8);border:1px solid {{ actionTagBorder }};font:800 10px 'IBM Plex Mono';letter-spacing:.22em;color:{{ actionTagColor }};white-space:nowrap;backdrop-filter:blur(4px);">{{ actionTagText }}</div>
-            </sc-if>
-
-            <!-- attackers -->
-            <sc-for list="{{ attackers }}" as="a" hint-placeholder-count="0">
-              <div style="position:absolute;z-index:4;transform:translate(-50%,-50%);{{ a.style }}">
-                <div style="width:0;height:0;border-left:8px solid transparent;border-right:8px solid transparent;border-top:13px solid #FF5A6E;filter:drop-shadow(0 0 8px rgba(255,90,110,.55));"></div>
-              </div>
-            </sc-for>
-
-            <!-- defender -->
-            <sc-if value="{{ defenderShow }}" hint-placeholder-val="{{ false }}">
-              <div style="position:absolute;z-index:4;display:grid;place-items:center;width:24px;height:24px;border-radius:8px;border:1.5px solid rgba(143,180,216,.75);background:rgba(20,34,54,.7);color:#bcd2ec;font:800 9px 'Archivo';transform:translate(-50%,-50%);{{ defenderStyle }}">D</div>
-            </sc-if>
-
-            <!-- ball trail -->
-            <sc-for list="{{ trailDots }}" as="td" hint-placeholder-count="0">
-              <div style="position:absolute;z-index:5;transform:translate(-50%,-50%);border-radius:50%;background:#fff;pointer-events:none;{{ td.look }}{{ td.pos }}"></div>
-            </sc-for>
-
-            <!-- keeper -->
-            <div style="position:absolute;z-index:5;display:grid;place-items:center;width:32px;height:32px;border-radius:10px;background:linear-gradient(180deg,#EAFBFF,#8fd8e6);color:#04202a;font:800 11px 'Archivo';letter-spacing:.04em;box-shadow:0 6px 20px rgba(0,0,0,.5),0 0 0 2px rgba(255,255,255,.18),0 0 18px color-mix(in srgb,var(--accent,#22D3EE) 45%,transparent);{{ keeperStyle }}">GK</div>
-
-            <!-- ball -->
-            <div style="position:absolute;z-index:6;width:12px;height:12px;border-radius:50%;background:radial-gradient(circle at 34% 30%,#fff,#bcc9d4);box-shadow:0 0 10px rgba(255,255,255,.55),0 2px 5px rgba(0,0,0,.45);transition:{{ ballTransition }};{{ ballStyle }}"></div>
-
-            <!-- impact burst -->
-            <sc-if value="{{ impactShow }}" hint-placeholder-val="{{ false }}">
-              <div style="position:absolute;z-index:8;pointer-events:none;{{ impactPos }}">
-                <div style="position:absolute;transform:translate(-50%,-50%);width:20px;height:20px;border-radius:50%;border:2px solid {{ impactColor }};box-shadow:0 0 14px {{ impactColor }};animation:fa-burst .62s ease-out forwards;"></div>
-                <div style="position:absolute;transform:translate(-50%,-50%);width:14px;height:14px;border-radius:50%;background:{{ impactColor }};animation:fa-catch .52s ease-out forwards;"></div>
-              </div>
-            </sc-if>
-
-          </div>
+          <!-- action tag -->
+          <sc-if value="{{ actionTagShow }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;top:12px;left:50%;transform:translateX(-50%);z-index:9;padding:5px 13px;border-radius:999px;background:rgba(4,10,18,.8);border:1px solid {{ actionTagBorder }};font:800 10px 'IBM Plex Mono';letter-spacing:.22em;color:{{ actionTagColor }};white-space:nowrap;backdrop-filter:blur(4px);">{{ actionTagText }}</div>
+          </sc-if>
 
           <span style="position:absolute;left:12px;top:10px;font:600 8px 'IBM Plex Mono';letter-spacing:.2em;color:rgba(200,215,232,.4);pointer-events:none;z-index:9;">GK CAM</span>
 
@@ -472,7 +401,118 @@ class Component extends DCLogic {
   _pad(n){ return n < 10 ? '0' + n : '' + n; }
   _now(){ return (typeof performance !== 'undefined' && performance.now) ? performance.now() : Date.now(); }
   _clear(){ if (this._h) this._h.forEach(id => clearTimeout(id)); this._h = []; clearInterval(this._tk); if (this._raf) cancelAnimationFrame(this._raf); this._raf = null; }
-  componentWillUnmount(){ this._clear(); }
+  componentWillUnmount(){ this._clear(); this._stopLoop(); }
+
+  /* ---------- canvas harness (shared fa-pitch engine) ---------- */
+  _P(o){ return { x: 0.58 + (o.y / 100) * 0.44, y: o.x / 100 }; }
+  _cvRef(el){ if (el === this._canvas) return; this._canvas = el; if (el) requestAnimationFrame(() => { this._resize(); this._startLoop(); }); }
+  _resize(){ const cv = this._canvas; if (!cv) return; const r = cv.getBoundingClientRect(); if (!r.width) return; const dpr = Math.min(2, window.devicePixelRatio || 1); const w = Math.max(2, Math.round(r.width * dpr)), h = Math.max(2, Math.round(r.height * dpr)); if (cv.width !== w || cv.height !== h) { cv.width = w; cv.height = h; } this._dpr = dpr; this._W = r.width; this._H = r.height; }
+  _startLoop(){ if (this._loopOn) return; this._loopOn = true; const step = () => { if (!this._loopOn) return; this._loopRaf = requestAnimationFrame(step); if ((!this._W || !this._H) && this._canvas) this._resize(); this._draw(); }; this._loopRaf = requestAnimationFrame(step); }
+  _stopLoop(){ this._loopOn = false; if (this._loopRaf) cancelAnimationFrame(this._loopRaf); this._loopRaf = null; }
+
+  _draw(){
+    const cv = this._canvas; if (!cv) return;
+    const ctx = cv.getContext('2d'); const W = this._W, H = this._H, dpr = this._dpr || 1;
+    if (!W || !H) return;
+    const FP = window.FAPitch; if (!FP) return;
+    const acc = this.props.accent || '#22D3EE', now = this._now();
+    const motion = this.props.motion !== false;
+    const reduce = !motion || (window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches);
+    const osc = reduce ? 0 : Math.sin(now / 900);
+    ctx.save(); ctx.scale(dpr, dpr); ctx.clearRect(0, 0, W, H);
+    const s = this.state, t = this.SCN[s.ci] || this.SCN[0];
+    const goalC = { x:1, y:0.5 };
+    // Fixed GK-cam crop: goal at top, the whole box below it, and enough width to
+    // frame a cross swung in from either wing. Stable so the camera never reframes.
+    const fit = FP.fit(W, H, { cropRect:[0.74, 1.055, 0.05, 0.95], orient:'ns', attackDir:'rtl', inset:0.02 }); this._fit = fit;
+    FP.pitch(ctx, fit);
+    FP.fieldHUD(ctx, fit, { accent:acc });
+
+    const stage = s.stage;
+    const inflight = stage === 'inflight', command = stage === 'command', leap = stage === 'leap', watch = stage === 'watch', resolved = stage === 'resolved';
+    const reading = inflight || command;
+    const out = s.out;
+
+    const origin = this._P(t.origin), contact = this._P(t.contact);
+    // eased positions so keeper-depth changes and the settle glide instead of
+    // snapping (canvas ignores the CSS transitions the state still carries).
+    const kT = this._P(s.kpr), bT = this._P(s.ball);
+    if (this._rpCi !== s.ci || !this._rp) { this._rp = { k:{ ...kT }, b:{ ...bT } }; this._rpCi = s.ci; }
+    const ez = reduce ? 1 : (leap ? 0.5 : 0.22);
+    this._rp.k.x += (kT.x - this._rp.k.x) * ez; this._rp.k.y += (kT.y - this._rp.k.y) * ez;
+    this._rp.b.x += (bT.x - this._rp.b.x) * ez; this._rp.b.y += (bT.y - this._rp.b.y) * ez;
+    const kpr = this._rp.k, ballG = this._rp.b;
+    const height = Math.max(0, Math.min(1, (s.loft || 0) / 26));
+
+    // the cross's path through the air — a lofted dashed arc to the contact zone
+    if (reading || leap) FP.trajectory(ctx, fit, origin, contact, { kind:'lofted', color:'rgba(120,200,230,.5)' });
+
+    // keeper's reach ellipse
+    FP.coverage(ctx, fit, kpr.x, kpr.y, { accent:acc, pulse: reading && !reduce ? (0.5 + 0.5 * osc) : 0.5 });
+
+    // elite depth marker (where a top keeper would attack it from) — command read
+    if (command) {
+      const eK = this._P(this._keeperAt(t.optimalDepth, t.contact));
+      ctx.save(); ctx.strokeStyle = 'rgba(58,224,160,.7)'; ctx.setLineDash([4, 4]); ctx.lineWidth = Math.max(1.4, fit.m(0.06));
+      const ep = fit.px(eK.x, eK.y), er = fit.m(1.8);
+      ctx.beginPath(); ctx.arc(ep[0], ep[1], er, 0, 7); ctx.stroke(); ctx.setLineDash([]);
+      ctx.fillStyle = 'rgba(58,224,160,.85)'; ctx.font = "700 " + Math.max(7, fit.font * 0.72) + "px 'IBM Plex Mono'";
+      ctx.textAlign = 'center'; ctx.fillText('ELITE', ep[0], ep[1] - er - 3); ctx.restore();
+    }
+
+    // contact target lock while the ball is live
+    if (reading || leap) FP.reticle(ctx, fit, contact.x, contact.y, { accent:acc, rot: reduce ? 0 : (now / 1600) % (Math.PI * 2) });
+
+    // defender covering the back stick
+    if (t.hasDefender && (reading || watch || resolved)) {
+      const d = this._P(t.defender);
+      FP.token(ctx, fit, d.x, d.y, { role:'D', fill:'#24374f', font: Math.max(8, fit.font * 0.9) });
+    }
+
+    // attacking bodies gambling for the cross — red chevrons pointing at goal
+    (s.attackers || []).forEach(a => { const p = this._P(a); FP.chevron(ctx, fit, p.x, p.y, {}); });
+
+    // ball trail (flat, only while it is being played)
+    const tr = s.trail || [], ballR = Math.max(3, fit.m(0.42));
+    if (!reading) tr.forEach((p, i) => { const f = (i + 1) / tr.length, pp = this._P(p); ctx.globalAlpha = f * 0.4; FP.ballFlat(ctx, fit, pp.x, pp.y, { r: ballR * (0.4 + f * 0.5) }); });
+    ctx.globalAlpha = 1;
+
+    // keeper — faces the ball while reading, pops on a claim/punch, fades if beaten
+    const KPs = fit.px(kpr.x, kpr.y), BPs = fit.px(ballG.x, ballG.y);
+    const face = !resolved ? Math.atan2(BPs[1] - KPs[1], BPs[0] - KPs[0]) : null;
+    let kScale = reading && !reduce ? (1 + osc * 0.02) : 1, kAlpha = 1;
+    if (resolved && out) {
+      if (out.result === 'claimed' || out.result === 'punched') kScale = 1.16;
+      else if (out.result === 'goal' || out.froze) kAlpha = 0.72;
+    }
+    FP.keeperToken(ctx, fit, kpr.x, kpr.y, { accent:acc, face:face, alpha:kAlpha, scale:kScale });
+
+    // a conceded ball nestles in the net — soft red glow behind it
+    if (resolved && out && (out.result === 'goal' || out.result === 'passgoal')) {
+      const gp = fit.px(ballG.x, ballG.y);
+      ctx.save(); const ng = ctx.createRadialGradient(gp[0], gp[1], 0, gp[0], gp[1], fit.m(2.4));
+      ng.addColorStop(0, 'rgba(255,90,110,.3)'); ng.addColorStop(1, 'rgba(255,90,110,0)');
+      ctx.fillStyle = ng; ctx.beginPath(); ctx.arc(gp[0], gp[1], fit.m(2.4), 0, 7); ctx.fill(); ctx.restore();
+    }
+
+    // the ball — lofted with a detached ground shadow to sell its height, flat disc on top
+    const bp = fit.px(ballG.x, ballG.y), lift = height * fit.m(2.4);
+    ctx.save(); ctx.fillStyle = 'rgba(0,0,0,' + (0.36 - 0.16 * height).toFixed(2) + ')';
+    ctx.beginPath(); ctx.ellipse(bp[0], bp[1], ballR * (1 + 0.5 * height), ballR * (0.5 + 0.2 * height), 0, 0, 7); ctx.fill(); ctx.restore();
+    FP.ballFlat(ctx, { px: () => [bp[0], bp[1] - lift], m: fit.m }, 0, 0, { r: ballR, flight: leap || (reading && height > 0.2) });
+
+    // impact — clean gather on a claim, shockwave when beaten
+    if (s.impact && !(out && out.froze)) {
+      if (this._impRef !== s.impact) { this._impRef = s.impact; this._impT0 = now; }
+      const ip = this._P(s.impact), k = s.impact.kind;
+      const life = Math.min(1, (now - (this._impT0 || now)) / (k === 'claimed' ? 470 : 560));
+      if (k === 'claimed') FP.catchBurst(ctx, fit, ip.x, ip.y, { accent:acc, life:life });
+      else if (k === 'punched' || k === 'defended' || k === 'missed') FP.impactBurst(ctx, fit, ip.x, ip.y, { accent:acc, kind:'save', life:life });
+      else FP.impactBurst(ctx, fit, ip.x, ip.y, { accent:acc, kind:'goal', life:life });
+    }
+    ctx.restore();
+  }
+
   componentDidMount(){
     this._h = [];
     try { const b = JSON.parse(localStorage.getItem('fa_aerial_progress') || 'null'); if (b && typeof b.best === 'number') this._best = b; } catch(e) {}
@@ -960,6 +1000,7 @@ class Component extends DCLogic {
       isDrill, isInflight, isCommand, isLeap, isWatch, resolved, preLeap,
       isDone: embedded && view === 'done',
       isResult: !embedded && view === 'result',
+      canvasRef: this._cvRefFn || (this._cvRefFn = (el) => this._cvRef(el)),
       focusOpacity, progressDots,
       saveFx, goodFx, nearFx, goalFx, swapping: this.state.swapping,
       soundOn, soundOff: !soundOn, soundColor: soundOn ? accent : '#61748c',

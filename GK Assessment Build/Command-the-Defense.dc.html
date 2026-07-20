@@ -9,6 +9,7 @@
 <x-dc>
 <helmet>
 <link href="assets/vendor/fonts/fonts.css" rel="stylesheet">
+<script src="./fa-pitch.js"></script>
 <style>
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;background:#04060c;}
@@ -127,49 +128,12 @@
 
         <!-- ==== FIELD ==== -->
         <div style="position:relative;flex:1 1 120px;min-height:120px;border-radius:16px;overflow:hidden;border:1px solid rgba(120,140,166,.18);background:radial-gradient(130% 100% at 50% 100%,#0d1c2e 0%,#091324 52%,#050c17 100%);box-shadow:inset 0 0 60px rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;{{ vizShake }}">
-          <div style="position:relative;height:100%;aspect-ratio:3/2;max-width:100%;">
-            <div style="position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.5;background:repeating-linear-gradient(90deg,rgba(140,200,220,.03) 0px,rgba(140,200,220,.03) 1px,transparent 1px,transparent 42px);"></div>
+          <canvas ref="{{ canvasRef }}" style="position:absolute;inset:0;width:100%;height:100%;display:block;z-index:1;"></canvas>
 
-            <svg viewBox="0 0 150 100" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;z-index:1;">
-              <rect x="18" y="50" width="114" height="48" fill="none" stroke="rgba(150,200,220,.18)" stroke-width="0.5"/>
-              <rect x="54" y="80" width="42" height="18" fill="none" stroke="rgba(150,200,220,.2)" stroke-width="0.5"/>
-              <path d="M60,50 A24,24 0 0 0 90,50" fill="none" stroke="rgba(150,200,220,.12)" stroke-width="0.5"/>
-              <line x1="0" y1="26" x2="150" y2="26" stroke="rgba(150,200,220,.1)" stroke-width="0.4"/>
-              <circle cx="75" cy="64" r="1" fill="rgba(180,220,235,.5)"/>
-              <line x1="57" y1="98" x2="93" y2="98" stroke="#7fdfe9" stroke-width="1.2" stroke-linecap="round"/>
-              <line x1="57" y1="94.5" x2="57" y2="98" stroke="#7fdfe9" stroke-width="1"/>
-              <line x1="93" y1="94.5" x2="93" y2="98" stroke="#7fdfe9" stroke-width="1"/>
-            </svg>
-
-            <!-- direction cue -->
-            <sc-if value="{{ arrowShow }}" hint-placeholder-val="{{ false }}">
-              <div style="position:absolute;z-index:2;font:800 9px 'IBM Plex Mono';letter-spacing:.16em;color:color-mix(in srgb,var(--accent,#22D3EE) 90%,#fff);white-space:nowrap;transform:translate(-50%,-50%);text-shadow:0 0 10px rgba(4,10,18,.9);{{ arrowStyle }}">{{ arrowText }}</div>
-            </sc-if>
-
-            <!-- defenders / teammates -->
-            <sc-for list="{{ defs }}" as="d" hint-placeholder-count="4">
-              <div style="position:absolute;z-index:4;transform:translate(-50%,-50%);display:grid;place-items:center;width:22px;height:22px;border-radius:7px;border:1.5px solid rgba(143,180,216,.75);background:rgba(20,34,54,.72);color:#bcd2ec;font:800 9px 'Archivo';transition:left .6s cubic-bezier(.3,.7,.3,1),top .6s cubic-bezier(.3,.7,.3,1);{{ d.style }}">{{ d.tag }}</div>
-            </sc-for>
-
-            <!-- attackers -->
-            <sc-for list="{{ atks }}" as="a" hint-placeholder-count="3">
-              <div style="position:absolute;z-index:4;transform:translate(-50%,-50%);transition:left .6s ease,top .6s ease;{{ a.style }}">
-                <div style="width:0;height:0;border-left:8px solid transparent;border-right:8px solid transparent;border-top:13px solid #FF5A6E;filter:drop-shadow(0 0 8px rgba(255,90,110,.55));"></div>
-              </div>
-            </sc-for>
-
-            <!-- shout ripple -->
-            <sc-if value="{{ shoutShow }}" hint-placeholder-val="{{ false }}">
-              <div style="position:absolute;z-index:5;width:40px;height:40px;border-radius:50%;border:2px solid color-mix(in srgb,var(--accent,#22D3EE) 70%,transparent);animation:fa-shout .8s ease-out {{ shoutCount }};pointer-events:none;{{ shoutStyle }}"></div>
-            </sc-if>
-
-            <!-- keeper -->
-            <div style="position:absolute;z-index:6;display:grid;place-items:center;width:30px;height:30px;border-radius:10px;background:linear-gradient(180deg,#EAFBFF,#8fd8e6);color:#04202a;font:800 10px 'Archivo';letter-spacing:.04em;box-shadow:0 6px 20px rgba(0,0,0,.5),0 0 0 2px rgba(255,255,255,.18),0 0 16px color-mix(in srgb,var(--accent,#22D3EE) 42%,transparent);transition:left .5s cubic-bezier(.3,.7,.3,1),top .5s cubic-bezier(.3,.7,.3,1);{{ keeperStyle }}">GK</div>
-
-            <!-- ball shadow + ball -->
-            <div style="position:absolute;z-index:6;width:13px;height:5px;border-radius:50%;background:rgba(0,0,0,.5);filter:blur(1px);pointer-events:none;transition:{{ ballTransition }};{{ shadowStyle }}"></div>
-            <div style="position:absolute;z-index:7;width:12px;height:12px;border-radius:50%;background:radial-gradient(circle at 34% 30%,#fff,#bcc9d4);box-shadow:0 0 10px rgba(255,255,255,.55),0 2px 5px rgba(0,0,0,.45);transition:{{ ballTransition }};{{ ballStyle }}"></div>
-          </div>
+          <!-- direction cue -->
+          <sc-if value="{{ arrowShow }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;z-index:9;font:800 11px 'IBM Plex Mono';letter-spacing:.16em;color:color-mix(in srgb,var(--accent,#22D3EE) 92%,#fff);white-space:nowrap;transform:translate(-50%,-50%);text-shadow:0 0 12px rgba(4,10,18,.95);{{ arrowStyle }}">{{ arrowText }}</div>
+          </sc-if>
 
           <span style="position:absolute;left:12px;top:10px;font:600 8px 'IBM Plex Mono';letter-spacing:.2em;color:rgba(200,215,232,.4);pointer-events:none;z-index:9;">GK CAM</span>
 
@@ -487,7 +451,86 @@ class Component extends DCLogic {
   _now(){ return (typeof performance!=='undefined'&&performance.now)?performance.now():Date.now(); }
   _clear(){ clearInterval(this._tk); this._tk = null; if (this._to) this._to.forEach(id=>clearTimeout(id)); this._to = []; if (this._raf) cancelAnimationFrame(this._raf); this._raf = null; }
   _T(fn,ms){ const id=setTimeout(fn,ms); this._to.push(id); return id; }
-  componentWillUnmount(){ this._clear(); }
+  componentWillUnmount(){ this._clear(); this._stopLoop(); }
+
+  /* ---------- canvas harness (shared fa-pitch engine) ---------- */
+  _P(o){ return { x: 0.48 + (o.y / 100) * 0.54, y: o.x / 100 }; }
+  _cvRef(el){ if (el === this._canvas) return; this._canvas = el; if (el) requestAnimationFrame(() => { this._resize(); this._startLoop(); }); }
+  _resize(){ const cv = this._canvas; if (!cv) return; const r = cv.getBoundingClientRect(); if (!r.width) return; const dpr = Math.min(2, window.devicePixelRatio || 1); const w = Math.max(2, Math.round(r.width * dpr)), h = Math.max(2, Math.round(r.height * dpr)); if (cv.width !== w || cv.height !== h) { cv.width = w; cv.height = h; } this._dpr = dpr; this._W = r.width; this._H = r.height; }
+  _startLoop(){ if (this._loopOn) return; this._loopOn = true; const step = () => { if (!this._loopOn) return; this._loopRaf = requestAnimationFrame(step); if ((!this._W || !this._H) && this._canvas) this._resize(); this._draw(); }; this._loopRaf = requestAnimationFrame(step); }
+  _stopLoop(){ this._loopOn = false; if (this._loopRaf) cancelAnimationFrame(this._loopRaf); this._loopRaf = null; }
+
+  _draw(){
+    const cv = this._canvas; if (!cv) return;
+    const ctx = cv.getContext('2d'); const W = this._W, H = this._H, dpr = this._dpr || 1;
+    if (!W || !H) return;
+    const FP = window.FAPitch; if (!FP) return;
+    const acc = this.props.accent || '#22D3EE', now = this._now();
+    const motion = this.props.motion !== false;
+    const reduce = !motion || (window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches);
+    const osc = reduce ? 0 : Math.sin(now / 900);
+    ctx.save(); ctx.scale(dpr, dpr); ctx.clearRect(0, 0, W, H);
+    const S = this.state, scn = this.SCN[S.si] || this.SCN[0];
+    // Defensive-third GK cam: our goal at the bottom, the back line across the
+    // middle, attackers and the ball above. Full width so wide runners show.
+    const fit = FP.fit(W, H, { cropRect:[0.60, 1.055, 0.0, 1.0], orient:'ns', attackDir:'rtl', inset:0.02 }); this._fit = fit;
+    FP.pitch(ctx, fit);
+    FP.fieldHUD(ctx, fit, { accent:acc });
+
+    const deciding = S.phase === 'decide', resolved = S.phase === 'resolved';
+
+    // eased tokens so the reshape on a call glides instead of snapping
+    const kT = this._P(S.kpr), bT = this._P(S.ball);
+    if (this._rpSi !== S.si || !this._rp) { this._rp = { k:{ ...kT }, b:{ ...bT }, d:(S.defs||[]).map(d => this._P(d)), a:(S.atks||[]).map(a => this._P(a)) }; this._rpSi = S.si; }
+    const ez = reduce ? 1 : 0.18;
+    this._rp.k.x += (kT.x - this._rp.k.x) * ez; this._rp.k.y += (kT.y - this._rp.k.y) * ez;
+    this._rp.b.x += (bT.x - this._rp.b.x) * ez; this._rp.b.y += (bT.y - this._rp.b.y) * ez;
+    const defsT = (S.defs || []).map(d => this._P(d)), atksT = (S.atks || []).map(a => this._P(a));
+    while (this._rp.d.length < defsT.length) this._rp.d.push({ ...defsT[this._rp.d.length] });
+    while (this._rp.a.length < atksT.length) this._rp.a.push({ ...atksT[this._rp.a.length] });
+    this._rp.d.length = defsT.length; this._rp.a.length = atksT.length;
+    defsT.forEach((t, i) => { const p = this._rp.d[i]; p.x += (t.x - p.x) * ez; p.y += (t.y - p.y) * ez; });
+    atksT.forEach((t, i) => { const p = this._rp.a[i]; p.x += (t.x - p.x) * ez; p.y += (t.y - p.y) * ez; });
+
+    // subtle back-line connector through the defenders (not the spread build-up shape)
+    if (scn.cat !== 'buildup' && this._rp.d.length >= 2) {
+      const sorted = this._rp.d.slice().sort((p, q) => p.y - q.y);
+      FP.line(ctx, fit, sorted, { color: acc });
+    }
+
+    // attacking runners — red chevrons pointing at our goal
+    this._rp.a.forEach(p => FP.chevron(ctx, fit, p.x, p.y, {}));
+
+    // our defenders — blue labelled discs
+    this._rp.d.forEach(p => FP.token(ctx, fit, p.x, p.y, { role: scn.cat === 'buildup' ? '' : 'D', fill:'#24374f', font: Math.max(8, fit.font * 0.88) }));
+
+    // the ball (flat disc)
+    FP.ballFlat(ctx, fit, this._rp.b.x, this._rp.b.y, {});
+
+    // keeper — the commanding voice; faces the danger while reading
+    const KPs = fit.px(this._rp.k.x, this._rp.k.y), BPs = fit.px(this._rp.b.x, this._rp.b.y);
+    const face = deciding ? Math.atan2(BPs[1] - KPs[1], BPs[0] - KPs[0]) : null;
+    FP.keeperToken(ctx, fit, this._rp.k.x, this._rp.k.y, { accent:acc, face:face, scale: deciding && !reduce ? (1 + osc * 0.02) : 1 });
+
+    // shout: concentric rings radiating from the keeper on a resolved call
+    if (resolved && S.shout) {
+      if (this._shoutRef !== S.shout) { this._shoutRef = S.shout; this._shoutT0 = now; }
+      const rings = S.shout.count === '3' ? 3 : (S.shout.count === '2' ? 2 : 1);
+      const life = Math.min(1, (now - (this._shoutT0 || now)) / 900);
+      ctx.save();
+      for (let i = 0; i < rings; i++) {
+        const ph = Math.max(0, Math.min(1, life * 1.4 - i * 0.22));
+        if (ph <= 0 || ph >= 1) continue;
+        ctx.strokeStyle = 'rgba(' + this._accRGB(acc) + ',' + (0.55 * (1 - ph)).toFixed(3) + ')';
+        ctx.lineWidth = Math.max(1.6, fit.m(0.08));
+        ctx.beginPath(); ctx.arc(KPs[0], KPs[1], fit.m(0.8) + ph * fit.m(7), 0, 7); ctx.stroke();
+      }
+      ctx.restore();
+    }
+    ctx.restore();
+  }
+  _accRGB(hex){ if (hex[0] !== '#') return '120,200,230'; const n = parseInt(hex.slice(1), 16); return ((n >> 16) & 255) + ',' + ((n >> 8) & 255) + ',' + (n & 255); }
+
   componentDidMount(){
     this._to = [];
     try { const b = JSON.parse(localStorage.getItem('fa_command_progress')||'null'); if (b && typeof b.best==='number') this._best=b; } catch(e){}
@@ -895,6 +938,7 @@ class Component extends DCLogic {
     return {
       accent, motion, embedded, chromeOn:!embedded,
       rootMinH: embedded?'100%':'100dvh', rootH: embedded?'100%':'auto',
+      canvasRef: this._cvRefFn || (this._cvRefFn = (el) => this._cvRef(el)),
       saveFx: motion && S.screenFx==='save', nearFx: motion && S.screenFx==='near', goalFx: motion && S.screenFx==='goal', swapping: S.swapping,
       soundOn: !!S.soundOn, soundOff: !S.soundOn, soundColor: S.soundOn ? accent : '#61748c', soundTitle: S.soundOn ? 'Sound on' : 'Sound off', toggleSound: () => this._toggleSound(),
       vizShake: (motion && resolved && r && (r.outcome==='failed' || r.outcome==='froze')) ? 'animation:fa-shake-hard .42s ease-in-out;' : '',
