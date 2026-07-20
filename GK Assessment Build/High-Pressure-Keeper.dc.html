@@ -468,6 +468,21 @@ class Component extends DCLogic {
   /* tiny hex->rgba helper (accent glows without pulling in fa-pitch internals) */
   _hexA(hex, a){ if (!hex || hex[0] !== '#') return hex || 'rgba(255,255,255,' + a + ')'; const n = parseInt(hex.slice(1), 16); return 'rgba(' + ((n >> 16) & 255) + ',' + ((n >> 8) & 255) + ',' + (n & 255) + ',' + a + ')'; }
 
+  /* flat HUD ball — a crisp disc with a thin rim, no 3D gloss. Soft glow only
+   * while in flight. (Local to this game so fa-pitch stays untouched.) */
+  _drawBall(ctx, fit, nx, ny, o){
+    o = o || {};
+    const P = fit.px(nx, ny), x = P[0], y = P[1], r = o.r || Math.max(4, fit.m(0.62));
+    ctx.save();
+    if (o.flight) { ctx.shadowColor = 'rgba(220,240,255,.55)'; ctx.shadowBlur = fit.m(0.8); }
+    ctx.fillStyle = o.color || '#F2F8FE';
+    ctx.beginPath(); ctx.arc(x, y, r, 0, 7); ctx.fill();
+    ctx.shadowBlur = 0;
+    ctx.strokeStyle = 'rgba(9,20,34,.42)'; ctx.lineWidth = Math.max(1, r * 0.14);
+    ctx.beginPath(); ctx.arc(x, y, r * 0.93, 0, 7); ctx.stroke();
+    ctx.restore();
+  }
+
   /* keeper token — glowing HUD jersey block with a facing notch + dive lean.
    * o: { face (rad, notch toward ball), lean (rad, dive tilt), alpha, scale } */
   _keeper(ctx, fit, nx, ny, o){
@@ -571,7 +586,7 @@ class Component extends DCLogic {
     let tgt = { x:ktx, y:kty };
     if (committed) {
       tgt = (last.success && this._savePoint) ? { x: this._savePoint.x + 0.012, y: this._savePoint.y }
-          : { x:0.985, y:0.5 + (this._savePoint ? this._savePoint.y - 0.5 : 0) * 0.9 };
+          : { x:0.955, y:0.5 + (this._savePoint ? this._savePoint.y - 0.5 : 0) * 0.6 };  // beaten: dives but comes up short of the net
     }
     if (this._kposCi !== this.state.ci) { this._kpos = { x:ktx, y:kty }; this._kposCi = this.state.ci; }  // snap on new card
     if (!this._kpos) this._kpos = { x:ktx, y:kty };
@@ -625,7 +640,7 @@ class Component extends DCLogic {
     const ballR = Math.max(4, fit.m(0.62));
     if (resolving || resolved) {
       const tr = this._trail || [];
-      tr.forEach((p, i) => { const f = (i + 1) / tr.length; ctx.globalAlpha = f * 0.4; FP.ball(ctx, fit, p.x, p.y, { r: ballR * (0.4 + f * 0.5) }); });
+      tr.forEach((p, i) => { const f = (i + 1) / tr.length; ctx.globalAlpha = f * 0.4; this._drawBall(ctx, fit, p.x, p.y, { r: ballR * (0.4 + f * 0.5) }); });
       ctx.globalAlpha = 1;
     }
     const hover = live && !reduce ? osc * 0.004 : 0;
@@ -637,7 +652,7 @@ class Component extends DCLogic {
       by = ballPos.y + (this._kpos.y - ballPos.y) * tuck * 0.85;
       br = ballR * (1 - 0.3 * tuck);
     }
-    FP.ball(ctx, fit, bx, by, { flight: resolving, r: br });
+    this._drawBall(ctx, fit, bx, by, { flight: resolving, r: br });
 
     // impact — a clean GATHER on a save, a shockwave (+ verdict) when beaten
     if (this._impact) {
@@ -855,9 +870,11 @@ class Component extends DCLogic {
     const t = this.SCN[this.state.ci];
     const from = this._P(t.ball);
     let to, dur;
-    if (rec.froze) { to = { x:1.0, y:0.5 }; dur = 540; }
+    // net sits between the goal line (x=1.0) and its back (~x=1.023); beaten
+    // shots finish INSIDE it. Saves finish just in front of the line (gathered).
+    if (rec.froze) { to = { x:1.014, y:0.5 }; dur = 560; }                       // trickles into the middle
     else if (rec.success) { to = { x:0.955, y: 0.5 + (from.y - 0.5) * 0.5 }; dur = 430; }
-    else { to = { x:1.0, y: from.y < 0.5 ? 0.30 : 0.70 }; dur = 470; }
+    else { to = { x:1.015, y: from.y < 0.5 ? 0.455 : 0.545 }; dur = 480; }       // buries a corner
     this._savePoint = to;           // where the ball ends up — the keeper dives to meet it
     this._trail = [];
     this._flight = { from, to, dur, t0:this._now(), cb:() => this._land(rec, to) };
