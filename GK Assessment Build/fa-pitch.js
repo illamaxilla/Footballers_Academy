@@ -665,6 +665,194 @@
     ctx.restore();
   }
 
+  /* ==== GK SCENE — shared HUD drill primitives ============================
+   * Promoted from the High Pressure Keeper drill so every keeper game shares
+   * one polished scene kit. All are pure draws: pass o.accent for the theme,
+   * o.goal (normalised, default {x:1,y:0.5}) where a goal reference is needed,
+   * and time-driven values (o.life / o.rot / o.dashOffset) from the caller so
+   * the renderer stays free of any clock. */
+
+  // flat HUD ball — crisp disc + thin rim, soft glow only in flight (no gloss)
+  function ballFlat(ctx, f, nx, ny, o) {
+    o = o || {};
+    var P = f.px(nx, ny), x = P[0], y = P[1], r = o.r || Math.max(4, f.m(0.62));
+    ctx.save();
+    if (o.flight) { ctx.shadowColor = 'rgba(220,240,255,.55)'; ctx.shadowBlur = f.m(0.8); }
+    ctx.fillStyle = o.color || '#F2F8FE';
+    ctx.beginPath(); ctx.arc(x, y, r, 0, 7); ctx.fill();
+    ctx.shadowBlur = 0;
+    ctx.strokeStyle = 'rgba(9,20,34,.42)'; ctx.lineWidth = Math.max(1, r * 0.14);
+    ctx.beginPath(); ctx.arc(x, y, r * 0.93, 0, 7); ctx.stroke();
+    ctx.restore();
+  }
+
+  // keeper token — glowing jersey block; o.face (rad notch), o.lean (dive tilt),
+  // o.alpha, o.scale, o.label ('GK')
+  function keeperToken(ctx, f, nx, ny, o) {
+    o = o || {};
+    var P = f.px(nx, ny), x = P[0], y = P[1], acc = o.accent || '#22D3EE';
+    var s = Math.max(10, f.m(1.7)) * (o.scale || 1), rr = s * 0.3;
+    var alpha = o.alpha == null ? 1 : o.alpha, lean = o.lean || 0;
+    ctx.save(); ctx.globalAlpha = alpha;
+    ctx.fillStyle = 'rgba(0,0,0,.42)';
+    ctx.beginPath(); ctx.ellipse(x + lean * s * 0.6, y + s * 0.55, s * 0.58, s * 0.2, 0, 0, 7); ctx.fill();
+    ctx.translate(x, y); if (lean) ctx.rotate(lean);
+    if (alpha > 0.5) { ctx.shadowColor = acc; ctx.shadowBlur = f.m(1.0); }
+    var g = ctx.createLinearGradient(0, -s / 2, 0, s / 2);
+    g.addColorStop(0, '#EAFBFF'); g.addColorStop(1, '#8fd8e6');
+    ctx.fillStyle = g; ctx.strokeStyle = hexA(acc, 0.9); ctx.lineWidth = Math.max(1.4, f.m(0.07));
+    var bx = -s / 2, by = -s / 2;
+    ctx.beginPath();
+    ctx.moveTo(bx + rr, by);
+    ctx.arcTo(bx + s, by, bx + s, by + s, rr); ctx.arcTo(bx + s, by + s, bx, by + s, rr);
+    ctx.arcTo(bx, by + s, bx, by, rr); ctx.arcTo(bx, by, bx + s, by, rr); ctx.closePath();
+    ctx.fill(); ctx.stroke(); ctx.shadowBlur = 0;
+    if (o.face != null) {
+      var fr = s * 0.5;
+      ctx.fillStyle = hexA(acc, 0.95);
+      ctx.beginPath(); ctx.arc(Math.cos(o.face) * fr, Math.sin(o.face) * fr, Math.max(2, f.m(0.17)), 0, 7); ctx.fill();
+    }
+    ctx.fillStyle = '#06202a'; ctx.font = "800 " + Math.max(8, f.font * 0.96) + "px 'IBM Plex Mono'";
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText(o.label || 'GK', 0, 0.5); ctx.textBaseline = 'alphabetic';
+    ctx.restore();
+  }
+
+  // shooter token — red opponent block with a white pip on the goal-facing edge;
+  // o.goal, o.role (label), o.scale
+  function shooterToken(ctx, f, nx, ny, o) {
+    o = o || {};
+    var P = f.px(nx, ny), x = P[0], y = P[1], red = '#FF5A6E';
+    var s = Math.max(10, f.m(1.6)) * (o.scale || 1), rr = s * 0.3;
+    var goal = o.goal || { x: 1, y: 0.5 }, G = f.px(goal.x, goal.y), ang = Math.atan2(G[1] - y, G[0] - x);
+    ctx.save();
+    ctx.fillStyle = 'rgba(0,0,0,.42)';
+    ctx.beginPath(); ctx.ellipse(x, y + s * 0.55, s * 0.55, s * 0.2, 0, 0, 7); ctx.fill();
+    ctx.shadowColor = red; ctx.shadowBlur = f.m(0.8);
+    var g = ctx.createLinearGradient(x, y - s / 2, x, y + s / 2);
+    g.addColorStop(0, '#FF8593'); g.addColorStop(1, '#E23A4F');
+    ctx.fillStyle = g; ctx.strokeStyle = 'rgba(255,190,198,.85)'; ctx.lineWidth = Math.max(1.4, f.m(0.06));
+    var bx = x - s / 2, by = y - s / 2;
+    ctx.beginPath();
+    ctx.moveTo(bx + rr, by); ctx.arcTo(bx + s, by, bx + s, by + s, rr); ctx.arcTo(bx + s, by + s, bx, by + s, rr);
+    ctx.arcTo(bx, by + s, bx, by, rr); ctx.arcTo(bx, by, bx + s, by, rr); ctx.closePath();
+    ctx.fill(); ctx.stroke(); ctx.shadowBlur = 0;
+    var er = s * 0.5, ex = x + Math.cos(ang) * er, ey = y + Math.sin(ang) * er;
+    ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(ex, ey, Math.max(2, f.m(0.16)), 0, 7); ctx.fill();
+    ctx.restore();
+    if (o.role) {
+      ctx.save(); ctx.fillStyle = 'rgba(255,150,160,.85)';
+      ctx.font = "700 " + Math.max(8, f.font * 0.9) + "px 'IBM Plex Mono'";
+      ctx.textAlign = 'center'; ctx.fillText(o.role, x, y - s * 0.5 - f.font * 0.55); ctx.restore();
+    }
+  }
+
+  // keeper reach footprint — ellipse wider across the goal (lateral dive) than
+  // in depth; o.accent, o.pulse (0..1), o.lateral/o.depth (metres)
+  function coverage(ctx, f, nx, ny, o) {
+    o = o || {};
+    var P = f.px(nx, ny), x = P[0], y = P[1], acc = o.accent || '#22D3EE';
+    var pulse = o.pulse == null ? 0.5 : o.pulse;
+    var rx = f.m(o.lateral != null ? o.lateral : 2.95) + pulse * f.m(0.22);
+    var ry = f.m(o.depth != null ? o.depth : 2.05) + pulse * f.m(0.16);
+    ctx.save();
+    var g = ctx.createRadialGradient(x, y, Math.min(rx, ry) * 0.25, x, y, Math.max(rx, ry));
+    g.addColorStop(0, hexA(acc, 0.14)); g.addColorStop(1, hexA(acc, 0));
+    ctx.fillStyle = g; ctx.beginPath(); ctx.ellipse(x, y, rx, ry, 0, 0, 7); ctx.fill();
+    ctx.strokeStyle = hexA(acc, 0.5); ctx.lineWidth = Math.max(1.4, f.m(0.05)); ctx.setLineDash([5, 5]);
+    ctx.beginPath(); ctx.ellipse(x, y, rx, ry, 0, 0, 7); ctx.stroke(); ctx.setLineDash([]);
+    ctx.restore();
+  }
+
+  // atmosphere: floodlight pool from the goal + inner corner brackets.
+  // o.accent, o.goal, o.floodlight (bool), o.brackets (bool)
+  function fieldHUD(ctx, f, o) {
+    o = o || {};
+    var acc = o.accent || '#22D3EE', ox = f.ox, oy = f.oy, dw = f.drawW, dh = f.drawH;
+    var goal = o.goal || { x: 1, y: 0.5 };
+    ctx.save();
+    ctx.beginPath(); ctx.rect(ox, oy, dw, dh); ctx.clip();
+    if (o.floodlight !== false) {
+      var G = f.px(goal.x, goal.y);
+      var fl = ctx.createRadialGradient(G[0], G[1], f.m(2), G[0], G[1], Math.max(dw, dh) * 0.95);
+      fl.addColorStop(0, hexA(acc, 0.1)); fl.addColorStop(0.5, hexA(acc, 0.03)); fl.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = fl; ctx.fillRect(ox, oy, dw, dh);
+    }
+    if (o.brackets !== false) {
+      ctx.strokeStyle = hexA(acc, 0.5); ctx.lineWidth = 1.5;
+      var b = 14;
+      [[ox, oy, 1, 1], [ox + dw, oy, -1, 1], [ox, oy + dh, 1, -1], [ox + dw, oy + dh, -1, -1]].forEach(function (c) {
+        ctx.beginPath(); ctx.moveTo(c[0] + b * c[2], c[1]); ctx.lineTo(c[0], c[1]); ctx.lineTo(c[0], c[1] + b * c[3]); ctx.stroke();
+      });
+    }
+    ctx.restore();
+  }
+
+  // dashed marching shot lane; o.stress (0..100) reddens it, o.dashOffset animates
+  function threatLine(ctx, f, from, to, o) {
+    o = o || {};
+    var A = f.px(from.x, from.y), B = f.px(to.x, to.y), stress = o.stress == null ? 50 : o.stress;
+    ctx.save();
+    ctx.strokeStyle = o.color || ('rgba(255,90,110,' + (0.3 + 0.35 * stress / 100).toFixed(3) + ')');
+    ctx.lineWidth = Math.max(1.6, f.m(0.08)); ctx.setLineDash([6, 7]);
+    ctx.lineDashOffset = o.dashOffset || 0;
+    ctx.beginPath(); ctx.moveTo(A[0], A[1]); ctx.lineTo(B[0], B[1]); ctx.stroke();
+    ctx.setLineDash([]); ctx.restore();
+  }
+
+  // rotating target-lock brackets + faint ring; o.accent, o.rot (rad), o.r
+  function reticle(ctx, f, nx, ny, o) {
+    o = o || {};
+    var P = f.px(nx, ny), x = P[0], y = P[1], r = o.r || Math.max(11, f.m(1.5)), acc = o.accent || '#22D3EE';
+    ctx.save(); ctx.translate(x, y); if (o.rot) ctx.rotate(o.rot);
+    ctx.strokeStyle = hexA(acc, 0.9); ctx.lineWidth = Math.max(1.3, f.m(0.06)); ctx.lineCap = 'round';
+    var bk = r * 0.5;
+    [[1, 1], [-1, 1], [-1, -1], [1, -1]].forEach(function (s) { ctx.beginPath(); ctx.moveTo(s[0] * r, s[1] * r - s[1] * bk); ctx.lineTo(s[0] * r, s[1] * r); ctx.lineTo(s[0] * r - s[0] * bk, s[1] * r); ctx.stroke(); });
+    ctx.restore();
+    ctx.save(); ctx.strokeStyle = hexA(acc, 0.22); ctx.lineWidth = 1; ctx.beginPath(); ctx.arc(x, y, r * 0.7, 0, 7); ctx.stroke(); ctx.restore();
+  }
+
+  // expanding shockwave + sparks (a beaten shot); o.kind 'save'|'goal'|'froze',
+  // o.life (0..1), o.accent
+  function impactBurst(ctx, f, nx, ny, o) {
+    o = o || {}; var life = o.life == null ? 0 : o.life; if (life >= 1) return;
+    var P = f.px(nx, ny), x = P[0], y = P[1], acc = o.accent || '#22D3EE', kind = o.kind || 'goal';
+    var col = kind === 'save' ? acc : (kind === 'goal' ? '#FF5A6E' : '#8AA0B8');
+    var ease = 1 - Math.pow(1 - life, 2);
+    ctx.save();
+    ctx.strokeStyle = hexA(col, 0.7 * (1 - life)); ctx.lineWidth = Math.max(2, f.m(0.12));
+    ctx.beginPath(); ctx.arc(x, y, f.m(0.5) + ease * f.m(3.4), 0, 7); ctx.stroke();
+    ctx.strokeStyle = hexA(col, 0.4 * (1 - life)); ctx.lineWidth = Math.max(1.4, f.m(0.07));
+    ctx.beginPath(); ctx.arc(x, y, f.m(0.5) + ease * f.m(5.4), 0, 7); ctx.stroke();
+    var N = kind === 'goal' ? 10 : 8;
+    ctx.strokeStyle = hexA(col, 0.85 * (1 - life)); ctx.lineWidth = Math.max(1.4, f.m(0.06)); ctx.lineCap = 'round';
+    for (var i = 0; i < N; i++) {
+      var a = (i / N) * Math.PI * 2 + (kind === 'goal' ? 0.3 : 0);
+      var r0 = f.m(0.7) + ease * f.m(2.0), r1 = r0 + f.m(1.5) * (1 - life * 0.4);
+      ctx.beginPath(); ctx.moveTo(x + Math.cos(a) * r0, y + Math.sin(a) * r0); ctx.lineTo(x + Math.cos(a) * r1, y + Math.sin(a) * r1); ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  // the ball is GATHERED: flash + inward-contracting ring + grip ticks (a catch);
+  // o.life (0..1), o.accent
+  function catchBurst(ctx, f, nx, ny, o) {
+    o = o || {}; var life = o.life == null ? 0 : o.life; if (life >= 1) return;
+    var P = f.px(nx, ny), x = P[0], y = P[1], acc = o.accent || '#22D3EE';
+    var ease = 1 - Math.pow(1 - life, 2);
+    ctx.save();
+    var fa = 0.62 * Math.max(0, 1 - life / 0.45);
+    if (fa > 0) { var g = ctx.createRadialGradient(x, y, 0, x, y, f.m(3.6)); g.addColorStop(0, hexA(acc, fa)); g.addColorStop(0.5, hexA(acc, fa * 0.4)); g.addColorStop(1, hexA(acc, 0)); ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, f.m(3.6), 0, 7); ctx.fill(); }
+    var rr = f.m(0.55) + (1 - ease) * f.m(3.0);
+    ctx.strokeStyle = hexA(acc, 0.85 * (1 - life)); ctx.lineWidth = Math.max(2, f.m(0.12));
+    ctx.beginPath(); ctx.arc(x, y, rr, 0, 7); ctx.stroke();
+    if (life < 0.6) {
+      ctx.strokeStyle = hexA(acc, 0.9 * (1 - life / 0.6)); ctx.lineWidth = Math.max(1.6, f.m(0.08)); ctx.lineCap = 'round';
+      for (var j = 0; j < 6; j++) { var aa = (j / 6) * Math.PI * 2, r0b = f.m(0.9), r1b = f.m(1.4); ctx.beginPath(); ctx.moveTo(x + Math.cos(aa) * r0b, y + Math.sin(aa) * r0b); ctx.lineTo(x + Math.cos(aa) * r1b, y + Math.sin(aa) * r1b); ctx.stroke(); }
+    }
+    ctx.restore();
+  }
+
   // ---- small helpers ----
   function roundRect(ctx, x, y, w, h, r) {
     ctx.beginPath();
@@ -677,7 +865,9 @@
     return 'rgba(' + r + ',' + g + ',' + b + ',' + a + ')';
   }
 
-  var API = { fit: fit, pitch: pitch, goal: goal, grid: grid, passLane: passLane, trajectory: trajectory, coverShadow: coverShadow, pressure: pressure, laneBlocked: laneBlocked, run: run, token: token, chevron: chevron, ball: ball, ballHigh: ballHigh, engage: engage, arrow: arrow, zone: zone, badge: badge, gauge: gauge, countdown: countdown, verdict: verdict, angleCone: angleCone, keeperReach: keeperReach, radius: radius, goalFace: goalFace, keeperFront: keeperFront, line: line, marking: marking, block: block, gap: gap, CROPS: CROPS, COL: COL, L: L, WD: WD };
+  var API = { fit: fit, pitch: pitch, goal: goal, grid: grid, passLane: passLane, trajectory: trajectory, coverShadow: coverShadow, pressure: pressure, laneBlocked: laneBlocked, run: run, token: token, chevron: chevron, ball: ball, ballHigh: ballHigh, engage: engage, arrow: arrow, zone: zone, badge: badge, gauge: gauge, countdown: countdown, verdict: verdict, angleCone: angleCone, keeperReach: keeperReach, radius: radius, goalFace: goalFace, keeperFront: keeperFront, line: line, marking: marking, block: block, gap: gap,
+    ballFlat: ballFlat, keeperToken: keeperToken, shooterToken: shooterToken, coverage: coverage, fieldHUD: fieldHUD, threatLine: threatLine, reticle: reticle, impactBurst: impactBurst, catchBurst: catchBurst,
+    CROPS: CROPS, COL: COL, L: L, WD: WD };
   if (typeof module !== 'undefined' && module.exports) module.exports = API;
   root.FAPitch = API;
 })(typeof window !== 'undefined' ? window : this);

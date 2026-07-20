@@ -8,9 +8,8 @@
 <body>
 <x-dc>
 <helmet>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="assets/vendor/fonts/fonts.css" rel="stylesheet">
+<script src="./fa-pitch.js"></script>
 <style>
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;background:#04060c;}
@@ -72,14 +71,6 @@
         <span style="font:800 13px 'Archivo';letter-spacing:.05em;">ONE-ON-ONE DUEL <span style="color:var(--accent,#22D3EE);">· 1V1 SCAN</span></span>
       </div>
       <div style="display:flex;align-items:center;gap:12px;min-width:120px;justify-content:flex-end;">
-        <button onClick="{{ toggleSound }}" title="{{ soundTitle }}" style="display:grid;place-items:center;width:28px;height:28px;border-radius:8px;border:1px solid rgba(120,140,166,.24);background:rgba(10,16,28,.5);cursor:pointer;color:{{ soundColor }};transition:color .16s ease,border-color .16s ease;" style-hover="border-color:color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);">
-          <sc-if value="{{ soundOn }}" hint-placeholder-val="{{ true }}">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>
-          </sc-if>
-          <sc-if value="{{ soundOff }}" hint-placeholder-val="{{ false }}">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M22 9l-6 6M16 9l6 6"/></svg>
-          </sc-if>
-        </button>
         <span style="display:flex;gap:4px;">
           <sc-for list="{{ progressDots }}" as="d" hint-placeholder-count="6">
             <span style="width:11px;height:4px;border-radius:99px;transition:all .3s;{{ d.style }}"></span>
@@ -148,53 +139,7 @@
 
         <!-- ==== FIELD ==== -->
         <div style="position:relative;flex:1 1 120px;min-height:120px;border-radius:16px;overflow:hidden;border:1px solid rgba(120,140,166,.18);background:radial-gradient(130% 100% at 50% 100%,#0d1c2e 0%,#091324 52%,#050c17 100%);box-shadow:inset 0 0 60px rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;{{ vizShake }}">
-          <div style="position:relative;height:100%;aspect-ratio:3/2;max-width:100%;">
-            <div style="position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.5;background:repeating-linear-gradient(90deg,rgba(140,200,220,.03) 0px,rgba(140,200,220,.03) 1px,transparent 1px,transparent 42px);"></div>
-
-            <svg viewBox="0 0 150 100" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;z-index:1;">
-              <rect x="18" y="46" width="114" height="52" fill="none" stroke="rgba(150,200,220,.20)" stroke-width="0.5"/>
-              <rect x="54" y="80" width="42" height="18" fill="none" stroke="rgba(150,200,220,.22)" stroke-width="0.5"/>
-              <path d="M60,46 A24,24 0 0 0 90,46" fill="none" stroke="rgba(150,200,220,.14)" stroke-width="0.5"/>
-              <circle cx="75" cy="66" r="1.1" fill="rgba(180,220,235,.6)"/>
-              <line x1="57" y1="98" x2="93" y2="98" stroke="#7fdfe9" stroke-width="1.2" stroke-linecap="round"/>
-              <line x1="57" y1="94.5" x2="57" y2="98" stroke="#7fdfe9" stroke-width="1"/>
-              <line x1="93" y1="94.5" x2="93" y2="98" stroke="#7fdfe9" stroke-width="1"/>
-            </svg>
-
-            <!-- dive-zone overlays -->
-            <div style="position:absolute;z-index:2;pointer-events:none;{{ zoneLStyle }}"></div>
-            <div style="position:absolute;z-index:2;pointer-events:none;{{ zoneCStyle }}"></div>
-            <div style="position:absolute;z-index:2;pointer-events:none;{{ zoneRStyle }}"></div>
-
-            <!-- shot / dribble tag -->
-            <sc-if value="{{ shotTagShow }}" hint-placeholder-val="{{ false }}">
-              <div style="position:absolute;top:12px;left:50%;transform:translateX(-50%);z-index:9;padding:5px 13px;border-radius:999px;background:rgba(4,10,18,.8);border:1px solid {{ shotTagBorder }};font:800 10px 'IBM Plex Mono';letter-spacing:.22em;color:{{ shotTagColor }};white-space:nowrap;backdrop-filter:blur(4px);">{{ shotTagText }}</div>
-            </sc-if>
-
-            <!-- ball trail -->
-            <sc-for list="{{ trailDots }}" as="td" hint-placeholder-count="0">
-              <div style="position:absolute;z-index:5;transform:translate(-50%,-50%);border-radius:50%;background:#fff;pointer-events:none;{{ td.look }}{{ td.pos }}"></div>
-            </sc-for>
-
-            <!-- attacker -->
-            <div style="position:absolute;z-index:4;transform:translate(-50%,-50%);{{ atkStyle }}">
-              <div style="width:0;height:0;border-left:8px solid transparent;border-right:8px solid transparent;border-top:13px solid #FF5A6E;filter:drop-shadow(0 0 8px rgba(255,90,110,.55));"></div>
-            </div>
-
-            <!-- keeper -->
-            <div style="position:absolute;z-index:6;display:grid;place-items:center;width:32px;height:32px;border-radius:10px;background:linear-gradient(180deg,#EAFBFF,#8fd8e6);color:#04202a;font:800 11px 'Archivo';letter-spacing:.04em;box-shadow:0 6px 20px rgba(0,0,0,.5),0 0 0 2px rgba(255,255,255,.18),0 0 18px color-mix(in srgb,var(--accent,#22D3EE) 45%,transparent);{{ keeperStyle }}">GK</div>
-
-            <!-- ball -->
-            <div style="position:absolute;z-index:7;transform:translate(-50%,-50%);width:12px;height:12px;border-radius:50%;background:radial-gradient(circle at 34% 30%,#fff,#bcc9d4);box-shadow:0 0 10px rgba(255,255,255,.55),0 2px 5px rgba(0,0,0,.45);transition:{{ ballTransition }};{{ ballStyle }}"></div>
-
-            <!-- impact burst -->
-            <sc-if value="{{ impactShow }}" hint-placeholder-val="{{ false }}">
-              <div style="position:absolute;z-index:8;pointer-events:none;{{ impactPos }}">
-                <div style="position:absolute;transform:translate(-50%,-50%);width:20px;height:20px;border-radius:50%;border:2px solid {{ impactColor }};box-shadow:0 0 14px {{ impactColor }};animation:fa-burst .62s ease-out forwards;"></div>
-                <div style="position:absolute;transform:translate(-50%,-50%);width:14px;height:14px;border-radius:50%;background:{{ impactColor }};animation:fa-catch .52s ease-out forwards;"></div>
-              </div>
-            </sc-if>
-          </div>
+          <canvas ref="{{ canvasRef }}" style="position:absolute;inset:0;width:100%;height:100%;display:block;z-index:1;"></canvas>
 
           <span style="position:absolute;left:12px;top:10px;font:600 8px 'IBM Plex Mono';letter-spacing:.2em;color:rgba(200,215,232,.4);pointer-events:none;z-index:9;">GK CAM</span>
 
@@ -444,7 +389,75 @@ class Component extends DCLogic {
   _pad(n){ return n < 10 ? '0' + n : '' + n; }
   _now(){ return (typeof performance !== 'undefined' && performance.now) ? performance.now() : Date.now(); }
   _clear(){ if (this._h) this._h.forEach(id => clearTimeout(id)); this._h = []; clearInterval(this._tk); if (this._raf) cancelAnimationFrame(this._raf); this._raf = null; }
-  componentWillUnmount(){ this._clear(); }
+  componentWillUnmount(){ this._clear(); this._stopLoop(); }
+
+  /* ---------- canvas pitch scene (shared fa-pitch renderer) ----------
+   * Same coordinate convention as the other keeper games: x 0..100 across
+   * (50 = centre), y 0..100 running upfield -> our goal line. */
+  _P(o){ return { x: 0.58 + (o.y / 100) * 0.44, y: o.x / 100 }; }
+  _cvRef(el){ if (el === this._canvas) return; this._canvas = el; if (el) requestAnimationFrame(() => { this._resize(); this._startLoop(); }); }
+  _resize(){ const cv = this._canvas; if (!cv) return; const r = cv.getBoundingClientRect(); if (!r.width) return; const dpr = Math.min(2, window.devicePixelRatio || 1); const w = Math.max(2, Math.round(r.width * dpr)), h = Math.max(2, Math.round(r.height * dpr)); if (cv.width !== w || cv.height !== h) { cv.width = w; cv.height = h; } this._dpr = dpr; this._W = r.width; this._H = r.height; }
+  _startLoop(){ if (this._loopOn) return; this._loopOn = true; const step = () => { if (!this._loopOn) return; this._loopRaf = requestAnimationFrame(step); if ((!this._W || !this._H) && this._canvas) this._resize(); this._draw(); }; this._loopRaf = requestAnimationFrame(step); }
+  _stopLoop(){ this._loopOn = false; if (this._loopRaf) cancelAnimationFrame(this._loopRaf); this._loopRaf = null; }
+  _draw(){
+    const cv = this._canvas, ctx = cv && cv.getContext('2d'); if (!ctx) return;
+    const W = this._W, H = this._H, dpr = this._dpr || 1; if (!W || !H || !isFinite(W) || !isFinite(H)) return;
+    const FP = window.FAPitch; if (!FP) return;
+    const acc = this.props.accent || '#22D3EE', now = this._now();
+    const motion = this.props.motion !== false;
+    const reduce = !motion || (window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches);
+    const osc = reduce ? 0 : Math.sin(now / 900);
+    ctx.save(); ctx.scale(dpr, dpr); ctx.clearRect(0, 0, W, H);
+    const s = this.state;
+    const atk = this._P(s.atk), kpr = this._P(s.kpr), ball = this._P(s.ball), goalC = { x:1, y:0.5 };
+    // dynamic crop — frame the box + the striker's run
+    let minX = 0.66, minY = 0.20, maxY = 0.80;
+    [atk, kpr, ball].forEach(p => { minX = Math.min(minX, p.x - 0.05); minY = Math.min(minY, p.y - 0.07); maxY = Math.max(maxY, p.y + 0.07); });
+    const fit = FP.fit(W, H, { cropRect:[Math.max(0.44, minX), 1.06, Math.max(0, minY), Math.min(1, maxY)], orient:'ns', attackDir:'rtl', inset:0.03 }); this._fit = fit;
+    FP.pitch(ctx, fit);
+    FP.fieldHUD(ctx, fit, { accent:acc });
+
+    const stage = s.stage, reading = stage === 'approach' || stage === 'decide', resolved = stage === 'resolved';
+    // smooth atk/kpr (state jumps; ball is tweened by the flight rAF already)
+    if (this._rpCi !== s.ci || !this._rp) { this._rp = { atk:{ ...atk }, kpr:{ ...kpr } }; this._rpCi = s.ci; }
+    const ez = reduce ? 1 : 0.2;
+    this._rp.atk.x += (atk.x - this._rp.atk.x) * ez; this._rp.atk.y += (atk.y - this._rp.atk.y) * ez;
+    this._rp.kpr.x += (kpr.x - this._rp.kpr.x) * ez; this._rp.kpr.y += (kpr.y - this._rp.kpr.y) * ez;
+    const A = this._rp.atk, K = this._rp.kpr, B = ball;
+
+    FP.coverage(ctx, fit, K.x, K.y, { accent:acc, pulse: reading && !reduce ? (0.5 + 0.5 * osc) : 0.5 });
+
+    if (reading) {
+      FP.angleCone(ctx, fit, B, { end:1, optimal:true, color:acc });
+      FP.threatLine(ctx, fit, B, goalC, { stress:45, dashOffset: reduce ? 0 : -((now / 55) % 13) });
+      FP.reticle(ctx, fit, B.x, B.y, { accent:acc, rot: reduce ? 0 : (now / 1600) % (Math.PI * 2) });
+    }
+
+    if (stage === 'react' || stage === 'commit') {
+      const tr = s.trail || [], ballR = Math.max(4, fit.m(0.62));
+      tr.forEach((p, i) => { const f = (i + 1) / tr.length, pp = this._P(p); ctx.globalAlpha = f * 0.4; FP.ballFlat(ctx, fit, pp.x, pp.y, { r: ballR * (0.4 + f * 0.5) }); });
+      ctx.globalAlpha = 1;
+    }
+
+    FP.shooterToken(ctx, fit, A.x, A.y, { role: reading ? 'STRIKER' : null, goal:goalC });
+
+    const KPs = fit.px(K.x, K.y), BPs = fit.px(B.x, B.y);
+    const face = !resolved ? Math.atan2(BPs[1] - KPs[1], BPs[0] - KPs[0]) : null;
+    let lean = 0, kAlpha = 1;
+    if (resolved && s.out) { if (s.out.froze) kAlpha = 0.72; else lean = (s.dive === 'L' ? -1 : s.dive === 'R' ? 1 : 0) * 0.42; }
+    FP.keeperToken(ctx, fit, K.x, K.y, { accent:acc, face:face, lean:lean, alpha:kAlpha, scale: reading && !reduce ? (1 + osc * 0.02) : 1 });
+
+    FP.ballFlat(ctx, fit, B.x, B.y, { flight: stage === 'react', r: Math.max(4, fit.m(0.62)) });
+
+    if (s.impact) {
+      if (this._impRef !== s.impact) { this._impRef = s.impact; this._impT0 = now; }
+      const ip = this._P(s.impact), k = s.impact.kind;
+      const life = Math.min(1, (now - (this._impT0 || now)) / (k === 'save' ? 470 : 560));
+      if (k === 'save') FP.catchBurst(ctx, fit, ip.x, ip.y, { accent:acc, life:life });
+      else FP.impactBurst(ctx, fit, ip.x, ip.y, { accent:acc, kind: k === 'beaten' ? 'froze' : 'goal', life:life });
+    }
+    ctx.restore();
+  }
   componentDidMount(){
     this._h = [];
     try { const b = JSON.parse(localStorage.getItem('fa_1v1_progress') || 'null'); if (b && typeof b.best === 'number') this._best = b; } catch(e) {}
@@ -480,7 +493,7 @@ class Component extends DCLogic {
     const g = ctx.createGain(); g.gain.setValueAtTime(vol || 0.15, t); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
     s.connect(f).connect(g).connect(this._master); s.start(t); s.stop(t + dur);
   }
-  _sfx(name){
+  _sfx(name){ return; // sound removed
     if (!this.state.soundOn) return; const ctx = this._audio(); if (!ctx) return;
     switch(name){
       case 'click': this._tone(520, 0.06, 'triangle', 0.11); break;
@@ -911,6 +924,7 @@ class Component extends DCLogic {
       liveHint, subHint, subHintColor,
       reactLabel: 'REACT NOW', reactSub: 'Match his shot \u2014 which way do you go?',
       feedKicker, feedText, feedColor, feedBorder, feedBg, eliteNote,
+      canvasRef: this._cvRefFn || (this._cvRefFn = (el) => this._cvRef(el)),
       adv: { onSelect: () => this._pickPosition('advance') },
       stay: { onSelect: () => this._pickPosition('stay') },
       diveL: { onSelect: () => this._pickDive('L') },
