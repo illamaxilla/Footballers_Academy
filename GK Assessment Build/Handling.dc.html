@@ -249,48 +249,8 @@
 
   <!-- ============ SUMMARY ============ -->
   <sc-if value="{{ isSummary }}" hint-placeholder-val="{{ false }}">
-    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:14px clamp(24px,4vw,58px) 54px;">
-      <div class="fa-in" style="display:inline-flex;align-items:center;gap:9px;margin-bottom:18px;padding:6px 14px;border:1px solid color-mix(in srgb,var(--accent,#22D3EE) 32%,transparent);border-radius:999px;font:600 10px 'IBM Plex Mono';letter-spacing:.28em;color:var(--accent,#22D3EE);">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" style="stroke:var(--accent,#22D3EE);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12.5l4.5 4.5L19 6.5"/></svg>RUN COMPLETE
-      </div>
-      <h1 class="fa-in" style="margin:0 0 8px;font:800 clamp(34px,5vw,64px)/0.98 'Archivo';letter-spacing:-0.03em;text-align:center;animation-delay:.06s;">{{ sum.avg }}<span style="font-size:.5em;color:#7688a0;font-family:'IBM Plex Mono';"> / 100</span></h1>
-      <p class="fa-in" style="margin:0 0 28px;max-width:520px;font:400 clamp(15px,1.35vw,18px)/1.6 'Archivo';color:#B4C2D4;text-align:center;text-wrap:pretty;animation-delay:.12s;">{{ sum.band }}</p>
-
-      <div class="fa-in" style="display:flex;flex-wrap:wrap;gap:18px;justify-content:center;align-items:stretch;width:100%;max-width:760px;margin-bottom:26px;animation-delay:.18s;">
-        <div style="flex:1 1 150px;max-width:200px;padding:18px;border-radius:15px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);text-align:center;">
-          <div style="font:800 30px 'Archivo';color:var(--accent,#22D3EE);">{{ sum.avg }}</div>
-          <div style="font:600 8.5px 'IBM Plex Mono';letter-spacing:.16em;color:#7688a0;margin-top:5px;">AVG DISTRIBUTION</div>
-        </div>
-        <div style="flex:1 1 150px;max-width:200px;padding:18px;border-radius:15px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);text-align:center;">
-          <div style="font:800 30px 'Archivo';color:#EAF2FB;">{{ sum.bestScore }}</div>
-          <div style="font:600 8.5px 'IBM Plex Mono';letter-spacing:.16em;color:#7688a0;margin-top:5px;">BEST PASS</div>
-        </div>
-        <div style="flex:1 1 150px;max-width:200px;padding:18px;border-radius:15px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);text-align:center;">
-          <div style="font:800 30px 'Archivo';color:#EAF2FB;">{{ sum.n }}</div>
-          <div style="font:600 8.5px 'IBM Plex Mono';letter-spacing:.16em;color:#7688a0;margin-top:5px;">DECISIONS</div>
-        </div>
-      </div>
-
-      <div class="fa-in" style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:640px;margin-bottom:30px;animation-delay:.24s;">
-        <sc-for list="{{ sum.chips }}" as="c" hint-placeholder-count="6">
-          <div style="display:flex;align-items:center;gap:9px;padding:9px 14px;border-radius:10px;border:1px solid;{{ c.look }}">
-            <span style="font:700 9px 'IBM Plex Mono';letter-spacing:.1em;opacity:.7;">{{ c.n }}</span>
-            <span style="font:600 10px 'IBM Plex Mono';letter-spacing:.08em;color:#9FB0C5;">{{ c.label }}</span>
-            <span style="font:800 14px 'Archivo';">{{ c.score }}</span>
-          </div>
-        </sc-for>
-      </div>
-
-      <div class="fa-in" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:13px;animation-delay:.3s;">
-        <button onClick="{{ onPlayAgain }}" style="display:inline-flex;align-items:center;gap:11px;padding:16px 34px;border-radius:12px;border:0;cursor:pointer;background:var(--accent,#22D3EE);color:#03121a;font:700 15px 'Archivo';box-shadow:0 12px 36px color-mix(in srgb,var(--accent,#22D3EE) 40%,transparent);transition:transform .16s ease,box-shadow .16s ease;" style-hover="transform:translateY(-2px);box-shadow:0 18px 48px color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);">
-          Run it again
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:#03121a;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
-        </button>
-        <button onClick="{{ onChangeSetup }}" style="display:inline-flex;align-items:center;gap:9px;padding:16px 24px;border-radius:12px;border:1px solid rgba(157,176,198,.28);background:rgba(12,18,30,.4);color:#C6D3E2;font:600 14px 'Archivo';cursor:pointer;transition:border-color .16s ease,color .16s ease;" style-hover="border-color:color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);color:#EAF2FB;">
-          Change mode
-        </button>
-      </div>
-      <div class="fa-in" style="margin-top:22px;font:500 10px 'IBM Plex Mono';letter-spacing:.14em;color:#4f627a;animation-delay:.36s;">{{ sum.dataLine }}</div>
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:grid;grid-template-rows:minmax(0,1fr);width:100%;overflow-y:auto;padding:10px clamp(20px,3vw,48px) 40px;">
+      <dc-import name="Result-Screen" accent="{{ accent }}" kicker="{{ res.kicker }}" score="{{ res.score }}" band="{{ res.band }}" stats="{{ res.stats }}" bars="{{ res.bars }}" chart="{{ res.chart }}" chips="{{ res.chips }}" insight="{{ res.insight }}" meta="{{ res.meta }}" actions="{{ res.actions }}" style="width:100%;min-height:0;display:grid;grid-template-rows:minmax(0,1fr);" hint-size="100%,600px"></dc-import>
     </main>
   </sc-if>
 
@@ -480,6 +440,7 @@ class Component extends DCLogic {
 
     // summary
     let sum={};
+    let res={};
     if(isSummary){
       const rr=this.state.runResults;
       const avg=this.state._avg ?? Math.round(rr.reduce((s,r)=>s+r.score,0)/(rr.length||1));
@@ -488,6 +449,22 @@ class Component extends DCLogic {
         look: r.score>=75?`border-color:${A(accent,'55')};color:${accent};`:r.score>=50?`border-color:rgba(255,176,32,.5);color:#FFB020;`:`border-color:rgba(255,107,126,.45);color:#FF9AA6;` }));
       const band = avg>=85?'Safe hands. You pick the right technique under any kind of shot.':avg>=70?'Reliable handling — the basics are becoming second nature.':avg>=50?'Some risky choices in there. Drill when to catch and when to parry.':'Early days — build the instinct for the safe technique first.';
       sum={ avg, n:rr.length, bestScore, chips, band, dataLine:`${rr.length} SHOTS · HANDLING FEEDS THE BASTION ARCHETYPE` };
+      res={
+        kicker:'HANDLING COMPLETE',
+        score:String(sum.avg),
+        band:sum.band,
+        stats:[
+          {value:String(sum.avg), label:'AVG HANDLING', color:accent},
+          {value:String(sum.bestScore), label:'BEST HANDLE', color:'#EAF2FB'},
+          {value:String(sum.n), label:'SHOTS', color:'#EAF2FB'},
+        ],
+        chips:sum.chips,
+        meta:sum.dataLine,
+        actions:[
+          {label:'Run it again', onClick:()=>this._playAgain()},
+          {label:'Change mode', primary:false, arrow:false, onClick:()=>this._setup()},
+        ],
+      };
     }
 
     return {
@@ -501,7 +478,7 @@ class Component extends DCLogic {
       lockLabel, lockBg, lockOpacity, lockCursor, onLock:()=>this._lock(),
       fb, onReposition:()=>this._reposition(), onNext:()=>this._next(),
       nextLabel: idx<order.length-1 ? 'Next shot' : 'See run summary',
-      sum, onPlayAgain:()=>this._playAgain(), onChangeSetup:()=>this._setup(),
+      sum, res, onPlayAgain:()=>this._playAgain(), onChangeSetup:()=>this._setup(),
       onBack:()=>{ window.location.href='Landing.dc.html'; },
     };
   }
