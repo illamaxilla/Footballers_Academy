@@ -368,7 +368,9 @@ class Component extends DCLogic {
   DEC_MS = 8000;
   VOL_MULT = { whisper:0.7, call:1.0, command:1.1 };
   VOL_EXEC = { whisper:62, call:82, command:94 };
-  KBASE = { x:50, y:86 };
+  // game-y: goal line ~96, 6-yard box line ~87, penalty spot ~77. Keeper sets on
+  // his line and only comes as far as the 6-yard box to claim a cross/corner.
+  KBASE = { x:50, y:93 };
 
   SCN = [
     { key:'corner', name:'Corner', tag:'SET PLAY', cat:'setplay', threat:'CORNER',
@@ -700,9 +702,13 @@ class Component extends DCLogic {
 
     if (opt.eff === 'keepers') {
       const tx = scn.atks.length ? scn.atks[0].x : 50;
-      const ty = scn.cat==='open' && scn.key==='longball' ? 60 : 66;
-      kpr = { x: tx, y: Math.min(72, ty) };
-      if (outcome === 'failed') { ball = { x:50, y:94 }; kpr = { x:tx+6, y:ty }; }
+      // A cross/corner is claimed inside the 6-yard box (~y89); only a ball over
+      // the top is swept from further out, sweeper-keeper style (~y78, ~10m).
+      const sweep = scn.cat==='open' && scn.key==='longball';
+      const ty = sweep ? 78 : 89;
+      kpr = { x: this._lerp(50, tx, sweep ? 0.5 : 0.35), y: ty };
+      // caught out = he committed forward and the ball got past him into the net
+      if (outcome === 'failed') { ball = { x:50, y:95 }; kpr = { x:kpr.x, y: ty - 4 }; }
       else { ball = { x:kpr.x, y:kpr.y }; }
     } else if (opt.eff === 'distribute') {
       if (opt.dir === 'short') ball = { x:28, y:70 };
