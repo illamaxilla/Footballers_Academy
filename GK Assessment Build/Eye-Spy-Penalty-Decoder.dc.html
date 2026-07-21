@@ -450,7 +450,9 @@ class Component extends DCLogic {
     if (this._rpPi !== S.pi || this._rk == null) { this._rk = kTgt; this._rpPi = S.pi; }
     this._rk += (kTgt - this._rk) * (reduce ? 1 : 0.34);
     const baseY = gy + gh, dive = Math.max(-1, Math.min(1, (this._rk - 50) / 22.5));
-    FP.keeperFront(ctx, gx + gw / 2, baseY, gh, { dive: dive });
+    // penalties in this game are struck at the top corners, so a committed dive
+    // to the side goes airborne; a central stay keeps his feet down.
+    FP.keeperFront(ctx, gx + gw / 2, baseY, gh, { dive: dive, lift: Math.abs(dive), reach: Math.abs(dive) });
 
     // the ball — spot before the kick, buried in the corner or gathered on a save
     if (kicking || resolved) {

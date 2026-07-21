@@ -290,7 +290,8 @@ class Component extends DCLogic {
     if (resolved && tapped) { const dir = t.end.x >= KX ? 1 : -1; tdive = isGo ? Math.max(-1, Math.min(1, (t.end.x - KX) / 22)) : dir * 0.4; }
     if (this._rdSi !== s.ti || this._rdive == null) { this._rdive = 0; this._rdSi = s.ti; }
     this._rdive += (tdive - this._rdive) * (reduce ? 1 : 0.28);
-    FP.keeperFront(ctx, gx + gw / 2, gy + gh, gh, { dive: this._rdive });
+    const hHigh = resolved && isGo && t.end.y < 33;  // top-row corner -> airborne dive
+    FP.keeperFront(ctx, gx + gw / 2, gy + gh, gh, { dive: this._rdive, lift: hHigh ? Math.abs(this._rdive) : 0, reach: Math.abs(this._rdive) });
     // striker — open red chevron at the spot, rotated by the body-lean tell
     let lean = 0;
     if (isGo) lean = (t.end.x - 50) * 0.42; else if (t.sub === 'FEINT') lean = ((s.ti % 2) ? -1 : 1) * 18; else if (t.sub === 'WIDE') lean = (t.end.x - 50) * 0.5; else if (t.sub === 'BACK-PASS') lean = -19;

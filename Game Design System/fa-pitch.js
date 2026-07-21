@@ -607,18 +607,38 @@
     ctx.lineCap = 'butt'; ctx.restore();
     return box;
   }
-  // Keeper figure (front elevation) with dive lean/reach (-1 left .. +1 right)
+  // Keeper figure (front elevation). Moves as ONE rigid mannequin: the whole body
+  // slides toward the dive (o.dive -1 left .. +1 right), leans/rotates into it
+  // (fuller with o.reach), and lifts off the ground for elevated shots (o.lift 0..1).
+  // The silhouette never stretches — arms stay in a fixed catch pose.
   function keeperFront(ctx, cx, baseY, gh, o) {
-    o = o || {}; var dive = o.dive || 0, h = gh * 0.66, w = h * 0.32, x = cx + dive * gh * 0.85;
+    o = o || {};
+    var dive = clamp(o.dive || 0, -1, 1);
+    var reach = o.reach == null ? Math.abs(dive) : clamp(o.reach, 0, 1);
+    var lift = clamp(o.lift || 0, 0, 1);
+    var h = gh * 0.66, w = h * 0.32;
+    var slideX = cx + dive * gh * 0.34;              // feet travel toward the ball; the rotated body does the reaching
+    var rise = lift * gh * 0.46;                     // leaves the turf for high shots
+    // radians: angle the body into the dive — a diagonal reach up to a HIGH corner,
+    // flatter toward the ground for a LOW one.
+    var lean = dive * (0.82 + (1 - lift) * 0.6);
     ctx.save();
-    var g = ctx.createLinearGradient(x, baseY - h, x, baseY); g.addColorStop(0, '#EAFBFF'); g.addColorStop(1, '#8fd8e6');
+    // ground shadow — stays on the turf under the launch, fades as he goes airborne
+    ctx.fillStyle = 'rgba(0,0,0,' + (0.42 * (1 - lift * 0.72)).toFixed(3) + ')';
+    ctx.beginPath(); ctx.ellipse(cx + dive * gh * 0.5, baseY, w * 0.74, w * 0.22, 0, 0, 7); ctx.fill();
+    // rigid mannequin: pivot at the feet, then slide + rise + rotate as one unit
+    ctx.translate(slideX, baseY - rise); ctx.rotate(lean);
+    var g = ctx.createLinearGradient(0, -h, 0, 0); g.addColorStop(0, '#EAFBFF'); g.addColorStop(1, '#8fd8e6');
+    if (lift > 0.06 || Math.abs(dive) > 0.06) { ctx.shadowColor = 'rgba(150,220,240,.5)'; ctx.shadowBlur = gh * 0.11; }
     ctx.strokeStyle = 'rgba(6,16,20,.5)'; ctx.lineWidth = 1.5; ctx.fillStyle = g;
-    roundRect(ctx, x - w / 2, baseY - h, w, h, w * 0.42); ctx.fill(); ctx.stroke();
-    ctx.beginPath(); ctx.arc(x, baseY - h - w * 0.36, w * 0.34, 0, 7); ctx.fill(); ctx.stroke();
+    roundRect(ctx, -w / 2, -h, w, h, w * 0.42); ctx.fill(); ctx.stroke();
+    ctx.shadowBlur = 0;
+    ctx.beginPath(); ctx.arc(0, -h - w * 0.36, w * 0.34, 0, 7); ctx.fill(); ctx.stroke();
+    // arms — FIXED symmetric catch pose (raised in a V); never stretch with the dive
     ctx.strokeStyle = g; ctx.lineWidth = Math.max(3, w * 0.42); ctx.lineCap = 'round';
-    var sy = baseY - h * 0.78, reach = w * 0.7 + Math.abs(dive) * gh * 0.55, up = Math.abs(dive) * h * 0.45;
-    ctx.beginPath(); ctx.moveTo(x, sy); ctx.lineTo(x - reach * (dive <= 0 ? 1.25 : 0.55), sy - (dive < 0 ? up : h * 0.3)); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(x, sy); ctx.lineTo(x + reach * (dive >= 0 ? 1.25 : 0.55), sy - (dive > 0 ? up : h * 0.3)); ctx.stroke();
+    var sy = -h * 0.80, armLen = w * 1.12, armUp = h * 0.44;
+    ctx.beginPath(); ctx.moveTo(0, sy); ctx.lineTo(-armLen, sy - armUp); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(0, sy); ctx.lineTo(armLen, sy - armUp); ctx.stroke();
     ctx.lineCap = 'butt'; ctx.restore();
   }
 

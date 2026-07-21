@@ -322,7 +322,8 @@ class Component extends DCLogic {
     if (resolved) tdive = Math.max(-1, Math.min(1, (rnd.corner.x - KX) / 22)) * (saved ? 1 : 0.55);
     if (this._rdSi !== s.si || this._rdive == null) { this._rdive = 0; this._rdSi = s.si; }
     this._rdive += (tdive - this._rdive) * (reduce ? 1 : 0.28);
-    FP.keeperFront(ctx, gx + gw / 2, gy + gh, gh, { dive: this._rdive });
+    const rHigh = rnd.corner.y < 33;  // top-row corner -> airborne dive; low -> along the ground
+    FP.keeperFront(ctx, gx + gw / 2, gy + gh, gh, { dive: this._rdive, lift: rHigh ? Math.abs(this._rdive) : 0, reach: Math.abs(this._rdive) });
     // striker — open red chevron at the spot, pointing up at goal
     const spx = W * 0.5, spy = H * 0.9, cr = Math.max(9, H * 0.05);
     ctx.save(); ctx.translate(spx, spy); ctx.fillStyle = 'rgba(255,96,118,.08)'; ctx.strokeStyle = '#FF6076';
