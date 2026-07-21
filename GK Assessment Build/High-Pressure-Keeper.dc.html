@@ -222,103 +222,8 @@
 
   <!-- ============ RESULT (standalone) ============ -->
   <sc-if value="{{ isResult }}" hint-placeholder-val="{{ false }}">
-    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:14px clamp(24px,4vw,58px) 56px;">
-      <div class="fa-in" style="display:inline-flex;align-items:center;gap:9px;margin-bottom:16px;padding:6px 14px;border:1px solid color-mix(in srgb,var(--accent,#22D3EE) 32%,transparent);border-radius:999px;font:600 10px 'IBM Plex Mono';letter-spacing:.28em;color:var(--accent,#22D3EE);">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" style="stroke:var(--accent,#22D3EE);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12.5l4.5 4.5L19 6.5"/></svg>FINAL WHISTLE
-      </div>
-      <h1 class="fa-in" style="margin:0 0 24px;font:800 clamp(32px,5vw,62px)/0.98 'Archivo';letter-spacing:-0.03em;text-align:center;animation-delay:.06s;">{{ doneHeadline }}</h1>
-
-      <div style="display:flex;flex-wrap:wrap;gap:20px;justify-content:center;align-items:stretch;width:100%;max-width:880px;">
-
-        <!-- score card -->
-        <div class="fa-in" style="flex:1 1 320px;max-width:420px;display:flex;flex-direction:column;gap:18px;padding:24px;border-radius:16px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);animation-delay:.12s;">
-          <div>
-            <div style="font:600 9.5px 'IBM Plex Mono';letter-spacing:.26em;color:#61748c;margin-bottom:9px;">COMPOSURE SCORE</div>
-            <div style="display:flex;align-items:baseline;gap:8px;">
-              <span style="font:800 clamp(50px,8vw,74px)/1 'Archivo';letter-spacing:-0.02em;color:var(--accent,#22D3EE);">{{ scoreText }}</span>
-              <span style="font:600 15px 'IBM Plex Mono';color:#7688a0;">/ 100</span>
-            </div>
-            <p style="margin:11px 0 0;font:400 14px/1.55 'Archivo';color:#9FB0C5;text-wrap:pretty;">{{ scoreNote }}</p>
-          </div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-            <div style="padding:12px 13px;border-radius:11px;border:1px solid rgba(120,140,166,.18);background:rgba(6,12,22,.5);text-align:center;">
-              <div style="font:800 20px 'Archivo';color:{{ deltaColor }};">{{ deltaText }}</div>
-              <div style="font:600 8px 'IBM Plex Mono';letter-spacing:.1em;color:#7688a0;margin-top:3px;">PRESSURE DELTA</div>
-              <div style="font:500 7.5px 'IBM Plex Mono';letter-spacing:.08em;color:#4f627a;margin-top:2px;">{{ deltaVs }}</div>
-            </div>
-            <div style="padding:12px 13px;border-radius:11px;border:1px solid rgba(120,140,166,.18);background:rgba(6,12,22,.5);text-align:center;">
-              <div style="font:800 20px 'Archivo';color:#EAF2FB;">{{ braveryText }}</div>
-              <div style="font:600 8px 'IBM Plex Mono';letter-spacing:.1em;color:#7688a0;margin-top:3px;">BRAVERY</div>
-              <div style="font:500 7.5px 'IBM Plex Mono';letter-spacing:.08em;color:#4f627a;margin-top:2px;">{{ braveryVs }}</div>
-            </div>
-            <div style="padding:12px 13px;border-radius:11px;border:1px solid rgba(120,140,166,.18);background:rgba(6,12,22,.5);text-align:center;">
-              <div style="font:800 20px 'Archivo';color:#EAF2FB;">{{ hesitationText }}</div>
-              <div style="font:600 8px 'IBM Plex Mono';letter-spacing:.1em;color:#7688a0;margin-top:3px;">HESITATION</div>
-              <div style="font:500 7.5px 'IBM Plex Mono';letter-spacing:.08em;color:#4f627a;margin-top:2px;">{{ hesitationVs }}</div>
-            </div>
-            <div style="padding:12px 13px;border-radius:11px;border:1px solid rgba(120,140,166,.18);background:rgba(6,12,22,.5);text-align:center;">
-              <div style="font:800 20px 'Archivo';color:#EAF2FB;">{{ consistencyText }}</div>
-              <div style="font:600 8px 'IBM Plex Mono';letter-spacing:.1em;color:#7688a0;margin-top:3px;">CONSISTENCY</div>
-              <div style="font:500 7.5px 'IBM Plex Mono';letter-spacing:.08em;color:#4f627a;margin-top:2px;">{{ consistencyVs }}</div>
-            </div>
-          </div>
-          <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding-top:4px;border-top:1px solid rgba(120,140,166,.14);">
-            <span style="font:600 9px 'IBM Plex Mono';letter-spacing:.16em;color:#61748c;">ARCHETYPE SIGNAL</span>
-            <sc-for list="{{ leanChips }}" as="c" hint-placeholder-count="2">
-              <span style="display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;border:1px solid {{ c.border }};font:700 9px 'IBM Plex Mono';letter-spacing:.12em;color:{{ c.color }};">{{ c.label }}</span>
-            </sc-for>
-          </div>
-        </div>
-
-        <!-- pressure curve -->
-        <div class="fa-in" style="flex:1 1 300px;max-width:420px;display:flex;flex-direction:column;gap:14px;padding:24px;border-radius:16px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);animation-delay:.18s;">
-          <div style="display:flex;align-items:center;justify-content:space-between;">
-            <div style="font:600 9.5px 'IBM Plex Mono';letter-spacing:.22em;color:#61748c;">HOLDING UP UNDER STRESS</div>
-            <div style="display:flex;align-items:baseline;gap:7px;">
-              <span style="font:700 8.5px 'IBM Plex Mono';letter-spacing:.14em;color:{{ resColor }};">{{ resTag }}</span>
-              <span style="font:800 14px 'Archivo';color:{{ resColor }};">{{ resilienceText }}%</span>
-            </div>
-          </div>
-          <div style="position:relative;aspect-ratio:16/10;border-radius:12px;overflow:hidden;background:rgba(6,12,22,.5);border:1px solid rgba(120,140,166,.16);">
-            <svg viewBox="0 0 100 100" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;">
-              <defs>
-                <linearGradient id="hpStress" x1="0" y1="0" x2="1" y2="0">
-                  <stop offset="0%" stop-color="#7FE0C4" stop-opacity="0.14"/>
-                  <stop offset="55%" stop-color="#FFB020" stop-opacity="0.12"/>
-                  <stop offset="100%" stop-color="#FF5A6E" stop-opacity="0.16"/>
-                </linearGradient>
-              </defs>
-              <rect x="0" y="0" width="100" height="100" fill="url(#hpStress)"/>
-              <line x1="0" y1="50" x2="100" y2="50" stroke="rgba(150,170,196,.14)" stroke-width="0.4" stroke-dasharray="2 2"/>
-              <polyline ref="{{ sparkRef }}" points="" fill="none" stroke="var(--accent,#22D3EE)" stroke-width="1.1" stroke-linejoin="round" stroke-linecap="round" style="filter:drop-shadow(0 0 3px color-mix(in srgb,var(--accent,#22D3EE) 60%,transparent));stroke-dasharray:320;stroke-dashoffset:320;animation:fa-draw 1.15s cubic-bezier(.4,.7,.3,1) .15s forwards;"/>
-            </svg>
-            <sc-for list="{{ sparkMarkers }}" as="m" hint-placeholder-count="10">
-              <div style="position:absolute;width:9px;height:9px;border-radius:50%;border:1.5px solid #050c17;{{ m.look }}{{ m.pos }}"></div>
-            </sc-for>
-            <div style="position:absolute;left:6px;bottom:5px;font:600 7.5px 'IBM Plex Mono';letter-spacing:.1em;color:#61748c;">EARLY · LOW STRESS</div>
-            <div style="position:absolute;right:6px;bottom:5px;font:600 7.5px 'IBM Plex Mono';letter-spacing:.1em;color:#FF9AA6;">LATE · CRITICAL</div>
-          </div>
-          <div style="display:flex;gap:8px;">
-            <sc-for list="{{ bands }}" as="b" hint-placeholder-count="3">
-              <div style="flex:1;text-align:center;padding:9px 6px;border-radius:10px;border:1px solid rgba(120,140,166,.16);background:rgba(6,12,22,.4);">
-                <div style="font:800 18px 'Archivo';color:{{ b.color }};">{{ b.val }}</div>
-                <div style="font:600 7.5px 'IBM Plex Mono';letter-spacing:.1em;color:#7688a0;margin-top:2px;">{{ b.label }}</div>
-              </div>
-            </sc-for>
-          </div>
-        </div>
-      </div>
-
-      <div class="fa-in" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:13px;margin-top:26px;animation-delay:.26s;">
-        <button onClick="{{ retake }}" style="display:inline-flex;align-items:center;gap:11px;padding:16px 34px;border-radius:12px;border:0;cursor:pointer;background:var(--accent,#22D3EE);color:#03121a;font:700 15px 'Archivo';box-shadow:0 12px 36px color-mix(in srgb,var(--accent,#22D3EE) 40%,transparent);transition:transform .16s ease,box-shadow .16s ease;" style-hover="transform:translateY(-2px);box-shadow:0 18px 48px color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);" style-active="transform:translateY(0) scale(.98);">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:#03121a;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
-          Run it back
-        </button>
-        <a href="Landing.dc.html" style="display:inline-flex;align-items:center;gap:9px;padding:16px 24px;border-radius:12px;border:1px solid rgba(157,176,198,.28);background:rgba(12,18,30,.4);color:#C6D3E2;font:600 14px 'Archivo';transition:border-color .16s ease,color .16s ease;" style-hover="border-color:color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);color:#EAF2FB;">
-          Back to games
-        </a>
-      </div>
-      <div class="fa-in" style="margin-top:20px;max-width:540px;text-align:center;font:400 11px/1.6 'Archivo';color:#4f627a;animation-delay:.32s;">Scored on this session. Real percentiles arrive as the platform gathers keepers under the lights &mdash; every decision you make is a labelled data point.</div>
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:grid;grid-template-rows:minmax(0,1fr);width:100%;overflow-y:auto;padding:10px clamp(20px,3vw,48px) 40px;">
+      <dc-import name="Result-Screen" accent="{{ accent }}" kicker="{{ res.kicker }}" score="{{ res.score }}" band="{{ res.band }}" stats="{{ res.stats }}" chart="{{ res.chart }}" chips="{{ res.chips }}" insight="{{ res.insight }}" meta="{{ res.meta }}" actions="{{ res.actions }}" style="width:100%;min-height:0;display:grid;grid-template-rows:minmax(0,1fr);" hint-size="100%,640px"></dc-import>
     </main>
   </sc-if>
 
@@ -893,6 +798,7 @@ class Component extends DCLogic {
         consistencyText = '', resTag = '', resColor = accent,
         deltaVs = '', braveryVs = '', hesitationVs = '', consistencyVs = '',
         doneHeadline = '', doneNote = '', sparkMarkers = [], bands = [], leanChips = [];
+    let res = {};
     if (m) {
       scoreText = '' + D(score);
       resilienceText = '' + D(resilience);
@@ -960,6 +866,20 @@ class Component extends DCLogic {
         color: i === 0 ? accent : '#C6D3E2',
         border: i === 0 ? A(accent,'55') : 'rgba(120,140,166,.3)',
       }));
+      res = {
+        kicker:'FINAL WHISTLE', score:scoreText, band:doneHeadline,
+        stats:[
+          { value:deltaText, label:'PRESSURE DELTA', color:deltaColor, sub:deltaVs },
+          { value:braveryText, label:'BRAVERY', color:'#EAF2FB', sub:braveryVs },
+          { value:hesitationText, label:'HESITATION', color:'#EAF2FB', sub:hesitationVs },
+          { value:consistencyText, label:'CONSISTENCY', color:'#EAF2FB', sub:consistencyVs },
+        ],
+        chart:{ title:'HOLDING UP UNDER STRESS', points: m.events.map(r=>Math.max(0,Math.min(100,D(r.score)))), eliteY:65, axisL:'EARLY · LOW STRESS', axisR:'LATE · CRITICAL' },
+        chips: leanChips.map(c=>({ label:c.label, look:`border-color:${c.border};color:${c.color};` })),
+        insight:{ title:'UNDER STRESS', text:doneNote },
+        meta:'SCORED ON THIS SESSION · EVERY DECISION IS A LABELLED DATA POINT',
+        actions:[ { label:'Run it back', onClick:()=>this._retake() }, { label:'Back to games', primary:false, arrow:false, onClick:()=>{ window.location.href='Landing.dc.html'; } } ],
+      };
     }
 
     const showBest = view === 'intro' && !embedded && !!(this._best && this._best.best);
@@ -996,7 +916,7 @@ class Component extends DCLogic {
       scoreText, resilienceText, scoreNote, doneHeadline, doneNote,
       deltaText, deltaColor, braveryText, hesitationText,
       consistencyText, resTag, resColor, deltaVs, braveryVs, hesitationVs, consistencyVs,
-      sparkMarkers, bands, leanChips,
+      sparkMarkers, bands, leanChips, res,
       showBest, bestText,
       begin: () => this._begin(), next: () => this._next(), retake: () => this._retake(), emit: () => this._emit(),
       back: () => { window.location.href = 'Landing.dc.html'; },
