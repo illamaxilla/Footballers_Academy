@@ -25,7 +25,7 @@
   @media (prefers-reduced-motion:reduce){*{animation:none!important;}.fa-in,.fa-in-sm{opacity:1!important;transform:none!important;}}
 </style>
 </helmet>
-<div data-screen-label="Positioning Master" style="position:relative;display:flex;flex-direction:column;min-height:100dvh;width:100%;overflow:hidden;background:radial-gradient(120% 90% at 50% 6%,#0e1a2d 0%,#080e1a 44%,#04060c 100%);color:#EAF2FB;font-family:'Archivo',system-ui,sans-serif;--accent:{{ accent }};">
+<div data-screen-label="Positioning Master" style="position:relative;display:flex;flex-direction:column;min-height:{{ rootMinH }};width:100%;overflow:hidden;background:radial-gradient(120% 90% at 50% 6%,#0e1a2d 0%,#080e1a 44%,#04060c 100%);color:#EAF2FB;font-family:'Archivo',system-ui,sans-serif;--accent:{{ accent }};">
 
   <div style="position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.4;background:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0px,rgba(255,255,255,.02) 1px,transparent 1px,transparent 4px);"></div>
   <div style="position:absolute;top:20px;left:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
@@ -34,6 +34,7 @@
   <div style="position:absolute;bottom:20px;right:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
 
   <!-- ============ TOP BAR ============ -->
+  <sc-if value="{{ chromeOn }}" hint-placeholder-val="{{ true }}">
   <header style="position:relative;z-index:6;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px clamp(26px,3.4vw,58px);">
     <button onClick="{{ onBack }}" style="display:inline-flex;align-items:center;gap:8px;background:none;border:0;cursor:pointer;color:#8EA1B8;font:600 12.5px 'Archivo';padding:0;">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M15 5l-7 7 7 7"/></svg>Back
@@ -58,6 +59,7 @@
       </sc-if>
     </div>
   </header>
+  </sc-if>
 
   <!-- ============ SETUP ============ -->
   <sc-if value="{{ isSetup }}" hint-placeholder-val="{{ true }}">
@@ -341,7 +343,9 @@
   &quot;accent&quot;: { &quot;editor&quot;: &quot;color&quot;, &quot;default&quot;: &quot;#22D3EE&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;options&quot;:[&quot;#22D3EE&quot;,&quot;#A78BFA&quot;,&quot;#C6FF3A&quot;,&quot;#FF7A45&quot;,&quot;#FF4D8D&quot;], &quot;section&quot;: &quot;Theme&quot; },
   &quot;motion&quot;: { &quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Theme&quot; },
   &quot;guides&quot;: { &quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Coaching&quot; },
-  &quot;showActual&quot;: { &quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Coaching&quot; }
+  &quot;showActual&quot;: { &quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Coaching&quot; },
+  &quot;embedded&quot;: {&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Mode&quot;},
+  &quot;onDone&quot;: {&quot;editor&quot;:null,&quot;tsType&quot;:&quot;(counts: Record&lt;string, number&gt;, meta?: object) =&gt; void&quot;}
 }">
 class Component extends DCLogic {
   state = { view:'setup', mode:'challenge', diff:'mixed', order:[], idx:0, phase:'play', keeper:{x:75,y:82}, locked:null, runResults:[], streak:0, pb:null, _avg:null };
@@ -414,7 +418,9 @@ class Component extends DCLogic {
     return { x1:ball.x, y1:ball.y, x2:ball.x+bx*t, y2:g.GY };
   }
 
-  componentDidMount(){ let pb=null; try{ pb=JSON.parse(localStorage.getItem('fa_pm_progress')||'null'); }catch(e){} if(pb) this.setState({ pb }); }
+  componentDidMount(){ let pb=null; try{ pb=JSON.parse(localStorage.getItem('fa_pm_progress')||'null'); }catch(e){} if(pb) this.setState({ pb }); if(this.props.embedded) this._startEmbed(); }
+  _startEmbed(){ const order=['c-far','c-edge','r-cross'].map(id=>this._scn(id)); this.setState({ view:'run', order, idx:0, phase:'play', keeper:{x:75,y:82}, locked:null, runResults:[], streak:0, _avg:null }); }
+  _emit(runResults){ const sum01=runResults.reduce((s,r)=>s+r.score/100,0); const counts={ oracle:+sum01.toFixed(3), sentinel:+(sum01*0.3).toFixed(3), catalyst:0, bastion:0, wall:0 }; (this.props.onDone||this.props.ondone||function(){})(counts, { layer:'demonstrated' }); }
 
   _clampK(x,y){ const g=this.GEO; return { x:Math.max(g.X0,Math.min(g.X1,x)), y:Math.max(g.Y0,Math.min(g.Y1,y)) }; }
   _fromEvent(e){ const el=this._pitch; if(!el) return; const r=el.getBoundingClientRect(); if(!r.width) return; const x=((e.clientX-r.left)/r.width)*150; const y=((e.clientY-r.top)/r.height)*100; this.setState({ keeper:this._clampK(x,y) }); }
@@ -430,6 +436,7 @@ class Component extends DCLogic {
     const runResults=[...this.state.runResults, { id:scn.id, label:scn.label, score:L.score, cov:L.cov }];
     const streak = L.score>=75 ? this.state.streak+1 : 0;
     if(this.state.idx < this.state.order.length-1) this.setState({ idx:this.state.idx+1, phase:'play', keeper:{x:75,y:82}, locked:null, runResults, streak });
+    else if(this.props.embedded) this._emit(runResults);
     else this._finish(runResults);
   }
   _finish(runResults){
@@ -446,6 +453,7 @@ class Component extends DCLogic {
     const motion=this.props.motion ?? true;
     const guides=this.props.guides ?? true;
     const showActual=this.props.showActual ?? true;
+    const embedded=!!this.props.embedded;
     const A=(h,a)=>h+a;
     const g=this.GEO;
     const { view, mode, diff, order, idx, phase, keeper } = this.state;
@@ -513,7 +521,7 @@ class Component extends DCLogic {
     }
 
     return {
-      accent, motion, chromeOn:true,
+      accent, motion, embedded, chromeOn:!embedded, rootMinH: embedded?'100%':'100dvh',
       isSetup, isRun, isSummary, isPlay, isFeedback,
       runActive:isRun, notRun:!isRun, modeLabel, counterLabel, dots,
       modes, diffs, pbLine, onStart:()=>this._start(),

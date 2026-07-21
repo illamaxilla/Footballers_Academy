@@ -99,11 +99,11 @@
             <span style="font:600 9.5px 'IBM Plex Mono';letter-spacing:.12em;color:#8fa6bd;">~15 MIN</span>
           </div>
           <h2 style="margin:0 0 9px;font:800 30px 'Archivo';letter-spacing:-0.02em;color:#F6FBFF;">Full Combine</h2>
-          <p style="margin:0 0 20px;font:400 14px/1.55 'Archivo';color:#AEBED2;">Everything in the Quick Scan, plus four full match-condition trials for the sharpest, highest-confidence profile.</p>
+          <p style="margin:0 0 20px;font:400 14px/1.55 'Archivo';color:#AEBED2;">Everything in the Quick Scan, plus a deep match-condition combine — ten live trials for the sharpest, highest-confidence profile.</p>
           <div style="display:flex;flex-direction:column;gap:11px;margin-bottom:24px;">
             <div style="display:flex;align-items:center;gap:11px;font:600 13px 'Archivo';color:#DCE8F5;"><span style="flex:0 0 auto;width:18px;height:18px;border-radius:6px;display:grid;place-items:center;background:color-mix(in srgb,var(--accent,#22D3EE) 24%,transparent);"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" style="stroke:var(--accent,#22D3EE);stroke-width:3;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12.5l4.5 4.5L19 6.5"/></svg></span>Everything in the Quick Scan</div>
-            <div style="display:flex;align-items:center;gap:11px;font:600 13px 'Archivo';color:#DCE8F5;"><span style="flex:0 0 auto;width:18px;height:18px;border-radius:6px;display:grid;place-items:center;background:color-mix(in srgb,var(--accent,#22D3EE) 24%,transparent);"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" style="stroke:var(--accent,#22D3EE);stroke-width:3;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12.5l4.5 4.5L19 6.5"/></svg></span>4 match-condition trials</div>
-            <div style="display:flex;align-items:center;gap:11px;font:600 13px 'Archivo';color:#DCE8F5;"><span style="flex:0 0 auto;width:18px;height:18px;border-radius:6px;display:grid;place-items:center;background:color-mix(in srgb,var(--accent,#22D3EE) 24%,transparent);"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" style="stroke:var(--accent,#22D3EE);stroke-width:3;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12.5l4.5 4.5L19 6.5"/></svg></span>Pressure · 1v1 · Aerial · Focus</div>
+            <div style="display:flex;align-items:center;gap:11px;font:600 13px 'Archivo';color:#DCE8F5;"><span style="flex:0 0 auto;width:18px;height:18px;border-radius:6px;display:grid;place-items:center;background:color-mix(in srgb,var(--accent,#22D3EE) 24%,transparent);"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" style="stroke:var(--accent,#22D3EE);stroke-width:3;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12.5l4.5 4.5L19 6.5"/></svg></span>10 match-condition trials</div>
+            <div style="display:flex;align-items:center;gap:11px;font:600 13px 'Archivo';color:#DCE8F5;"><span style="flex:0 0 auto;width:18px;height:18px;border-radius:6px;display:grid;place-items:center;background:color-mix(in srgb,var(--accent,#22D3EE) 24%,transparent);"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" style="stroke:var(--accent,#22D3EE);stroke-width:3;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12.5l4.5 4.5L19 6.5"/></svg></span>Distribution · Crosses · Set-pieces · Reading</div>
             <div style="display:flex;align-items:center;gap:11px;font:600 13px 'Archivo';color:#DCE8F5;"><span style="flex:0 0 auto;width:18px;height:18px;border-radius:6px;display:grid;place-items:center;background:color-mix(in srgb,var(--accent,#22D3EE) 24%,transparent);"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" style="stroke:var(--accent,#22D3EE);stroke-width:3;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12.5l4.5 4.5L19 6.5"/></svg></span>Highest-confidence profile</div>
           </div>
           <button onClick="{{ pickFull }}" style="margin-top:auto;display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:16px 24px;border-radius:12px;border:0;background:var(--accent,#22D3EE);color:#03121a;font:700 15px 'Archivo';cursor:pointer;box-shadow:0 14px 46px color-mix(in srgb,var(--accent,#22D3EE) 42%,transparent);transition:transform .16s ease,box-shadow .16s ease;" style-hover="transform:translateY(-2px);box-shadow:0 20px 58px color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);">
@@ -507,6 +507,41 @@
       <dc-import name="Focus-Hold" embedded="{{ yes }}" accent="{{ accent }}" motion="{{ motion }}" onDone="{{ onDrillDone }}" style="width:100%;flex:1;min-height:0;display:grid;grid-template-rows:minmax(0,1fr);" hint-size="100%,600px"></dc-import>
     </main>
   </sc-if>
+  <sc-if value="{{ isLaunchBeat }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;display:grid;grid-template-rows:minmax(0,1fr);width:100%;min-height:0;">
+      <dc-import name="Launch-Control" embedded="{{ yes }}" accent="{{ accent }}" motion="{{ motion }}" onDone="{{ onDrillDone }}" style="width:100%;flex:1;min-height:0;display:grid;grid-template-rows:minmax(0,1fr);" hint-size="100%,600px"></dc-import>
+    </main>
+  </sc-if>
+  <sc-if value="{{ isCrossBeat }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;display:grid;grid-template-rows:minmax(0,1fr);width:100%;min-height:0;">
+      <dc-import name="Cross-Command" embedded="{{ yes }}" accent="{{ accent }}" motion="{{ motion }}" onDone="{{ onDrillDone }}" style="width:100%;flex:1;min-height:0;display:grid;grid-template-rows:minmax(0,1fr);" hint-size="100%,600px"></dc-import>
+    </main>
+  </sc-if>
+  <sc-if value="{{ isWallSetBeat }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;display:grid;grid-template-rows:minmax(0,1fr);width:100%;min-height:0;">
+      <dc-import name="Wall-Architect" embedded="{{ yes }}" accent="{{ accent }}" motion="{{ motion }}" onDone="{{ onDrillDone }}" style="width:100%;flex:1;min-height:0;display:grid;grid-template-rows:minmax(0,1fr);" hint-size="100%,600px"></dc-import>
+    </main>
+  </sc-if>
+  <sc-if value="{{ isPositionBeat }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;display:grid;grid-template-rows:minmax(0,1fr);width:100%;min-height:0;">
+      <dc-import name="Positioning-Master" embedded="{{ yes }}" accent="{{ accent }}" motion="{{ motion }}" onDone="{{ onDrillDone }}" style="width:100%;flex:1;min-height:0;display:grid;grid-template-rows:minmax(0,1fr);" hint-size="100%,600px"></dc-import>
+    </main>
+  </sc-if>
+  <sc-if value="{{ isSweeperBeat }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;display:grid;grid-template-rows:minmax(0,1fr);width:100%;min-height:0;">
+      <dc-import name="Sweeper-Sense" embedded="{{ yes }}" accent="{{ accent }}" motion="{{ motion }}" onDone="{{ onDrillDone }}" style="width:100%;flex:1;min-height:0;display:grid;grid-template-rows:minmax(0,1fr);" hint-size="100%,600px"></dc-import>
+    </main>
+  </sc-if>
+  <sc-if value="{{ isBlindsideBeat }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;display:grid;grid-template-rows:minmax(0,1fr);width:100%;min-height:0;">
+      <dc-import name="Blindside" embedded="{{ yes }}" accent="{{ accent }}" motion="{{ motion }}" onDone="{{ onDrillDone }}" style="width:100%;flex:1;min-height:0;display:grid;grid-template-rows:minmax(0,1fr);" hint-size="100%,600px"></dc-import>
+    </main>
+  </sc-if>
+  <sc-if value="{{ isHandlingBeat }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;display:grid;grid-template-rows:minmax(0,1fr);width:100%;min-height:0;">
+      <dc-import name="Handling" embedded="{{ yes }}" accent="{{ accent }}" motion="{{ motion }}" onDone="{{ onDrillDone }}" style="width:100%;flex:1;min-height:0;display:grid;grid-template-rows:minmax(0,1fr);" hint-size="100%,600px"></dc-import>
+    </main>
+  </sc-if>
 
   <!-- ============ ANALYSING ============ -->
   <sc-if value="{{ isAnticipation }}" hint-placeholder-val="{{ false }}">
@@ -567,7 +602,7 @@
           <div style="flex:1 1 300px;">
             <div style="font:600 9.5px 'IBM Plex Mono';letter-spacing:.24em;color:var(--accent,#22D3EE);margin-bottom:8px;">PHASE 2 · UNLOCK MORE DETAIL</div>
             <div style="font:800 20px 'Archivo';color:#F2F8FE;margin-bottom:5px;">This is a provisional read.</div>
-            <div style="font:400 13.5px/1.5 'Archivo';color:#9FB0C5;">Run the Full Combine — four live match-condition trials — to sharpen your profile to the highest confidence.</div>
+            <div style="font:400 13.5px/1.5 'Archivo';color:#9FB0C5;">Run the Full Combine — a deep match-condition combine — to sharpen your profile to the highest confidence.</div>
           </div>
           <button onClick="{{ goDeeper }}" style="flex:0 0 auto;display:inline-flex;align-items:center;gap:11px;padding:16px 30px;border-radius:12px;border:0;cursor:pointer;background:var(--accent,#22D3EE);color:#03121a;font:700 15px 'Archivo';box-shadow:0 12px 36px color-mix(in srgb,var(--accent,#22D3EE) 40%,transparent);transition:transform .16s ease;" style-hover="transform:translateY(-2px);">
             Add the Full Combine
@@ -634,6 +669,7 @@ class Component extends DCLogic {
       beats:[
         { kind:'drill', comp:'rapid', layer:'demonstrated', label:'RAPID FIRE' },
         { kind:'drill', comp:'command', layer:'demonstrated', label:'COMMAND THE BOX' },
+        { kind:'drill', comp:'launch', layer:'demonstrated', label:'LAUNCH CONTROL' },
         { kind:'q', layer:'self', label:'2 QUESTIONS', scen:'Your team has the ball at the back under pressure. What do you most want to be?', opts:[
           { label:'The extra outfield player \u2014 give me the ball, I\u2019ll start the move.', arch:'catalyst' },
           { label:'The safe option who calms it down and reorganizes.', arch:'sentinel' },
@@ -674,12 +710,22 @@ class Component extends DCLogic {
       beats:[
         { kind:'drill', comp:'pressure', layer:'demonstrated', label:'PRESSURE TEST' },
         { kind:'drill', comp:'duel', layer:'demonstrated', label:'ONE-ON-ONE' },
+        { kind:'drill', comp:'handling', layer:'demonstrated', label:'THE HANDLING' },
       ]},
     { num:'05', phase:2, name:'The Box', kicker:'COMMAND & VIGILANCE',
-      desc:'You own the eighteen yards. Command a string of crosses in the air, then hold your focus through a long, quiet spell of play.',
+      desc:'You own the eighteen yards. Command crosses in the air, organise the wall, then hold your focus through a long, quiet spell of play.',
       beats:[
         { kind:'drill', comp:'aerial', layer:'demonstrated', label:'AERIAL COMMAND' },
+        { kind:'drill', comp:'cross', layer:'demonstrated', label:'CROSS COMMAND' },
+        { kind:'drill', comp:'wallset', layer:'demonstrated', label:'WALL ARCHITECT' },
         { kind:'drill', comp:'focus', layer:'demonstrated', label:'FOCUS HOLD' },
+      ]},
+    { num:'06', phase:2, name:'The Read', kicker:'SPACE & TIME',
+      desc:'The quiet arts — where you stand, what you remember, and when to leave your line. Three spatial reads that separate the elite.',
+      beats:[
+        { kind:'drill', comp:'position', layer:'demonstrated', label:'POSITIONING' },
+        { kind:'drill', comp:'sweeper', layer:'demonstrated', label:'SWEEPER SENSE' },
+        { kind:'drill', comp:'blindside', layer:'demonstrated', label:'BLINDSIDE' },
       ]},
   ];
 
@@ -1061,6 +1107,13 @@ class Component extends DCLogic {
       isDuelBeat: comp === 'duel',
       isAerialBeat: comp === 'aerial',
       isFocusBeat: comp === 'focus',
+      isLaunchBeat: comp === 'launch',
+      isCrossBeat: comp === 'cross',
+      isWallSetBeat: comp === 'wallset',
+      isPositionBeat: comp === 'position',
+      isSweeperBeat: comp === 'sweeper',
+      isBlindsideBeat: comp === 'blindside',
+      isHandlingBeat: comp === 'handling',
       isAnticipation: view === 'anticipation',
       isComplete: view === 'complete',
       chapNum: ch ? ch.num : '01',

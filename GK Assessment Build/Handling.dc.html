@@ -25,7 +25,7 @@
   @media (prefers-reduced-motion:reduce){*{animation:none!important;}.fa-in,.fa-in-sm{opacity:1!important;transform:none!important;}}
 </style>
 </helmet>
-<div data-screen-label="Launch Control" style="position:relative;display:flex;flex-direction:column;min-height:{{ rootMinH }};width:100%;overflow:hidden;background:radial-gradient(120% 90% at 50% 6%,#0e1a2d 0%,#080e1a 44%,#04060c 100%);color:#EAF2FB;font-family:'Archivo',system-ui,sans-serif;--accent:{{ accent }};">
+<div data-screen-label="Safe Hands" style="position:relative;display:flex;flex-direction:column;min-height:{{ rootMinH }};width:100%;overflow:hidden;background:radial-gradient(120% 90% at 50% 6%,#0e1a2d 0%,#080e1a 44%,#04060c 100%);color:#EAF2FB;font-family:'Archivo',system-ui,sans-serif;--accent:{{ accent }};">
 
   <div style="position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.4;background:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0px,rgba(255,255,255,.02) 1px,transparent 1px,transparent 4px);"></div>
   <div style="position:absolute;top:20px;left:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
@@ -41,7 +41,7 @@
     </button>
     <div style="display:flex;align-items:center;gap:11px;">
       <svg width="22" height="22" viewBox="0 0 32 32" fill="none"><path d="M16 2 28 9v14L16 30 4 23V9z" style="stroke:var(--accent,#22D3EE);stroke-width:1.5;fill:color-mix(in srgb,var(--accent,#22D3EE) 12%,transparent);"/><path d="M16 22 V10 M16 10 L11 15 M16 10 L21 15" style="stroke:var(--accent,#22D3EE);stroke-width:1.7;fill:none;stroke-linecap:round;stroke-linejoin:round;"/></svg>
-      <span style="font:800 13px 'Archivo';letter-spacing:.05em;">LAUNCH <span style="color:var(--accent,#22D3EE);">CONTROL</span></span>
+      <span style="font:800 13px 'Archivo';letter-spacing:.05em;">SAFE <span style="color:var(--accent,#22D3EE);">HANDS</span></span>
     </div>
     <div style="display:flex;align-items:center;gap:12px;min-width:120px;justify-content:flex-end;">
       <sc-if value="{{ runActive }}" hint-placeholder-val="{{ false }}">
@@ -71,10 +71,10 @@
         <div class="fa-in" style="display:flex;align-items:center;gap:14px;margin-bottom:22px;">
           <span style="font:600 12px 'IBM Plex Mono';letter-spacing:.4em;color:var(--accent,#22D3EE);">TRAINING</span>
           <span style="width:44px;height:1px;background:color-mix(in srgb,var(--accent,#22D3EE) 45%,transparent);"></span>
-          <span style="font:500 11px 'IBM Plex Mono';letter-spacing:.28em;color:#7688a0;">DISTRIBUTION &amp; BUILD-UP</span>
+          <span style="font:500 11px 'IBM Plex Mono';letter-spacing:.28em;color:#7688a0;">HANDLING &amp; TECHNIQUE</span>
         </div>
-        <h1 class="fa-in" style="margin:0 0 16px;font:800 clamp(40px,6vw,84px)/0.98 'Archivo';letter-spacing:-0.03em;text-wrap:balance;animation-delay:.08s;">Start the attack.</h1>
-        <p class="fa-in" style="margin:0 0 34px;max-width:560px;font:400 clamp(15px,1.3vw,18px)/1.6 'Archivo';color:#9FB0C5;text-wrap:pretty;animation-delay:.16s;">The save is only half the job. You've gathered the ball — now <span style="color:#E4EDF7;font-weight:600;">pick the outlet and the delivery</span> that starts the next attack. Launch the counter, beat the press, or build with patience — then measure your read against the elite pass.</p>
+        <h1 class="fa-in" style="margin:0 0 16px;font:800 clamp(40px,6vw,84px)/0.98 'Archivo';letter-spacing:-0.03em;text-wrap:balance;animation-delay:.08s;">Safe hands.</h1>
+        <p class="fa-in" style="margin:0 0 34px;max-width:560px;font:400 clamp(15px,1.3vw,18px)/1.6 'Archivo';color:#9FB0C5;text-wrap:pretty;animation-delay:.16s;">Every shot demands a technique. Read the ball — its height, pace and the surface — then <span style="color:#E4EDF7;font-weight:600;">choose how you deal with it</span>: catch, parry wide, tip over or smother. There's a right answer each time; find it against the elite line.</p>
 
         <div class="fa-in" style="display:flex;flex-wrap:wrap;justify-content:center;gap:12px;width:100%;margin-bottom:26px;animation-delay:.22s;">
           <sc-for list="{{ modes }}" as="m" hint-placeholder-count="3">
@@ -117,70 +117,48 @@
 
       <div style="width:100%;max-width:600px;display:flex;flex-direction:column;align-items:center;gap:16px;">
 
-        <!-- ===== PITCH (tap a team-mate) ===== -->
+        <!-- ===== GOAL VIEW (front-on) ===== -->
         <div style="width:100%;display:flex;justify-content:center;">
-        <div style="position:relative;flex:2 1 480px;max-width:600px;min-width:300px;aspect-ratio:3/2;border-radius:16px;overflow:hidden;background:radial-gradient(130% 120% at 50% 100%,#0d1c2e 0%,#091324 52%,#050c17 100%);border:1px solid rgba(120,140,166,.18);box-shadow:inset 0 0 60px rgba(0,0,0,.45);user-select:none;">
+        <div style="position:relative;flex:2 1 480px;max-width:600px;min-width:300px;aspect-ratio:3/2;border-radius:16px;overflow:hidden;background:radial-gradient(130% 120% at 50% 40%,#0d1c2e 0%,#091324 55%,#050c17 100%);border:1px solid rgba(120,140,166,.18);box-shadow:inset 0 0 60px rgba(0,0,0,.45);user-select:none;">
           <div style="position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.5;background:repeating-linear-gradient(0deg,rgba(140,200,220,.035) 0px,rgba(140,200,220,.035) 1px,transparent 1px,transparent 40px);"></div>
 
-          <!-- pitch markings (own goal at bottom, up-field is up) -->
+          <!-- goal frame + net -->
           <svg viewBox="0 0 150 100" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none;">
-            <line x1="0" y1="15" x2="150" y2="15" stroke="rgba(150,200,220,.14)" stroke-width="0.5"/>
-            <path d="M60,15 A18,12 0 0 0 90,15" fill="none" stroke="rgba(150,200,220,.1)" stroke-width="0.5"/>
-            <rect x="30" y="70" width="90" height="24" fill="none" stroke="rgba(150,200,220,.16)" stroke-width="0.5"/>
-            <rect x="52" y="86" width="46" height="8" fill="none" stroke="rgba(150,200,220,.2)" stroke-width="0.5"/>
-            <circle cx="75" cy="80" r="0.8" fill="rgba(180,220,235,.5)"/>
-            <line x1="62" y1="94" x2="88" y2="94" stroke="#7fdfe9" stroke-width="1.3" stroke-linecap="round"/>
+            <g stroke="rgba(150,200,220,.12)" stroke-width="0.3">
+              <line x1="45" y1="26" x2="45" y2="74"/><line x1="59" y1="26" x2="59" y2="74"/><line x1="75" y1="26" x2="75" y2="74"/><line x1="91" y1="26" x2="91" y2="74"/><line x1="105" y1="26" x2="105" y2="74"/>
+              <line x1="34" y1="38" x2="116" y2="38"/><line x1="34" y1="50" x2="116" y2="50"/><line x1="34" y1="62" x2="116" y2="62"/>
+            </g>
+            <line x1="20" y1="74" x2="130" y2="74" stroke="rgba(150,200,220,.2)" stroke-width="0.5"/>
+            <line x1="34" y1="26" x2="116" y2="26" stroke="#7fdfe9" stroke-width="1.4" stroke-linecap="round"/>
+            <line x1="34" y1="26" x2="34" y2="74" stroke="#7fdfe9" stroke-width="1.4" stroke-linecap="round"/>
+            <line x1="116" y1="26" x2="116" y2="74" stroke="#7fdfe9" stroke-width="1.4" stroke-linecap="round"/>
           </svg>
 
           <!-- corner ticks -->
           <div style="position:absolute;top:10px;left:10px;width:14px;height:14px;border-top:1.5px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:1.5px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:2;pointer-events:none;"></div>
           <div style="position:absolute;top:10px;right:10px;width:14px;height:14px;border-top:1.5px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-right:1.5px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:2;pointer-events:none;"></div>
 
-          <!-- pass line to chosen outlet -->
+          <!-- shot trajectory -->
           <svg viewBox="0 0 150 100" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;z-index:3;pointer-events:none;">
-            <sc-if value="{{ showPass }}" hint-placeholder-val="{{ true }}">
-              <path d="{{ passPath }}" fill="none" stroke="var(--accent,#22D3EE)" stroke-width="0.7" stroke-dasharray="{{ passDash }}" stroke-linecap="round"/>
-            </sc-if>
-            <sc-if value="{{ showBest }}" hint-placeholder-val="{{ false }}">
-              <path d="{{ bestPath }}" fill="none" stroke="color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent)" stroke-width="0.6" stroke-dasharray="2 1.6" stroke-linecap="round"/>
-            </sc-if>
+            <path d="{{ shotPath }}" fill="none" stroke="rgba(255,120,138,.6)" stroke-width="0.8" stroke-dasharray="2.6 1.8" stroke-linecap="round"/>
           </svg>
 
-          <!-- opponents (pressers) -->
-          <sc-for list="{{ opps }}" as="o" hint-placeholder-count="3">
-            <div style="position:absolute;z-index:4;transform:translate(-50%,-50%);pointer-events:none;width:15px;height:15px;border-radius:50%;background:rgba(255,96,118,.14);border:1.4px solid rgba(255,96,118,.7);{{ o.style }}"></div>
-          </sc-for>
-
-          <!-- team-mates (tappable outlets) -->
-          <sc-for list="{{ recvs }}" as="r" hint-placeholder-count="4">
-            <div onClick="{{ r.onPick }}" style="position:absolute;z-index:6;transform:translate(-50%,-50%);cursor:{{ r.cursor }};display:flex;flex-direction:column;align-items:center;gap:2px;{{ r.style }}">
-              <sc-if value="{{ r.invite }}" hint-placeholder-val="{{ false }}">
-                <span style="position:absolute;left:50%;top:9px;width:30px;height:30px;border-radius:50%;border:1.5px solid var(--accent,#22D3EE);animation:fa-oring 1.9s ease-in-out infinite;"></span>
-              </sc-if>
-              <span style="width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font:800 8px 'IBM Plex Mono';{{ r.tokenLook }}">{{ r.badge }}</span>
-              <span style="font:700 7px 'IBM Plex Mono';letter-spacing:.06em;white-space:nowrap;padding:1px 4px;border-radius:4px;background:rgba(6,12,22,.72);{{ r.labelLook }}">{{ r.label }}</span>
-            </div>
-          </sc-for>
-
-          <!-- best-outlet reveal marker -->
-          <sc-if value="{{ showBest }}" hint-placeholder-val="{{ false }}">
-            <div style="position:absolute;z-index:7;transform:translate(-50%,-50%);pointer-events:none;display:flex;flex-direction:column;align-items:center;gap:3px;{{ bestStyle }}">
-              <span style="width:28px;height:28px;border-radius:50%;border:1.5px dashed var(--accent,#22D3EE);background:color-mix(in srgb,var(--accent,#22D3EE) 16%,transparent);display:grid;place-items:center;box-shadow:0 0 14px color-mix(in srgb,var(--accent,#22D3EE) 45%,transparent);"><span style="width:7px;height:7px;border-radius:50%;background:var(--accent,#22D3EE);"></span></span>
-              <span style="font:700 7.5px 'IBM Plex Mono';letter-spacing:.1em;color:var(--accent,#22D3EE);background:rgba(6,12,22,.7);padding:1px 5px;border-radius:4px;white-space:nowrap;">BEST BALL</span>
-            </div>
-          </sc-if>
-
-          <!-- keeper with ball -->
-          <div style="position:absolute;z-index:6;transform:translate(-50%,-50%);pointer-events:none;display:grid;place-items:center;width:30px;height:30px;{{ keeperStyle }}">
+          <!-- keeper -->
+          <div style="position:absolute;z-index:5;transform:translate(-50%,-50%);pointer-events:none;display:grid;place-items:center;width:30px;height:30px;{{ keeperStyle }}">
             <span style="width:30px;height:30px;border-radius:9px;background:linear-gradient(180deg,#EAFBFF,#8fd8e6);color:#04202a;font:800 10px 'Archivo';display:grid;place-items:center;box-shadow:0 6px 20px rgba(0,0,0,.5),0 0 0 2px rgba(255,255,255,.18),0 0 16px color-mix(in srgb,var(--accent,#22D3EE) 45%,transparent);">GK</span>
-            <span style="position:absolute;right:-2px;bottom:-2px;width:8px;height:8px;border-radius:50%;background:#EEF5FC;border:1px solid rgba(9,20,34,.35);box-shadow:0 0 5px rgba(220,240,255,.5);"></span>
           </div>
 
-          <!-- press badge -->
+          <!-- ball target -->
+          <div style="position:absolute;z-index:6;transform:translate(-50%,-50%);pointer-events:none;{{ shotStyle }}">
+            <span style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:20px;height:20px;border-radius:50%;border:1.4px dashed rgba(255,120,138,.7);animation:fa-oring 1.9s ease-in-out infinite;"></span>
+            <span style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:11px;height:11px;border-radius:50%;background:#EEF5FC;border:1px solid rgba(9,20,34,.32);box-shadow:0 0 6px rgba(255,150,165,.6);"></span>
+          </div>
+
+          <!-- incoming badge -->
           <sc-if value="{{ isPlay }}" hint-placeholder-val="{{ true }}">
-            <div style="position:absolute;top:12px;left:50%;transform:translateX(-50%);z-index:9;display:flex;align-items:center;gap:9px;padding:6px 14px;border-radius:999px;background:rgba(4,10,18,.8);border:1px solid {{ pressBorder }};box-shadow:0 8px 26px rgba(0,0,0,.5);backdrop-filter:blur(4px);white-space:nowrap;">
-              <span style="font:700 9.5px 'IBM Plex Mono';letter-spacing:.18em;color:#8EA1B8;">PRESS</span>
-              <span style="font:800 12px 'Archivo';color:{{ pressColor }};">{{ pressLabel }}</span>
+            <div style="position:absolute;top:12px;left:50%;transform:translateX(-50%);z-index:9;display:flex;align-items:center;gap:9px;padding:6px 14px;border-radius:999px;background:rgba(4,10,18,.8);border:1px solid rgba(255,120,138,.4);box-shadow:0 8px 26px rgba(0,0,0,.5);backdrop-filter:blur(4px);white-space:nowrap;">
+              <span style="width:6px;height:6px;border-radius:50%;background:#FF6076;box-shadow:0 0 8px #FF6076;animation:fa-blink 1.2s ease-in-out infinite;"></span>
+              <span style="font:700 9.5px 'IBM Plex Mono';letter-spacing:.18em;color:#FF9AA6;">SHOT INCOMING</span>
             </div>
           </sc-if>
         </div>
@@ -190,24 +168,17 @@
         <div style="width:100%;display:flex;flex-direction:column;gap:14px;">
 
           <sc-if value="{{ isPlay }}" hint-placeholder-val="{{ true }}">
-            <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:stretch;">
-              <div style="flex:1 1 200px;display:flex;flex-direction:column;justify-content:center;gap:6px;padding:11px 14px;border-radius:11px;border:1px solid rgba(120,140,166,.18);background:rgba(6,12,22,.5);">
-                <div style="display:flex;justify-content:space-between;font:600 9.5px 'IBM Plex Mono';letter-spacing:.12em;color:var(--accent,#22D3EE);"><span>PROGRESSION</span><span>{{ progPct }}%</span></div>
-                <div style="height:6px;border-radius:99px;background:rgba(120,140,166,.16);overflow:hidden;"><div style="height:100%;border-radius:99px;background:var(--accent,#22D3EE);box-shadow:0 0 8px var(--accent,#22D3EE);width:{{ progPct }}%;transition:width .12s linear;"></div></div>
-                <div style="display:flex;justify-content:space-between;font:600 9.5px 'IBM Plex Mono';letter-spacing:.12em;color:{{ secColor }};margin-top:3px;"><span>SECURITY</span><span>{{ secPct }}%</span></div>
-                <div style="height:6px;border-radius:99px;background:rgba(120,140,166,.16);overflow:hidden;"><div style="height:100%;border-radius:99px;background:{{ secColor }};width:{{ secPct }}%;transition:width .12s linear;"></div></div>
-              </div>
-              <div style="flex:0 0 auto;display:flex;flex-direction:column;gap:7px;justify-content:center;">
-                <div style="display:flex;gap:7px;">
-                  <sc-for list="{{ modeBtns }}" as="mb" hint-placeholder-count="2">
-                    <button onClick="{{ mb.onSelect }}" style="padding:9px 15px;border-radius:10px;border:1px solid;cursor:pointer;font:700 11px 'IBM Plex Mono';letter-spacing:.1em;transition:all .14s ease;{{ mb.look }}">{{ mb.label }}</button>
-                  </sc-for>
-                </div>
-                <div style="text-align:center;font:600 8px 'IBM Plex Mono';letter-spacing:.14em;color:#61748c;">DELIVERY</div>
-              </div>
+            <div style="display:flex;flex-wrap:wrap;gap:10px;">
+              <sc-for list="{{ cards }}" as="c" hint-placeholder-count="4">
+                <button onClick="{{ c.onPick }}" style="flex:1 1 120px;min-width:110px;position:relative;padding:14px 12px;border-radius:12px;border:1px solid;cursor:pointer;font:800 13px 'Archivo';letter-spacing:.02em;transition:all .14s ease;{{ c.look }}" style-hover="transform:translateY(-2px);">
+                  {{ c.label }}
+                  <sc-if value="{{ c.tickShow }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;top:7px;right:8px;font:800 11px 'Archivo';color:var(--accent,#22D3EE);">✓</span></sc-if>
+                  <sc-if value="{{ c.bestShow }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;top:6px;right:7px;font:700 6.5px 'IBM Plex Mono';letter-spacing:.1em;color:#03121a;background:var(--accent,#22D3EE);padding:1px 4px;border-radius:4px;">BEST</span></sc-if>
+                </button>
+              </sc-for>
             </div>
             <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:stretch;">
-              <div style="flex:0 0 auto;display:flex;align-items:center;padding:10px 14px;border-radius:11px;border:1px solid color-mix(in srgb,var(--accent,#22D3EE) 26%,transparent);background:color-mix(in srgb,var(--accent,#22D3EE) 7%,transparent);font:600 9px 'IBM Plex Mono';letter-spacing:.16em;color:var(--accent,#22D3EE);">{{ outletLabel }}</div>
+              <div style="flex:0 0 auto;display:flex;align-items:center;padding:10px 14px;border-radius:11px;border:1px solid color-mix(in srgb,var(--accent,#22D3EE) 26%,transparent);background:color-mix(in srgb,var(--accent,#22D3EE) 7%,transparent);font:600 9px 'IBM Plex Mono';letter-spacing:.16em;color:var(--accent,#22D3EE);">{{ techLabel }}</div>
               <div style="flex:1 1 240px;display:flex;align-items:center;padding:10px 14px;border-radius:11px;border:1px dashed rgba(120,140,166,.28);background:rgba(10,16,28,.4);font:500 12.5px/1.45 'Archivo';color:#8698ad;">{{ hintText }}</div>
             </div>
           </sc-if>
@@ -216,7 +187,7 @@
             <div style="display:flex;flex-wrap:wrap;gap:16px 20px;align-items:center;">
               <div style="display:flex;flex-direction:column;gap:6px;">
                 <div style="display:flex;align-items:center;gap:8px;">
-                  <div style="font:600 9.5px 'IBM Plex Mono';letter-spacing:.24em;color:#61748c;">DISTRIBUTION SCORE</div>
+                  <div style="font:600 9.5px 'IBM Plex Mono';letter-spacing:.24em;color:#61748c;">HANDLING SCORE</div>
                   <sc-if value="{{ fb.eliteFlag }}" hint-placeholder-val="{{ false }}"><span style="font:700 8px 'IBM Plex Mono';letter-spacing:.14em;color:#03121a;background:var(--accent,#22D3EE);padding:2px 7px;border-radius:5px;">ELITE+</span></sc-if>
                 </div>
                 <div style="display:flex;align-items:baseline;flex-wrap:wrap;gap:10px;">
@@ -242,7 +213,7 @@
                     <div style="font:600 7.5px 'IBM Plex Mono';letter-spacing:.1em;color:#7688a0;margin-top:2px;">ELITE</div>
                   </div>
                 </div>
-                <div style="font:600 8px 'IBM Plex Mono';letter-spacing:.1em;color:#61748c;text-align:center;">OUTLET VALUE · HIGHER IS BETTER</div>
+                <div style="font:600 8px 'IBM Plex Mono';letter-spacing:.1em;color:#61748c;text-align:center;">TECHNIQUE VALUE · HIGHER IS BETTER</div>
               </div>
             </div>
             <div style="font:500 13px/1.5 'Archivo';color:#DCE7F3;">{{ fb.diag }}</div>
@@ -342,87 +313,89 @@ class Component extends DCLogic {
   state = { view:'setup', mode:'challenge', diff:'mixed', order:[], idx:0, phase:'play', pick:null, deliv:'throw', locked:null, runResults:[], pb:null, _avg:null };
 
   MODES = [
-    { id:'challenge', tag:'CHALLENGE', name:'Outlet Run', blurb:'A run of restart moments. Bank a distribution score and keep your streak alive.' },
-    { id:'beat', tag:'VERSUS', name:'Beat the Keeper', blurb:'Out-think the keeper from the real clip. Find a better outlet than they did.' },
-    { id:'elite', tag:'BENCHMARK', name:'Match the Elite', blurb:'Chase the perfect ball every time. How close to a flawless 100 can you get?' },
+    { id:'challenge', tag:'CHALLENGE', name:'Shot Run', blurb:'A run of shots to deal with. Bank a handling score and keep your streak alive.' },
+    { id:'beat', tag:'VERSUS', name:'Beat the Keeper', blurb:'Out-handle the keeper from the real clip. Pick a safer technique than they did.' },
+    { id:'elite', tag:'BENCHMARK', name:'Match the Elite', blurb:'Choose the textbook technique every time. How close to a flawless 100?' },
   ];
   DIFFS = [ {id:'easy',label:'Easy'}, {id:'medium',label:'Medium'}, {id:'hard',label:'Hard'}, {id:'mixed',label:'Mixed'} ];
-  DIFFMAP = { easy:['build','counter'], medium:['counter','press'], hard:['press','vision'], mixed:['counter','press','build','vision'] };
+  DIFFMAP = { easy:['comfortable','point-blank'], medium:['low-corner','dipping-top'], hard:['greasy-drive','dipping-top'], mixed:['low-corner','greasy-drive','point-blank','dipping-top'] };
 
-  KP = { x:75, y:88 };
+  KP = { x:75, y:60 };
+  SHOOTER = { x:75, y:97 };
 
   SCN = [
-    { id:'counter', label:'TRANSITION · COUNTER ON', press:0.3,
-      situation:'You claim it clean and they’re caught upfield. Pick your outlet.',
-      recv:[ { label:'WINGER', x:32, y:24, reward:1.0, mark:0.10, mode:'kick' },
-             { label:'FULL-BACK', x:120, y:46, reward:0.72, mark:0.20, mode:'either' },
-             { label:'MIDFIELD', x:74, y:58, reward:0.60, mark:0.64, mode:'either' },
-             { label:'CENTRE-BACK', x:56, y:78, reward:0.42, mark:0.08, mode:'throw' } ],
-      opp:[ {x:80,y:52}, {x:66,y:44}, {x:96,y:36} ], real:{ idx:1, mode:'either', out:'rolled it short, counter fizzled' },
-      note:'Transition is your weapon. Head up the instant you gather — the runner in behind beats twenty patient passes when they’re this open.' },
-    { id:'press', label:'HIGH PRESS · FIND THE OUT', press:0.85,
-      situation:'They’ve pushed up and pressed your back line. Where’s the out?',
-      recv:[ { label:'FULL-BACK', x:126, y:60, reward:1.0, mark:0.12, mode:'throw' },
-             { label:'TARGET MAN', x:44, y:20, reward:0.66, mark:0.30, mode:'kick' },
-             { label:'MIDFIELD', x:80, y:56, reward:0.50, mark:0.76, mode:'either' },
-             { label:'CENTRE-BACK', x:60, y:74, reward:0.52, mark:0.70, mode:'throw' } ],
-      opp:[ {x:70,y:66}, {x:86,y:64}, {x:74,y:50} ], real:{ idx:3, mode:'throw', out:'forced it central, robbed' },
-      note:'Under a real press the free man is gold. Beat the first line to the unmarked full-back — force it through the crowd and you gift them a chance.' },
-    { id:'build', label:'NO PRESSURE · BUILD IT', press:0.12,
-      situation:'No pressure, all the time in the world. Start the build.',
-      recv:[ { label:'CENTRE-BACK', x:52, y:76, reward:1.0, mark:0.08, mode:'throw' },
-             { label:'FULL-BACK', x:122, y:64, reward:0.85, mark:0.15, mode:'throw' },
-             { label:'MIDFIELD', x:74, y:60, reward:0.70, mark:0.28, mode:'either' },
-             { label:'STRIKER', x:70, y:22, reward:0.35, mark:0.50, mode:'kick' } ],
-      opp:[ {x:74,y:40} ], real:{ idx:0, mode:'throw', out:'calm build, kept the ball' },
-      note:'With no press, patience compounds. Roll it to a free centre-back and build through the thirds — the hopeful long ball just hands possession straight back.' },
-    { id:'vision', label:'BETWEEN THE LINES', press:0.45,
-      situation:'A pocket opens between their lines. Can you find it?',
-      recv:[ { label:'STRIKER', x:78, y:38, reward:1.0, mark:0.30, mode:'kick' },
-             { label:'WINGER', x:28, y:44, reward:0.72, mark:0.18, mode:'kick' },
-             { label:'FULL-BACK', x:120, y:58, reward:0.62, mark:0.20, mode:'either' },
-             { label:'CENTRE-BACK', x:58, y:78, reward:0.50, mark:0.10, mode:'throw' } ],
-      opp:[ {x:66,y:52}, {x:90,y:48} ], real:{ idx:2, mode:'either', out:'safe sideways ball' },
-      note:'The killer distribution is the pass that eliminates bodies. Clip it into the striker’s feet in the pocket and you’ve taken a whole midfield out of the game.' },
+    { id:'low-corner', label:'LOW · BOTTOM CORNER', shot:{x:41,y:67},
+      situation:'A shot is drilled low and hard toward your bottom corner.',
+      recv:[ { label:'CATCH', reward:0.65, mark:0, mode:'either' },
+             { label:'PARRY WIDE', reward:1.0, mark:0, mode:'either' },
+             { label:'TIP OVER', reward:0.3, mark:0, mode:'either' },
+             { label:'SMOTHER', reward:0.4, mark:0, mode:'either' } ],
+      real:{ idx:0, out:'tried to catch it, spilled a tap-in' },
+      note:'A firm low ball at the corner is a parry, not a grab — steer it wide of the post and away from danger. Clutch at it and a spill sits up for the follow-up.' },
+    { id:'greasy-drive', label:'GREASY · STRAIGHT AT YOU', shot:{x:75,y:47},
+      situation:'Greasy night — the shot fizzes straight through the wet air at your chest.',
+      recv:[ { label:'CATCH', reward:0.45, mark:0, mode:'either' },
+             { label:'PARRY WIDE', reward:1.0, mark:0, mode:'either' },
+             { label:'TIP OVER', reward:0.4, mark:0, mode:'either' },
+             { label:'SMOTHER', reward:0.35, mark:0, mode:'either' } ],
+      real:{ idx:1, out:'strong parry, cleared the danger' },
+      note:'On a slick surface, trust the parry — strong hands to push it clear rather than catch a soapy ball into your own six.' },
+    { id:'point-blank', label:'POINT-BLANK · CLOSE RANGE', shot:{x:78,y:64},
+      situation:'A striker breaks through and shoots from point-blank range.',
+      recv:[ { label:'CATCH', reward:0.4, mark:0, mode:'either' },
+             { label:'PARRY WIDE', reward:0.5, mark:0, mode:'either' },
+             { label:'TIP OVER', reward:0.3, mark:0, mode:'either' },
+             { label:'SMOTHER', reward:1.0, mark:0, mode:'either' } ],
+      real:{ idx:3, out:'spread big, smothered it' },
+      note:'Point-blank there is no time to catch — spread and get big, block with your body and smother the rebound. Reaching to catch only opens gaps.' },
+    { id:'dipping-top', label:'DIPPING · TOP CORNER', shot:{x:110,y:31},
+      situation:'A dipping shot swerves up toward your top corner, under the bar.',
+      recv:[ { label:'CATCH', reward:0.5, mark:0, mode:'either' },
+             { label:'PARRY WIDE', reward:0.45, mark:0, mode:'either' },
+             { label:'TIP OVER', reward:1.0, mark:0, mode:'either' },
+             { label:'SMOTHER', reward:0.2, mark:0, mode:'either' } ],
+      real:{ idx:2, out:'strong wrist, tipped it over' },
+      note:'High and dipping under the bar, get a strong hand on it and tip it over — anything you try to hold up there risks helping it in.' },
+    { id:'comfortable', label:'TAME · STRAIGHT AT YOU', shot:{x:75,y:52},
+      situation:'A tame shot comes straight at you at a nice catchable height.',
+      recv:[ { label:'CATCH', reward:1.0, mark:0, mode:'either' },
+             { label:'PARRY WIDE', reward:0.45, mark:0, mode:'either' },
+             { label:'TIP OVER', reward:0.3, mark:0, mode:'either' },
+             { label:'SMOTHER', reward:0.5, mark:0, mode:'either' } ],
+      real:{ idx:0, out:'caught it clean' },
+      note:'When you can catch, catch — kill the danger and start the attack. Needless parries just keep the ball alive for them.' },
   ];
 
   _scn(id){ return this.SCN.find(s=>s.id===id); }
-  _modeMatch(rMode, deliv){ return rMode==='either' ? 1 : (rMode===deliv ? 1 : 0.55); }
-  _value(r, deliv){
-    const security = 1 - 0.65*r.mark;
-    const v = r.reward * security * this._modeMatch(r.mode, deliv);
-    const turnover = r.mark > 0.6;
-    return { v: turnover ? v*0.35 : v, security, turnover };
-  }
+  _value(r){ return { v: r.reward, security:1, turnover:false }; }
   _best(scn){
     if(!this._bc) this._bc={};
     if(this._bc[scn.id]) return this._bc[scn.id];
-    let best={ v:-1, idx:0, mode:'throw' };
-    scn.recv.forEach((r,i)=>{ ['throw','kick'].forEach(m=>{ const v=this._value(r,m).v; if(v>best.v) best={ v, idx:i, mode:m }; }); });
+    let best={ v:-1, idx:0 };
+    scn.recv.forEach((r,i)=>{ const v=this._value(r).v; if(v>best.v) best={ v, idx:i }; });
     this._bc[scn.id]=best; return best;
   }
-  _score(scn, pick, deliv){ if(pick==null) return 0; const best=this._best(scn); const v=this._value(scn.recv[pick], deliv).v; return Math.max(0, Math.min(100, Math.round(v/best.v*100))); }
+  _score(scn, pick){ if(pick==null) return 0; const best=this._best(scn); const v=this._value(scn.recv[pick]).v; return Math.max(0, Math.min(100, Math.round(v/best.v*100))); }
 
-  componentDidMount(){ let pb=null; try{ pb=JSON.parse(localStorage.getItem('fa_lc_progress')||'null'); }catch(e){} if(pb) this.setState({ pb }); if(this.props.embedded) this._startEmbed(); }
-  _startEmbed(){ const order=['counter','press','build'].map(id=>this._scn(id)); this.setState({ view:'run', order, idx:0, phase:'play', pick:null, deliv:'throw', locked:null, runResults:[], _avg:null }); }
-  _emit(runResults){ const sum01=runResults.reduce((s,r)=>s+r.score/100,0); const counts={ oracle:+(sum01*0.3).toFixed(3), sentinel:0, catalyst:+sum01.toFixed(3), bastion:0, wall:0 }; (this.props.onDone||this.props.ondone||function(){})(counts, { layer:'demonstrated' }); }
+  componentDidMount(){ let pb=null; try{ pb=JSON.parse(localStorage.getItem('fa_hd_progress')||'null'); }catch(e){} if(pb) this.setState({ pb }); if(this.props.embedded) this._startEmbed(); }
+  _startEmbed(){ const order=['low-corner','point-blank','dipping-top'].map(id=>this._scn(id)); this.setState({ view:'run', order, idx:0, phase:'play', pick:null, locked:null, runResults:[], _avg:null }); }
+  _emit(runResults){ const sum01=runResults.reduce((s,r)=>s+r.score/100,0); const counts={ oracle:0, sentinel:0, catalyst:0, bastion:+sum01.toFixed(3), wall:+(sum01*0.3).toFixed(3) }; (this.props.onDone||this.props.ondone||function(){})(counts, { layer:'demonstrated' }); }
 
-  _start(){ const order=(this.DIFFMAP[this.state.diff]||[]).map(id=>this._scn(id)); this.setState({ view:'run', order, idx:0, phase:'play', pick:null, deliv:'throw', locked:null, runResults:[], _avg:null }); }
+  _start(){ const order=(this.DIFFMAP[this.state.diff]||[]).map(id=>this._scn(id)); this.setState({ view:'run', order, idx:0, phase:'play', pick:null, locked:null, runResults:[], _avg:null }); }
   _setPick(i){ if(this.state.phase!=='play') return; this.setState({ pick:i }); }
-  _setDeliv(m){ if(this.state.phase!=='play') return; this.setState({ deliv:m }); }
-  _lock(){ if(this.state.pick==null) return; const scn=this.state.order[this.state.idx]; const score=this._score(scn, this.state.pick, this.state.deliv); const ev=this._value(scn.recv[this.state.pick], this.state.deliv); this.setState({ phase:'feedback', locked:{ score, pick:this.state.pick, deliv:this.state.deliv, ev } }); }
+  _lock(){ if(this.state.pick==null) return; const scn=this.state.order[this.state.idx]; const score=this._score(scn, this.state.pick); const ev=this._value(scn.recv[this.state.pick]); this.setState({ phase:'feedback', locked:{ score, pick:this.state.pick, ev } }); }
   _reposition(){ this.setState({ phase:'play', locked:null }); }
   _next(){
     const scn=this.state.order[this.state.idx]; const L=this.state.locked; if(!L) return;
     const runResults=[...this.state.runResults, { id:scn.id, label:scn.label, score:L.score }];
-    if(this.state.idx < this.state.order.length-1) this.setState({ idx:this.state.idx+1, phase:'play', pick:null, deliv:'throw', locked:null, runResults });
+    if(this.state.idx < this.state.order.length-1) this.setState({ idx:this.state.idx+1, phase:'play', pick:null, locked:null, runResults });
     else if(this.props.embedded) this._emit(runResults);
     else this._finish(runResults);
   }
   _finish(runResults){
     const avg=Math.round(runResults.reduce((s,r)=>s+r.score,0)/(runResults.length||1));
     const pb=this.state.pb||{}; const next={ bestAvg:Math.max(avg, pb.bestAvg||0), runs:(pb.runs||0)+1 };
-    try{ localStorage.setItem('fa_lc_progress', JSON.stringify(next)); }catch(e){}
+    try{ localStorage.setItem('fa_hd_progress', JSON.stringify(next)); }catch(e){}
     this.setState({ view:'summary', runResults, pb:next, _avg:avg });
   }
   _playAgain(){ this._start(); }
@@ -434,7 +407,7 @@ class Component extends DCLogic {
     const showBest=this.props.showBest ?? true;
     const embedded=!!this.props.embedded;
     const A=(h,a)=>h+a;
-    const { view, mode, diff, order, idx, phase, pick, deliv } = this.state;
+    const { view, mode, diff, order, idx, phase, pick } = this.state;
     const isSetup=view==='setup', isRun=view==='run', isSummary=view==='summary';
     const isPlay=isRun && phase==='play', isFeedback=isRun && phase==='feedback';
     const scn = order[idx] || this.SCN[0];
@@ -452,54 +425,33 @@ class Component extends DCLogic {
 
     // run
     const revealIdx = isFeedback && locked ? locked.pick : pick;
-    const activeDeliv = isFeedback && locked ? locked.deliv : deliv;
     const best=this._best(scn);
     const chosen = revealIdx!=null ? scn.recv[revealIdx] : null;
-    const cev = chosen ? this._value(chosen, activeDeliv) : null;
-    const progOf=(r)=> Math.round(Math.max(0,Math.min(1,(this.KP.y - r.y)/70))*100);
-    const progPct = chosen ? progOf(chosen) : 0;
-    const secPct = chosen ? Math.round(cev.security*100) : 0;
-    const secColor = !chosen ? '#7688a0' : (cev.turnover?'#FF6B7E':secPct>66?accent:secPct>40?'#FFB020':'#FF6B7E');
 
-    const recvs = scn.recv.map((r,i)=>{
+    const cards = scn.recv.map((r,i)=>{
       const sel = revealIdx===i;
       const isBest = showBest && isFeedback && i===best.idx;
-      let border = sel?accent:(r.mark>0.6?'rgba(255,107,126,.7)':'rgba(140,200,225,.6)');
-      let bg = sel?accent:'rgba(15,28,44,.9)';
-      let color = sel?'#04202a':'#CFe0ee';
-      return { label:r.label, badge: sel?'✓':(i+1), x:r.x, y:r.y, style:pctStyle(r),
-        cursor:isPlay?'pointer':'default', invite:isPlay && motion && revealIdx==null,
-        onPick:()=>this._setPick(i),
-        tokenLook:`background:${bg};border:1.6px solid ${border};color:${color};box-shadow:${sel?'0 0 14px '+A(accent,'88'):'0 2px 8px rgba(0,0,0,.5)'};`,
-        labelLook:`color:${sel?accent:'#9FB0C5'};` };
+      const look = sel
+        ? `border-color:${accent};background:${A(accent,'1c')};box-shadow:0 0 0 1px ${accent},0 8px 22px ${A(accent,'2a')};color:#EAF2FB;`
+        : (isBest ? `border-color:${A(accent,'66')};background:${A(accent,'0e')};color:#DCE7F3;` : `border-color:rgba(120,140,166,.24);background:rgba(12,19,32,.55);color:#CFE0EE;`);
+      return { label:r.label, onPick:()=>this._setPick(i), look,
+        tickShow: sel, bestShow: isBest && !sel };
     });
-    const opps = scn.opp.map(o=>({ style:pctStyle(o) }));
 
-    const showPass = revealIdx!=null;
-    const passTarget = chosen || this.KP;
-    const passDash = activeDeliv==='kick' ? '2.6 1.8' : '0';
-    const passPath = `M ${this.KP.x},${this.KP.y} L ${passTarget.x},${passTarget.y}`;
-    const bestR = scn.recv[best.idx];
-    const bestPath = `M ${this.KP.x},${this.KP.y} L ${bestR.x},${bestR.y}`;
-    const bestStyle = pctStyle(bestR);
+    // shot scene
+    const shotPath = `M ${this.SHOOTER.x},${this.SHOOTER.y} L ${scn.shot.x},${scn.shot.y}`;
+    const shotStyle = pctStyle(scn.shot);
 
-    const pressLabel = scn.press>0.66?'HEAVY':scn.press>0.33?'MODERATE':'LOW';
-    const pressColor = scn.press>0.66?'#FF6B7E':scn.press>0.33?'#FFB020':accent;
-    const pressBorder = scn.press>0.66?'rgba(255,107,126,.5)':scn.press>0.33?'rgba(255,176,32,.5)':'color-mix(in srgb,var(--accent,#22D3EE) 40%,transparent)';
+    const techLabel = chosen ? `TECHNIQUE · ${chosen.label}` : 'CHOOSE A TECHNIQUE';
+    const hintText = chosen ? 'Locked on your read? Commit the technique. There’s a right answer for every ball.' : 'Read the shot in the header, then choose how you deal with it — catch, parry, tip or smother.';
 
-    const modeBtns = ['throw','kick'].map(m=>({ label:m.toUpperCase(), onSelect:()=>this._setDeliv(m),
-      look: activeDeliv===m?`background:${accent};color:#03121a;border-color:${accent};`:`background:rgba(12,19,32,.6);color:#9FB0C5;border-color:rgba(120,140,166,.24);` }));
-
-    const outletLabel = chosen ? `OUTLET · ${chosen.label}` : 'PICK AN OUTLET';
-    const hintText = chosen ? 'Set your delivery, then lock it in. Read the press before you commit.' : 'Tap a team-mate to choose your outlet. Blue is free, red is under pressure.';
-
-    const modeLabel = mode==='beat'?'BEAT THE KEEPER':mode==='elite'?'MATCH THE ELITE':'OUTLET RUN';
+    const modeLabel = mode==='beat'?'BEAT THE KEEPER':mode==='elite'?'MATCH THE ELITE':'SHOT RUN';
     const counterLabel = `${String(idx+1).padStart(2,'0')} / ${String((order.length||0)).padStart(2,'0')}`;
     const dsrc = order.length?order:[0,0,0,0];
     const dots = dsrc.map((_,i)=>({ look: i===idx?`width:22px;background:${accent};box-shadow:0 0 8px ${A(accent,'aa')};`:(i<idx?`width:12px;background:${A(accent,'88')};`:`width:12px;background:rgba(120,140,166,.26);`) }));
 
     const canLock = pick!=null;
-    const lockLabel = canLock ? 'Play the ball' : 'Pick an outlet first';
+    const lockLabel = canLock ? 'Commit the technique' : 'Choose a technique first';
     const lockBg = canLock ? accent : 'rgba(120,140,166,.3)';
     const lockOpacity = canLock ? '1' : '.6';
     const lockCursor = canLock ? 'pointer' : 'not-allowed';
@@ -507,22 +459,20 @@ class Component extends DCLogic {
     // feedback
     let fb={};
     if(isFeedback && locked){
-      const realVal=this._value(scn.recv[scn.real.idx], scn.real.mode).v;
+      const realVal=this._value(scn.recv[scn.real.idx]).v;
       const eliteVal=best.v;
       const yourVal=locked.ev.v;
       const realScore=Math.round(realVal/eliteVal*100);
       let verdictText, vColor, vBg;
       if(mode==='beat'){ const win=locked.score>realScore; verdictText=win?'YOU BEAT THE KEEPER':'DIDN’T BEAT IT'; vColor=win?accent:'#FF6B7E'; vBg=win?A(accent,'16'):'rgba(255,107,126,.12)'; }
-      else if(mode==='elite'){ verdictText=locked.score>=92?'ELITE BALL':locked.score>=75?'CLOSE TO ELITE':'OFF THE MARK'; vColor=locked.score>=75?accent:'#FFB020'; vBg=locked.score>=75?A(accent,'16'):'rgba(255,176,32,.12)'; }
-      else { verdictText=locked.score>=90?'GREAT BALL':locked.score>=75?'SOLID BALL':locked.score>=50?'PLAYABLE':'TURNED IT OVER'; vColor=locked.score>=75?accent:locked.score>=50?'#FFB020':'#FF6B7E'; vBg=locked.score>=75?A(accent,'16'):locked.score>=50?'rgba(255,176,32,.12)':'rgba(255,107,126,.12)'; }
+      else if(mode==='elite'){ verdictText=locked.score>=92?'TEXTBOOK':locked.score>=75?'CLOSE TO ELITE':'OFF THE MARK'; vColor=locked.score>=75?accent:'#FFB020'; vBg=locked.score>=75?A(accent,'16'):'rgba(255,176,32,.12)'; }
+      else { verdictText=locked.score>=90?'SAFE HANDS':locked.score>=75?'SOLID':locked.score>=50?'RISKY':'SPILLED IT'; vColor=locked.score>=75?accent:locked.score>=50?'#FFB020':'#FF6B7E'; vBg=locked.score>=75?A(accent,'16'):locked.score>=50?'rgba(255,176,32,.12)':'rgba(255,107,126,.12)'; }
       const ch=scn.recv[locked.pick];
+      const bestLabel=scn.recv[best.idx].label;
       let diag;
-      if(locked.ev.turnover) diag='Straight into the press — that outlet was marked and you’ve handed it back in a dangerous area.';
-      else if(locked.pick===best.idx && this._modeMatch(ch.mode,locked.deliv)<1) diag='Right man, wrong delivery. The read was there — match the pass type to the distance next time.';
-      else if(locked.pick===best.idx) diag='Perfect read — that’s the ball a top keeper plays here. Vision and execution both there.';
-      else if(scn.press>0.6 && ch.mark>0.4) diag='You went towards the pressure. Under a press, look first for the free man, not the obvious one.';
-      else if(best.idx!=null && scn.recv[best.idx].y < ch.y - 12) diag='Safe, but there was a braver ball on. You left a line-breaking pass in the locker.';
-      else diag='Decent outlet — kept the ball alive. A sharper read finds a more damaging pass.';
+      if(locked.pick===best.idx) diag='Textbook technique — that’s the safe, professional way to deal with this ball.';
+      else if(locked.score>=60) diag=`Playable, but the coaching answer was to ${bestLabel.toLowerCase()}. Yours keeps it alive; the elite choice kills the danger.`;
+      else diag=`Wrong technique for this one — the ball called for you to ${bestLabel.toLowerCase()}. ${ch.label} here is how rebounds and soft goals happen.`;
       fb={ score:locked.score, verdictText, vColor, vBg,
         valYou:Math.round(yourVal*100), valReal:Math.round(realVal*100), valElite:Math.round(eliteVal*100),
         diag, note:scn.note, realOut:scn.real.out, eliteFlag: locked.score>=99 };
@@ -536,8 +486,8 @@ class Component extends DCLogic {
       const bestScore=rr.length?Math.max.apply(null, rr.map(r=>r.score)):0;
       const chips=rr.map((r,i)=>({ n:String(i+1).padStart(2,'0'), label:r.label, score:r.score,
         look: r.score>=75?`border-color:${A(accent,'55')};color:${accent};`:r.score>=50?`border-color:rgba(255,176,32,.5);color:#FFB020;`:`border-color:rgba(255,107,126,.45);color:#FF9AA6;` }));
-      const band = avg>=85?'Elite distribution. You turn every save into an attack.':avg>=70?'A real playmaker from the back — the first pass is a weapon.':avg>=50?'Composed, but leaving damage on the table. Sharpen the line-breaking read.':'Early days — build the habit of scanning before you gather.';
-      sum={ avg, n:rr.length, bestScore, chips, band, dataLine:`${rr.length} DECISIONS · DISTRIBUTION FEEDS THE CATALYST ARCHETYPE` };
+      const band = avg>=85?'Safe hands. You pick the right technique under any kind of shot.':avg>=70?'Reliable handling — the basics are becoming second nature.':avg>=50?'Some risky choices in there. Drill when to catch and when to parry.':'Early days — build the instinct for the safe technique first.';
+      sum={ avg, n:rr.length, bestScore, chips, band, dataLine:`${rr.length} SHOTS · HANDLING FEEDS THE BASTION ARCHETYPE` };
     }
 
     return {
@@ -545,14 +495,12 @@ class Component extends DCLogic {
       isSetup, isRun, isSummary, isPlay, isFeedback,
       runActive:isRun, notRun:!isRun, modeLabel, counterLabel, dots,
       modes, diffs, pbLine, onStart:()=>this._start(),
-      camKicker:`RESTART · ${scn.label}`, situation:scn.situation,
-      keeperStyle:pctStyle(this.KP), recvs, opps,
-      pressLabel, pressColor, pressBorder,
-      showPass, passPath, passDash, showBest: showBest && isFeedback, bestPath, bestStyle,
-      progPct, secPct, secColor, modeBtns, outletLabel, hintText,
+      camKicker:`INCOMING · ${scn.label}`, situation:scn.situation,
+      keeperStyle:pctStyle(this.KP), cards, shotPath, shotStyle,
+      techLabel, hintText,
       lockLabel, lockBg, lockOpacity, lockCursor, onLock:()=>this._lock(),
       fb, onReposition:()=>this._reposition(), onNext:()=>this._next(),
-      nextLabel: idx<order.length-1 ? 'Next restart' : 'See run summary',
+      nextLabel: idx<order.length-1 ? 'Next shot' : 'See run summary',
       sum, onPlayAgain:()=>this._playAgain(), onChangeSetup:()=>this._setup(),
       onBack:()=>{ window.location.href='Landing.dc.html'; },
     };

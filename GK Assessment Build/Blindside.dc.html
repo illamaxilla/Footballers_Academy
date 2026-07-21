@@ -26,7 +26,7 @@
   @media (prefers-reduced-motion:reduce){*{animation:none!important;}.fa-in,.fa-in-sm{opacity:1!important;transform:none!important;}}
 </style>
 </helmet>
-<div data-screen-label="Cross Command" style="position:relative;display:flex;flex-direction:column;min-height:{{ rootMinH }};width:100%;overflow:hidden;background:radial-gradient(120% 90% at 50% 6%,#0e1a2d 0%,#080e1a 44%,#04060c 100%);color:#EAF2FB;font-family:'Archivo',system-ui,sans-serif;--accent:{{ accent }};">
+<div data-screen-label="Blindside" style="position:relative;display:flex;flex-direction:column;min-height:{{ rootMinH }};width:100%;overflow:hidden;background:radial-gradient(120% 90% at 50% 6%,#0e1a2d 0%,#080e1a 44%,#04060c 100%);color:#EAF2FB;font-family:'Archivo',system-ui,sans-serif;--accent:{{ accent }};">
 
   <div style="position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.4;background:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0px,rgba(255,255,255,.02) 1px,transparent 1px,transparent 4px);"></div>
   <div style="position:absolute;top:20px;left:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
@@ -42,7 +42,7 @@
     </button>
     <div style="display:flex;align-items:center;gap:11px;">
       <svg width="22" height="22" viewBox="0 0 32 32" fill="none"><path d="M16 2 28 9v14L16 30 4 23V9z" style="stroke:var(--accent,#22D3EE);stroke-width:1.5;fill:color-mix(in srgb,var(--accent,#22D3EE) 12%,transparent);"/><path d="M9 20 L16 12 L23 20" style="stroke:var(--accent,#22D3EE);stroke-width:1.7;fill:none;stroke-linecap:round;stroke-linejoin:round;"/></svg>
-      <span style="font:800 13px 'Archivo';letter-spacing:.05em;">CROSS <span style="color:var(--accent,#22D3EE);">COMMAND</span></span>
+      <span style="font:800 13px 'Archivo';letter-spacing:.05em;">BLIND<span style="color:var(--accent,#22D3EE);">SIDE</span></span>
     </div>
     <div style="display:flex;align-items:center;gap:12px;min-width:120px;justify-content:flex-end;">
       <sc-if value="{{ runActive }}" hint-placeholder-val="{{ false }}">
@@ -72,10 +72,10 @@
         <div class="fa-in" style="display:flex;align-items:center;gap:14px;margin-bottom:22px;">
           <span style="font:600 12px 'IBM Plex Mono';letter-spacing:.4em;color:var(--accent,#22D3EE);">TRAINING</span>
           <span style="width:44px;height:1px;background:color-mix(in srgb,var(--accent,#22D3EE) 45%,transparent);"></span>
-          <span style="font:500 11px 'IBM Plex Mono';letter-spacing:.28em;color:#7688a0;">CROSSES &amp; THE SIX</span>
+          <span style="font:500 11px 'IBM Plex Mono';letter-spacing:.28em;color:#7688a0;">SCANNING &amp; GAME MEMORY</span>
         </div>
-        <h1 class="fa-in" style="margin:0 0 16px;font:800 clamp(40px,6vw,84px)/0.98 'Archivo';letter-spacing:-0.03em;text-wrap:balance;animation-delay:.08s;">Own your box.</h1>
-        <p class="fa-in" style="margin:0 0 34px;max-width:540px;font:400 clamp(15px,1.3vw,18px)/1.6 'Archivo';color:#9FB0C5;text-wrap:pretty;animation-delay:.16s;">Crosses, corners and cutbacks, paused the beat before delivery. <span style="color:#E4EDF7;font-weight:600;">Drag your keeper to the position that commands the six-yard box</span> — attack the ball, don't get dragged out — then read it against the elite line.</p>
+        <h1 class="fa-in" style="margin:0 0 16px;font:800 clamp(40px,6vw,84px)/0.98 'Archivo';letter-spacing:-0.03em;text-wrap:balance;animation-delay:.08s;">See everything.</h1>
+        <p class="fa-in" style="margin:0 0 34px;max-width:560px;font:400 clamp(15px,1.3vw,18px)/1.6 'Archivo';color:#9FB0C5;text-wrap:pretty;animation-delay:.16s;">The box fills with runners for a heartbeat, then they vanish. <span style="color:#E4EDF7;font-weight:600;">Scan the danger and remember it</span> — then tap where the free man was. Great keepers see the whole picture before the ball arrives.</p>
 
         <div class="fa-in" style="display:flex;flex-wrap:wrap;justify-content:center;gap:12px;width:100%;margin-bottom:26px;animation-delay:.22s;">
           <sc-for list="{{ modes }}" as="m" hint-placeholder-count="3">
@@ -142,55 +142,41 @@
           <div style="position:absolute;top:10px;left:10px;width:14px;height:14px;border-top:1.5px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:1.5px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:2;pointer-events:none;"></div>
           <div style="position:absolute;top:10px;right:10px;width:14px;height:14px;border-top:1.5px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-right:1.5px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:2;pointer-events:none;"></div>
 
-          <!-- dynamic overlay: cross path, threat lines, ideal zone -->
-          <svg viewBox="0 0 150 100" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;z-index:3;pointer-events:none;">
-            <line x1="{{ lx }}" y1="{{ ly }}" x2="59" y2="84" stroke="rgba(255,120,138,.20)" stroke-width="0.4"/>
-            <line x1="{{ lx }}" y1="{{ ly }}" x2="91" y2="84" stroke="rgba(255,120,138,.20)" stroke-width="0.4"/>
-            <path d="{{ crossPath }}" fill="none" stroke="rgba(255,120,138,.6)" stroke-width="0.7" stroke-dasharray="2.6 1.9" stroke-linecap="round"/>
-            <sc-if value="{{ showGuide }}" hint-placeholder-val="{{ true }}">
-              <ellipse cx="{{ sx }}" cy="{{ sy }}" rx="6.4" ry="4.6" fill="color-mix(in srgb,var(--accent,#22D3EE) 8%,transparent)" stroke="color-mix(in srgb,var(--accent,#22D3EE) 45%,transparent)" stroke-width="0.4" stroke-dasharray="2 1.6"/>
-            </sc-if>
-          </svg>
+          <!-- ball (context) -->
+          <div style="position:absolute;z-index:4;transform:translate(-50%,-50%);pointer-events:none;width:9px;height:9px;border-radius:50%;background:#EEF5FC;box-shadow:0 0 6px rgba(220,240,255,.45);border:1px solid rgba(9,20,34,.32);{{ ballStyle }}"></div>
 
-          <!-- landing target -->
-          <div style="position:absolute;z-index:4;transform:translate(-50%,-50%);pointer-events:none;{{ landStyle }}">
-            <span style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:22px;height:22px;border-radius:50%;border:1.4px dashed rgba(255,120,138,.7);animation:fa-tring 1.8s ease-in-out infinite;"></span>
-            <span style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:5px;height:5px;border-radius:50%;background:rgba(255,120,138,.85);box-shadow:0 0 6px rgba(255,120,138,.6);"></span>
-          </div>
+          <!-- attackers (scan + reveal) -->
+          <sc-if value="{{ showAtk }}" hint-placeholder-val="{{ true }}">
+            <sc-for list="{{ atks }}" as="a" hint-placeholder-count="4">
+              <div style="position:absolute;z-index:5;transform:translate(-50%,-50%);pointer-events:none;width:17px;height:17px;border-radius:50%;{{ a.look }}{{ a.style }}"></div>
+            </sc-for>
+          </sc-if>
 
-          <!-- delivery origin: ball + attacker ring -->
-          <div style="position:absolute;z-index:4;transform:translate(-50%,-50%);pointer-events:none;{{ ballStyle }}">
-            <span style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:18px;height:18px;border-radius:50%;border:1.4px solid rgba(255,96,118,.6);"></span>
-          </div>
-          <div style="position:absolute;z-index:4;transform:translate(-50%,-50%);pointer-events:none;width:11px;height:11px;border-radius:50%;background:#EEF5FC;box-shadow:0 0 6px rgba(220,240,255,.45);border:1px solid rgba(9,20,34,.32);{{ ballStyle }}"></div>
+          <!-- recall fog -->
+          <sc-if value="{{ isRecall }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;inset:0;z-index:5;pointer-events:none;display:grid;place-items:center;">
+              <span style="font:800 11px 'IBM Plex Mono';letter-spacing:.3em;color:rgba(150,170,196,.35);">RUNNERS HIDDEN</span>
+            </div>
+          </sc-if>
 
-          <!-- reveal ghosts -->
-          <sc-if value="{{ showReveal }}" hint-placeholder-val="{{ false }}">
-            <sc-if value="{{ showActual }}" hint-placeholder-val="{{ true }}">
-              <div style="position:absolute;z-index:5;transform:translate(-50%,-50%);pointer-events:none;display:flex;flex-direction:column;align-items:center;gap:3px;{{ actualStyle }}">
-                <span style="width:26px;height:26px;border-radius:8px;border:1.5px dashed rgba(150,170,196,.75);background:rgba(120,140,166,.14);display:grid;place-items:center;font:800 9px 'IBM Plex Mono';color:#C6D3E2;">R</span>
-                <span style="font:700 7.5px 'IBM Plex Mono';letter-spacing:.1em;color:#9FB0C5;background:rgba(6,12,22,.7);padding:1px 5px;border-radius:4px;white-space:nowrap;">REAL</span>
-              </div>
-            </sc-if>
-            <div style="position:absolute;z-index:5;transform:translate(-50%,-50%);pointer-events:none;display:flex;flex-direction:column;align-items:center;gap:3px;{{ oracleStyle }}">
-              <span style="width:26px;height:26px;border-radius:50%;border:1.5px dashed var(--accent,#22D3EE);background:color-mix(in srgb,var(--accent,#22D3EE) 16%,transparent);display:grid;place-items:center;box-shadow:0 0 14px color-mix(in srgb,var(--accent,#22D3EE) 45%,transparent);"><span style="width:7px;height:7px;border-radius:50%;background:var(--accent,#22D3EE);"></span></span>
-              <span style="font:700 7.5px 'IBM Plex Mono';letter-spacing:.1em;color:var(--accent,#22D3EE);background:rgba(6,12,22,.7);padding:1px 5px;border-radius:4px;white-space:nowrap;">ELITE</span>
+          <!-- your pick -->
+          <sc-if value="{{ showPick }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;z-index:7;transform:translate(-50%,-50%);pointer-events:none;display:flex;flex-direction:column;align-items:center;gap:3px;{{ pickStyle }}">
+              <span style="width:22px;height:22px;border-radius:50%;border:2px solid #EAF2FB;background:rgba(234,242,251,.16);display:grid;place-items:center;box-shadow:0 0 12px rgba(234,242,251,.5);"><span style="width:5px;height:5px;border-radius:50%;background:#EAF2FB;"></span></span>
+              <span style="font:700 7.5px 'IBM Plex Mono';letter-spacing:.1em;color:#C6D3E2;background:rgba(6,12,22,.7);padding:1px 5px;border-radius:4px;white-space:nowrap;">YOUR CALL</span>
             </div>
           </sc-if>
 
           <!-- keeper token -->
-          <div style="position:absolute;z-index:6;transform:translate(-50%,-50%);pointer-events:none;display:grid;place-items:center;width:32px;height:32px;{{ keeperStyle }}">
-            <sc-if value="{{ showInvite }}" hint-placeholder-val="{{ true }}">
-              <span style="position:absolute;left:50%;top:50%;width:32px;height:32px;border-radius:11px;border:1.5px solid var(--accent,#22D3EE);animation:fa-kring 1.9s ease-in-out infinite;"></span>
-            </sc-if>
-            <span style="width:32px;height:32px;border-radius:10px;background:linear-gradient(180deg,#EAFBFF,#8fd8e6);color:#04202a;font:800 11px 'Archivo';letter-spacing:.04em;display:grid;place-items:center;box-shadow:0 6px 20px rgba(0,0,0,.5),0 0 0 2px rgba(255,255,255,.18),0 0 18px color-mix(in srgb,var(--accent,#22D3EE) 45%,transparent);">GK</span>
+          <div style="position:absolute;z-index:6;transform:translate(-50%,-50%);pointer-events:none;display:grid;place-items:center;width:30px;height:30px;{{ keeperStyle }}">
+            <span style="width:30px;height:30px;border-radius:10px;background:linear-gradient(180deg,#EAFBFF,#8fd8e6);color:#04202a;font:800 10px 'Archivo';letter-spacing:.04em;display:grid;place-items:center;box-shadow:0 6px 20px rgba(0,0,0,.5),0 0 0 2px rgba(255,255,255,.18),0 0 18px color-mix(in srgb,var(--accent,#22D3EE) 45%,transparent);">GK</span>
           </div>
 
-          <!-- command badge -->
+          <!-- phase badge -->
           <sc-if value="{{ isPlay }}" hint-placeholder-val="{{ true }}">
             <div style="position:absolute;top:12px;left:50%;transform:translateX(-50%);z-index:9;display:flex;align-items:center;gap:9px;padding:6px 14px;border-radius:999px;background:rgba(4,10,18,.8);border:1px solid color-mix(in srgb,var(--accent,#22D3EE) 40%,transparent);box-shadow:0 8px 26px rgba(0,0,0,.5);backdrop-filter:blur(4px);white-space:nowrap;">
-              <span style="font:700 9.5px 'IBM Plex Mono';letter-spacing:.18em;color:#8EA1B8;">BOX COMMAND</span>
-              <span style="font:800 13px 'Archivo';color:var(--accent,#22D3EE);">{{ covPct }}%</span>
+              <span style="width:6px;height:6px;border-radius:50%;background:{{ phaseColor }};box-shadow:0 0 8px {{ phaseColor }};animation:fa-blink 1.2s ease-in-out infinite;"></span>
+              <span style="font:700 9.5px 'IBM Plex Mono';letter-spacing:.2em;color:{{ phaseColor }};">{{ phaseLabel }}</span>
             </div>
           </sc-if>
         </div>
@@ -201,19 +187,10 @@
 
           <sc-if value="{{ isPlay }}" hint-placeholder-val="{{ true }}">
             <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:stretch;">
-              <div style="flex:1 1 200px;display:flex;flex-direction:column;justify-content:center;gap:6px;padding:11px 14px;border-radius:11px;border:1px solid rgba(120,140,166,.18);background:rgba(6,12,22,.5);">
-                <div style="display:flex;justify-content:space-between;font:600 9.5px 'IBM Plex Mono';letter-spacing:.12em;color:var(--accent,#22D3EE);"><span>LATERAL SET</span><span>{{ latPct }}%</span></div>
-                <div style="height:6px;border-radius:99px;background:rgba(120,140,166,.16);overflow:hidden;"><div style="height:100%;border-radius:99px;background:var(--accent,#22D3EE);box-shadow:0 0 8px var(--accent,#22D3EE);width:{{ latPct }}%;transition:width .12s linear;"></div></div>
-                <div style="display:flex;justify-content:space-between;font:600 9.5px 'IBM Plex Mono';letter-spacing:.12em;color:{{ depthColor }};margin-top:3px;"><span>DEPTH</span><span>{{ depthPct }}%</span></div>
-                <div style="height:6px;border-radius:99px;background:rgba(120,140,166,.16);overflow:hidden;"><div style="height:100%;border-radius:99px;background:{{ depthColor }};width:{{ depthPct }}%;transition:width .12s linear;"></div></div>
+              <div style="flex:0 0 auto;display:flex;align-items:center;gap:9px;padding:11px 16px;border-radius:11px;border:1px solid rgba(120,140,166,.18);background:rgba(6,12,22,.5);">
+                <span style="width:7px;height:7px;border-radius:50%;background:{{ phaseColor }};box-shadow:0 0 8px {{ phaseColor }};"></span>
+                <span style="font:700 11px 'IBM Plex Mono';letter-spacing:.18em;color:{{ phaseColor }};">{{ phaseLabel }}</span>
               </div>
-              <div style="flex:0 0 auto;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:11px 20px;border-radius:11px;border:1px solid rgba(120,140,166,.18);background:rgba(6,12,22,.5);">
-                <span style="font:800 22px 'Archivo';color:#EAF2FB;">{{ gpLive }}</span>
-                <span style="font:600 8px 'IBM Plex Mono';letter-spacing:.14em;color:#7688a0;">GOAL RISK</span>
-              </div>
-            </div>
-            <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:stretch;">
-              <div style="flex:0 0 auto;display:flex;align-items:center;padding:10px 14px;border-radius:11px;border:1px solid color-mix(in srgb,var(--accent,#22D3EE) 26%,transparent);background:color-mix(in srgb,var(--accent,#22D3EE) 7%,transparent);font:600 9px 'IBM Plex Mono';letter-spacing:.16em;color:var(--accent,#22D3EE);">{{ targetLabel }}</div>
               <div style="flex:1 1 240px;display:flex;align-items:center;padding:10px 14px;border-radius:11px;border:1px dashed rgba(120,140,166,.28);background:rgba(10,16,28,.4);font:500 12.5px/1.45 'Archivo';color:#8698ad;">{{ hintText }}</div>
             </div>
           </sc-if>
@@ -222,7 +199,7 @@
             <div style="display:flex;flex-wrap:wrap;gap:16px 20px;align-items:center;">
               <div style="display:flex;flex-direction:column;gap:6px;">
                 <div style="display:flex;align-items:center;gap:8px;">
-                  <div style="font:600 9.5px 'IBM Plex Mono';letter-spacing:.24em;color:#61748c;">COMMAND SCORE</div>
+                  <div style="font:600 9.5px 'IBM Plex Mono';letter-spacing:.24em;color:#61748c;">READ SCORE</div>
                   <sc-if value="{{ fb.eliteFlag }}" hint-placeholder-val="{{ false }}"><span style="font:700 8px 'IBM Plex Mono';letter-spacing:.14em;color:#03121a;background:var(--accent,#22D3EE);padding:2px 7px;border-radius:5px;">ELITE+</span></sc-if>
                 </div>
                 <div style="display:flex;align-items:baseline;flex-wrap:wrap;gap:10px;">
@@ -233,44 +210,28 @@
                   <div style="display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;border:1px solid;font:700 9.5px 'IBM Plex Mono';letter-spacing:.14em;color:{{ fb.vColor }};border-color:{{ fb.vColor }};background:{{ fb.vBg }};">{{ fb.verdictText }}</div>
                 </div>
               </div>
-              <div style="margin-left:auto;display:flex;flex-direction:column;gap:3px;">
-                <div style="display:flex;gap:8px;">
-                  <div style="flex:1;min-width:58px;padding:8px;border-radius:10px;border:1px solid rgba(120,140,166,.18);background:rgba(6,12,22,.5);text-align:center;">
-                    <div style="font:800 15px 'Archivo';color:var(--accent,#22D3EE);">{{ fb.gpYou }}</div>
-                    <div style="font:600 7.5px 'IBM Plex Mono';letter-spacing:.1em;color:#7688a0;margin-top:2px;">YOU</div>
-                  </div>
-                  <div style="flex:1;min-width:58px;padding:8px;border-radius:10px;border:1px solid rgba(120,140,166,.18);background:rgba(6,12,22,.5);text-align:center;">
-                    <div style="font:800 15px 'Archivo';color:#C6D3E2;">{{ fb.gpActual }}</div>
-                    <div style="font:600 7.5px 'IBM Plex Mono';letter-spacing:.1em;color:#7688a0;margin-top:2px;">REAL</div>
-                  </div>
-                  <div style="flex:1;min-width:58px;padding:8px;border-radius:10px;border:1px solid rgba(120,140,166,.18);background:rgba(6,12,22,.5);text-align:center;">
-                    <div style="font:800 15px 'Archivo';color:#8EA1B8;">{{ fb.gpElite }}</div>
-                    <div style="font:600 7.5px 'IBM Plex Mono';letter-spacing:.1em;color:#7688a0;margin-top:2px;">ELITE</div>
-                  </div>
-                </div>
-                <div style="font:600 8px 'IBM Plex Mono';letter-spacing:.1em;color:#61748c;text-align:center;">GOAL RISK · LOWER IS BETTER</div>
+              <div style="margin-left:auto;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:11px 16px;border-radius:11px;border:1px solid color-mix(in srgb,var(--accent,#22D3EE) 30%,transparent);background:color-mix(in srgb,var(--accent,#22D3EE) 8%,transparent);">
+                <span style="font:800 13px 'Archivo';color:var(--accent,#22D3EE);white-space:nowrap;">{{ fb.dangerLabel }}</span>
+                <span style="font:600 7.5px 'IBM Plex Mono';letter-spacing:.14em;color:#7688a0;">WAS THE DANGER</span>
               </div>
             </div>
             <div style="font:500 13px/1.5 'Archivo';color:#DCE7F3;">{{ fb.diag }}</div>
-            <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;">
-              <div style="flex:1 1 260px;padding:11px 14px;border-radius:12px;border:1px solid rgba(120,140,166,.18);background:rgba(10,16,28,.5);font:400 12px/1.5 'Archivo';color:#9FB0C5;text-wrap:pretty;">{{ fb.note }}</div>
-              <div style="flex:0 0 auto;font:500 10px 'IBM Plex Mono';letter-spacing:.1em;color:#61748c;">REAL CLIP · {{ fb.actualScore }}/100 — {{ fb.actualOut }}</div>
-            </div>
+            <div style="padding:11px 14px;border-radius:12px;border:1px solid rgba(120,140,166,.18);background:rgba(10,16,28,.5);font:400 12px/1.5 'Archivo';color:#9FB0C5;text-wrap:pretty;">{{ fb.note }}</div>
           </sc-if>
         </div>
 
       <!-- controls -->
       <div style="margin-top:20px;min-height:54px;display:flex;justify-content:center;align-items:center;gap:12px;">
         <sc-if value="{{ isPlay }}" hint-placeholder-val="{{ true }}">
-          <button onClick="{{ onLock }}" style="display:inline-flex;align-items:center;gap:11px;padding:15px 34px;border-radius:12px;border:0;cursor:pointer;background:var(--accent,#22D3EE);color:#03121a;font:700 15px 'Archivo';box-shadow:0 12px 36px color-mix(in srgb,var(--accent,#22D3EE) 40%,transparent);transition:transform .16s ease,box-shadow .16s ease;" style-hover="transform:translateY(-2px);box-shadow:0 18px 48px color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);">
+          <button onClick="{{ onLock }}" style="display:inline-flex;align-items:center;gap:11px;padding:15px 34px;border-radius:12px;border:0;cursor:{{ lockCursor }};background:{{ lockBg }};color:#03121a;font:700 15px 'Archivo';box-shadow:0 12px 36px color-mix(in srgb,var(--accent,#22D3EE) 40%,transparent);transition:transform .16s ease,box-shadow .16s ease;opacity:{{ lockOpacity }};" style-hover="transform:translateY(-2px);box-shadow:0 18px 48px color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);">
             {{ lockLabel }}
             <svg width="17" height="17" viewBox="0 0 24 24" fill="none" style="stroke:#03121a;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12.5l4.5 4.5L19 6.5"/></svg>
           </button>
         </sc-if>
         <sc-if value="{{ isFeedback }}" hint-placeholder-val="{{ false }}">
-          <button onClick="{{ onReposition }}" style="display:inline-flex;align-items:center;gap:9px;padding:15px 22px;border-radius:12px;border:1px solid rgba(157,176,198,.28);background:rgba(12,18,30,.4);color:#C6D3E2;font:600 14px 'Archivo';cursor:pointer;transition:border-color .16s ease,color .16s ease;" style-hover="border-color:color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);color:#EAF2FB;">
+          <button onClick="{{ onRewatch }}" style="display:inline-flex;align-items:center;gap:9px;padding:15px 22px;border-radius:12px;border:1px solid rgba(157,176,198,.28);background:rgba(12,18,30,.4);color:#C6D3E2;font:600 14px 'Archivo';cursor:pointer;transition:border-color .16s ease,color .16s ease;" style-hover="border-color:color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);color:#EAF2FB;">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
-            Reposition
+            Watch again
           </button>
           <button onClick="{{ onNext }}" style="display:inline-flex;align-items:center;gap:11px;padding:15px 32px;border-radius:12px;border:0;cursor:pointer;background:var(--accent,#22D3EE);color:#03121a;font:700 15px 'Archivo';box-shadow:0 12px 36px color-mix(in srgb,var(--accent,#22D3EE) 40%,transparent);transition:transform .16s ease,box-shadow .16s ease;" style-hover="transform:translateY(-2px);box-shadow:0 18px 48px color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);">
             {{ nextLabel }}
@@ -346,110 +307,87 @@
   &quot;onDone&quot;: {&quot;editor&quot;:null,&quot;tsType&quot;:&quot;(counts: Record&lt;string, number&gt;, meta?: object) =&gt; void&quot;}
 }">
 class Component extends DCLogic {
-  state = { view:'setup', mode:'challenge', diff:'mixed', order:[], idx:0, phase:'play', keeper:{x:75,y:82}, locked:null, runResults:[], streak:0, pb:null, _avg:null };
-
-  GEO = { GX:75, GY:84, PL:59, PR:91, X0:50, X1:100, Y0:66, Y1:83, NOMANS:71, LINE:82 };
+  state = { view:'setup', mode:'challenge', diff:'mixed', order:[], idx:0, phase:'scan', pick:null, locked:null, runResults:[], pb:null, _avg:null };
 
   MODES = [
-    { id:'challenge', tag:'CHALLENGE', name:'Delivery Run', blurb:'A run of crosses into your box. Bank a command score and keep your streak alive.' },
-    { id:'beat', tag:'VERSUS', name:'Beat the Keeper', blurb:'Out-position the keeper from the real clip. Beat their command score to win the rep.' },
-    { id:'elite', tag:'BENCHMARK', name:'Match the Elite', blurb:'Chase the flawless set position. How close to a perfect 100 can you get?' },
+    { id:'challenge', tag:'CHALLENGE', name:'Scan Run', blurb:'A run of box scenes. Scan, remember the danger, and call it before the ball arrives.' },
+    { id:'beat', tag:'VERSUS', name:'Beat the Keeper', blurb:'Spot the danger the real keeper missed. Read the box sharper than they did.' },
+    { id:'elite', tag:'BENCHMARK', name:'Match the Elite', blurb:'Pinpoint the free man every time. How close to a flawless read can you get?' },
   ];
   DIFFS = [ {id:'easy',label:'Easy'}, {id:'medium',label:'Medium'}, {id:'hard',label:'Hard'}, {id:'mixed',label:'Mixed'} ];
-  DIFFMAP = { easy:['low-cross','corner-in'], medium:['fp-float','overload'], hard:['np-drive','cutback'], mixed:['np-drive','fp-float','cutback','corner-in','low-cross','overload'] };
+  DIFFMAP = { easy:['far-runner','spare-man'], medium:['back-post','late-run'], hard:['late-run','far-runner'], mixed:['far-runner','spare-man','back-post','late-run'] };
+
+  KP = { x:75, y:81 };
 
   SCN = [
-    { id:'np-drive', label:'RIGHT WING · NEAR-POST DRIVE', side:'R', ball:{x:120,y:46}, land:{x:86,y:80},
-      set:{x:80,y:78}, ax:6.5, ayOut:4.5, ayBack:6.5, actual:{x:84,y:81.5}, baseGP:0.55, actualOut:'beaten at the near post',
-      situation:'A driven cross fizzes in toward the near post. Set before it arrives.',
-      note:'On a near-post drive, hold a half-step off your line with your near-post shoulder set — and attack anything you can reach. Don’t glue yourself to the post.' },
-    { id:'fp-float', label:'LEFT WING · DEEP FAR POST', side:'L', ball:{x:32,y:40}, land:{x:87,y:74},
-      set:{x:78,y:76}, ax:7, ayOut:5, ayBack:7, actual:{x:71,y:81}, baseGP:0.48, actualOut:'header flashed wide',
-      situation:'A floated ball hangs up toward the back post. Where do you set?',
-      note:'A deep far-post delivery asks you to start central and a touch deeper, so you can attack across your body. Commit to the near post and the back post opens up.' },
-    { id:'cutback', label:'RIGHT BYLINE · CUTBACK', side:'R', ball:{x:106,y:83}, land:{x:74,y:70},
-      set:{x:75,y:80}, ax:6.5, ayOut:4, ayBack:6, actual:{x:75,y:74}, baseGP:0.52, actualOut:'pulled back and finished',
-      situation:'The winger reaches the byline and looks to cut it back. Hold, or step?',
-      note:'On the cutback the danger is behind you, not on the byline. Stay home and central — set to spring onto the pull-back, and never drift out chasing the ball.' },
-    { id:'corner-in', label:'IN-SWINGING CORNER', side:'R', ball:{x:120,y:8}, land:{x:77,y:76},
-      set:{x:78,y:79}, ax:7, ayOut:4.5, ayBack:6, actual:{x:80,y:82}, baseGP:0.42, actualOut:'claimed under pressure',
-      situation:'An in-swinger is driven into the six-yard box. Command your area.',
-      note:'Set central and toward the back of your six. That lets you attack the flight forward and up, through the traffic, and take it at the highest point.' },
-    { id:'low-cross', label:'RIGHT · LOW CROSS', side:'R', ball:{x:112,y:54}, land:{x:83,y:82},
-      set:{x:79,y:80}, ax:7, ayOut:5, ayBack:6.5, actual:{x:76,y:80}, baseGP:0.50, actualOut:'toe-poked wide',
-      situation:'A low ball is drilled across the face of goal. Cover the tap-in.',
-      note:'Low across the face — stay low, get set across your goal and be first to the far-post tap. Caught square, it beats you across the six.' },
-    { id:'overload', label:'LEFT · BACK-POST OVERLOAD', side:'L', ball:{x:38,y:38}, land:{x:88,y:72},
-      set:{x:77,y:77}, ax:7.5, ayOut:5, ayBack:7, actual:{x:79,y:74}, baseGP:0.50, actualOut:'nodded over',
-      situation:'Bodies pile into the back post as the cross comes deep from the left.',
-      note:'With numbers at the back post, hold central and deep and stay big — react to the flick-on rather than committing early into the crowd.' },
+    { id:'far-runner', label:'CROSS · SPOT THE FREE MAN', scanMs:2100, ball:{x:118,y:44}, danger:{x:90,y:73}, dangerLabel:'THE FREE MAN',
+      atk:[ {x:58,y:73,marked:true}, {x:68,y:70,marked:true}, {x:76,y:74,marked:true}, {x:90,y:73,marked:false} ],
+      situation:'A cross is coming in from the right. Scan the box — who is unmarked?',
+      note:'The danger is rarely in the crowd — it is the spare runner arriving free. Train your eyes to find the unmarked man before the ball does.' },
+    { id:'spare-man', label:'CORNER · THE SPARE MAN', scanMs:2000, ball:{x:120,y:8}, danger:{x:74,y:64}, dangerLabel:'THE SPARE MAN',
+      atk:[ {x:66,y:76,marked:true}, {x:78,y:77,marked:true}, {x:86,y:74,marked:true}, {x:74,y:64,marked:false} ],
+      situation:'A corner is swung in. Everyone piles into the six — but who is lurking free?',
+      note:'On corners the killer is the man who hangs back off the crowd, arriving late onto the drop. Spot him early or he punishes you.' },
+    { id:'back-post', label:'DEEP CROSS · BACK POST', scanMs:1700, ball:{x:34,y:40}, danger:{x:92,y:70}, dangerLabel:'BACK-POST RUNNER',
+      atk:[ {x:64,y:74,marked:true}, {x:74,y:72,marked:true}, {x:80,y:76,marked:true}, {x:92,y:70,marked:false} ],
+      situation:'A deep ball is floated from the left. Read the box before it lands.',
+      note:'A deep delivery lives at the back post — the runner peeling off the far side is the one to find and beat to it.' },
+    { id:'late-run', label:'CUTBACK · THE LATE RUN', scanMs:1500, ball:{x:108,y:52}, danger:{x:73,y:67}, dangerLabel:'THE LATE RUNNER',
+      atk:[ {x:62,y:78,marked:true}, {x:84,y:78,marked:true}, {x:90,y:74,marked:true}, {x:73,y:67,marked:false} ],
+      situation:'The ball is worked to the byline for a cutback. Who arrives on the edge?',
+      note:'The cutback feeds the runner attacking the top of the six. The late arrival, unmarked and running onto it, is the biggest threat of all.' },
   ];
 
   _scn(id){ return this.SCN.find(s=>s.id===id); }
+  _dist(a,b){ return Math.hypot(a.x-b.x, a.y-b.y); }
+  _score(scn, pick){ if(!pick) return 0; const d=this._dist(pick, scn.danger); return Math.max(0, Math.min(100, Math.round(Math.exp(-(d*d)/(2*121))*100))); }
+  _scanMs(){ const scn=this.state.order[this.state.idx]; return (scn&&scn.scanMs)||1800; }
 
-  _parts(scn,K){
-    const g=this.GEO, s=scn.set;
-    const ax=scn.ax||7, ayOut=scn.ayOut||5, ayBack=scn.ayBack||7;
-    const dxr=K.x-s.x, dyr=K.y-s.y;
-    const dx=dxr/ax, dy=dyr<0?dyr/ayOut:dyr/ayBack;
-    let outGate=1; if(K.y<g.NOMANS){ outGate=Math.max(0.12,1-(g.NOMANS-K.y)*0.10); }
-    const lat01=Math.exp(-(dx*dx)/2);
-    const depth01=Math.max(0,Math.min(1,Math.exp(-(dy*dy)/2)*outGate));
-    const command=lat01*depth01;
-    return { dxr, dyr, lat01, depth01, command, outGate };
-  }
-  _command(scn,K){ return this._parts(scn,K).command; }
-  _gp(scn,K){ const c=this._command(scn,K); return Math.max(0.03, +(scn.baseGP*(1-0.74*c)).toFixed(2)); }
-  _score(scn,K){ return Math.max(0, Math.min(100, Math.round(this._command(scn,K)*100))); }
-  _oracle(scn){ const s=scn.set; return { x:s.x, y:s.y, command:1, gp:this._gp(scn,s) }; }
-  _crossCtrl(scn){ const b=scn.ball, l=scn.land; const mx=(b.x+l.x)/2, my=(b.y+l.y)/2; return { cx:mx+(75-mx)*0.30, cy:my+(84-my)*0.22 }; }
+  componentDidMount(){ let pb=null; try{ pb=JSON.parse(localStorage.getItem('fa_bs_progress')||'null'); }catch(e){} if(pb) this.setState({ pb }); if(this.props.embedded) this._startEmbed(); }
+  componentWillUnmount(){ this._clearT(); }
+  _clearT(){ if(this._t){ clearTimeout(this._t); this._t=null; } }
+  _beginScene(){ this._clearT(); this.setState({ phase:'scan', pick:null, locked:null }); this._t=setTimeout(()=>{ this._t=null; this.setState({ phase:'recall' }); }, this._scanMs()); }
 
-  componentDidMount(){ let pb=null; try{ pb=JSON.parse(localStorage.getItem('fa_cc_progress')||'null'); }catch(e){} if(pb) this.setState({ pb }); if(this.props.embedded) this._startEmbed(); }
-  _startEmbed(){ const order=['np-drive','fp-float','cutback'].map(id=>this._scn(id)); this.setState({ view:'run', order, idx:0, phase:'play', keeper:{x:75,y:82}, locked:null, runResults:[], streak:0, _avg:null }); }
-  _emit(runResults){ const sum01=runResults.reduce((s,r)=>s+r.score/100,0); const counts={ oracle:0, sentinel:+(sum01*0.4).toFixed(3), catalyst:0, bastion:0, wall:+sum01.toFixed(3) }; (this.props.onDone||this.props.ondone||function(){})(counts, { layer:'demonstrated' }); }
+  _startEmbed(){ const order=['far-runner','spare-man','back-post'].map(id=>this._scn(id)); this.setState({ view:'run', order, idx:0, runResults:[], _avg:null }, ()=>this._beginScene()); }
+  _emit(runResults){ const sum01=runResults.reduce((s,r)=>s+r.score/100,0); const counts={ oracle:+sum01.toFixed(3), sentinel:+(sum01*0.3).toFixed(3), catalyst:0, bastion:0, wall:0 }; (this.props.onDone||this.props.ondone||function(){})(counts, { layer:'demonstrated' }); }
 
-  _clampK(x,y){ const g=this.GEO; return { x:Math.max(g.X0,Math.min(g.X1,x)), y:Math.max(g.Y0,Math.min(g.Y1,y)) }; }
-  _fromEvent(e){ const el=this._pitch; if(!el) return; const r=el.getBoundingClientRect(); if(!r.width) return; const x=((e.clientX-r.left)/r.width)*150; const y=((e.clientY-r.top)/r.height)*100; this.setState({ keeper:this._clampK(x,y) }); }
-  _down(e){ if(this.state.view!=='run'||this.state.phase!=='play') return; this._drag=true; try{ e.currentTarget.setPointerCapture(e.pointerId); }catch(x){} this._fromEvent(e); }
+  _fromEvent(e){ const el=this._pitch; if(!el) return; const r=el.getBoundingClientRect(); if(!r.width) return; const x=Math.max(8,Math.min(142,((e.clientX-r.left)/r.width)*150)); const y=Math.max(8,Math.min(92,((e.clientY-r.top)/r.height)*100)); this.setState({ pick:{ x, y } }); }
+  _down(e){ if(this.state.view!=='run'||this.state.phase!=='recall') return; this._drag=true; try{ e.currentTarget.setPointerCapture(e.pointerId); }catch(x){} this._fromEvent(e); }
   _move(e){ if(!this._drag) return; this._fromEvent(e); }
   _up(e){ this._drag=false; try{ e.currentTarget.releasePointerCapture(e.pointerId); }catch(x){} }
 
-  _start(){ const order=(this.DIFFMAP[this.state.diff]||[]).map(id=>this._scn(id)); this.setState({ view:'run', order, idx:0, phase:'play', keeper:{x:75,y:82}, locked:null, runResults:[], streak:0, _avg:null }); }
-  _lock(){ const scn=this.state.order[this.state.idx]; const K=this.state.keeper; const score=this._score(scn,K); const cmd=this._command(scn,K); const gp=this._gp(scn,K); this.setState({ phase:'feedback', locked:{ score, cmd, gp, K:{...K} } }); }
-  _reposition(){ this.setState({ phase:'play', locked:null }); }
+  _start(){ const order=(this.DIFFMAP[this.state.diff]||[]).map(id=>this._scn(id)); this.setState({ view:'run', order, idx:0, runResults:[], _avg:null }, ()=>this._beginScene()); }
+  _lock(){ if(!this.state.pick) return; const scn=this.state.order[this.state.idx]; const score=this._score(scn, this.state.pick); this.setState({ phase:'feedback', locked:{ score, pick:{...this.state.pick} } }); }
+  _rewatch(){ this._beginScene(); }
   _next(){
     const scn=this.state.order[this.state.idx]; const L=this.state.locked; if(!L) return;
-    const runResults=[...this.state.runResults, { id:scn.id, label:scn.label, score:L.score, cov:L.cmd }];
-    const streak = L.score>=75 ? this.state.streak+1 : 0;
-    if(this.state.idx < this.state.order.length-1) this.setState({ idx:this.state.idx+1, phase:'play', keeper:{x:75,y:82}, locked:null, runResults, streak });
+    const runResults=[...this.state.runResults, { id:scn.id, label:scn.label, score:L.score }];
+    if(this.state.idx < this.state.order.length-1){ this.setState({ idx:this.state.idx+1, runResults }, ()=>this._beginScene()); }
     else if(this.props.embedded) this._emit(runResults);
     else this._finish(runResults);
   }
   _finish(runResults){
     const avg=Math.round(runResults.reduce((s,r)=>s+r.score,0)/(runResults.length||1));
-    const pb=this.state.pb||{}; const next={ bestAvg:Math.max(avg, pb.bestAvg||0), runs:(pb.runs||0)+1, lastMode:this.state.mode };
-    try{ localStorage.setItem('fa_cc_progress', JSON.stringify(next)); }catch(e){}
+    const pb=this.state.pb||{}; const next={ bestAvg:Math.max(avg, pb.bestAvg||0), runs:(pb.runs||0)+1 };
+    try{ localStorage.setItem('fa_bs_progress', JSON.stringify(next)); }catch(e){}
     this.setState({ view:'summary', runResults, pb:next, _avg:avg });
   }
   _playAgain(){ this._start(); }
-  _setup(){ this.setState({ view:'setup' }); }
+  _setup(){ this._clearT(); this.setState({ view:'setup' }); }
 
   renderVals(){
     const accent=this.props.accent ?? '#22D3EE';
     const motion=this.props.motion ?? true;
-    const guides=this.props.guides ?? true;
-    const showActual=this.props.showActual ?? true;
     const embedded=!!this.props.embedded;
     const A=(h,a)=>h+a;
-    const g=this.GEO;
-    const { view, mode, diff, order, idx, phase, keeper } = this.state;
+    const { view, mode, diff, order, idx, phase, pick } = this.state;
     const isSetup=view==='setup', isRun=view==='run', isSummary=view==='summary';
-    const isPlay=isRun && phase==='play', isFeedback=isRun && phase==='feedback';
+    const isScan=isRun && phase==='scan', isRecall=isRun && phase==='recall', isFeedback=isRun && phase==='feedback';
+    const isPlay=isScan||isRecall;
     const scn = order[idx] || this.SCN[0];
     const locked=this.state.locked;
     const pctStyle=(p)=>`left:${(p.x/150*100).toFixed(2)}%;top:${(p.y/100*100).toFixed(2)}%;`;
 
-    // setup
     const modes=this.MODES.map(m=>{ const sel=mode===m.id; return { tag:m.tag, name:m.name, blurb:m.blurb, onSelect:()=>this.setState({mode:m.id}),
       cardLook: sel?`border-color:${accent};background:${A(accent,'14')};box-shadow:0 0 0 1px ${accent},0 14px 40px ${A(accent,'22')};`:`border-color:rgba(120,140,166,.2);background:rgba(10,16,28,.5);`,
       tagLook: sel?`color:${accent};`:`color:#61748c;` }; });
@@ -458,73 +396,77 @@ class Component extends DCLogic {
     const pb=this.state.pb;
     const pbLine = pb&&pb.runs ? `PERSONAL BEST ${pb.bestAvg} · ${pb.runs} RUN${pb.runs>1?'S':''} LOGGED` : 'NO RUNS LOGGED YET · SET YOUR BASELINE';
 
-    // live geometry
-    const parts=this._parts(scn, keeper);
-    const oracle=this._oracle(scn);
-    const covPct=Math.round(parts.command*100);
-    const latPct=Math.round(parts.lat01*100);
-    const depthPct=Math.round(parts.depth01*100);
-    const gpLive=this._gp(scn, keeper);
-    const comingOut = keeper.y < g.NOMANS+1 && parts.dyr<0;
-    const depthColor = comingOut ? '#FF6B7E' : (depthPct>70?accent:depthPct>45?'#FFB020':'#FF6B7E');
-    const ctrl=this._crossCtrl(scn);
-    const crossPath=`M ${scn.ball.x},${scn.ball.y} Q ${ctrl.cx.toFixed(2)},${ctrl.cy.toFixed(2)} ${scn.land.x},${scn.land.y}`;
+    // attackers: shown during scan and reveal; hidden (as ghosts) during recall
+    const showAtk = isScan || isFeedback;
+    const atks = scn.atk.map(a=>{
+      const isDanger = !a.marked;
+      const revealDanger = isFeedback && isDanger;
+      return { style:pctStyle(a), marked:a.marked,
+        look: revealDanger
+          ? `background:color-mix(in srgb,var(--accent,#22D3EE) 22%,transparent);border:1.8px solid var(--accent,#22D3EE);box-shadow:0 0 16px color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);`
+          : (a.marked ? `background:rgba(120,140,166,.12);border:1.4px solid rgba(150,170,196,.55);` : `background:rgba(255,96,118,.14);border:1.6px solid rgba(255,96,118,.7);`) };
+    });
+    const ghostCount = isRecall ? scn.atk.length : 0;
+    const ghosts = []; for(let i=0;i<ghostCount;i++) ghosts.push({});
 
-    const modeLabel = mode==='beat'?'BEAT THE KEEPER':mode==='elite'?'MATCH THE ELITE':'DELIVERY RUN';
+    const showPick = (isRecall && !!pick) || isFeedback;
+    const pickStyle = pick ? pctStyle(pick) : (locked&&locked.pick?pctStyle(locked.pick):'');
+    const pickPos = isFeedback && locked ? locked.pick : pick;
+    const pickStyle2 = pickPos ? pctStyle(pickPos) : '';
+
+    const modeLabel = mode==='beat'?'BEAT THE KEEPER':mode==='elite'?'MATCH THE ELITE':'SCAN RUN';
     const counterLabel = `${String(idx+1).padStart(2,'0')} / ${String((order.length||0)).padStart(2,'0')}`;
-    const dsrc = order.length?order:[0,0,0,0,0,0];
+    const dsrc = order.length?order:[0,0,0,0];
     const dots = dsrc.map((_,i)=>({ look: i===idx?`width:22px;background:${accent};box-shadow:0 0 8px ${A(accent,'aa')};`:(i<idx?`width:12px;background:${A(accent,'88')};`:`width:12px;background:rgba(120,140,166,.26);`) }));
 
-    const targetLabel = mode==='beat'?`TARGET · BEAT ${this._score(scn,scn.actual)}`:mode==='elite'?'TARGET · 100 (ELITE SET)':'BANK A HIGH SCORE';
+    const phaseLabel = isScan?'SCANNING':isRecall?'RECALL':'REVEAL';
+    const phaseColor = isScan?accent:isRecall?'#FFB020':accent;
+    const hintText = isScan ? 'Watch the box. Find the unmarked runner — the free man in the danger zone.' : isRecall ? 'The runners are hidden. Tap the pitch where the biggest threat was.' : 'Here is who was where. Blue ring = the danger you should have called.';
+    const canLock = isRecall && !!pick;
+    const lockLabel = isScan ? 'Watching…' : (canLock ? 'Call it' : 'Tap the danger first');
+    const lockBg = (isScan||!canLock) ? 'rgba(120,140,166,.3)' : accent;
+    const lockOpacity = (isScan||!canLock) ? '.6' : '1';
+    const lockCursor = canLock ? 'pointer' : 'not-allowed';
+    const lockDisabled = !canLock;
 
-    // feedback
     let fb={};
     if(isFeedback && locked){
-      const actualScore=this._score(scn,scn.actual);
-      const gpActual=this._gp(scn,scn.actual);
+      const d=this._dist(locked.pick, scn.danger);
       let verdictText, vColor, vBg;
-      if(mode==='beat'){ const win=locked.score>actualScore; verdictText=win?'YOU BEAT THE KEEPER':'DIDN’T BEAT IT'; vColor=win?accent:'#FF6B7E'; vBg=win?A(accent,'16'):'rgba(255,107,126,.12)'; }
-      else if(mode==='elite'){ verdictText=locked.score>=92?'ELITE SET':locked.score>=75?'CLOSE TO ELITE':'OFF THE MARK'; vColor=locked.score>=75?accent:'#FFB020'; vBg=locked.score>=75?A(accent,'16'):'rgba(255,176,32,.12)'; }
-      else { verdictText=locked.score>=90?'GREAT REP':locked.score>=75?'SOLID REP':locked.score>=50?'ROOM TO IMPROVE':'REDO THE READ'; vColor=locked.score>=75?accent:'#FFB020'; vBg=locked.score>=75?A(accent,'16'):'rgba(255,176,32,.12)'; }
-      const P=this._parts(scn, locked.K);
-      const npX = scn.side==='R' ? g.PR : g.PL;
+      if(mode==='beat'){ const win=locked.score>=60; verdictText=win?'YOU READ IT':'MISSED IT'; vColor=win?accent:'#FF6B7E'; vBg=win?A(accent,'16'):'rgba(255,107,126,.12)'; }
+      else if(mode==='elite'){ verdictText=locked.score>=88?'ELITE READ':locked.score>=60?'CLOSE':'OFF IT'; vColor=locked.score>=60?accent:'#FFB020'; vBg=locked.score>=60?A(accent,'16'):'rgba(255,176,32,.12)'; }
+      else { verdictText=locked.score>=85?'READ IT':locked.score>=55?'CLOSE':locked.score>=25?'WARM':'MISSED IT'; vColor=locked.score>=55?accent:locked.score>=25?'#FFB020':'#FF6B7E'; vBg=locked.score>=55?A(accent,'16'):locked.score>=25?'rgba(255,176,32,.12)':'rgba(255,107,126,.12)'; }
       let diag;
-      if(P.outGate<0.95 || P.dyr<-3) diag='You drifted out toward the spot — one ball over the top and you’re stranded. Command the six from inside it.';
-      else if(P.dyr>3) diag='Pinned to your line — you’ll be reacting, not attacking. Start a half-step higher and take the cross.';
-      else if(P.dxr>4){ const wrong = npX<75; diag = wrong ? 'You cheated off the near post — that’s the ball’s first target on this one.' : 'A shade too far toward the far post; you left the near post exposed.'; }
-      else if(P.dxr<-4){ const wrong = npX>75; diag = wrong ? 'You cheated off the near post — that’s the ball’s first target on this one.' : 'A shade too far toward the near post; you left the middle of your goal exposed.'; }
-      else if(locked.score>=82) diag='Commanding position — set inside the six, near-post covered, ready to attack the ball.';
-      else diag='Nearly there — a small adjustment tightens this up. Sit square to the ball, in the heart of your six.';
-      fb={ score:locked.score, verdictText, vColor, vBg, gpYou:locked.gp.toFixed(2), gpActual:gpActual.toFixed(2), gpElite:oracle.gp.toFixed(2), diag, note:scn.note, actualScore, actualOut:scn.actualOut, eliteFlag: locked.score>=99 };
+      if(locked.score>=85) diag='Pinpoint — you found the free man and called the real danger before it developed.';
+      else if(locked.score>=55) diag='Close read — you were onto the right area, just not tight on the runner. Sharpen the picture.';
+      else diag=`You called the wrong man. The real threat was ${scn.dangerLabel.toLowerCase()} — the unmarked runner, not the crowd.`;
+      fb={ score:locked.score, verdictText, vColor, vBg, missDist:Math.round(d), dangerLabel:scn.dangerLabel,
+        diag, note:scn.note, eliteFlag: locked.score>=99 };
     }
 
-    // summary
     let sum={};
     if(isSummary){
       const rr=this.state.runResults;
       const avg=this.state._avg ?? Math.round(rr.reduce((s,r)=>s+r.score,0)/(rr.length||1));
-      const bestCov=Math.round((rr.length?Math.max.apply(null, rr.map(r=>r.cov)):0)*100);
+      const bestScore=rr.length?Math.max.apply(null, rr.map(r=>r.score)):0;
       const chips=rr.map((r,i)=>({ n:String(i+1).padStart(2,'0'), label:r.label, score:r.score,
         look: r.score>=75?`border-color:${A(accent,'55')};color:${accent};`:r.score>=50?`border-color:rgba(255,176,32,.5);color:#FFB020;`:`border-color:rgba(255,107,126,.45);color:#FF9AA6;` }));
-      const band = avg>=85?'Total command of your box. You read crosses like an elite keeper.':avg>=70?'Strong command — the six-yard box is becoming your territory.':avg>=50?'A developing read. Keep drilling depth and the near post.':'Early days — every delivery sharpens the picture.';
-      sum={ avg, n:rr.length, bestCov, chips, band, dataLine:`${rr.length} DELIVERIES · COMMAND FEEDS THE COMMANDER ARCHETYPE` };
+      const band = avg>=85?'Elite scanning. You see the whole picture and find the danger before anyone else.':avg>=70?'Strong reader of the box — the free man rarely escapes you.':avg>=50?'A developing eye. Keep drilling the scan before the ball arrives.':'Early days — build the habit of checking your shoulders and counting runners.';
+      sum={ avg, n:rr.length, bestScore, chips, band, dataLine:`${rr.length} SCANS · READING FEEDS THE ORACLE ARCHETYPE` };
     }
 
     return {
       accent, motion, embedded, chromeOn:!embedded, rootMinH: embedded?'100%':'100dvh',
-      isSetup, isRun, isSummary, isPlay, isFeedback,
+      isSetup, isRun, isSummary, isPlay, isFeedback, isScan, isRecall,
       runActive:isRun, notRun:!isRun, modeLabel, counterLabel, dots,
       modes, diffs, pbLine, onStart:()=>this._start(),
-      camKicker:`TACTICAL CAM · ${scn.label}`, situation:scn.situation,
-      ballStyle:pctStyle(scn.ball), landStyle:pctStyle(scn.land),
-      keeperStyle:pctStyle(keeper), pitchCursor:isPlay?'crosshair':'default', showInvite:isPlay && motion,
-      lx:scn.land.x, ly:scn.land.y, crossPath,
-      showGuide:isPlay && guides, sx:scn.set.x.toFixed(2), sy:scn.set.y.toFixed(2),
-      showReveal:isFeedback, showActual, oracleStyle:pctStyle(oracle), actualStyle:pctStyle(scn.actual),
-      covPct, latPct, depthPct, depthColor, gpLive:gpLive.toFixed(2), targetLabel,
-      hintText:'Drag the keeper — or tap the pitch to place. Command the six-yard box; attack the cross without drifting out.',
-      fb, lockLabel:'Lock in position', onLock:()=>this._lock(), onReposition:()=>this._reposition(), onNext:()=>this._next(),
-      nextLabel: idx<order.length-1 ? 'Next delivery' : 'See run summary',
+      camKicker:`READ THE BOX · ${scn.label}`, situation:scn.situation,
+      ballStyle:pctStyle(scn.ball), keeperStyle:pctStyle(this.KP), pitchCursor:isRecall?'crosshair':'default',
+      showAtk, atks, ghosts, showPick, pickStyle:pickStyle2,
+      phaseLabel, phaseColor, hintText,
+      lockLabel, lockBg, lockOpacity, lockCursor, lockDisabled, onLock:()=>this._lock(),
+      fb, onRewatch:()=>this._rewatch(), onNext:()=>this._next(),
+      nextLabel: idx<order.length-1 ? 'Next scan' : 'See run summary',
       sum, onPlayAgain:()=>this._playAgain(), onChangeSetup:()=>this._setup(),
       pitchRef:(el)=>{ this._pitch=el; }, onPitchDown:(e)=>this._down(e), onPitchMove:(e)=>this._move(e), onPitchUp:(e)=>this._up(e),
       onBack:()=>{ window.location.href='Landing.dc.html'; },
