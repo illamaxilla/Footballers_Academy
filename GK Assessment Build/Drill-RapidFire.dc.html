@@ -318,7 +318,7 @@ class Component extends DCLogic {
     else if (this.props.embedded) { this._clear(); this.setState({ view:'done' }); this._sfx('whistle'); this._startCountup(); }
     else { this._clear(); this.setState({ view:'result' }); this._sfx('whistle'); this._startCountup(); }
   }
-  _done() { this._sfx('click'); (this.props.onDone || function(){})({ ...this.state.counts }, { drill:'rapidFire', layer:'demonstrated', bestStreak:this.state.bestStreak, hits:this.state.hits }); }
+  _done() { this._sfx('click'); (this.props.onDone||this.props.ondone || function(){})({ ...this.state.counts }, { drill:'rapidFire', layer:'demonstrated', bestStreak:this.state.bestStreak, hits:this.state.hits }); }
   _retake() { this._clear(); this._sfx('click'); this.setState({ view:'intro', ci:0, phase:'live', picked:null, tLeft:1,
     counts:{oracle:0,sentinel:0,catalyst:0,bastion:0,wall:0}, streak:0, bestStreak:0, hits:0, screenFx:null, cu:1 }); }
 

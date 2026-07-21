@@ -389,7 +389,7 @@ class Component extends DCLogic {
     this._sfx('whoosh');
     const last = this.state.si >= this.ROUNDS.length - 1;
     if (!last) { this.setState({ si:this.state.si + 1 }); this._enter(); }
-    else if (this.props.embedded) { this._clear(); (this.props.onDone || function(){})({ ...this.state.counts }, this._meta()); }
+    else if (this.props.embedded) { this._clear(); (this.props.onDone||this.props.ondone || function(){})({ ...this.state.counts }, this._meta()); }
     else { this._clear(); this.setState({ view:'result' }); this._sfx('whistle'); }
   }
   _retake() { this._clear(); this.setState({ view:'intro', si:0, phase:'set', selected:null, outcome:null, liveMs:0,

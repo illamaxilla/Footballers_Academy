@@ -680,7 +680,7 @@ class Component extends DCLogic {
     this._sfx('whistle');
     this._startCountup();
   }
-  _emit(){ this._sfx('click'); (this.props.onDone || function(){})({ ...(this._finalCounts || this.state.counts) }, this.state._meta || this._computeMeta()); }
+  _emit(){ this._sfx('click'); (this.props.onDone||this.props.ondone || function(){})({ ...(this._finalCounts || this.state.counts) }, this.state._meta || this._computeMeta()); }
   _retake(){ this._clear(); this._sfx('click'); this.setState({ view:'intro', ci:0, stage:'approach', t1:1, t2:1, pick:null, dive:null, rt:null,
     out:null, results:[], counts:{oracle:0,sentinel:0,catalyst:0,bastion:0,wall:0}, _meta:null, cu:1, trail:[], impact:null, screenFx:null, swapping:false }); }
 

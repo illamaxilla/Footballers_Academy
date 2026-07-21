@@ -236,7 +236,7 @@ class Component extends DCLogic {
   _lock(){
     this._sfx('chime');
     const meta=this._meta();
-    if(this.props.embedded) (this.props.onDone||function(){})(this._counts(), meta);
+    if(this.props.embedded) (this.props.onDone||this.props.ondone||function(){})(this._counts(), meta);
     else this.setState({ view:'result' });
   }
 

@@ -542,6 +542,33 @@
       <dc-import name="Handling" embedded="{{ yes }}" accent="{{ accent }}" motion="{{ motion }}" onDone="{{ onDrillDone }}" style="width:100%;flex:1;min-height:0;display:grid;grid-template-rows:minmax(0,1fr);" hint-size="100%,600px"></dc-import>
     </main>
   </sc-if>
+  <sc-if value="{{ isCommandDefBeat }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;display:grid;grid-template-rows:minmax(0,1fr);width:100%;min-height:0;">
+      <dc-import name="Command-the-Defense" embedded="{{ yes }}" accent="{{ accent }}" motion="{{ motion }}" onDone="{{ onDrillDone }}" style="width:100%;flex:1;min-height:0;display:grid;grid-template-rows:minmax(0,1fr);" hint-size="100%,600px"></dc-import>
+    </main>
+  </sc-if>
+  <sc-if value="{{ isEyeSpyBeat }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;display:grid;grid-template-rows:minmax(0,1fr);width:100%;min-height:0;">
+      <dc-import name="Eye-Spy-Penalty-Decoder" embedded="{{ yes }}" accent="{{ accent }}" motion="{{ motion }}" onDone="{{ onDrillDone }}" style="width:100%;flex:1;min-height:0;display:grid;grid-template-rows:minmax(0,1fr);" hint-size="100%,600px"></dc-import>
+    </main>
+  </sc-if>
+
+  <!-- ============ SEGUE (baseline -> first question) ============ -->
+  <sc-if value="{{ isSegue }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px clamp(26px,4vw,58px) 70px;">
+      <div style="position:relative;width:150px;height:150px;margin-bottom:38px;">
+        <div style="position:absolute;inset:0;border-radius:50%;border:1.5px dashed color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);animation:fa-spin 8s linear infinite;"></div>
+        <div style="position:absolute;inset:20px;border-radius:50%;border:1px solid color-mix(in srgb,var(--accent,#22D3EE) 30%,transparent);animation:fa-spin-r 12s linear infinite;"></div>
+        <div style="position:absolute;inset:42px;border-radius:50%;border:1.5px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);background:color-mix(in srgb,var(--accent,#22D3EE) 8%,transparent);animation:fa-pulse 1.5s ease-in-out infinite;"></div>
+        <div style="position:absolute;top:50%;left:50%;width:13px;height:13px;transform:translate(-50%,-50%);border-radius:50%;background:var(--accent,#22D3EE);box-shadow:0 0 24px var(--accent,#22D3EE);animation:fa-pulse 1.5s ease-in-out infinite;"></div>
+      </div>
+      <div style="font:600 11px 'IBM Plex Mono';letter-spacing:.42em;color:#7688a0;margin-bottom:16px;">{{ tierBadge }}</div>
+      <h2 style="margin:0;font:800 clamp(26px,3.6vw,44px)/1.1 'Archivo';letter-spacing:-0.02em;color:#F2F8FE;">{{ segueLabel }}<span style="color:var(--accent,#22D3EE);">…</span></h2>
+      <div style="position:relative;margin-top:34px;width:min(320px,74vw);height:3px;border-radius:99px;background:rgba(120,140,166,.16);overflow:hidden;">
+        <div style="position:absolute;top:0;width:42%;height:100%;border-radius:99px;background:linear-gradient(90deg,transparent,var(--accent,#22D3EE),transparent);animation:fa-indet 1.1s cubic-bezier(.4,0,.6,1) infinite;"></div>
+      </div>
+    </main>
+  </sc-if>
 
   <!-- ============ ANALYSING ============ -->
   <sc-if value="{{ isAnticipation }}" hint-placeholder-val="{{ false }}">
@@ -641,6 +668,7 @@ class Component extends DCLogic {
 
   ORDER = ['oracle','sentinel','catalyst','bastion','wall'];
   ANT = ['Reading what you said','Replaying what you did','Lining them up','Locking your profile'];
+  SEGUE = ['Calibrating the scan','Loading your read'];
   ARCH = {
     oracle:{ name:'The Oracle', axis:'ANTICIPATION', line:'reads the game a beat before it happens' },
     sentinel:{ name:'The Sentinel', axis:'COMMAND', line:'organises everyone and owns the noise' },
@@ -650,86 +678,85 @@ class Component extends DCLogic {
   };
 
   chapters = [
-    { num:'01', phase:1, name:'Your Instincts', kicker:'THE SPLIT-SECOND',
-      desc:'What fires before you can think. Three live drills read how you see danger and meet the shot — then one gut call.',
+    { num:'01', name:'Your Read', kicker:'SAID · SELF-REPORT',
+      desc:'Who you are in the box, in your own words — five instinct calls, then the two things a screen can’t see: your frame and your voice.',
       beats:[
-        { kind:'drill', comp:'readShot', layer:'demonstrated', label:'READ THE SHOT' },
-        { kind:'drill', comp:'reaction', layer:'demonstrated', label:'THE SAVE' },
-        { kind:'drill', comp:'holdDive', layer:'demonstrated', label:'HOLD OR DIVE' },
-        { kind:'q', layer:'self', label:'1 QUESTION', scen:'You\u2019ve just conceded a goal you couldn\u2019t do much about. The next 30 seconds, you\u2026', opts:[
+        { id:'q1', kind:'q', quick:true, layer:'self', label:'5 QUESTIONS', scen:'You’ve just conceded a goal you couldn’t do much about. The next 30 seconds, you…', opts:[
           { label:'Reorganize everyone and get the defense refocused.', arch:'sentinel' },
           { label:'Reset, clear my head, trust my next reaction.', arch:'bastion' },
-          { label:'Stay solid \u2014 nothing rattles me, I\u2019ll dominate the next one.', arch:'wall' },
+          { label:'Stay solid — nothing rattles me, I’ll dominate the next one.', arch:'wall' },
           { label:'Work out what the shape allowed and adjust my positioning.', arch:'oracle' },
-          { label:'Respond fast \u2014 spark an attack and hit straight back.', arch:'catalyst' },
+          { label:'Respond fast — spark an attack and hit straight back.', arch:'catalyst' },
         ]},
-      ]},
-    { num:'02', phase:1, name:'Your Decisions', kicker:'WITH THE BALL',
-      desc:'The game bends to your calls. A snap-decision drill, your command of the box, then the decisions that shape how your team plays.',
-      beats:[
-        { kind:'drill', comp:'rapid', layer:'demonstrated', label:'RAPID FIRE' },
-        { kind:'drill', comp:'command', layer:'demonstrated', label:'COMMAND THE BOX' },
-        { kind:'drill', comp:'launch', layer:'demonstrated', label:'LAUNCH CONTROL' },
-        { kind:'q', layer:'self', label:'2 QUESTIONS', scen:'Your team has the ball at the back under pressure. What do you most want to be?', opts:[
-          { label:'The extra outfield player \u2014 give me the ball, I\u2019ll start the move.', arch:'catalyst' },
+        { id:'q2', kind:'q', quick:true, layer:'self', scen:'Your team has the ball at the back under pressure. What do you most want to be?', opts:[
+          { label:'The extra outfield player — give me the ball, I’ll start the move.', arch:'catalyst' },
           { label:'The safe option who calms it down and reorganizes.', arch:'sentinel' },
           { label:'Quietly positioned, ready if it breaks down.', arch:'oracle' },
           { label:'Ready for the instant I have to react and save.', arch:'bastion' },
-          { label:'The one who owns the box \u2014 I claim every cross and rule my area.', arch:'wall' },
+          { label:'The one who owns the box — I claim every cross and rule my area.', arch:'wall' },
         ]},
-        { kind:'q', layer:'self', scen:'It\u2019s 0\u20130 and late. A risky short pass could launch an attack; the safe clearance hands possession straight back. You\u2026', opts:[
-          { label:'Take it on \u2014 bold pass, start something.', arch:'catalyst' },
-          { label:'Play the percentages \u2014 no unnecessary gamble.', arch:'oracle' },
+        { id:'q3', kind:'q', quick:true, layer:'self', scen:'It’s 0–0 and late. A risky short pass could launch an attack; the safe clearance hands possession straight back. You…', opts:[
+          { label:'Take it on — bold pass, start something.', arch:'catalyst' },
+          { label:'Play the percentages — no unnecessary gamble.', arch:'oracle' },
           { label:'Calm the game, make the reliable choice, keep control.', arch:'sentinel' },
-          { label:'Deal with whatever comes next \u2014 I react, I don\u2019t overthink.', arch:'bastion' },
-          { label:'Boot it clear and stand tall \u2014 I\u2019ll dominate whatever comes back.', arch:'wall' },
+          { label:'Deal with whatever comes next — I react, I don’t overthink.', arch:'bastion' },
+          { label:'Boot it clear and stand tall — I’ll dominate whatever comes back.', arch:'wall' },
         ]},
-      ]},
-    { num:'03', phase:1, name:'Your Presence', kicker:'IDENTITY & LEADERSHIP',
-      desc:'Who you are in the box, and the two things a screen can\u2019t see \u2014 your frame and your voice \u2014 to finish the picture.',
-      beats:[
-        { kind:'q', layer:'self', label:'2 QUESTIONS', scen:'Your defenders describe you in one line. They say\u2026', opts:[
-          { label:'The boss \u2014 loud, clear, always talking.', arch:'sentinel' },
-          { label:'Calm and reassuring \u2014 always in the right spot.', arch:'oracle' },
-          { label:'A weapon \u2014 reacts to things we\u2019ve no right to survive.', arch:'bastion' },
-          { label:'A monster \u2014 huge, dominant, nothing gets past in the air.', arch:'wall' },
-          { label:'The playmaker \u2014 starts everything we do.', arch:'catalyst' },
+        { id:'q4', kind:'q', quick:true, layer:'self', scen:'Your defenders describe you in one line. They say…', opts:[
+          { label:'The boss — loud, clear, always talking.', arch:'sentinel' },
+          { label:'Calm and reassuring — always in the right spot.', arch:'oracle' },
+          { label:'A weapon — reacts to things we’ve no right to survive.', arch:'bastion' },
+          { label:'A monster — huge, dominant, nothing gets past in the air.', arch:'wall' },
+          { label:'The playmaker — starts everything we do.', arch:'catalyst' },
         ]},
-        { kind:'q', layer:'self', scen:'Which goalkeeper do you most want to play like?', opts:[
+        { id:'q5', kind:'q', quick:true, layer:'self', scen:'Which goalkeeper do you most want to play like?', opts:[
           { label:'A lightning-quick shot-stopper who makes impossible reflex saves.', arch:'bastion' },
           { label:'A commanding leader who marshals the defense.', arch:'sentinel' },
-          { label:'A ball-playing keeper who\u2019s basically a defender.', arch:'catalyst' },
-          { label:'A calm reader who\u2019s always in the right place.', arch:'oracle' },
+          { label:'A ball-playing keeper who’s basically a defender.', arch:'catalyst' },
+          { label:'A calm reader who’s always in the right place.', arch:'oracle' },
           { label:'A towering keeper who owns the box and rules the air.', arch:'wall' },
         ]},
-        { kind:'drill', comp:'measurables', layer:'self', label:'THE MEASURABLES' },
-        { kind:'drill', comp:'radar', layer:'self', label:'THE BLUEPRINT' },
+        { id:'measurables', kind:'drill', quick:true, comp:'measurables', layer:'self', label:'THE MEASURABLES' },
       ]},
-    { num:'04', phase:2, name:'The Duel', kicker:'UNDER FIRE',
-      desc:'Two live trials where the game gets personal — a rapid-fire pressure gauntlet, then a run of one-on-one duels. Pure nerve and reaction.',
+    { num:'02', name:'Positional Master', kicker:'SPACE · WHERE YOU STAND',
+      desc:'Position wins games before the ball is struck. Point-and-place reads of where you set across the toughest pictures in the box.',
       beats:[
-        { kind:'drill', comp:'pressure', layer:'demonstrated', label:'PRESSURE TEST' },
-        { kind:'drill', comp:'duel', layer:'demonstrated', label:'ONE-ON-ONE' },
-        { kind:'drill', comp:'handling', layer:'demonstrated', label:'THE HANDLING' },
+        { id:'position',  kind:'drill', quick:true, comp:'position',  layer:'demonstrated', label:'POSITIONING MASTER' },
+        { id:'cross',     kind:'drill', comp:'cross',     layer:'demonstrated', label:'CROSS COMMAND' },
+        { id:'sweeper',   kind:'drill', comp:'sweeper',   layer:'demonstrated', label:'SWEEPER SENSE' },
+        { id:'blindside', kind:'drill', comp:'blindside', layer:'demonstrated', label:'BLINDSIDE' },
+        { id:'wallset',   kind:'drill', comp:'wallset',   layer:'demonstrated', label:'WALL ARCHITECT' },
       ]},
-    { num:'05', phase:2, name:'The Box', kicker:'COMMAND & VIGILANCE',
-      desc:'You own the eighteen yards. Command crosses in the air, organise the wall, then hold your focus through a long, quiet spell of play.',
+    { num:'03', name:'The Games', kicker:'PLAYED · UNDER FIRE',
+      desc:'Now the game moves. Live, timed trials that read how you actually play — shot-stopping, one-on-ones, crosses, distribution and nerve.',
       beats:[
-        { kind:'drill', comp:'aerial', layer:'demonstrated', label:'AERIAL COMMAND' },
-        { kind:'drill', comp:'cross', layer:'demonstrated', label:'CROSS COMMAND' },
-        { kind:'drill', comp:'wallset', layer:'demonstrated', label:'WALL ARCHITECT' },
-        { kind:'drill', comp:'focus', layer:'demonstrated', label:'FOCUS HOLD' },
+        { id:'readShot',   kind:'drill', comp:'readShot',   layer:'demonstrated', label:'READ THE SHOT' },
+        { id:'reaction',   kind:'drill', comp:'reaction',   layer:'demonstrated', label:'THE SAVE' },
+        { id:'holdDive',   kind:'drill', comp:'holdDive',   layer:'demonstrated', label:'HOLD OR DIVE' },
+        { id:'rapid',      kind:'drill', comp:'rapid',      layer:'demonstrated', label:'RAPID FIRE' },
+        { id:'pressure',   kind:'drill', comp:'pressure',   layer:'demonstrated', label:'PRESSURE TEST' },
+        { id:'duel',       kind:'drill', comp:'duel',       layer:'demonstrated', label:'ONE-ON-ONE' },
+        { id:'aerial',     kind:'drill', comp:'aerial',     layer:'demonstrated', label:'AERIAL COMMAND' },
+        { id:'command',    kind:'drill', comp:'command',    layer:'demonstrated', label:'COMMAND THE BOX' },
+        { id:'commanddef', kind:'drill', comp:'commanddef', layer:'demonstrated', label:'COMMAND THE DEFENSE' },
+        { id:'eyespy',     kind:'drill', comp:'eyespy',     layer:'demonstrated', label:'EYE-SPY' },
+        { id:'handling',   kind:'drill', comp:'handling',   layer:'demonstrated', label:'THE HANDLING' },
+        { id:'launch',     kind:'drill', comp:'launch',     layer:'demonstrated', label:'LAUNCH CONTROL' },
+        { id:'focus',      kind:'drill', comp:'focus',      layer:'demonstrated', label:'FOCUS HOLD' },
       ]},
-    { num:'06', phase:2, name:'The Read', kicker:'SPACE & TIME',
-      desc:'The quiet arts — where you stand, what you remember, and when to leave your line. Three spatial reads that separate the elite.',
+    { num:'04', name:'The Blueprint', kicker:'YOUR ATTRIBUTES',
+      desc:'Last step — add the attributes that make you you. Confirm the traits the scan surfaced and round out your player blueprint.',
       beats:[
-        { kind:'drill', comp:'position', layer:'demonstrated', label:'POSITIONING' },
-        { kind:'drill', comp:'sweeper', layer:'demonstrated', label:'SWEEPER SENSE' },
-        { kind:'drill', comp:'blindside', layer:'demonstrated', label:'BLINDSIDE' },
+        { id:'radar', kind:'drill', quick:true, comp:'radar', layer:'self', label:'THE BLUEPRINT' },
       ]},
   ];
 
-  _ac() { return this.chapters.filter(c => c.phase === 1 || this.state.tier === 'full'); }
+  _ac() {
+    const full = this.state.tier === 'full';
+    return this.chapters
+      .map(c => ({ ...c, beats: full ? c.beats : c.beats.filter(b => b.quick) }))
+      .filter(c => c.beats.length > 0);
+  }
   _gbi(ci, bi) { const CH = this._ac(); let n = 0; for (let c = 0; c < ci; c++) n += CH[c].beats.length; return n + bi; }
   _totalBeats() { return this._ac().reduce((n, c) => n + c.beats.length, 0); }
   _answered() { return Object.keys(this.state.contribs).length; }
@@ -746,8 +773,8 @@ class Component extends DCLogic {
   _rank(norm) { return this.ORDER.slice().sort((a,b)=>norm[b]-norm[a]); }
 
   _selectQ(i, arch) {
-    const gbi = this._gbi(this.state.ci, this.state.bi);
-    const contribs = { ...this.state.contribs, [gbi]: { counts:{ [arch]:1 }, layer:'self', meta:null } };
+    const beat = this._ac()[this.state.ci].beats[this.state.bi];
+    const contribs = { ...this.state.contribs, [beat.id]: { counts:{ [arch]:1 }, layer:'self', meta:null } };
     this.setState({ picked:i, contribs });
     if (this._adv) return;
     this._adv = true;
@@ -786,11 +813,10 @@ class Component extends DCLogic {
   _startCountup(){ if(this._raf) cancelAnimationFrame(this._raf); const dur=950, t0=(typeof performance!=='undefined'&&performance.now)?performance.now():Date.now(); this.setState({ cu:0 }); const step=()=>{ const now=(typeof performance!=='undefined'&&performance.now)?performance.now():Date.now(); const p=Math.min(1,(now-t0)/dur); const e=1-Math.pow(1-p,3); this.setState({ cu:e }); if(p<1) this._raf=requestAnimationFrame(step); else this._raf=null; }; this._raf=requestAnimationFrame(step); }
 
   _drillDone(counts, meta) {
-    const gbi = this._gbi(this.state.ci, this.state.bi);
     const beat = this._ac()[this.state.ci].beats[this.state.bi];
     const clean = {}; for (const k in counts) { if (counts[k]) clean[k] = counts[k]; }
     const layer = (meta && meta.layer) || beat.layer || 'demonstrated';
-    this.setState({ contribs: { ...this.state.contribs, [gbi]: { counts:clean, layer, meta:meta || null } } });
+    this.setState({ contribs: { ...this.state.contribs, [beat.id]: { counts:clean, layer, meta:meta || null } } });
     this._advance();
   }
 
@@ -870,13 +896,13 @@ class Component extends DCLogic {
     this._startCountup();
   }
 
-  componentWillUnmount() { clearInterval(this._ant); clearTimeout(this._done); if(this._raf) cancelAnimationFrame(this._raf); }
+  componentWillUnmount() { clearInterval(this._ant); clearTimeout(this._done); clearInterval(this._seg); clearTimeout(this._segDone); if(this._raf) cancelAnimationFrame(this._raf); }
 
   _goBeat(nci, nbi) {
     const beat = this._ac()[nci].beats[nbi];
     let pk = null;
     if (beat.kind === 'q') {
-      const stored = this.state.contribs[this._gbi(nci, nbi)];
+      const stored = this.state.contribs[beat.id];
       if (stored && stored.counts) { const a = Object.keys(stored.counts)[0]; const idx = beat.opts.findIndex(o => o.arch === a); pk = idx >= 0 ? idx : null; }
     }
     this.setState({ view:'beat', ci:nci, bi:nbi, picked:pk });
@@ -896,14 +922,30 @@ class Component extends DCLogic {
   _setPerf(k,v){ this.setState(s=>({ profile:{ ...s.profile, perf:{ ...s.profile.perf, [k]: v } } })); }
   _togglePerf(){ this._sfx('click'); this.setState(s=>({ profile:{ ...s.profile, hasPerf: !s.profile.hasPerf } })); }
   _toggleSecondary(code){ this._sfx('click'); this.setState(s=>{ const has=s.profile.secondaries.includes(code); const secondaries = has ? s.profile.secondaries.filter(c=>c!==code) : [...s.profile.secondaries, code]; return { profile:{ ...s.profile, secondaries } }; }); }
-  _beginScan(){ if(!this.state.profile.gender) return; this._sfx('whistle'); const prof={ ...this.state.profile, tier:this.state.tier||'quick', position:'gk', ts:Date.now() }; try{ localStorage.setItem('fa_gk_profile', JSON.stringify(prof)); }catch(e){} this.setState({ view:'chapter', ci:0, bi:0, picked:null }); }
+  _beginScan(){ if(!this.state.profile.gender) return; this._sfx('whistle'); const prof={ ...this.state.profile, tier:this.state.tier||'quick', position:'gk', ts:Date.now() }; try{ localStorage.setItem('fa_gk_profile', JSON.stringify(prof)); }catch(e){}
+    this.setState({ view:'segue', ci:0, bi:0, picked:null, seguePhase:0 });
+    this._sfx('scan');
+    clearInterval(this._seg); clearTimeout(this._segDone);
+    this._seg = setInterval(() => this.setState(s => ({ seguePhase: Math.min(this.SEGUE.length - 1, (s.seguePhase||0) + 1) })), 480);
+    this._segDone = setTimeout(() => { clearInterval(this._seg); this.setState({ view:'chapter', ci:0, bi:0, picked:null }); }, (this.props.motion ?? true) ? 1750 : 200);
+  }
 
   _goDeeper() {
     this._sfx('click');
     clearInterval(this._ant); clearTimeout(this._done);
     this._result = null; this._adv = false;
-    const p1 = this.chapters.filter(c => c.phase === 1).length;
-    this.setState({ tier:'full', view:'chapter', ci: p1, bi:0, picked:null });
+    // upgrade quick -> full and resume at the first beat not yet completed
+    // (full tier makes _ac() === this.chapters, so indices line up)
+    let found = false;
+    for (let c = 0; c < this.chapters.length && !found; c++) {
+      for (let b = 0; b < this.chapters[c].beats.length && !found; b++) {
+        if (!this.state.contribs[this.chapters[c].beats[b].id]) {
+          this.setState({ tier:'full', view:'beat', ci:c, bi:b, picked:null });
+          found = true;
+        }
+      }
+    }
+    if (!found) this.setState({ tier:'full' }, () => this._enterAnticipation());
   }
 
   renderVals() {
@@ -1114,6 +1156,10 @@ class Component extends DCLogic {
       isSweeperBeat: comp === 'sweeper',
       isBlindsideBeat: comp === 'blindside',
       isHandlingBeat: comp === 'handling',
+      isCommandDefBeat: comp === 'commanddef',
+      isEyeSpyBeat: comp === 'eyespy',
+      isSegue: view === 'segue',
+      segueLabel: this.SEGUE[Math.min(this.state.seguePhase || 0, this.SEGUE.length - 1)],
       isAnticipation: view === 'anticipation',
       isComplete: view === 'complete',
       chapNum: ch ? ch.num : '01',
@@ -1135,13 +1181,14 @@ class Component extends DCLogic {
       pickFull: () => this._pickTier('full'),
       goDeeper: () => this._goDeeper(),
       showUpgrade: view === 'complete' && tier !== 'full',
-      tierBadge: tier === 'full' ? 'FULL COMBINE \u00b7 PHASES 1 + 2' : 'QUICK SCAN \u00b7 PHASE 1 \u00b7 PROVISIONAL',
+      tierBadge: tier === 'full' ? 'FULL COMBINE \u00b7 SAID + PLAYED' : 'QUICK SCAN \u00b7 PROVISIONAL READ',
       onDrillDone: (counts, meta) => this._drillDone(counts, meta),
       retake: () => this._retake(),
       back: () => {
         const CHb = this._ac();
         if (view === 'tier') { window.location.href = 'Position-Select-Field.dc.html'; }
         else if (view === 'profile') { this.setState({ view:'tier' }); }
+        else if (view === 'segue') { clearInterval(this._seg); clearTimeout(this._segDone); this.setState({ view:'profile' }); }
         else if (view === 'beat') {
           if (bi > 0) this._goBeat(ci, bi - 1);
           else this.setState({ view:'chapter', picked:null });

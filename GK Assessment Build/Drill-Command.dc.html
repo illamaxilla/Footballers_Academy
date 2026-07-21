@@ -448,7 +448,7 @@ class Component extends DCLogic {
   _finish(){
     this._clear();
     const meta=this._meta();
-    if(this.props.embedded) (this.props.onDone||function(){})({ ...this.state.counts }, meta);
+    if(this.props.embedded) (this.props.onDone||this.props.ondone||function(){})({ ...this.state.counts }, meta);
     else { this.setState({ view:'result', _meta:meta }); this._sfx('whistle'); this._startCountup(); }
   }
 
