@@ -91,19 +91,29 @@
     </main>
   </sc-if>
 
-  <!-- ============ DRILL ============ -->
+  <!-- ============ DRILL · TOP / FIELD / BOTTOM ============ -->
   <sc-if value="{{ isDrill }}" hint-placeholder-val="{{ true }}">
     <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:12px clamp(20px,3vw,48px) 20px;">
+      <div style="width:100%;max-width:900px;flex:1;min-height:0;display:flex;flex-direction:column;gap:10px;">
 
-      <div style="flex:1;min-height:0;display:flex;flex-wrap:wrap;gap:clamp(16px,2.4vw,44px);justify-content:space-between;align-items:stretch;width:100%;max-width:1440px;margin:0 auto;">
-
-        <!-- ===== FIELD COLUMN ===== -->
-        <div style="flex:2 1 520px;min-width:290px;max-width:1000px;display:flex;flex-direction:column;min-height:0;">
-        <div class="fa-in-sm" style="flex:0 0 auto;text-align:center;margin-bottom:12px;">
-          <h2 style="margin:0;font:700 clamp(18px,2.2vw,26px)/1.3 'Archivo';letter-spacing:-0.01em;color:#F2F8FE;">Dive only on shots. Everything else — <span style="color:var(--accent,#22D3EE);">hold</span>.</h2>
+        <!-- ===== TOP: prompt banner + discipline log ===== -->
+        <div class="fa-in-sm" style="flex:0 0 auto;display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:11px 15px;border-radius:13px;border:1px solid rgba(120,140,166,.18);background:rgba(10,16,28,.55);">
+          <span style="display:inline-flex;align-items:center;padding:6px 11px;border-radius:7px;border:1px solid color-mix(in srgb,var(--accent,#22D3EE) 40%,transparent);background:color-mix(in srgb,var(--accent,#22D3EE) 10%,transparent);font:700 9px 'IBM Plex Mono';letter-spacing:.16em;color:var(--accent,#22D3EE);white-space:nowrap;">HOLD OR DIVE</span>
+          <div style="flex:1 1 300px;min-width:220px;">
+            <span style="display:inline-flex;align-items:center;gap:6px;font:600 9px 'IBM Plex Mono';letter-spacing:.16em;color:color-mix(in srgb,var(--accent,#22D3EE) 82%,#fff);margin-bottom:4px;"><span style="width:5px;height:5px;border-radius:50%;background:var(--accent,#22D3EE);box-shadow:0 0 8px var(--accent,#22D3EE);animation:fa-blink 1.6s ease-in-out infinite;"></span>{{ cam }}</span>
+            <div style="font:700 clamp(15px,2vw,22px)/1.24 'Archivo';color:#F2F8FE;text-wrap:balance;">Dive only on shots. Everything else — <span style="color:var(--accent,#22D3EE);">hold</span>.</div>
+          </div>
+          <div style="display:flex;gap:6px;flex:0 0 auto;flex-wrap:wrap;justify-content:flex-end;">
+            <sc-for list="{{ tallies }}" as="t" hint-placeholder-count="4">
+              <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:6px 9px;border-radius:9px;border:1px solid {{ t.border }};background:{{ t.bg }};min-width:50px;">
+                <span style="font:800 14px 'Archivo';color:{{ t.numColor }};line-height:1;">{{ t.n }}</span>
+                <span style="font:600 6px 'IBM Plex Mono';letter-spacing:.1em;color:#61748c;white-space:nowrap;">{{ t.label }}</span>
+              </div>
+            </sc-for>
+          </div>
         </div>
 
-        <!-- ===== STAGE ===== -->
+        <!-- ===== MIDDLE: field ===== -->
         <div style="position:relative;container-type:size;flex:0 0 auto;align-self:center;width:auto;height:clamp(280px,50vh,440px);aspect-ratio:5/3;max-width:100%;border-radius:16px;overflow:hidden;background:radial-gradient(120% 130% at 50% 20%,#0d1c2e 0%,#091324 52%,#050c17 100%);border:1px solid rgba(120,140,166,.18);box-shadow:inset 0 0 60px rgba(0,0,0,.45);{{ vizShake }}">
           <div style="position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.5;background:repeating-linear-gradient(90deg,rgba(140,200,220,.03) 0px,rgba(140,200,220,.03) 1px,transparent 1px,transparent 40px);"></div>
 
@@ -113,12 +123,6 @@
           <div style="position:absolute;top:9px;right:9px;width:13px;height:13px;border-top:1.5px solid color-mix(in srgb,var(--accent,#22D3EE) 45%,transparent);border-right:1.5px solid color-mix(in srgb,var(--accent,#22D3EE) 45%,transparent);z-index:2;pointer-events:none;"></div>
           <div style="position:absolute;bottom:9px;left:9px;width:13px;height:13px;border-bottom:1.5px solid color-mix(in srgb,var(--accent,#22D3EE) 45%,transparent);border-left:1.5px solid color-mix(in srgb,var(--accent,#22D3EE) 45%,transparent);z-index:2;pointer-events:none;"></div>
           <div style="position:absolute;bottom:9px;right:9px;width:13px;height:13px;border-bottom:1.5px solid color-mix(in srgb,var(--accent,#22D3EE) 45%,transparent);border-right:1.5px solid color-mix(in srgb,var(--accent,#22D3EE) 45%,transparent);z-index:2;pointer-events:none;"></div>
-          <sc-if value="{{ camOn }}" hint-placeholder-val="{{ true }}">
-          <div style="position:absolute;top:11px;left:30px;z-index:7;display:inline-flex;align-items:center;gap:7px;font:700 9px 'IBM Plex Mono';letter-spacing:.18em;color:color-mix(in srgb,var(--accent,#22D3EE) 90%,#fff);text-shadow:0 1px 7px rgba(2,6,12,.9);pointer-events:none;">
-            <span style="width:6px;height:6px;border-radius:50%;background:var(--accent,#22D3EE);box-shadow:0 0 8px var(--accent,#22D3EE);animation:fa-blink 1.6s ease-in-out infinite;"></span>{{ cam }}
-          </div>
-          </sc-if>
-
           <!-- cue label -->
           <sc-if value="{{ cueOn }}" hint-placeholder-val="{{ false }}">
             <div style="position:absolute;top:20px;left:50%;transform:translateX(-50%);z-index:9;display:flex;align-items:center;gap:8px;padding:7px 15px;border-radius:999px;background:rgba(4,10,18,.82);border:1px solid {{ cueBorder }};box-shadow:0 8px 26px rgba(0,0,0,.5);backdrop-filter:blur(4px);white-space:nowrap;">
@@ -143,35 +147,22 @@
             </div>
           </sc-if>
         </div>
-        </div><!-- /field column -->
-
-        <!-- ===== RAIL ===== -->
-        <aside style="flex:1 1 300px;max-width:340px;min-width:230px;display:flex;flex-direction:column;gap:13px;min-height:0;overflow-y:auto;">
-          <div style="display:flex;align-items:center;gap:9px;font:600 10px 'IBM Plex Mono';letter-spacing:.28em;color:#7688a0;">
-            <span style="width:6px;height:6px;border-radius:50%;background:var(--accent,#22D3EE);box-shadow:0 0 8px var(--accent,#22D3EE);"></span>DISCIPLINE
-          </div>
-          <div style="display:flex;flex-direction:column;gap:8px;">
-            <sc-for list="{{ tallies }}" as="t" hint-placeholder-count="4">
-              <div style="display:flex;align-items:center;justify-content:space-between;padding:9px 12px;border-radius:10px;border:1px solid {{ t.border }};background:{{ t.bg }};">
-                <span style="font:600 10px 'IBM Plex Mono';letter-spacing:.1em;color:{{ t.color }};">{{ t.label }}</span>
-                <span style="font:800 16px 'Archivo';color:{{ t.numColor }};">{{ t.n }}</span>
-              </div>
-            </sc-for>
-          </div>
-          <div style="display:flex;flex-direction:column;gap:6px;margin-top:2px;">
+        <!-- ===== BOTTOM: composure + dive dock ===== -->
+        <div style="flex:0 0 auto;display:flex;flex-direction:column;gap:9px;">
+          <div style="display:flex;flex-direction:column;gap:6px;">
             <div style="display:flex;justify-content:space-between;font:600 9px 'IBM Plex Mono';letter-spacing:.14em;color:#7688a0;"><span>COMPOSURE</span><span style="color:var(--accent,#22D3EE);">{{ compPct }}</span></div>
             <div style="height:6px;border-radius:99px;background:rgba(120,140,166,.16);overflow:hidden;"><div style="height:100%;border-radius:99px;background:var(--accent,#22D3EE);box-shadow:0 0 8px var(--accent,#22D3EE);width:{{ compPct }};transition:width .4s cubic-bezier(.3,.8,.3,1);"></div></div>
           </div>
 
-          <!-- ===== DIVE DOCK ===== -->
-          <button onClick="{{ dive }}" style="width:100%;display:flex;align-items:center;justify-content:center;gap:12px;padding:22px 18px;border-radius:15px;cursor:{{ diveCursor }};transition:all .1s ease;{{ diveLook }}" style-active="transform:scale(.97);">
+          <button onClick="{{ dive }}" style="width:100%;max-width:480px;align-self:center;display:flex;align-items:center;justify-content:center;gap:12px;padding:18px;border-radius:15px;cursor:{{ diveCursor }};transition:all .1s ease;{{ diveLook }}" style-active="transform:scale(.97);">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M12 3v13M6 11l6 6 6-6"/></svg>
             <span style="font:800 18px 'Archivo';letter-spacing:.06em;">DIVE</span>
             <span style="position:relative;font:600 9.5px 'IBM Plex Mono';letter-spacing:.16em;opacity:.7;">{{ diveHint }}</span>
           </button>
 
-          <div style="flex:1;padding:11px 13px;border-radius:11px;border:1px dashed rgba(120,140,166,.24);background:rgba(10,16,28,.4);font:500 12px/1.5 'Archivo';color:#8698ad;">{{ railNote }}</div>
-        </aside>
+          <div style="min-height:18px;font:500 12px/1.5 'Archivo';color:#8698ad;text-align:center;">{{ railNote }}</div>
+        </div>
+
       </div>
     </main>
   </sc-if>
