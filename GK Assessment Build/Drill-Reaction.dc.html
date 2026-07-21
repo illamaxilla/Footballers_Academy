@@ -180,68 +180,8 @@
 
   <!-- ============ RESULT ============ -->
   <sc-if value="{{ isResult }}" hint-placeholder-val="{{ false }}">
-    <main style="position:relative;z-index:3;flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;align-items:center;justify-content:safe center;padding:14px clamp(24px,4vw,58px) 56px;">
-      <div class="fa-in" style="display:inline-flex;align-items:center;gap:9px;margin-bottom:18px;padding:6px 14px;border:1px solid color-mix(in srgb,var(--accent,#22D3EE) 32%,transparent);border-radius:999px;font:600 10px 'IBM Plex Mono';letter-spacing:.28em;color:var(--accent,#22D3EE);">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" style="stroke:var(--accent,#22D3EE);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12.5l4.5 4.5L19 6.5"/></svg>DRILL 02 COMPLETE
-      </div>
-      <h1 class="fa-in" style="margin:0 0 26px;font:800 clamp(34px,5vw,64px)/0.98 'Archivo';letter-spacing:-0.03em;text-align:center;animation-delay:.06s;">Shots faced.</h1>
-
-      <div style="display:flex;flex-wrap:wrap;gap:22px;justify-content:center;align-items:stretch;width:100%;max-width:860px;">
-        <div class="fa-in" style="flex:1 1 320px;max-width:420px;display:flex;flex-direction:column;gap:20px;padding:24px;border-radius:16px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);animation-delay:.12s;">
-          <div>
-            <div style="font:600 9.5px 'IBM Plex Mono';letter-spacing:.26em;color:#61748c;margin-bottom:9px;">YOUR SAVING INSTINCT</div>
-            <div style="font:800 clamp(26px,3.6vw,36px)/1 'Archivo';letter-spacing:-0.01em;color:var(--accent,#22D3EE);">{{ leadLabel }}</div>
-            <p style="margin:11px 0 0;font:400 14px/1.55 'Archivo';color:#9FB0C5;text-wrap:pretty;">{{ leadNote }}</p>
-          </div>
-          <div style="display:flex;flex-direction:column;gap:11px;">
-            <sc-for list="{{ meter }}" as="m" hint-placeholder-count="5">
-              <div style="display:flex;flex-direction:column;gap:5px;">
-                <div style="display:flex;justify-content:space-between;font:600 9.5px 'IBM Plex Mono';letter-spacing:.12em;color:{{ m.labelColor }};"><span>{{ m.label }}</span><span>{{ m.n }}</span></div>
-                <div style="height:5px;border-radius:99px;background:rgba(120,140,166,.16);overflow:hidden;"><div style="height:100%;border-radius:99px;background:var(--accent,#22D3EE);box-shadow:0 0 8px var(--accent,#22D3EE);width:{{ m.pct }};"></div></div>
-              </div>
-            </sc-for>
-          </div>
-        </div>
-
-        <div class="fa-in" style="flex:1 1 300px;max-width:410px;display:flex;flex-direction:column;gap:15px;padding:24px;border-radius:16px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);animation-delay:.18s;">
-          <div style="display:flex;align-items:center;justify-content:space-between;">
-            <div style="font:600 9.5px 'IBM Plex Mono';letter-spacing:.22em;color:#61748c;">REACTION PROFILE</div>
-            <div style="font:600 8.5px 'IBM Plex Mono';letter-spacing:.12em;color:color-mix(in srgb,var(--accent,#22D3EE) 75%,#fff);">vs REFERENCE</div>
-          </div>
-          <div style="display:flex;align-items:baseline;gap:8px;">
-            <span style="font:800 clamp(46px,7vw,70px)/1 'Archivo';letter-spacing:-0.02em;color:var(--accent,#22D3EE);">{{ pctLabel }}</span>
-            <span style="font:600 14px 'IBM Plex Mono';color:#7688a0;">/ 100</span>
-          </div>
-          <div style="font:400 13px/1.5 'Archivo';color:#9FB0C5;text-wrap:pretty;">{{ speedNote }}</div>
-          <div style="display:flex;gap:9px;">
-            <div style="flex:1;padding:12px;border-radius:11px;border:1px solid rgba(120,140,166,.18);background:rgba(6,12,22,.5);text-align:center;">
-              <div style="font:800 20px 'Archivo';color:#EAF2FB;">{{ consLabel }}</div>
-              <div style="font:600 8px 'IBM Plex Mono';letter-spacing:.1em;color:#7688a0;margin-top:3px;">CONSISTENCY</div>
-            </div>
-            <div style="flex:1;padding:12px;border-radius:11px;border:1px solid rgba(120,140,166,.18);background:rgba(6,12,22,.5);text-align:center;">
-              <div style="font:800 20px 'Archivo';color:#EAF2FB;">{{ readsN }}</div>
-              <div style="font:600 8px 'IBM Plex Mono';letter-spacing:.1em;color:#7688a0;margin-top:3px;">READ EARLY</div>
-            </div>
-            <div style="flex:1;padding:12px;border-radius:11px;border:1px solid rgba(120,140,166,.18);background:rgba(6,12,22,.5);text-align:center;">
-              <div style="font:800 20px 'Archivo';color:#EAF2FB;">{{ avgMs }}<span style="font-size:.5em;color:#7688a0;">s</span></div>
-              <div style="font:600 8px 'IBM Plex Mono';letter-spacing:.1em;color:#7688a0;margin-top:3px;">RAW AVG</div>
-            </div>
-          </div>
-          <div style="font:400 10px/1.5 'Archivo';color:#5b6f88;padding-top:2px;border-top:1px solid rgba(120,140,166,.14);">Reaction speed — not shot-stopping. Screen latency varies by device, so we score you relative and rank consistency, never raw milliseconds.</div>
-        </div>
-      </div>
-
-      <div class="fa-in" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:13px;margin-top:26px;animation-delay:.26s;">
-        <a href="Assessment.dc.html" style="display:inline-flex;align-items:center;gap:11px;padding:16px 34px;border-radius:12px;background:var(--accent,#22D3EE);color:#03121a;font:700 15px 'Archivo';box-shadow:0 12px 36px color-mix(in srgb,var(--accent,#22D3EE) 40%,transparent);transition:transform .16s ease,box-shadow .16s ease;" style-hover="transform:translateY(-2px);box-shadow:0 18px 48px color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);">
-          Continue the scan
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" style="stroke:#03121a;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12h13M12 6l6 6-6 6"/></svg>
-        </a>
-        <button onClick="{{ retake }}" style="display:inline-flex;align-items:center;gap:9px;padding:16px 24px;border-radius:12px;border:1px solid rgba(157,176,198,.28);background:rgba(12,18,30,.4);color:#C6D3E2;font:600 14px 'Archivo';cursor:pointer;transition:border-color .16s ease,color .16s ease;" style-hover="border-color:color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);color:#EAF2FB;">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
-          Run it back
-        </button>
-      </div>
-      <div class="fa-in" style="margin-top:20px;font:500 10px 'IBM Plex Mono';letter-spacing:.16em;color:#4f627a;animation-delay:.32s;">DRILL 02 OF 04 · THE SAVE — REFLEX, RADAR &amp; RAPID-FIRE FEED THE FULL ARCHETYPE</div>
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:grid;grid-template-rows:minmax(0,1fr);width:100%;overflow-y:auto;padding:10px clamp(20px,3vw,48px) 40px;">
+      <dc-import name="Result-Screen" accent="{{ accent }}" kicker="{{ res.kicker }}" score="{{ res.score }}" scoresuffix="{{ res.scoreSuffix }}" headline="{{ res.headline }}" verdict="{{ res.verdict }}" band="{{ res.band }}" stats="{{ res.stats }}" bars="{{ res.bars }}" chart="{{ res.chart }}" chips="{{ res.chips }}" insight="{{ res.insight }}" meta="{{ res.meta }}" actions="{{ res.actions }}" style="width:100%;min-height:0;display:grid;grid-template-rows:minmax(0,1fr);" hint-size="100%,640px"></dc-import>
     </main>
   </sc-if>
 
@@ -587,7 +527,26 @@ class Component extends DCLogic {
         : (i < dotsState ? `background:${A(accent,'88')};` : `background:rgba(120,140,166,.26);`),
     }));
 
+    const res = {
+      kicker:'THE SAVE · COMPLETE',
+      score:String(pctLabel),
+      scoreSuffix: met.percentile != null ? 'PERCENTILE' : '',
+      verdict:{ text:this.AX[leadK]+' INSTINCT', color:accent, bg:A(accent,'16') },
+      band:speedNote,
+      stats:[
+        {value:String(consLabel), label:'CONSISTENCY', color:'#EAF2FB'},
+        {value:String(this.state.reads), label:'READ EARLY', color:'#EAF2FB'},
+        {value:avgMs+'s', label:'RAW AVG', color:'#EAF2FB'},
+      ],
+      bars: meter.map(mt=>({label:mt.label, pct:parseFloat(mt.pct)||0, valueLabel:String(mt.n), color: mt.n>0?accent:'#5c6f88'})),
+      insight:{title:'YOUR SAVING INSTINCT', text:this.NOTE[leadK]},
+      actions:[
+        {label:'Continue the scan', onClick:()=>{ window.location.href='Assessment.dc.html'; }},
+        {label:'Run it back', primary:false, arrow:false, onClick:()=>this._retake()},
+      ],
+    };
     return {
+      res,
       accent, motion, embedded,
       chromeOn: !embedded,
       saveFx, goalFx, vizShake,

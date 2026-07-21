@@ -179,7 +179,7 @@ class Component extends DCLogic {
     return {
       accent,
       kicker:this.props.kicker ?? 'RUN COMPLETE',
-      hasScore: score!=null && score!=='' , score, scoreSuffix:this.props.scoreSuffix ?? '/ 100',
+      hasScore: score!=null && score!=='' , score, scoreSuffix:this.props.scoreSuffix ?? this.props.scoresuffix ?? '/ 100',
       hasHeadline: !!(headline.text), headline,
       hasVerdict: !!(verdict && verdict.text), verdict: verdict||{ text:'', color:accent, bg:A(accent,'16') },
       hasBand: !!(this.props.band), band:this.props.band,

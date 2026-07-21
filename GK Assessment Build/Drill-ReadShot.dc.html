@@ -199,70 +199,8 @@
 
   <!-- ============ RESULT ============ -->
   <sc-if value="{{ isResult }}" hint-placeholder-val="{{ false }}">
-    <main style="position:relative;z-index:3;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px clamp(24px,4vw,58px) 56px;">
-      <div class="fa-in" style="display:inline-flex;align-items:center;gap:9px;margin-bottom:18px;padding:6px 14px;border:1px solid color-mix(in srgb,var(--accent,#22D3EE) 32%,transparent);border-radius:999px;font:600 10px 'IBM Plex Mono';letter-spacing:.28em;color:var(--accent,#22D3EE);">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" style="stroke:var(--accent,#22D3EE);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12.5l4.5 4.5L19 6.5"/></svg>READ THE SHOT · COMPLETE
-      </div>
-      <h1 class="fa-in" style="margin:0 0 26px;font:800 clamp(34px,5vw,64px)/0.98 'Archivo';letter-spacing:-0.03em;text-align:center;animation-delay:.06s;">Shots read.</h1>
-
-      <div style="display:flex;flex-wrap:wrap;gap:22px;justify-content:center;align-items:stretch;width:100%;max-width:860px;">
-        <div class="fa-in" style="flex:1 1 320px;max-width:420px;display:flex;flex-direction:column;gap:20px;padding:24px;border-radius:16px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);animation-delay:.12s;">
-          <div>
-            <div style="font:600 9.5px 'IBM Plex Mono';letter-spacing:.26em;color:#61748c;margin-bottom:9px;">ANTICIPATION SCORE</div>
-            <div style="display:flex;align-items:baseline;gap:8px;">
-              <span style="font:800 clamp(52px,8vw,76px)/1 'Archivo';letter-spacing:-0.02em;color:var(--accent,#22D3EE);">{{ score }}</span>
-              <span style="font:600 15px 'IBM Plex Mono';color:#7688a0;">/ 100</span>
-            </div>
-            <p style="margin:11px 0 0;font:400 14px/1.55 'Archivo';color:#9FB0C5;text-wrap:pretty;">{{ scoreNote }}</p>
-          </div>
-          <div style="display:flex;gap:10px;">
-            <div style="flex:1;padding:13px;border-radius:11px;border:1px solid rgba(120,140,166,.18);background:rgba(6,12,22,.5);text-align:center;">
-              <div style="font:800 20px 'Archivo';color:#EAF2FB;">{{ sidePct }}</div>
-              <div style="font:600 8px 'IBM Plex Mono';letter-spacing:.12em;color:#7688a0;margin-top:3px;">SIDE READ</div>
-            </div>
-            <div style="flex:1;padding:13px;border-radius:11px;border:1px solid rgba(120,140,166,.18);background:rgba(6,12,22,.5);text-align:center;">
-              <div style="font:800 20px 'Archivo';color:#EAF2FB;">{{ heightPct }}</div>
-              <div style="font:600 8px 'IBM Plex Mono';letter-spacing:.12em;color:#7688a0;margin-top:3px;">HEIGHT READ</div>
-            </div>
-            <div style="flex:1;padding:13px;border-radius:11px;border:1px solid rgba(120,140,166,.18);background:rgba(6,12,22,.5);text-align:center;">
-              <div style="font:800 20px 'Archivo';color:var(--accent,#22D3EE);">{{ fullN }}</div>
-              <div style="font:600 8px 'IBM Plex Mono';letter-spacing:.12em;color:#7688a0;margin-top:3px;">SPOT ON</div>
-            </div>
-          </div>
-          <div style="font:500 10px 'IBM Plex Mono';letter-spacing:.1em;color:#61748c;padding-top:4px;border-top:1px solid rgba(120,140,166,.14);">{{ earlyLine }}</div>
-        </div>
-
-        <!-- shot map -->
-        <div class="fa-in" style="flex:1 1 280px;max-width:380px;display:flex;flex-direction:column;gap:14px;padding:24px;border-radius:16px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);animation-delay:.18s;">
-          <div style="font:600 9.5px 'IBM Plex Mono';letter-spacing:.22em;color:#61748c;">YOUR CALLS vs WHERE IT WENT</div>
-          <div style="position:relative;aspect-ratio:16/10;border-radius:12px;overflow:hidden;background:radial-gradient(120% 130% at 50% 116%,#12263c 0%,#0a1526 46%,#050c17 100%);border:1px solid rgba(120,140,166,.16);">
-            <svg viewBox="0 0 160 100" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;z-index:1;">
-              <rect x="27.2" y="19" width="105.6" height="44" fill="none" stroke="rgba(180,220,235,.4)" stroke-width="1"/>
-              <line x1="62.5" y1="19" x2="62.5" y2="63" stroke="rgba(150,200,220,.16)" stroke-width="0.5"/><line x1="97.5" y1="19" x2="97.5" y2="63" stroke="rgba(150,200,220,.16)" stroke-width="0.5"/><line x1="27.2" y1="41" x2="132.8" y2="41" stroke="rgba(150,200,220,.16)" stroke-width="0.5"/>
-            </svg>
-            <sc-for list="{{ mapMarks }}" as="m" hint-placeholder-count="6">
-              <div style="position:absolute;transform:translate(-50%,-50%);z-index:3;display:grid;place-items:center;width:20px;height:20px;border-radius:50%;font:700 9px 'IBM Plex Mono';{{ m.look }}{{ m.pos }}">{{ m.n }}</div>
-            </sc-for>
-          </div>
-          <div style="display:flex;gap:14px;justify-content:center;font:600 8.5px 'IBM Plex Mono';letter-spacing:.1em;">
-            <span style="display:inline-flex;align-items:center;gap:6px;color:var(--accent,#22D3EE);"><span style="width:9px;height:9px;border-radius:50%;background:var(--accent,#22D3EE);"></span>SPOT ON</span>
-            <span style="display:inline-flex;align-items:center;gap:6px;color:#FF9AA6;"><span style="width:9px;height:9px;border-radius:50%;border:1.5px solid #FF5A6E;"></span>YOUR CALL</span>
-            <span style="display:inline-flex;align-items:center;gap:6px;color:#9FB0C5;"><span style="width:9px;height:9px;border-radius:2px;background:#5b6f88;"></span>ACTUAL</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="fa-in" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:13px;margin-top:26px;animation-delay:.26s;">
-        <a href="Assessment.dc.html" style="display:inline-flex;align-items:center;gap:11px;padding:16px 34px;border-radius:12px;background:var(--accent,#22D3EE);color:#03121a;font:700 15px 'Archivo';box-shadow:0 12px 36px color-mix(in srgb,var(--accent,#22D3EE) 40%,transparent);transition:transform .16s ease,box-shadow .16s ease;" style-hover="transform:translateY(-2px);box-shadow:0 18px 48px color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);">
-          Continue the scan
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" style="stroke:#03121a;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12h13M12 6l6 6-6 6"/></svg>
-        </a>
-        <button onClick="{{ retake }}" style="display:inline-flex;align-items:center;gap:9px;padding:16px 24px;border-radius:12px;border:1px solid rgba(157,176,198,.28);background:rgba(12,18,30,.4);color:#C6D3E2;font:600 14px 'Archivo';cursor:pointer;transition:border-color .16s ease,color .16s ease;" style-hover="border-color:color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);color:#EAF2FB;">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
-          Run it back
-        </button>
-      </div>
-      <div class="fa-in" style="margin-top:20px;max-width:520px;text-align:center;font:400 11px/1.6 'Archivo';color:#4f627a;animation-delay:.32s;">Scored on this session. Real percentiles arrive as the platform gathers reads across thousands of keepers — every call you make is a labelled data point.</div>
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:grid;grid-template-rows:minmax(0,1fr);width:100%;overflow-y:auto;padding:10px clamp(20px,3vw,48px) 40px;">
+      <dc-import name="Result-Screen" accent="{{ accent }}" kicker="{{ res.kicker }}" score="{{ res.score }}" band="{{ res.band }}" stats="{{ res.stats }}" bars="{{ res.bars }}" chart="{{ res.chart }}" chips="{{ res.chips }}" insight="{{ res.insight }}" meta="{{ res.meta }}" actions="{{ res.actions }}" style="width:100%;min-height:0;display:grid;grid-template-rows:minmax(0,1fr);" hint-size="100%,620px"></dc-import>
     </main>
   </sc-if>
 
@@ -624,8 +562,26 @@ class Component extends DCLogic {
         : (i<dotsState?`background:${A(accent,'88')};`:`background:rgba(120,140,166,.26);`),
     }));
 
+    const res = {
+      kicker:'READ THE SHOT · COMPLETE',
+      score:String(m.score),
+      band:scoreNote,
+      stats:[
+        {value:sidePct, label:'SIDE READ', color:'#EAF2FB'},
+        {value:heightPct, label:'HEIGHT READ', color:'#EAF2FB'},
+        {value:String(m.full), label:'SPOT ON', color:accent},
+      ],
+      chips: m.events.map((r,i)=>({ n:String(i+1).padStart(2,'0'),
+        label: (r.pick==null?'No call':r.full?'Spot on':r.side?'Side only':'Wrong way'),
+        look: r.full?`border-color:${A(accent,'55')};color:${accent};`:(r.pick!=null&&r.side)?`border-color:rgba(255,209,102,.5);color:#FFD166;`:`border-color:rgba(255,107,126,.45);color:#FF9AA6;` })),
+      meta: earlyLine,
+      actions:[
+        {label:'Continue the scan', onClick:()=>{ window.location.href='Assessment.dc.html'; }},
+        {label:'Run it back', primary:false, arrow:false, onClick:()=>this._retake()},
+      ],
+    };
     return {
-      accent, motion, embedded, chromeOn:!embedded,
+      accent, motion, embedded, chromeOn:!embedded, res,
       rootMinH: embedded?'100%':'100dvh', rootH: embedded?'100%':'auto',
       saveFx: motion && screenFx==='save', nearFx: motion && screenFx==='near', goalFx: motion && screenFx==='goal', vizShake,
       soundOn, soundOff: !soundOn, soundColor: soundOn ? accent : '#61748c', soundTitle: soundOn ? 'Sound on' : 'Sound off', toggleSound: () => this._toggleSound(),
