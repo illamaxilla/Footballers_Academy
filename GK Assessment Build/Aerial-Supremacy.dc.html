@@ -371,26 +371,30 @@ class Component extends DCLogic {
   AX = { oracle:'ANTICIPATION', sentinel:'COMMAND', catalyst:'AGGRESSION', bastion:'REFLEX', wall:'PRESENCE' };
 
   INFLIGHT = 900; T1 = 3200; T2 = 1500; WATCH = 1200; SWEET = 0.78;
-  DEPTHY = { 0:89, 2:80, 4:71, 6:62 };
+  // Keeper claim depths (game-y): goal line ~95.5, 6-yard box edge ~83.5,
+  // penalty spot ~71.5. A keeper meets a cross inside the 6-yard box, so every
+  // depth sits between his line and the front of the 6-yard box, with depth 6
+  // the over-committed option just beyond it.
+  DEPTHY = { 0:91, 2:87, 4:84, 6:79 };
 
   SCN = [
-    { short:'High · Free', side:'R', origin:{x:90,y:58}, contact:{x:56,y:70}, heightFt:10, heightLabel:'HIGH', loft:26,
+    { short:'High · Free', side:'R', origin:{x:90,y:58}, contact:{x:56,y:85}, heightFt:10, heightLabel:'HIGH', loft:26,
       dist:14, atk:0, eliteClaim:86, best:'catch', optimalDepth:4, oracle:{catch:82,punch:14,pass:4},
       scen:'A deep cross swings in from the right \u2014 no one near it. This one is yours to claim.' },
-    { short:'High · Crowd', side:'R', origin:{x:92,y:52}, contact:{x:54,y:71}, heightFt:10, heightLabel:'HIGH', loft:24,
+    { short:'High · Crowd', side:'R', origin:{x:92,y:52}, contact:{x:54,y:85}, heightFt:10, heightLabel:'HIGH', loft:24,
       dist:12, atk:2, eliteClaim:62, best:'punch', optimalDepth:4, oracle:{catch:34,punch:61,pass:5},
       scen:'Right-wing delivery hanging in the air \u2014 two attackers gambling at the back post.' },
-    { short:'Driven · Melee', side:'L', origin:{x:12,y:56}, contact:{x:52,y:78}, heightFt:8, heightLabel:'MED', loft:14,
+    { short:'Driven · Melee', side:'L', origin:{x:12,y:56}, contact:{x:52,y:88}, heightFt:8, heightLabel:'MED', loft:14,
       dist:10, atk:3, eliteClaim:52, best:'punch', optimalDepth:2, oracle:{catch:24,punch:66,pass:10},
       scen:'Driven low from the left into a packed six-yard box \u2014 three bodies fighting for it.' },
-    { short:'Low · Flat', side:'R', origin:{x:88,y:64}, contact:{x:58,y:82}, heightFt:6, heightLabel:'LOW', loft:9,
+    { short:'Low · Flat', side:'R', origin:{x:88,y:64}, contact:{x:58,y:88}, heightFt:6, heightLabel:'LOW', loft:9,
       dist:8, atk:1, eliteClaim:70, best:'catch', optimalDepth:2, oracle:{catch:60,punch:31,pass:9},
       scen:'Whipped in fast and flat from the right, skidding across the face at head height.' },
-    { short:'Far Post', side:'L', origin:{x:14,y:54}, contact:{x:34,y:64}, heightFt:11, heightLabel:'HIGH', loft:30,
-      dist:16, atk:0, eliteClaim:68, best:'pass', optimalDepth:0, hasDefender:true, defender:{x:31,y:80},
+    { short:'Far Post', side:'L', origin:{x:14,y:54}, contact:{x:35,y:80}, heightFt:11, heightLabel:'HIGH', loft:30,
+      dist:16, atk:0, eliteClaim:68, best:'pass', optimalDepth:0, hasDefender:true, defender:{x:31,y:83},
       oracle:{catch:20,punch:12,pass:68},
       scen:'Looped to the far post, drifting away from goal \u2014 your defender has the back stick covered.' },
-    { short:'Corner', side:'CORNER', origin:{x:97,y:95}, contact:{x:50,y:73}, heightFt:9, heightLabel:'MED', loft:22,
+    { short:'Corner', side:'CORNER', origin:{x:97,y:95}, contact:{x:50,y:85}, heightFt:9, heightLabel:'MED', loft:22,
       dist:8, atk:3, eliteClaim:55, best:'punch', optimalDepth:4, oracle:{catch:30,punch:65,pass:5},
       scen:'In-swinging corner curling toward the near post \u2014 bodies everywhere. Keeper\u2019s ball if you are brave.' },
   ];
