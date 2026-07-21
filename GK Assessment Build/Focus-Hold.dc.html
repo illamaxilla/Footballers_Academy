@@ -240,94 +240,8 @@
 
   <!-- ============ RESULT (standalone) ============ -->
   <sc-if value="{{ isResult }}" hint-placeholder-val="{{ false }}">
-    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:14px clamp(24px,4vw,58px) 56px;">
-      <div class="fa-in" style="display:inline-flex;align-items:center;gap:9px;margin-bottom:16px;padding:6px 14px;border:1px solid color-mix(in srgb,var(--accent,#22D3EE) 32%,transparent);border-radius:999px;font:600 10px 'IBM Plex Mono';letter-spacing:.28em;color:var(--accent,#22D3EE);">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" style="stroke:var(--accent,#22D3EE);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12.5l4.5 4.5L19 6.5"/></svg>VIGILANCE SCAN COMPLETE
-      </div>
-      <h1 class="fa-in" style="margin:0 0 24px;font:800 clamp(32px,5vw,62px)/0.98 'Archivo';letter-spacing:-0.03em;text-align:center;animation-delay:.06s;">{{ doneHeadline }}</h1>
-
-      <div style="display:flex;flex-wrap:wrap;gap:20px;justify-content:center;align-items:stretch;width:100%;max-width:900px;">
-
-        <!-- score card -->
-        <div class="fa-in" style="flex:1 1 320px;max-width:420px;display:flex;flex-direction:column;gap:18px;padding:24px;border-radius:16px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);animation-delay:.12s;">
-          <div>
-            <div style="font:600 9.5px 'IBM Plex Mono';letter-spacing:.26em;color:#61748c;margin-bottom:9px;">CONCENTRATION SCORE</div>
-            <div style="display:flex;align-items:baseline;gap:8px;">
-              <span style="font:800 clamp(50px,8vw,74px)/1 'Archivo';letter-spacing:-0.02em;color:var(--accent,#22D3EE);">{{ scoreText }}</span>
-              <span style="font:600 15px 'IBM Plex Mono';color:#7688a0;">/ 100</span>
-            </div>
-            <p style="margin:11px 0 0;font:400 14px/1.55 'Archivo';color:#9FB0C5;text-wrap:pretty;">{{ scoreNote }}</p>
-          </div>
-          <div style="display:flex;gap:10px;">
-            <div style="flex:1;padding:13px;border-radius:11px;border:1px solid rgba(120,140,166,.18);background:rgba(6,12,22,.5);text-align:center;">
-              <div style="font:800 20px 'Archivo';color:{{ detectionColor }};">{{ detectionPct }}</div>
-              <div style="font:600 8px 'IBM Plex Mono';letter-spacing:.1em;color:#7688a0;margin-top:3px;">THREATS READ</div>
-            </div>
-            <div style="flex:1;padding:13px;border-radius:11px;border:1px solid rgba(120,140,166,.18);background:rgba(6,12,22,.5);text-align:center;">
-              <div style="font:800 20px 'Archivo';color:#EAF2FB;">{{ avgRTtext }}</div>
-              <div style="font:600 8px 'IBM Plex Mono';letter-spacing:.1em;color:#7688a0;margin-top:3px;">AVG REACTION</div>
-            </div>
-            <div style="flex:1;padding:13px;border-radius:11px;border:1px solid rgba(120,140,166,.18);background:rgba(6,12,22,.5);text-align:center;">
-              <div style="font:800 20px 'Archivo';color:{{ fpResultColor }};">{{ fpCount }}</div>
-              <div style="font:600 8px 'IBM Plex Mono';letter-spacing:.1em;color:#7688a0;margin-top:3px;">FALSE ALARMS</div>
-            </div>
-          </div>
-          <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding-top:4px;border-top:1px solid rgba(120,140,166,.14);">
-            <span style="font:600 9px 'IBM Plex Mono';letter-spacing:.16em;color:#61748c;">ARCHETYPE SIGNAL</span>
-            <sc-for list="{{ leanChips }}" as="c" hint-placeholder-count="2">
-              <span style="display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;border:1px solid {{ c.border }};font:700 9px 'IBM Plex Mono';letter-spacing:.12em;color:{{ c.color }};">{{ c.label }}</span>
-            </sc-for>
-          </div>
-        </div>
-
-        <!-- attention curve + breakdown -->
-        <div class="fa-in" style="flex:1 1 340px;max-width:440px;display:flex;flex-direction:column;gap:13px;padding:24px;border-radius:16px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);animation-delay:.18s;">
-          <div style="display:flex;align-items:center;justify-content:space-between;">
-            <div style="font:600 9.5px 'IBM Plex Mono';letter-spacing:.22em;color:#61748c;">ATTENTION CURVE</div>
-            <div style="font:800 13px 'Archivo';color:var(--accent,#22D3EE);">{{ caughtText }}</div>
-          </div>
-
-          <div style="position:relative;width:100%;height:126px;border-radius:11px;border:1px solid rgba(120,140,166,.16);background:rgba(6,12,22,.5);overflow:hidden;">
-            <div style="position:absolute;left:0;right:0;top:25%;border-top:1px dashed rgba(120,140,166,.14);"></div>
-            <div style="position:absolute;left:0;right:0;top:50%;border-top:1px dashed rgba(120,140,166,.14);"></div>
-            <div style="position:absolute;left:0;right:0;top:75%;border-top:1px dashed rgba(120,140,166,.14);"></div>
-            <svg viewBox="0 0 100 100" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;">
-              <line x1="4" y1="{{ eliteY }}" x2="96" y2="{{ eliteY }}" stroke="#3AE0A0" stroke-width="1" stroke-dasharray="3 3" vector-effect="non-scaling-stroke" opacity="0.6"/>
-              <polyline points="{{ curvePoints }}" fill="none" stroke="{{ accent }}" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke" style="stroke-dasharray:300;stroke-dashoffset:300;animation:fa-draw 1.1s cubic-bezier(.4,.7,.3,1) .3s forwards;"/>
-            </svg>
-            <div style="position:absolute;left:5px;top:calc({{ eliteY }}% - 14px);font:600 7px 'IBM Plex Mono';letter-spacing:.08em;color:#3AE0A0;">ELITE FOCUS</div>
-            <sc-for list="{{ curveDots }}" as="p" hint-placeholder-count="5">
-              <div style="position:absolute;width:12px;height:12px;border-radius:50%;transform:translate(-50%,-50%);border:2px solid #050c17;{{ p.style }}"></div>
-            </sc-for>
-            <div style="position:absolute;left:6px;bottom:4px;font:600 7px 'IBM Plex Mono';color:#5c6f88;">KICK-OFF</div>
-            <div style="position:absolute;right:6px;bottom:4px;font:600 7px 'IBM Plex Mono';color:#5c6f88;">FINAL WHISTLE</div>
-          </div>
-
-          <div style="display:flex;flex-direction:column;gap:8px;">
-            <sc-for list="{{ breakdownRows }}" as="r" hint-placeholder-count="5">
-              <div style="display:flex;align-items:center;gap:10px;">
-                <span style="flex:0 0 108px;font:600 10px 'Archivo';color:#B9C7D8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ r.name }}</span>
-                <span style="flex:1;height:8px;border-radius:99px;background:rgba(120,140,166,.14);overflow:hidden;"><span style="display:block;height:100%;border-radius:99px;background:{{ r.barColor }};width:{{ r.barPct }};"></span></span>
-                <span style="flex:0 0 62px;text-align:right;font:700 8.5px 'IBM Plex Mono';letter-spacing:.02em;color:{{ r.chipColor }};">{{ r.chipWord }}</span>
-              </div>
-            </sc-for>
-          </div>
-
-          <div style="margin-top:2px;padding-top:11px;border-top:1px solid rgba(120,140,166,.14);font:500 11.5px/1.5 'Archivo';color:#9FB0C5;">{{ insight }}</div>
-          <div style="font:600 9.5px 'IBM Plex Mono';letter-spacing:.04em;color:#5c6f88;">{{ eliteNote }}</div>
-        </div>
-      </div>
-
-      <div class="fa-in" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:13px;margin-top:26px;animation-delay:.26s;">
-        <button onClick="{{ retake }}" style="display:inline-flex;align-items:center;gap:11px;padding:16px 34px;border-radius:12px;border:0;cursor:pointer;background:var(--accent,#22D3EE);color:#03121a;font:700 15px 'Archivo';box-shadow:0 12px 36px color-mix(in srgb,var(--accent,#22D3EE) 40%,transparent);transition:transform .16s ease,box-shadow .16s ease;" style-hover="transform:translateY(-2px);box-shadow:0 18px 48px color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:#03121a;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
-          Run it back
-        </button>
-        <a href="Landing.dc.html" style="display:inline-flex;align-items:center;gap:9px;padding:16px 24px;border-radius:12px;border:1px solid rgba(157,176,198,.28);background:rgba(12,18,30,.4);color:#C6D3E2;font:600 14px 'Archivo';transition:border-color .16s ease,color .16s ease;" style-hover="border-color:color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);color:#EAF2FB;">
-          Back to games
-        </a>
-      </div>
-      <div class="fa-in" style="margin-top:20px;max-width:560px;text-align:center;font:400 11px/1.6 'Archivo';color:#4f627a;animation-delay:.32s;">Scored on this session. Real percentiles arrive as the platform gathers keepers under the lights &mdash; every threat you read is a labelled data point.</div>
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:grid;grid-template-rows:minmax(0,1fr);width:100%;overflow-y:auto;padding:10px clamp(20px,3vw,48px) 40px;">
+      <dc-import name="Result-Screen" accent="{{ accent }}" kicker="{{ res.kicker }}" score="{{ res.score }}" band="{{ res.band }}" stats="{{ res.stats }}" bars="{{ res.bars }}" chart="{{ res.chart }}" chips="{{ res.chips }}" insight="{{ res.insight }}" meta="{{ res.meta }}" actions="{{ res.actions }}" style="width:100%;min-height:0;display:grid;grid-template-rows:minmax(0,1fr);" hint-size="100%,680px"></dc-import>
     </main>
   </sc-if>
 
@@ -805,6 +719,7 @@ class Component extends DCLogic {
       detectionColor = accent, fpResultColor = '#EAF2FB', scoreNote = '', doneHeadline = '', doneNote = '',
       caughtText = '', curvePoints = '', curveDots = [], eliteY = 26, breakdownRows = [], leanChips = [],
       insight = '', eliteNote = '';
+    let res = {};
     if (m) {
       scoreText = '' + cuF(score);
       detectionPct = cuF(m.detectionRate) + '%';
@@ -847,6 +762,25 @@ class Component extends DCLogic {
       const ranked = this.ORDER.slice().filter(kk => fc[kk] > 0).sort((a2,b2) => fc[b2] - fc[a2]).slice(0, 2);
       leanChips = (ranked.length ? ranked : ['oracle','sentinel']).map((kk, i) => ({ label:this.AX[kk],
         color: i === 0 ? accent : '#C6D3E2', border: i === 0 ? A(accent,'55') : 'rgba(120,140,166,.3)' }));
+      res = {
+        kicker:'FOCUS TEST COMPLETE',
+        score:scoreText,
+        band:doneHeadline,
+        stats:[
+          {value:detectionPct, label:'DETECTION', color:detectionColor, sub:'elite ≈ 85%'},
+          {value:avgRTtext, label:'AVG REACTION', color:'#EAF2FB', sub:'elite ≈ '+this._refRT+'ms'},
+          {value:fpCount, label:'FALSE FLAGS', color:fpResultColor, sub:'elite ≤ 1'},
+        ],
+        chart:{title:'ATTENTION THROUGH THE HALF', points:m.curve.map(c=>Math.max(0,Math.min(100,c.att))), eliteY:80, axisL:'FIRST MINUTE', axisR:'FINAL MINUTE'},
+        bars: breakdownRows.map(r=>({label:r.name, pct:parseFloat(r.barPct)||0, valueLabel:r.chipWord, color:r.barColor})),
+        chips: leanChips.map(c=>({label:c.label, look:`border-color:${c.border};color:${c.color};`})),
+        insight:{title:'YOUR VIGILANCE', text:insight},
+        meta: eliteNote,
+        actions:[
+          {label:'Run it back', onClick:()=>this._retake()},
+          {label:'Back to games', primary:false, arrow:false, onClick:()=>{ window.location.href='Landing.dc.html'; }},
+        ],
+      };
     }
 
     return {
@@ -867,7 +801,7 @@ class Component extends DCLogic {
       // result / done
       score, scoreText, detectionPct, avgRTtext, fpCount, detectionColor, fpResultColor,
       scoreNote, doneHeadline, doneNote, caughtText,
-      curvePoints, curveDots, eliteY, breakdownRows, leanChips, insight, eliteNote,
+      curvePoints, curveDots, eliteY, breakdownRows, leanChips, insight, eliteNote, res,
       retake: () => this._retake(), emit: () => this._emit(),
       back: () => { window.location.href = 'Landing.dc.html'; },
     };

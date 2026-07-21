@@ -279,84 +279,8 @@
 
   <!-- ============ RESULT (standalone) ============ -->
   <sc-if value="{{ isResult }}" hint-placeholder-val="{{ false }}">
-    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:14px clamp(24px,4vw,58px) 56px;">
-      <div class="fa-in" style="display:inline-flex;align-items:center;gap:9px;margin-bottom:16px;padding:6px 14px;border:1px solid color-mix(in srgb,var(--accent,#22D3EE) 32%,transparent);border-radius:999px;font:600 10px 'IBM Plex Mono';letter-spacing:.28em;color:var(--accent,#22D3EE);">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" style="stroke:var(--accent,#22D3EE);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12.5l4.5 4.5L19 6.5"/></svg>DECODER SCAN COMPLETE
-      </div>
-      <h1 class="fa-in" style="margin:0 0 24px;font:800 clamp(32px,5vw,62px)/0.98 'Archivo';letter-spacing:-0.03em;text-align:center;animation-delay:.06s;">{{ doneHeadline }}</h1>
-
-      <div style="display:flex;flex-wrap:wrap;gap:20px;justify-content:center;align-items:stretch;width:100%;max-width:900px;">
-
-        <!-- score card -->
-        <div class="fa-in" style="flex:1 1 320px;max-width:420px;display:flex;flex-direction:column;gap:18px;padding:24px;border-radius:16px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);animation-delay:.12s;">
-          <div>
-            <div style="font:600 9.5px 'IBM Plex Mono';letter-spacing:.26em;color:#61748c;margin-bottom:9px;">PENALTY DECODER SCORE</div>
-            <div style="display:flex;align-items:baseline;gap:8px;">
-              <span style="font:800 clamp(50px,8vw,74px)/1 'Archivo';letter-spacing:-0.02em;color:var(--accent,#22D3EE);">{{ scoreText }}</span>
-              <span style="font:600 15px 'IBM Plex Mono';color:#7688a0;">/ 100</span>
-            </div>
-            <p style="margin:11px 0 0;font:400 14px/1.55 'Archivo';color:#9FB0C5;text-wrap:pretty;">{{ scoreNote }}</p>
-          </div>
-          <div style="display:flex;gap:10px;">
-            <div style="flex:1;padding:13px;border-radius:11px;border:1px solid rgba(120,140,166,.18);background:rgba(6,12,22,.5);text-align:center;">
-              <div style="font:800 20px 'Archivo';color:{{ predColor }};">{{ predictionPct }}</div>
-              <div style="font:600 8px 'IBM Plex Mono';letter-spacing:.1em;color:#7688a0;margin-top:3px;">READ RIGHT</div>
-            </div>
-            <div style="flex:1;padding:13px;border-radius:11px;border:1px solid rgba(120,140,166,.18);background:rgba(6,12,22,.5);text-align:center;">
-              <div style="font:800 20px 'Archivo';color:{{ gazeColor }};">{{ gazePct }}</div>
-              <div style="font:600 8px 'IBM Plex Mono';letter-spacing:.1em;color:#7688a0;margin-top:3px;">GAZE EFFICIENCY</div>
-            </div>
-            <div style="flex:1;padding:13px;border-radius:11px;border:1px solid rgba(120,140,166,.18);background:rgba(6,12,22,.5);text-align:center;">
-              <div style="font:800 20px 'Archivo';color:#EAF2FB;">{{ reactionText }}</div>
-              <div style="font:600 8px 'IBM Plex Mono';letter-spacing:.1em;color:#7688a0;margin-top:3px;">AVG COMMIT</div>
-            </div>
-          </div>
-          <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding-top:4px;border-top:1px solid rgba(120,140,166,.14);">
-            <span style="font:600 9px 'IBM Plex Mono';letter-spacing:.16em;color:#61748c;">ARCHETYPE SIGNAL</span>
-            <sc-for list="{{ leanChips }}" as="c" hint-placeholder-count="1">
-              <span style="display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;border:1px solid {{ c.border }};font:700 9px 'IBM Plex Mono';letter-spacing:.12em;color:{{ c.color }};">{{ c.label }}</span>
-            </sc-for>
-          </div>
-        </div>
-
-        <!-- gaze pattern card -->
-        <div class="fa-in" style="flex:1 1 340px;max-width:440px;display:flex;flex-direction:column;gap:12px;padding:24px;border-radius:16px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);animation-delay:.18s;">
-          <div style="display:flex;align-items:center;justify-content:space-between;">
-            <div style="font:600 9.5px 'IBM Plex Mono';letter-spacing:.22em;color:#61748c;">WHERE YOU LOOKED</div>
-            <div style="display:flex;align-items:center;gap:12px;">
-              <span style="display:inline-flex;align-items:center;gap:5px;font:600 8px 'IBM Plex Mono';letter-spacing:.06em;color:#8698ad;"><span style="width:8px;height:8px;border-radius:2px;background:var(--accent,#22D3EE);"></span>YOU</span>
-              <span style="display:inline-flex;align-items:center;gap:5px;font:600 8px 'IBM Plex Mono';letter-spacing:.06em;color:#8698ad;"><span style="width:8px;height:2px;background:#3AE0A0;"></span>ELITE</span>
-            </div>
-          </div>
-          <div style="display:flex;flex-direction:column;gap:11px;">
-            <sc-for list="{{ gazeRows }}" as="g" hint-placeholder-count="5">
-              <div>
-                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
-                  <span style="font:600 10.5px 'Archivo';color:{{ g.nameColor }};">{{ g.name }}</span>
-                  <span style="font:700 8.5px 'IBM Plex Mono';color:#8698ad;">{{ g.youPct }} <span style="color:#5c6f88;">/ {{ g.elitePct }}</span></span>
-                </div>
-                <div style="position:relative;height:9px;border-radius:99px;background:rgba(120,140,166,.14);overflow:hidden;">
-                  <span style="display:block;height:100%;border-radius:99px;background:{{ g.barColor }};width:{{ g.youWidth }};transform-origin:left;animation:fa-approachbar .7s cubic-bezier(.3,.8,.3,1) {{ g.barDelay }} both;"></span>
-                  <span style="position:absolute;top:-2px;bottom:-2px;width:2px;background:#3AE0A0;left:{{ g.eliteWidth }};box-shadow:0 0 6px #3AE0A0;"></span>
-                </div>
-              </div>
-            </sc-for>
-          </div>
-          <div style="margin-top:2px;padding-top:11px;border-top:1px solid rgba(120,140,166,.14);font:500 11.5px/1.5 'Archivo';color:#9FB0C5;">{{ insight }}</div>
-          <div style="font:600 9.5px 'IBM Plex Mono';letter-spacing:.04em;color:#5c6f88;">{{ eliteNote }}</div>
-        </div>
-      </div>
-
-      <div class="fa-in" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:13px;margin-top:26px;animation-delay:.26s;">
-        <button onClick="{{ retake }}" style="display:inline-flex;align-items:center;gap:11px;padding:16px 34px;border-radius:12px;border:0;cursor:pointer;background:var(--accent,#22D3EE);color:#03121a;font:700 15px 'Archivo';box-shadow:0 12px 36px color-mix(in srgb,var(--accent,#22D3EE) 40%,transparent);transition:transform .16s ease,box-shadow .16s ease;" style-hover="transform:translateY(-2px);box-shadow:0 18px 48px color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:#03121a;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
-          Run it back
-        </button>
-        <a href="Landing.dc.html" style="display:inline-flex;align-items:center;gap:9px;padding:16px 24px;border-radius:12px;border:1px solid rgba(157,176,198,.28);background:rgba(12,18,30,.4);color:#C6D3E2;font:600 14px 'Archivo';transition:border-color .16s ease,color .16s ease;" style-hover="border-color:color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);color:#EAF2FB;">
-          Back to games
-        </a>
-      </div>
-      <div class="fa-in" style="margin-top:20px;max-width:560px;text-align:center;font:400 11px/1.6 'Archivo';color:#4f627a;animation-delay:.32s;">Scored on this session. Real percentiles arrive as the platform gathers keepers under the lights &mdash; every read is a labelled data point.</div>
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:grid;grid-template-rows:minmax(0,1fr);width:100%;overflow-y:auto;padding:10px clamp(20px,3vw,48px) 40px;">
+      <dc-import name="Result-Screen" accent="{{ accent }}" kicker="{{ res.kicker }}" score="{{ res.score }}" band="{{ res.band }}" stats="{{ res.stats }}" bars="{{ res.bars }}" chart="{{ res.chart }}" chips="{{ res.chips }}" insight="{{ res.insight }}" meta="{{ res.meta }}" actions="{{ res.actions }}" style="width:100%;min-height:0;display:grid;grid-template-rows:minmax(0,1fr);" hint-size="100%,660px"></dc-import>
     </main>
   </sc-if>
 
@@ -829,6 +753,7 @@ class Component extends DCLogic {
     const cuF = (v) => Math.round(v * cu);
     let score=m?m.score:0, scoreText='0', predictionPct='0%', gazePct='0%', reactionText='\u2014', predColor=accent, gazeColor=accent,
       scoreNote='', doneHeadline='', doneNote='', gazeRows=[], leanChips=[], insight='', eliteNote='';
+    let res = {};
     if(m){
       scoreText=''+cuF(score);
       predictionPct=cuF(m.predAcc)+'%'; gazePct=cuF(m.avgGaze)+'%';
@@ -863,6 +788,24 @@ class Component extends DCLogic {
       const fc=this._finalCounts||S.counts;
       const ranked=this.ORDER.slice().filter(kk=>fc[kk]>0).sort((a2,b2)=>fc[b2]-fc[a2]).slice(0,2);
       leanChips=(ranked.length?ranked:['oracle']).map((kk,i)=>({ label:this.AX[kk], color:i===0?accent:'#C6D3E2', border:i===0?A(accent,'55'):'rgba(120,140,166,.3)' }));
+      res = {
+        kicker:'PENALTY DECODE COMPLETE',
+        score:scoreText,
+        band:doneHeadline,
+        stats:[
+          {value:predictionPct, label:'PREDICTION', color:predColor, sub:'elite ≈ 75%'},
+          {value:gazePct, label:'GAZE QUALITY', color:gazeColor, sub:'elite ≈ 80%'},
+          {value:reactionText, label:'COMMIT', color:'#EAF2FB', sub:'elite ≈ 400ms'},
+        ],
+        bars: gazeRows.map(g=>({label:g.name, pct:parseFloat(g.youPct)||0, valueLabel:g.youPct, color:g.barColor, marker:parseFloat(g.elitePct)||0})),
+        chips: leanChips.map(c=>({label:c.label, look:`border-color:${c.border};color:${c.color};`})),
+        insight:{title:'YOUR VISUAL SEARCH', text:insight},
+        meta: eliteNote,
+        actions:[
+          {label:'Run it back', onClick:()=>this._retake()},
+          {label:'Back to games', primary:false, arrow:false, onClick:()=>{ window.location.href='Landing.dc.html'; }},
+        ],
+      };
     }
 
     return {
@@ -892,7 +835,7 @@ class Component extends DCLogic {
       outcomeWord, outcomeColor, outcomeBorder,
       next:()=>this._next(), nextLabel: S.pi<this.PK.length-1?'Next penalty':(embedded?'Finish':'See my read'),
       score, scoreText, predictionPct, gazePct, reactionText, predColor, gazeColor, scoreNote, doneHeadline, doneNote,
-      gazeRows, leanChips, insight, eliteNote,
+      gazeRows, leanChips, insight, eliteNote, res,
       showBest: S.view==='intro' && !embedded && !!(this._best && this._best.best),
       bestText: (this._best&&this._best.best)?('PERSONAL BEST \u00b7 '+this._best.best+' DECODER'):'',
       begin:()=>this._begin(), retake:()=>this._retake(), emit:()=>this._emit(),
