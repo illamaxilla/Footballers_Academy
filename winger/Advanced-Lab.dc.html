@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:#04060c;}
+  a{color:var(--accent,#22D3EE);text-decoration:none;}
+  a:hover{opacity:.92;}
+  @keyframes fa-blink{0%,100%{opacity:1;}50%{opacity:.25;}}
+  @keyframes fa-rise{0%{transform:translateY(16px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-rise-sm{0%{transform:translateY(10px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  .fa-in{opacity:0;animation:fa-rise .7s cubic-bezier(.2,.7,.2,1) forwards;}
+  .fa-in-sm{opacity:0;animation:fa-rise-sm .5s cubic-bezier(.2,.7,.2,1) forwards;}
+  @media (prefers-reduced-motion:reduce){*{animation-duration:.001s!important;}.fa-in,.fa-in-sm{opacity:1!important;transform:none!important;}}
+</style>
+</helmet>
+<div data-screen-label="Advanced Lab" style="position:relative;display:flex;flex-direction:column;min-height:100dvh;width:100%;overflow:hidden;background:radial-gradient(120% 90% at 50% 6%,#0e1a2d 0%,#080e1a 44%,#04060c 100%);color:#EAF2FB;font-family:'Archivo',system-ui,sans-serif;--accent:{{ accent }};">
+
+  <div style="position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.4;background:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0px,rgba(255,255,255,.02) 1px,transparent 1px,transparent 4px);"></div>
+  <div style="position:absolute;top:20px;left:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;top:20px;right:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;left:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;right:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+
+  <!-- ============ TOP BAR ============ -->
+  <header style="position:relative;z-index:6;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px clamp(26px,3.4vw,58px);">
+    <div style="min-width:120px;display:flex;">
+      <button onClick="{{ back }}" style="display:inline-flex;align-items:center;gap:8px;background:none;border:0;cursor:pointer;color:#8EA1B8;font:600 12.5px 'Archivo';padding:0;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M15 5l-7 7 7 7"/></svg>{{ backLabel }}
+      </button>
+    </div>
+    <div style="display:flex;align-items:center;gap:11px;">
+      <svg width="20" height="20" viewBox="0 0 32 32" fill="none"><path d="M16 2 28 9v14L16 30 4 23V9z" style="stroke:var(--accent,#22D3EE);stroke-width:1.5;fill:color-mix(in srgb,var(--accent,#22D3EE) 12%,transparent);"/><path d="M12 10v7a4 4 0 0 0 8 0v-7" style="stroke:var(--accent,#22D3EE);stroke-width:1.6;fill:none;stroke-linecap:round;"/><path d="M10 10h4M18 10h4" style="stroke:var(--accent,#22D3EE);stroke-width:1.6;stroke-linecap:round;"/></svg>
+      <span style="font:800 12.5px 'Archivo';letter-spacing:.05em;">ADVANCED LAB</span>
+      <span style="font:600 9px 'IBM Plex Mono';letter-spacing:.16em;color:#FFC65C;border:1px solid rgba(255,176,32,.34);border-radius:6px;padding:3px 6px;">IN DEVELOPMENT</span>
+    </div>
+    <div style="min-width:120px;"></div>
+  </header>
+
+  <!-- ============ OVERVIEW ============ -->
+  <sc-if value="{{ isOverview }}" hint-placeholder-val="{{ true }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:16px clamp(20px,4vw,58px) 60px;">
+      <div style="width:100%;max-width:820px;">
+        <div class="fa-in" style="text-align:center;margin-bottom:8px;font:600 12px 'IBM Plex Mono';letter-spacing:.32em;color:var(--accent,#22D3EE);">THE PHONE AS A MEASUREMENT INSTRUMENT</div>
+        <h1 class="fa-in" style="margin:0 0 12px;text-align:center;font:800 clamp(30px,4.6vw,58px)/1.0 'Archivo';letter-spacing:-0.03em;text-wrap:balance;animation-delay:.05s;">Four instruments we&rsquo;re still building.</h1>
+        <p class="fa-in" style="margin:0 auto 30px;max-width:620px;text-align:center;font:400 clamp(14px,1.3vw,17px)/1.6 'Archivo';color:#9FB0C5;text-wrap:pretty;animation-delay:.1s;">These use the camera, the accelerometer, and on-device tracking &mdash; hardware the rest of the battery doesn&rsquo;t touch. They need real device access and, in one case, medical-grade care. Here&rsquo;s what each will do, and why it isn&rsquo;t live yet.</p>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px;">
+          <sc-for list="{{ cards }}" as="c" hint-placeholder-count="4">
+            <button onClick="{{ c.open }}" class="fa-in-sm" style="text-align:left;display:flex;flex-direction:column;gap:12px;padding:20px 22px;border-radius:16px;border:1px solid {{ c.border }};background:rgba(10,16,28,.5);color:#EAF2FB;cursor:pointer;transition:border-color .16s ease,transform .16s ease,background .16s ease;animation-delay:{{ c.delay }};" style-hover="border-color:color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);transform:translateY(-3px);background:rgba(14,22,37,.7);">
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;">
+                <span style="font-size:26px;line-height:1;">{{ c.icon }}</span>
+                <span style="font:600 8.5px 'IBM Plex Mono';letter-spacing:.14em;color:{{ c.statusColor }};border:1px solid {{ c.statusBorder }};border-radius:6px;padding:3px 7px;">{{ c.status }}</span>
+              </div>
+              <div>
+                <div style="font:800 18px 'Archivo';letter-spacing:-0.01em;margin-bottom:3px;">{{ c.name }}</div>
+                <div style="font:500 11px 'IBM Plex Mono';letter-spacing:.06em;color:var(--accent,#22D3EE);">{{ c.code }} &middot; EFFORT {{ c.effort }}</div>
+              </div>
+              <p style="margin:0;font:400 13px/1.5 'Archivo';color:#B4C2D4;text-wrap:pretty;">{{ c.blurb }}</p>
+              <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:2px;">
+                <sc-for list="{{ c.reqs }}" as="r" hint-placeholder-count="2">
+                  <span style="display:inline-flex;align-items:center;gap:5px;padding:4px 9px;border-radius:7px;border:1px solid rgba(120,140,166,.22);background:rgba(10,16,28,.5);font:600 10px 'IBM Plex Mono';letter-spacing:.06em;color:#8496ab;">{{ r.text }}</span>
+                </sc-for>
+              </div>
+              <div style="display:inline-flex;align-items:center;gap:7px;margin-top:2px;font:600 12px 'Archivo';color:var(--accent,#22D3EE);">Read the plan
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12h13M12 6l6 6-6 6"/></svg>
+              </div>
+            </button>
+          </sc-for>
+        </div>
+
+        <div class="fa-in" style="margin-top:22px;padding:14px 18px;border-radius:12px;border:1px dashed rgba(120,140,166,.28);font:400 12px/1.55 'Archivo';color:#8496ab;text-wrap:pretty;">These will ship the same way the rest of the battery did: as candidate signals at zero weight, honestly framed, earning their place against the Tape Test before they change anything.</div>
+      </div>
+    </main>
+  </sc-if>
+
+  <!-- ============ DETAIL ============ -->
+  <sc-if value="{{ isDetail }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:16px clamp(20px,4vw,58px) 72px;">
+      <div style="width:100%;max-width:640px;">
+        <div class="fa-in" style="display:flex;align-items:center;gap:14px;margin-bottom:8px;">
+          <span style="font-size:40px;line-height:1;">{{ dIcon }}</span>
+          <div>
+            <div style="font:600 11px 'IBM Plex Mono';letter-spacing:.2em;color:var(--accent,#22D3EE);margin-bottom:4px;">{{ dCode }} &middot; EFFORT {{ dEffort }}</div>
+            <h1 style="margin:0;font:800 clamp(26px,3.8vw,44px)/1.02 'Archivo';letter-spacing:-0.02em;">{{ dName }}</h1>
+          </div>
+        </div>
+        <p class="fa-in" style="margin:6px 0 22px;font:400 clamp(15px,1.4vw,18px)/1.6 'Archivo';color:#B4C2D4;text-wrap:pretty;animation-delay:.06s;">{{ dBlurb }}</p>
+
+        <div class="fa-in" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px;animation-delay:.1s;">
+          <div style="padding:16px 18px;border-radius:14px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);">
+            <div style="font:600 8.5px 'IBM Plex Mono';letter-spacing:.16em;color:#61748c;margin-bottom:8px;">MEASURES</div>
+            <div style="font:600 14px/1.4 'Archivo';color:#EAF2FB;">{{ dMeasures }}</div>
+          </div>
+          <div style="padding:16px 18px;border-radius:14px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);">
+            <div style="font:600 8.5px 'IBM Plex Mono';letter-spacing:.16em;color:#61748c;margin-bottom:8px;">ARCHETYPE WEIGHT</div>
+            <div style="font:600 14px/1.4 'Archivo';color:#EAF2FB;">{{ dWeight }}</div>
+          </div>
+        </div>
+
+        <div class="fa-in" style="padding:20px 22px;border-radius:16px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);margin-bottom:16px;animation-delay:.14s;">
+          <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:var(--accent,#22D3EE);margin-bottom:12px;">HOW IT WILL WORK</div>
+          <div style="display:flex;flex-direction:column;gap:11px;">
+            <sc-for list="{{ dSteps }}" as="s" hint-placeholder-count="3">
+              <div style="display:flex;gap:12px;align-items:flex-start;">
+                <span style="flex:0 0 auto;width:22px;height:22px;border-radius:7px;display:grid;place-items:center;border:1px solid color-mix(in srgb,var(--accent,#22D3EE) 40%,transparent);font:700 11px 'IBM Plex Mono';color:var(--accent,#22D3EE);">{{ s.n }}</span>
+                <span style="flex:1;font:400 13.5px/1.5 'Archivo';color:#C6D3E2;">{{ s.text }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div class="fa-in" style="padding:16px 20px;border-radius:14px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.4);margin-bottom:16px;animation-delay:.18s;">
+          <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.22em;color:#61748c;margin-bottom:9px;">WHAT IT NEEDS &middot; THE CONSTRAINT</div>
+          <p style="margin:0;font:400 13.5px/1.55 'Archivo';color:#B4C2D4;text-wrap:pretty;">{{ dConstraint }}</p>
+        </div>
+
+        <sc-if value="{{ dHasWarning }}" hint-placeholder-val="{{ false }}">
+          <div class="fa-in" style="padding:18px 20px;border-radius:14px;border:1px solid rgba(255,90,110,.34);background:rgba(255,90,110,.06);margin-bottom:16px;animation-delay:.2s;">
+            <div style="display:flex;align-items:center;gap:8px;font:600 9px 'IBM Plex Mono';letter-spacing:.2em;color:#FF8A98;margin-bottom:9px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="stroke:#FF8A98;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M12 9v4M12 17h.01M10.3 3.9 2.4 18a1.8 1.8 0 0 0 1.6 2.7h16a1.8 1.8 0 0 0 1.6-2.7L13.7 3.9a1.8 1.8 0 0 0-3.4 0z"/></svg>NON-NEGOTIABLE FRAMING</div>
+            <p style="margin:0;font:400 13.5px/1.58 'Archivo';color:#EAD6D9;text-wrap:pretty;">{{ dWarning }}</p>
+          </div>
+        </sc-if>
+
+        <div class="fa-in" style="display:flex;flex-wrap:wrap;align-items:center;gap:13px;animation-delay:.24s;">
+          <button onClick="{{ toggleInterest }}" style="display:inline-flex;align-items:center;gap:10px;padding:15px 28px;border-radius:12px;border:0;background:{{ interestBg }};color:{{ interestColor }};font:700 14.5px 'Archivo';cursor:pointer;box-shadow:{{ interestShadow }};transition:transform .16s ease;" style-hover="transform:translateY(-2px);">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;">{{ interestIcon }}</svg>{{ interestLabel }}
+          </button>
+          <button onClick="{{ tryAccess }}" style="display:inline-flex;align-items:center;gap:9px;padding:15px 24px;border-radius:12px;border:1px solid rgba(157,176,198,.28);background:rgba(12,18,30,.4);color:#C6D3E2;font:600 14px 'Archivo';cursor:pointer;" style-hover="border-color:color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);color:#EAF2FB;">{{ accessLabel }}</button>
+        </div>
+        <sc-if value="{{ showAccessNote }}" hint-placeholder-val="{{ false }}">
+          <div class="fa-in-sm" style="margin-top:14px;padding:12px 16px;border-radius:11px;border:1px solid rgba(120,140,166,.24);background:rgba(10,16,28,.6);font:400 12.5px/1.5 'Archivo';color:#9FB0C5;">{{ accessNote }}</div>
+        </sc-if>
+      </div>
+    </main>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:960,&quot;height&quot;:780},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#22D3EE&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#22D3EE&quot;,&quot;#A78BFA&quot;,&quot;#C6FF3A&quot;,&quot;#FF7A45&quot;,&quot;#FF4D8D&quot;]},&quot;motion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  INSTR = [
+    { id:'sprint', code:'NEW-4', name:'Video Sprint Timing', icon:'\uD83C\uDFC3', effort:'M',
+      blurb:'Two cones, twenty metres, your rear camera. Frame-by-frame detection of your start and finish turns a stopwatch guess into a real 10m / 20m split.',
+      measures:'10m & 20m split, max velocity', weight:'Low \u2014 the one physical axis that separates the Speedster',
+      reqs:['REAR CAMERA','SLOW-MO (60\u2013240FPS)','25m OF SPACE'],
+      steps:[
+        'Prop the phone at the finish line, or have a friend film side-on.',
+        'Sprint through both cones at full pace; the app finds the exact start and finish frames.',
+        'At 240fps that\u2019s about \u00b14ms \u2014 versus \u00b1150\u2013200ms for a human with a stopwatch.',
+      ],
+      constraint:'Needs ~25m of clear space and a phone that shoots slow-mo (iPhone 8+, most mid-range Android since 2019). It degrades gracefully to 60fps \u2014 still roughly 10\u00d7 more accurate than a stopwatch. Age-banded: no adult-elite thresholds are ever shown to a minor.',
+      warning:null },
+    { id:'tracking', code:'NEW-11', name:'Semi-Automated Film Tracking', icon:'\uD83C\uDFA5', effort:'L',
+      blurb:'Upload a clip, tap yourself once. On-device tracking follows you and auto-counts sprints, accelerations, decelerations and direction changes \u2014 and sketches a rough heat map.',
+      measures:'A+D density, sprints, a heat map \u2014 the Tape Test\u2019s off-ball counters, automated', weight:'Feeds the Tape channel (the primary evidence channel)',
+      reqs:['VIDEO UPLOAD','ON-DEVICE TRACKING'],
+      steps:[
+        'Upload a match clip and tap yourself once to start the track.',
+        'The model follows you and counts the physical events you\u2019d otherwise tally by hand.',
+        'A 15-minute manual job becomes a 2-minute one \u2014 the single biggest lever on completion.',
+      ],
+      constraint:'The most expensive thing in the battery: on-device tracking is heavy and error-prone, so it ships only once the cheaper instruments have proven the model. Built after the ground truth is solid, never before.',
+      warning:null },
+    { id:'acl', code:'NEW-10', name:'ACL Landing Screen', icon:'\uD83E\uDDB5', effort:'L',
+      blurb:'Film a drop-jump from the front. On-device pose estimation looks at knee-over-toe alignment and flags valgus collapse on landing \u2014 the core of a validated clinical landing screen.',
+      measures:'Knee valgus on landing (mechanics, not a diagnosis)', weight:'None \u2014 never a gate on anything',
+      reqs:['FRONT CAMERA','POSE ESTIMATION','16+ ONLY'],
+      steps:[
+        'Set the phone at knee height, a few metres back, facing you.',
+        'Perform a drop-jump; the model estimates knee alignment through the landing.',
+        'You get mechanics feedback and three exercises \u2014 and a prompt to show a physio.',
+      ],
+      constraint:'On-device pose estimation runs free at ~30fps, but lighting, clothing and camera angle all degrade it. This one is gated hardest of all.',
+      warning:'This is a SCREEN, not a diagnosis. It will never say \u201Cyou are at risk of an ACL tear.\u201D It says: \u201Cyour landing shows some knee collapse \u2014 here are three exercises, and it\u2019s worth showing a physio.\u201D Never for under-16s. Never used as a gate on anything. Especially relevant for female players, whose ACL risk is ~2\u20133\u00d7 higher and whose ACL injuries carry the highest burden of any \u2014 a median of 292 days lost.' },
+    { id:'cmj', code:'NEW-9', name:'Phone-in-Pocket Jump', icon:'\u26F9\uFE0F', effort:'M',
+      blurb:'Phone in a pocket or armband. The accelerometer times your flight and computes jump height \u2014 the standard countermovement-jump test, done with hardware you already carry.',
+      measures:'Lower-body explosive power (CMJ height)', weight:'Low \u2014 a Speedster corroborator, nothing more',
+      reqs:['ACCELEROMETER','POCKET / ARMBAND'],
+      steps:[
+        'Secure the phone in a front pocket or armband.',
+        'Perform a countermovement jump; the accelerometer times the flight phase.',
+        'Flight time converts to jump height, which tracks with sprint acceleration.',
+      ],
+      constraint:'Genuine but modest value: the physical channel already carries low archetype weight, and CMJ mostly corroborates the Speedster. It\u2019s built after the decision tasks, not before \u2014 a nice-to-have, honestly labelled as one.',
+      warning:null },
+  ];
+
+  state = { view:'overview', sel:0 };
+
+  componentDidMount(){ try{ this._soundOn=localStorage.getItem('fa_sound')!=='0'; }catch(e){ this._soundOn=true; } try{ const raw=localStorage.getItem('fa_lab_interest'); this._interest=raw?JSON.parse(raw):{}; }catch(e){ this._interest={}; } this.forceUpdate(); }
+
+  _audio(){ if(this._actx===undefined){ try{ this._actx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ this._actx=null; } } if(this._actx&&this._actx.state==='suspended') this._actx.resume(); return this._actx; }
+  _tone(f,d,t,g){ const c=this._audio(); if(!c||this._soundOn===false) return; const o=c.createOscillator(),a=c.createGain(); o.type=t||'sine'; o.frequency.value=f; o.connect(a); a.connect(c.destination); const n=c.currentTime; a.gain.setValueAtTime(0,n); a.gain.linearRampToValueAtTime(g||0.05,n+0.01); a.gain.exponentialRampToValueAtTime(0.0001,n+d); o.start(n); o.stop(n+d); }
+  _sfx(k){ if(this._soundOn===false) return; if(k==='click') this._tone(430,0.08,'sine',0.04); else if(k==='ok'){ this._tone(560,0.1,'triangle',0.05); setTimeout(()=>this._tone(780,0.12,'triangle',0.045),50); } }
+
+  _open(i){ this._sfx('click'); this.setState({ view:'detail', sel:i, _accessNote:false }); }
+  _toggleInterest(){ const id=this.INSTR[this.state.sel].id; this._interest=this._interest||{}; this._interest[id]=!this._interest[id]; try{ localStorage.setItem('fa_lab_interest', JSON.stringify(this._interest)); }catch(e){} this._sfx('ok'); this.forceUpdate(); }
+  _tryAccess(){ this._sfx('click'); this.setState({ _accessNote:true }); }
+  _back(){ this._sfx('click'); if(this.state.view==='detail'){ this.setState({ view:'overview', _accessNote:false }); } else { window.location.href='Assessment.dc.html'; } }
+
+  renderVals(){
+    const accent=this.props.accent ?? '#22D3EE';
+    const V=this.state.view;
+    const base={
+      accent,
+      isOverview:V==='overview', isDetail:V==='detail',
+      backLabel: V==='detail'?'All instruments':'Back to the scan',
+      back:()=>this._back(),
+    };
+
+    base.cards=this.INSTR.map((it,i)=>({
+      icon:it.icon, name:it.name, code:it.code, effort:it.effort, blurb:it.blurb,
+      status:it.id==='acl'?'16+ \u00b7 SCREEN':'IN DEV',
+      statusColor:it.id==='acl'?'#FF8A98':'#FFC65C',
+      statusBorder:it.id==='acl'?'rgba(255,90,110,.34)':'rgba(255,176,32,.34)',
+      border:it.id==='acl'?'rgba(255,90,110,.24)':'rgba(120,140,166,.2)',
+      reqs:it.reqs.map(r=>({ text:r })),
+      delay:(0.12+i*0.06).toFixed(2)+'s',
+      open:()=>this._open(i),
+    }));
+
+    const it=this.INSTR[this.state.sel]||this.INSTR[0];
+    base.dIcon=it.icon; base.dCode=it.code; base.dName=it.name; base.dEffort=it.effort; base.dBlurb=it.blurb;
+    base.dMeasures=it.measures; base.dWeight=it.weight; base.dConstraint=it.constraint;
+    base.dSteps=it.steps.map((t,i)=>({ n:String(i+1), text:t }));
+    base.dHasWarning=!!it.warning; base.dWarning=it.warning||'';
+    const interested=!!(this._interest&&this._interest[it.id]);
+    base.interestLabel=interested?'On the waitlist':'Notify me when it\u2019s ready';
+    base.interestBg=interested?'color-mix(in srgb,'+accent+' 16%,transparent)':accent;
+    base.interestColor=interested?'#EAF2FB':'#03121a';
+    base.interestShadow=interested?'none':'0 12px 34px color-mix(in srgb,'+accent+' 38%,transparent)';
+    base.interestIcon = interested ? React.createElement('path',{d:'M5 12.5l4.5 4.5L19 6.5'}) : React.createElement('path',{d:'M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0'});
+    base.accessLabel = it.id==='acl'?'Why it\u2019s gated':(it.id==='tracking'?'Why it\u2019s last':'Check my device');
+    base.showAccessNote=!!this.state._accessNote;
+    base.accessNote = it.id==='acl'
+      ? 'The camera and pose model aren\u2019t enabled here yet \u2014 and this one ships only with medical-grade framing, a 16+ gate enforced at the component level, and clear physio signposting. It will never gate anything else in the app.'
+      : it.id==='tracking'
+      ? 'On-device tracking isn\u2019t wired up here yet. It\u2019s the last build on purpose: it\u2019s the most expensive to get right, so it waits until the cheaper instruments have validated the model against the Tape Test.'
+      : 'Device access (camera / accelerometer) isn\u2019t enabled in this shell yet. When it ships, this button will request permission and run the capture on-device \u2014 nothing leaves your phone.';
+    return base;
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:#04060c;}
+  a{color:var(--accent,#22D3EE);text-decoration:none;}
+  a:hover{opacity:.92;}
+  @keyframes fa-blink{0%,100%{opacity:1;}50%{opacity:.25;}}
+  @keyframes fa-rise{0%{transform:translateY(16px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-rise-sm{0%{transform:translateY(10px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-pop{0%{transform:translate(-50%,-50%) scale(.5);opacity:0;}100%{transform:translate(-50%,-50%) scale(1);opacity:1;}}
+  @keyframes fa-deplete{from{transform:scaleX(1);}to{transform:scaleX(0);}}
+  @keyframes fa-bar{from{transform:scaleX(0);}to{transform:scaleX(1);}}
+  @keyframes fa-grow{from{transform:scaleY(0);}to{transform:scaleY(1);}}
+  .fa-in{opacity:0;animation:fa-rise .7s cubic-bezier(.2,.7,.2,1) forwards;}
+  .fa-in-sm{opacity:0;animation:fa-rise-sm .5s cubic-bezier(.2,.7,.2,1) forwards;}
+  @media (prefers-reduced-motion:reduce){*{animation-duration:.001s!important;}.fa-in,.fa-in-sm{opacity:1!important;transform:none!important;}}
+</style>
+</helmet>
+<div data-screen-label="The Nerve Test" style="position:relative;display:flex;flex-direction:column;min-height:100dvh;width:100%;overflow:hidden;background:radial-gradient(120% 90% at 50% 6%,#0e1a2d 0%,#080e1a 44%,#04060c 100%);color:#EAF2FB;font-family:'Archivo',system-ui,sans-serif;--accent:{{ accent }};">
+
+  <div style="position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.4;background:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0px,rgba(255,255,255,.02) 1px,transparent 1px,transparent 4px);"></div>
+  <div style="position:absolute;top:20px;left:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;top:20px;right:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;left:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;right:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+
+  <!-- ============ TOP BAR ============ -->
+  <header style="position:relative;z-index:6;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px clamp(26px,3.4vw,58px);">
+    <div style="min-width:120px;display:flex;">
+      <sc-if value="{{ showBack }}" hint-placeholder-val="{{ true }}">
+        <button onClick="{{ back }}" style="display:inline-flex;align-items:center;gap:8px;background:none;border:0;cursor:pointer;color:#8EA1B8;font:600 12.5px 'Archivo';padding:0;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M15 5l-7 7 7 7"/></svg>{{ backLabel }}
+        </button>
+      </sc-if>
+    </div>
+    <div style="display:flex;align-items:center;gap:11px;">
+      <svg width="20" height="20" viewBox="0 0 32 32" fill="none"><path d="M16 2 28 9v14L16 30 4 23V9z" style="stroke:var(--accent,#22D3EE);stroke-width:1.5;fill:color-mix(in srgb,var(--accent,#22D3EE) 12%,transparent);"/><path d="M11 16h10M16 11v10" style="stroke:var(--accent,#22D3EE);stroke-width:1.7;stroke-linecap:round;"/></svg>
+      <span style="font:800 12.5px 'Archivo';letter-spacing:.05em;">THE NERVE TEST</span>
+      <span style="font:600 9px 'IBM Plex Mono';letter-spacing:.16em;color:#5c6e85;border:1px solid rgba(120,140,166,.24);border-radius:6px;padding:3px 6px;">CANDIDATE</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;min-width:120px;justify-content:flex-end;">
+      <button onClick="{{ toggleSound }}" title="{{ soundTitle }}" style="display:grid;place-items:center;width:28px;height:28px;border-radius:8px;border:1px solid rgba(120,140,166,.24);background:rgba(10,16,28,.5);cursor:pointer;color:{{ soundColor }};">
+        <sc-if value="{{ soundOn }}" hint-placeholder-val="{{ true }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></sc-if>
+        <sc-if value="{{ soundOff }}" hint-placeholder-val="{{ false }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M22 9l-6 6M16 9l6 6"/></svg></sc-if>
+      </button>
+      <sc-if value="{{ isPlaying }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="width:74px;height:4px;border-radius:99px;background:rgba(120,140,166,.18);overflow:hidden;"><div style="height:100%;border-radius:99px;background:var(--accent,#22D3EE);box-shadow:0 0 10px var(--accent,#22D3EE);width:{{ roundPct }};transition:width .3s ease;"></div></div>
+          <span style="font:600 10px 'IBM Plex Mono';letter-spacing:.1em;color:color-mix(in srgb,var(--accent,#22D3EE) 80%,#fff);white-space:nowrap;">{{ roundLabel }}</span>
+        </div>
+      </sc-if>
+    </div>
+  </header>
+
+  <!-- ============ INTRO ============ -->
+  <sc-if value="{{ isIntro }}" hint-placeholder-val="{{ true }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;text-align:center;padding:20px clamp(26px,4vw,58px) 60px;">
+      <div class="fa-in" style="display:inline-flex;align-items:center;gap:10px;margin-bottom:18px;font:600 12px 'IBM Plex Mono';letter-spacing:.34em;color:var(--accent,#22D3EE);">
+        <span style="width:6px;height:6px;border-radius:50%;background:var(--accent,#22D3EE);box-shadow:0 0 8px var(--accent,#22D3EE);animation:fa-blink 1.6s ease-in-out infinite;"></span>KEEP GOING AFTER IT GOES WRONG
+      </div>
+      <h1 class="fa-in" style="margin:0 0 16px;font:800 clamp(36px,5.4vw,72px)/0.98 'Archivo';letter-spacing:-0.03em;text-wrap:balance;max-width:820px;animation-delay:.06s;">Thirty one-on-ones. What matters is what you do after you lose one.</h1>
+      <p class="fa-in" style="margin:0 0 28px;max-width:580px;font:400 clamp(15px,1.3vw,18px)/1.6 'Archivo';color:#9FB0C5;text-wrap:pretty;animation-delay:.12s;">A defender commits. Beat him &mdash; go left, knock it through, go right &mdash; or play it safe. Fast rounds, back to back. We&rsquo;re not counting how many you beat. We&rsquo;re watching whether you keep <em>attempting</em>.</p>
+
+      <sc-if value="{{ needAge }}" hint-placeholder-val="{{ false }}">
+        <div class="fa-in" style="margin-bottom:24px;padding:18px 22px;border-radius:15px;border:1px solid rgba(255,176,32,.3);background:rgba(255,176,32,.06);max-width:440px;animation-delay:.16s;">
+          <div style="font:600 12px 'Archivo';color:#FFC65C;margin-bottom:12px;">Quick check &mdash; this drill involves deliberate setbacks, so it&rsquo;s 13 and over only.</div>
+          <div style="display:flex;gap:10px;justify-content:center;">
+            <button onClick="{{ ageOver }}" style="padding:11px 20px;border-radius:11px;border:1px solid color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);background:color-mix(in srgb,var(--accent,#22D3EE) 14%,transparent);color:#F2F8FE;font:700 13.5px 'Archivo';cursor:pointer;">I&rsquo;m 13 or older</button>
+            <button onClick="{{ ageUnder }}" style="padding:11px 20px;border-radius:11px;border:1px solid rgba(120,140,166,.28);background:rgba(10,16,28,.5);color:#B4C2D4;font:600 13.5px 'Archivo';cursor:pointer;">I&rsquo;m under 13</button>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ ageReady }}" hint-placeholder-val="{{ true }}">
+        <div class="fa-in" style="margin-bottom:24px;animation-delay:.16s;">
+          <div style="font:600 10px 'IBM Plex Mono';letter-spacing:.24em;color:#61748c;margin-bottom:11px;">DEFENDER SPEED</div>
+          <div style="display:inline-flex;gap:9px;flex-wrap:wrap;justify-content:center;">
+            <sc-for list="{{ diffOptions }}" as="d" hint-placeholder-count="3">
+              <button onClick="{{ d.onPick }}" style="display:flex;flex-direction:column;align-items:center;gap:3px;min-width:118px;padding:13px 16px;border-radius:12px;border:1px solid {{ d.border }};background:{{ d.bg }};color:{{ d.color }};cursor:pointer;" style-hover="border-color:color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);">
+                <span style="font:700 14px 'Archivo';">{{ d.name }}</span>
+                <span style="font:500 10.5px 'IBM Plex Mono';color:#8496ab;">{{ d.detail }}</span>
+              </button>
+            </sc-for>
+          </div>
+        </div>
+        <button onClick="{{ start }}" class="fa-in" style="display:inline-flex;align-items:center;gap:12px;padding:17px 42px;border-radius:13px;border:0;background:var(--accent,#22D3EE);color:#03121a;font:700 16px 'Archivo';cursor:pointer;box-shadow:0 14px 46px color-mix(in srgb,var(--accent,#22D3EE) 42%,transparent);transition:transform .16s ease;animation-delay:.22s;" style-hover="transform:translateY(-2px);">
+          Start &mdash; 30 rounds
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12h13M12 6l6 6-6 6"/></svg>
+        </button>
+      </sc-if>
+      <div class="fa-in" style="margin-top:18px;max-width:520px;font:400 11.5px/1.5 'IBM Plex Mono';letter-spacing:.02em;color:#5c6e85;animation-delay:.3s;">A candidate signal, logged at zero weight. It measures resilience, not skill &mdash; and it never changes your archetype.</div>
+    </main>
+  </sc-if>
+
+  <!-- ============ BLOCKED (under 13) ============ -->
+  <sc-if value="{{ isBlocked }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;text-align:center;padding:20px clamp(26px,4vw,58px) 60px;">
+      <div class="fa-in" style="font-size:56px;margin-bottom:14px;">\uD83C\uDF31</div>
+      <h1 class="fa-in" style="margin:0 0 14px;font:800 clamp(28px,4vw,46px)/1.05 'Archivo';letter-spacing:-0.02em;max-width:640px;text-wrap:balance;animation-delay:.06s;">This one waits until you&rsquo;re a bit older.</h1>
+      <p class="fa-in" style="margin:0 0 30px;max-width:520px;font:400 15px/1.62 'Archivo';color:#B4C2D4;text-wrap:pretty;animation-delay:.12s;">The Nerve Test uses deliberate setbacks to see how you respond &mdash; and we don&rsquo;t run that with under-13s. For now, the job is simpler and better: be fearless, master both feet, and attempt more dribbles than anyone. A failed dribble isn&rsquo;t a failure. Failing <em>is</em> the job.</p>
+      <a href="Assessment.dc.html" class="fa-in" style="display:inline-flex;align-items:center;gap:10px;padding:16px 32px;border-radius:12px;background:var(--accent,#22D3EE);color:#03121a;font:700 15px 'Archivo';box-shadow:0 12px 38px color-mix(in srgb,var(--accent,#22D3EE) 40%,transparent);animation-delay:.18s;">Back to the scan</a>
+    </main>
+  </sc-if>
+
+  <!-- ============ PLAYING ============ -->
+  <sc-if value="{{ isPlaying }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:row;flex-wrap:wrap;align-items:center;justify-content:center;overflow-y:auto;padding:4px clamp(16px,3vw,42px) 30px;gap:clamp(16px,3vw,34px);">
+
+      <!-- lane -->
+      <div style="position:relative;width:min(230px,44vw);max-width:240px;aspect-ratio:3/4;flex:0 0 auto;border-radius:16px;overflow:hidden;border:1px solid rgba(120,140,166,.22);background:radial-gradient(120% 100% at 50% 0%,#0d1c2e,#091324 60%,#050c17);box-shadow:0 20px 60px rgba(0,0,0,.4) inset;">
+        <div style="position:absolute;left:24%;right:24%;top:0;height:13%;border:1.4px solid rgba(120,180,220,.18);border-top:0;border-radius:0 0 6px 6px;"></div>
+        <div style="position:absolute;left:38%;right:38%;top:0;height:6%;border:1.4px solid rgba(120,180,220,.2);border-top:0;"></div>
+        <div style="position:absolute;inset:0;border:1.4px solid rgba(120,180,220,.12);border-radius:16px;pointer-events:none;"></div>
+
+        <!-- defender -->
+        <div style="position:absolute;left:{{ defX }};top:{{ defY }};width:26px;height:26px;transform:translate(-50%,-50%);border-radius:50%;background:linear-gradient(180deg,#6ea8ff,#2f6bff);box-shadow:0 0 14px rgba(47,107,255,.5);transition:left .28s cubic-bezier(.4,.7,.3,1),top .4s cubic-bezier(.4,.7,.3,1);z-index:18;"></div>
+        <!-- ball -->
+        <div style="position:absolute;left:{{ ballX }};top:{{ ballY }};width:11px;height:11px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle at 40% 35%,#fff,#c9d6e2);box-shadow:0 0 9px rgba(255,255,255,.75);transition:left .42s cubic-bezier(.3,.7,.3,1),top .42s cubic-bezier(.3,.7,.3,1);z-index:20;"></div>
+        <!-- winger -->
+        <div style="position:absolute;left:{{ wgX }};top:{{ wgY }};transform:translate(-50%,-50%);z-index:22;transition:left .42s cubic-bezier(.3,.7,.3,1),top .42s cubic-bezier(.3,.7,.3,1);">
+          <div style="position:relative;width:24px;height:24px;border-radius:50%;background:linear-gradient(180deg,#ff5b74,#d81f3d);box-shadow:0 0 12px rgba(255,77,109,.6);"><div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-58%);width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent;border-bottom:7px solid #fff;"></div></div>
+        </div>
+
+        <sc-if value="{{ showFlash }}" hint-placeholder-val="{{ false }}">
+          <div style="position:absolute;left:50%;top:50%;z-index:30;padding:8px 15px;border-radius:999px;border:1px solid {{ flashBorder }};background:rgba(6,10,18,.9);font:700 12px 'IBM Plex Mono';letter-spacing:.12em;color:{{ flashColor }};white-space:nowrap;animation:fa-pop .28s ease;">{{ flashText }}</div>
+        </sc-if>
+      </div>
+
+      <!-- controls -->
+      <div style="display:flex;flex-direction:column;justify-content:center;width:min(400px,92vw);flex:1 1 300px;min-height:320px;">
+        <div style="display:flex;align-items:center;gap:9px;margin-bottom:14px;font:600 11px 'IBM Plex Mono';letter-spacing:.08em;color:#8EA1B8;">
+          <span style="width:7px;height:7px;border-radius:50%;background:var(--accent,#22D3EE);box-shadow:0 0 8px var(--accent,#22D3EE);flex:0 0 auto;"></span>ROUND {{ roundLabel }} &middot; {{ tellText }}
+        </div>
+        <sc-if value="{{ isTell }}" hint-placeholder-val="{{ true }}">
+          <div style="height:5px;border-radius:99px;background:rgba(120,140,166,.16);overflow:hidden;margin-bottom:16px;">
+            <div style="height:100%;border-radius:99px;background:linear-gradient(90deg,var(--accent,#22D3EE),color-mix(in srgb,var(--accent,#22D3EE) 40%,transparent));transform-origin:left;animation:fa-deplete linear forwards;animation-duration:{{ windowMs }};"></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:10px;">
+            <button onClick="{{ goLeft }}" class="fa-in-sm" style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:16px 8px;border-radius:13px;border:1px solid color-mix(in srgb,var(--accent,#22D3EE) 30%,transparent);background:rgba(10,16,28,.6);color:#EAF2FB;font:700 12.5px 'Archivo';cursor:pointer;transition:border-color .12s,background .12s,transform .12s;" style-hover="border-color:color-mix(in srgb,var(--accent,#22D3EE) 70%,transparent);transform:translateY(-2px);"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M15 5l-7 7 7 7"/></svg>Go left</button>
+            <button onClick="{{ goThrough }}" class="fa-in-sm" style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:16px 8px;border-radius:13px;border:1px solid color-mix(in srgb,var(--accent,#22D3EE) 30%,transparent);background:rgba(10,16,28,.6);color:#EAF2FB;font:700 12.5px 'Archivo';cursor:pointer;transition:border-color .12s,background .12s,transform .12s;animation-delay:.04s;" style-hover="border-color:color-mix(in srgb,var(--accent,#22D3EE) 70%,transparent);transform:translateY(-2px);"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M12 19V5M5 12l7-7 7 7"/></svg>Knock through</button>
+            <button onClick="{{ goRight }}" class="fa-in-sm" style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:16px 8px;border-radius:13px;border:1px solid color-mix(in srgb,var(--accent,#22D3EE) 30%,transparent);background:rgba(10,16,28,.6);color:#EAF2FB;font:700 12.5px 'Archivo';cursor:pointer;transition:border-color .12s,background .12s,transform .12s;animation-delay:.08s;" style-hover="border-color:color-mix(in srgb,var(--accent,#22D3EE) 70%,transparent);transform:translateY(-2px);"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M9 5l7 7-7 7"/></svg>Go right</button>
+          </div>
+          <button onClick="{{ goSafe }}" class="fa-in-sm" style="width:100%;padding:13px;border-radius:12px;border:1px solid rgba(120,140,166,.24);background:rgba(10,16,28,.4);color:#9FB0C5;font:600 13px 'Archivo';cursor:pointer;animation-delay:.12s;transition:border-color .12s,color .12s;" style-hover="border-color:rgba(157,176,198,.5);color:#C6D3E2;">Play it safe &mdash; keep the ball</button>
+        </sc-if>
+        <sc-if value="{{ notTell }}" hint-placeholder-val="{{ false }}">
+          <div style="min-height:170px;display:flex;align-items:center;justify-content:flex-start;font:600 12px 'IBM Plex Mono';letter-spacing:.2em;color:#4f627a;">{{ waitText }}</div>
+        </sc-if>
+      </div>
+    </main>
+  </sc-if>
+
+  <!-- ============ RESULTS / DEBRIEF ============ -->
+  <sc-if value="{{ isResults }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:16px clamp(20px,4vw,58px) 72px;">
+      <div style="width:100%;max-width:660px;">
+
+        <!-- debrief first, non-blaming -->
+        <div class="fa-in" style="padding:20px 24px;border-radius:16px;border:1px solid rgba(255,176,32,.34);background:rgba(255,176,32,.07);margin-bottom:24px;">
+          <div style="font:600 10px 'IBM Plex Mono';letter-spacing:.26em;color:#FFC65C;margin-bottom:9px;">FIRST, THE TRUTH</div>
+          <p style="margin:0;font:500 clamp(16px,1.9vw,20px)/1.5 'Archivo';color:#F2F8FE;text-wrap:pretty;">Rounds 9 to 12 were rigged. Nobody could have beaten them &mdash; not you, not anyone. We stacked them on purpose to see one thing: what you&rsquo;d do next.</p>
+        </div>
+
+        <div class="fa-in" style="text-align:center;margin-bottom:6px;font:600 11px 'IBM Plex Mono';letter-spacing:.38em;color:#7688a0;animation-delay:.06s;">YOUR RESPONSE</div>
+        <h1 class="fa-in" style="margin:0 0 22px;text-align:center;font:800 clamp(28px,4.2vw,50px)/1.03 'Archivo';letter-spacing:-0.025em;text-wrap:balance;animation-delay:.08s;">{{ resTitle }}</h1>
+
+        <div class="fa-in" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:22px;animation-delay:.12s;">
+          <div style="padding:16px 16px;border-radius:14px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);">
+            <div style="font:600 8.5px 'IBM Plex Mono';letter-spacing:.16em;color:#61748c;margin-bottom:7px;">ATTEMPT DROP</div>
+            <div style="font:800 26px 'Archivo';color:{{ dropColor }};line-height:1;">{{ dropPct }}</div>
+            <div style="margin-top:5px;font:500 10.5px 'Archivo';color:#9FB0C5;">after the rigged block</div>
+          </div>
+          <div style="padding:16px 16px;border-radius:14px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);">
+            <div style="font:600 8.5px 'IBM Plex Mono';letter-spacing:.16em;color:#61748c;margin-bottom:7px;">BACK TO BASELINE</div>
+            <div style="font:800 26px 'Archivo';color:var(--accent,#22D3EE);line-height:1;">{{ recoverText }}</div>
+            <div style="margin-top:5px;font:500 10.5px 'Archivo';color:#9FB0C5;">rounds to recover</div>
+          </div>
+          <div style="padding:16px 16px;border-radius:14px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);">
+            <div style="font:600 8.5px 'IBM Plex Mono';letter-spacing:.16em;color:#61748c;margin-bottom:7px;">RESILIENCE</div>
+            <div style="font:800 26px 'Archivo';color:var(--accent,#22D3EE);line-height:1;">{{ resilienceScore }}</div>
+            <div style="margin-top:5px;font:500 10.5px 'Archivo';color:#9FB0C5;">{{ resilienceLabel }}</div>
+          </div>
+        </div>
+
+        <!-- recovery curve -->
+        <div class="fa-in" style="padding:20px 22px;border-radius:18px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);margin-bottom:22px;animation-delay:.18s;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+            <span style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:#61748c;">ROUND-BY-ROUND &middot; DID YOU GO AGAIN?</span>
+          </div>
+          <div style="display:flex;align-items:flex-end;gap:3px;height:88px;position:relative;">
+            <div style="position:absolute;left:{{ rigLeft }};width:{{ rigWidth }};top:0;bottom:18px;border-radius:5px;background:rgba(255,176,32,.09);border:1px dashed rgba(255,176,32,.35);"></div>
+            <sc-for list="{{ curveBars }}" as="b" hint-placeholder-count="30">
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;justify-content:flex-end;position:relative;z-index:2;">
+                <div style="width:100%;border-radius:2px;height:{{ b.h }};background:{{ b.bg }};transform-origin:bottom;animation:fa-grow .5s cubic-bezier(.3,.8,.3,1) both;animation-delay:{{ b.delay }};"></div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="display:flex;justify-content:space-between;margin-top:8px;font:500 9px 'IBM Plex Mono';color:#5c6e85;"><span>R1</span><span style="color:#FFC65C;">RIGGED 9&ndash;12</span><span>R30</span></div>
+          <div style="display:flex;flex-wrap:wrap;gap:14px;margin-top:12px;font:500 10px 'Archivo';color:#8496ab;">
+            <span style="display:inline-flex;align-items:center;gap:6px;"><span style="width:9px;height:9px;border-radius:2px;background:var(--accent,#22D3EE);"></span>Beat him</span>
+            <span style="display:inline-flex;align-items:center;gap:6px;"><span style="width:9px;height:9px;border-radius:2px;background:#FF5A6E;"></span>Went at him, stopped</span>
+            <span style="display:inline-flex;align-items:center;gap:6px;"><span style="width:9px;height:9px;border-radius:2px;background:rgba(140,160,186,.45);"></span>Played safe / froze</span>
+          </div>
+        </div>
+
+        <p class="fa-in" style="margin:0 0 24px;font:400 clamp(14px,1.3vw,15.5px)/1.62 'Archivo';color:#C6D3E2;text-wrap:pretty;animation-delay:.24s;">{{ verdictCopy }}</p>
+
+        <div class="fa-in" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:13px;animation-delay:.3s;">
+          <button onClick="{{ again }}" style="display:inline-flex;align-items:center;gap:10px;padding:16px 32px;border-radius:12px;border:0;background:var(--accent,#22D3EE);color:#03121a;font:700 15px 'Archivo';cursor:pointer;box-shadow:0 12px 38px color-mix(in srgb,var(--accent,#22D3EE) 40%,transparent);transition:transform .16s ease;" style-hover="transform:translateY(-2px);">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:#03121a;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>Go again
+          </button>
+          <sc-if value="{{ showDone }}" hint-placeholder-val="{{ false }}">
+            <button onClick="{{ done }}" style="display:inline-flex;align-items:center;gap:9px;padding:16px 26px;border-radius:12px;border:1px solid color-mix(in srgb,var(--accent,#22D3EE) 45%,transparent);background:rgba(12,18,30,.4);color:#EAF2FB;font:600 14px 'Archivo';cursor:pointer;">Done</button>
+          </sc-if>
+          <sc-if value="{{ showToScan }}" hint-placeholder-val="{{ true }}">
+            <a href="Assessment.dc.html" style="display:inline-flex;align-items:center;gap:9px;padding:16px 24px;border-radius:12px;border:1px solid rgba(157,176,198,.28);background:rgba(12,18,30,.4);color:#C6D3E2;font:600 14px 'Archivo';">Back to the scan</a>
+          </sc-if>
+        </div>
+        <div class="fa-in" style="margin-top:20px;text-align:center;font:500 10px 'IBM Plex Mono';letter-spacing:.14em;color:#4f627a;animation-delay:.38s;">{{ dataLine }}</div>
+      </div>
+    </main>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:940,&quot;height&quot;:760},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#22D3EE&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#22D3EE&quot;,&quot;#A78BFA&quot;,&quot;#C6FF3A&quot;,&quot;#FF7A45&quot;,&quot;#FF4D8D&quot;]},&quot;motion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;embedded&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  ROUNDS = 30;
+  RIG_START = 9;   // 1-indexed
+  RIG_END = 12;
+  BASE_SUCCESS = 0.55;
+
+  DIFF = {
+    ACADEMY:{ name:'Academy', detail:'2.0s to commit', window:2000 },
+    PRO:    { name:'Pro',     detail:'1.4s to commit', window:1400 },
+    ELITE:  { name:'Elite',   detail:'1.0s to commit', window:1000 },
+  };
+
+  state = { view:'intro', diff:'PRO', ageOk:null, round:0, phase:'set', tellSide:'L', log:[], flash:null };
+
+  componentDidMount(){
+    try{ this._soundOn=localStorage.getItem('fa_sound')!=='0'; }catch(e){ this._soundOn=true; }
+    // age from a prior winger scan, if any
+    let age=null;
+    try{ const r=localStorage.getItem('fa_wing_result'); if(r){ const j=JSON.parse(r); age=j&&j.context&&j.context.age; } }catch(e){}
+    if(age==='U9'||age==='9-12'){ this.state.view='blocked'; }
+    else if(age){ this.state.ageOk=true; }
+    this.forceUpdate();
+  }
+  componentWillUnmount(){ this._clearAll(); }
+  _clearAll(){ clearTimeout(this._t1); clearTimeout(this._t2); clearTimeout(this._t3); }
+
+  _audio(){ if(this._actx===undefined){ try{ this._actx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ this._actx=null; } } if(this._actx&&this._actx.state==='suspended') this._actx.resume(); return this._actx; }
+  _tone(f,d,t,g){ const c=this._audio(); if(!c||this._soundOn===false) return; const o=c.createOscillator(),a=c.createGain(); o.type=t||'sine'; o.frequency.value=f; o.connect(a); a.connect(c.destination); const n=c.currentTime; a.gain.setValueAtTime(0,n); a.gain.linearRampToValueAtTime(g||0.05,n+0.01); a.gain.exponentialRampToValueAtTime(0.0001,n+d); o.start(n); o.stop(n+d); }
+  _sfx(k){ if(this._soundOn===false) return; if(k==='beat'){ this._tone(560,0.09,'triangle',0.05); setTimeout(()=>this._tone(820,0.12,'triangle',0.05),55); } else if(k==='stop'){ this._tone(200,0.2,'sawtooth',0.045); } else if(k==='safe'){ this._tone(360,0.1,'sine',0.04); } else if(k==='tell'){ this._tone(760,0.06,'triangle',0.04); } else if(k==='done'){ this._tone(520,0.14,'triangle',0.05); setTimeout(()=>this._tone(700,0.14,'triangle',0.05),110); setTimeout(()=>this._tone(940,0.26,'triangle',0.05),230); } else if(k==='click'){ this._tone(430,0.08,'sine',0.04); } }
+  _toggleSound(){ const on=this._soundOn===false; this._soundOn=on; try{ localStorage.setItem('fa_sound', on?'1':'0'); }catch(e){} if(on){ this._audio(); this._sfx('click'); } this.forceUpdate(); }
+
+  _win(){ return this.DIFF[this.state.diff].window; }
+
+  _ageOver(){ this._sfx('click'); this.setState({ ageOk:true }); }
+  _ageUnder(){ this._sfx('click'); this.setState({ view:'blocked' }); }
+
+  _start(){ this._sfx('click'); this.setState({ view:'playing', round:0, log:[], phase:'set', flash:null }, ()=>this._runRound()); }
+  _runRound(){
+    this._clearAll();
+    this.setState({ phase:'set', flash:null });
+    this._t1=setTimeout(()=>{
+      this._sfx('tell');
+      const tellSide=Math.random()<0.5?'L':'R';
+      this._commitStart=performance.now();
+      this.setState({ phase:'tell', tellSide });
+      this._t3=setTimeout(()=>this._resolve(null), this._win());  // froze
+    }, 460);
+  }
+  _resolve(dir){
+    if(this.state.phase!=='tell') return;
+    clearTimeout(this._t3);
+    const r1=this.state.round+1; // 1-indexed round number
+    const commitMs=Math.round(performance.now()-this._commitStart);
+    const rigged=(r1>=this.RIG_START && r1<=this.RIG_END);
+    let attempted, safe, froze, success;
+    if(dir===null){ attempted=false; safe=false; froze=true; success=null; }
+    else if(dir==='SAFE'){ attempted=false; safe=true; froze=false; success=null; }
+    else { attempted=true; safe=false; froze=false; success = rigged?false:(Math.random()<this.BASE_SUCCESS); }
+    if(attempted) this._sfx(success?'beat':'stop'); else if(safe) this._sfx('safe'); else this._sfx('stop');
+    const entry={ round:r1, dir:dir||'NONE', attempted, safe, froze, success, commitMs, rigged };
+    const log=this.state.log.concat([entry]);
+    const flash = attempted?(success?{t:'BEAT HIM!',c:'var(--accent,#22D3EE)',b:'color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent)'}:{t:'STOPPED',c:'#FF7A8A',b:'rgba(255,90,110,.5)'})
+      : safe?{t:'KEPT IT',c:'#9FB0C5',b:'rgba(157,176,198,.4)'}:{t:'FROZE',c:'#8496ab',b:'rgba(140,160,186,.4)'};
+    // animate outcome
+    const outDir = dir==='L'?'L':dir==='R'?'R':'T';
+    this.setState({ phase:'flash', log, flash, _outDir:outDir, _outSuccess:success, _outAttempt:attempted });
+    this._t2=setTimeout(()=>{
+      const next=this.state.round+1;
+      if(next>=this.ROUNDS){ this._finish(log); }
+      else { this.setState({ round:next }, ()=>this._runRound()); }
+    }, 620);
+  }
+  _mean(arr){ return arr.length? arr.reduce((s,v)=>s+v,0)/arr.length : 0; }
+  _finish(log){
+    this._sfx('done');
+    const attInWindow=(a,b)=>log.filter(l=>l.round>=a&&l.round<=b).map(l=>l.attempted?1:0);
+    const baseArr=attInWindow(1,8), postArr=attInWindow(13,20);
+    const baseline=this._mean(baseArr), post=this._mean(postArr);
+    const dropPct = baseline>0 ? Math.max(0, Math.round((1-post/baseline)*100)) : 0;
+    // rounds to recover: first round r>=13 where trailing 3-round attempt-mean >= baseline*0.9
+    let recover=null;
+    for(let r=13;r<=30;r++){
+      const w=log.filter(l=>l.round>=Math.max(13,r-2)&&l.round<=r).map(l=>l.attempted?1:0);
+      if(this._mean(w)>=baseline*0.9-1e-9){ recover=r-12; break; }
+    }
+    const recovered = recover!==null;
+    // resilience score 0-100: reward low drop + fast recovery + overall post-attempt rate
+    const dropComp=Math.max(0,1-dropPct/100);
+    const recComp = recovered? Math.max(0,1-(recover-1)/17) : 0;
+    const postComp=post;
+    const score=Math.round((dropComp*0.4+recComp*0.35+postComp*0.25)*100);
+    const label = score>=75?'Bounces straight back' : score>=50?'Recovers well' : score>=30?'Takes a knock' : 'Retreats to safety';
+    const medCommit=(a,b)=>{ const v=log.filter(l=>l.round>=a&&l.round<=b&&l.attempted).map(l=>l.commitMs).sort((x,y)=>x-y); return v.length?(v.length%2?v[(v.length-1)/2]:Math.round((v[v.length/2-1]+v[v.length/2])/2)):null; };
+    const meta={ baseline:Math.round(baseline*100), post:Math.round(post*100), dropPct, recover, recovered, score, label,
+      commitBefore:medCommit(1,8), commitAfter:medCommit(13,20), rounds:log.length, difficulty:this.state.diff };
+    try{
+      const raw=localStorage.getItem('fa_nerve_progress'); const prev=raw?JSON.parse(raw):{ runs:0, best:0 };
+      const rec={ runs:(prev.runs||0)+1, best:Math.max(prev.best||0, score), last:{ ...meta, completedAt:new Date().toISOString() }, weight:0 };
+      localStorage.setItem('fa_nerve_progress', JSON.stringify(rec));
+    }catch(e){}
+    this._meta=meta; this._log=log;
+    this.setState({ view:'results' });
+    if(this.props.embedded && typeof this.props.onDone==='function'){ try{ this.props.onDone({ resilience:score }, meta); }catch(e){} }
+  }
+  _again(){ this._sfx('click'); this._start(); }
+  _done(){ if(typeof this.props.onDone==='function'){ try{ this.props.onDone({ resilience:this._meta&&this._meta.score }, this._meta); }catch(e){} } }
+  _back(){ this._sfx('click'); if(this.state.view==='playing'){ this._clearAll(); this.setState({ view:'intro', phase:'set' }); } else { window.location.href='Assessment.dc.html'; } }
+
+  renderVals(){
+    const accent=this.props.accent ?? '#22D3EE';
+    const V=this.state.view, ph=this.state.phase;
+    const soundOn=this._soundOn!==false;
+    const embedded=!!this.props.embedded;
+
+    const base={
+      accent,
+      isIntro:V==='intro', isBlocked:V==='blocked', isPlaying:V==='playing', isResults:V==='results',
+      showBack: !(embedded && V==='intro'),
+      backLabel: V==='playing'?'Quit':'Back',
+      soundOn, soundOff:!soundOn, soundColor:soundOn?accent:'#61748c', soundTitle:soundOn?'Sound on':'Sound off',
+      toggleSound:()=>this._toggleSound(), back:()=>this._back(),
+      start:()=>this._start(), again:()=>this._again(), done:()=>this._done(),
+      ageOver:()=>this._ageOver(), ageUnder:()=>this._ageUnder(),
+      needAge:this.state.ageOk!==true, ageReady:this.state.ageOk===true,
+      goLeft:()=>this._resolve('L'), goRight:()=>this._resolve('R'), goThrough:()=>this._resolve('T'), goSafe:()=>this._resolve('SAFE'),
+      windowMs:this._win()+'ms',
+      isTell:ph==='tell', notTell:ph!=='tell',
+      waitText: ph==='set'?'HE\u2019S SETTING\u2026':'',
+      roundLabel:(Math.min(this.state.round+1,this.ROUNDS))+' / '+this.ROUNDS,
+      roundPct:Math.round((this.state.round/this.ROUNDS)*100)+'%',
+      showDone:embedded, showToScan:!embedded,
+    };
+
+    // difficulty
+    base.diffOptions=Object.keys(this.DIFF).map(k=>{
+      const d=this.DIFF[k]; const sel=this.state.diff===k;
+      return { name:d.name, detail:d.detail, onPick:()=>{ this._sfx('click'); this.setState({ diff:k }); },
+        border:sel?'color-mix(in srgb,'+accent+' 70%,transparent)':'rgba(120,140,166,.22)',
+        bg:sel?'color-mix(in srgb,'+accent+' 15%,transparent)':'rgba(10,16,28,.5)',
+        color:sel?'#F2F8FE':'#B4C2D4' };
+    });
+
+    // lane token positions by phase
+    const tell=this.state.tellSide;
+    let defX=50, defY=42, wgX=50, wgY=82, ballX=50, ballY=86;
+    if(ph==='set'){ defX=50; defY=42; }
+    else if(ph==='tell'){ defX = tell==='L'?38:62; defY=42; }
+    else if(ph==='flash'){
+      defX = tell==='L'?38:62;
+      if(this.state._outAttempt){
+        if(this.state._outSuccess){ const d=this.state._outDir; wgX = d==='L'?28:d==='R'?72:50; wgY=14; ballX=wgX; ballY=18; }
+        else { wgY=54; ballY=58; defX=50; defY=64; }
+      } else { /* safe/froze: stay */ wgY=82; ballY=86; }
+    }
+    base.defX=defX+'%'; base.defY=defY+'%'; base.wgX=wgX+'%'; base.wgY=wgY+'%'; base.ballX=ballX+'%'; base.ballY=ballY+'%';
+    base.tellText = ph==='tell' ? (tell==='L'?'he leans left':'he leans right') : ph==='set'?'watch him':'\u00a0';
+    const f=this.state.flash; base.showFlash=ph==='flash'&&!!f; base.flashText=f?f.t:''; base.flashColor=f?f.c:'#fff'; base.flashBorder=f?f.b:'transparent';
+
+    // results
+    Object.assign(base,{ resTitle:'', dropPct:'0%', dropColor:accent, recoverText:'\u2014', resilienceScore:'0', resilienceLabel:'', curveBars:[], rigLeft:'26.6%', rigWidth:'13.3%', verdictCopy:'', dataLine:'' });
+    const m=this._meta, log=this._log;
+    if(m && V==='results'){
+      base.resTitle = m.dropPct<=15 ? 'You barely blinked.' : m.dropPct<=40 ? 'You wobbled \u2014 then went again.' : 'The failures got in your head.';
+      base.dropPct=m.dropPct+'%';
+      base.dropColor = m.dropPct<=15?accent : m.dropPct<=40?'#FFB020':'#FF5A6E';
+      base.recoverText = m.recovered? String(m.recover) : '\u2014';
+      base.resilienceScore=String(m.score);
+      base.resilienceLabel=m.label;
+      // curve bars
+      const rigL=((this.RIG_START-1)/this.ROUNDS)*100, rigW=((this.RIG_END-this.RIG_START+1)/this.ROUNDS)*100;
+      base.rigLeft=rigL.toFixed(1)+'%'; base.rigWidth=rigW.toFixed(1)+'%';
+      base.curveBars=(log||[]).map((l,i)=>{
+        const h = l.attempted?'100%':(l.safe?'40%':'26%');
+        const bg = l.attempted?(l.success?accent:'#FF5A6E'):'rgba(140,160,186,.45)';
+        return { h, bg, delay:(i*0.014).toFixed(3)+'s' };
+      });
+      const cb=m.commitBefore, ca=m.commitAfter;
+      const timid = (cb!=null&&ca!=null&&ca>cb+120);
+      base.verdictCopy = (m.dropPct<=15
+        ? 'After four take-ons that could not be won, your attempt rate held. That is the rarest thing on this screen. The Premier League average take-on success is 36.7% \u2014 elite wingers fail almost two in three and go again immediately. You already do the hard part.'
+        : m.dropPct<=40
+        ? 'After the rigged block your attempt rate dropped '+m.dropPct+'%'+(m.recovered?', and it took you '+m.recover+' round'+(m.recover===1?'':'s')+' to get back':', and it hadn\u2019t fully recovered by the end')+'. That dip is normal \u2014 the Premier League average take-on success is 36.7%, so even the best fail most of the time. The trainable skill is shortening the dip.'
+        : 'After four failures you stopped backing yourself \u2014 attempts fell '+m.dropPct+'%'+(m.recovered?' and took '+m.recover+' rounds to return':' and didn\u2019t return')+'. This is the Artist\u2019s classic collapse, and here is the good news: it is the single most trainable thing about you. The best dribblers in the world fail more than they succeed. Attempting is the job.')
+        + (timid?' Your decisions also slowed after the block \u2014 hesitation is the first symptom.':'');
+      base.dataLine='CANDIDATE \u00b7 WEIGHT 0 \u00b7 30 ROUNDS \u00b7 '+this.DIFF[m.difficulty].name.toUpperCase()+' \u00b7 RESILIENCE '+m.score;
+    }
+    return base;
+  }
+}
+</script>
+</body>
+</html>
