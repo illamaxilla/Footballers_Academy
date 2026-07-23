@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:#04060c;}
+  a{color:var(--accent,#22D3EE);text-decoration:none;}
+  a:hover{opacity:.92;}
+  @keyframes fa-blink{0%,100%{opacity:1;}50%{opacity:.25;}}
+  @keyframes fa-rise{0%{transform:translateY(16px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-rise-sm{0%{transform:translateY(10px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-flash{0%{opacity:0;}18%{opacity:.9;}100%{opacity:0;}}
+  .fa-in{opacity:0;animation:fa-rise .7s cubic-bezier(.2,.7,.2,1) forwards;}
+  .fa-in-sm{opacity:0;animation:fa-rise-sm .5s cubic-bezier(.2,.7,.2,1) forwards;}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;}.fa-in,.fa-in-sm{opacity:1!important;transform:none!important;}}
+</style>
+</helmet>
+<div data-screen-label="Break the Pattern" style="position:relative;display:flex;flex-direction:column;min-height:100dvh;width:100%;overflow:hidden;background:radial-gradient(120% 90% at 50% 6%,#0e1a2d 0%,#080e1a 44%,#04060c 100%);color:#EAF2FB;font-family:'Archivo',system-ui,sans-serif;--accent:{{ accent }};">
+
+  <div style="position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.4;background:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0px,rgba(255,255,255,.02) 1px,transparent 1px,transparent 4px);"></div>
+  <div style="position:absolute;top:20px;left:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;top:20px;right:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;left:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;right:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+
+  <!-- TOP BAR -->
+  <header style="position:relative;z-index:6;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px clamp(26px,3.4vw,58px);">
+    <div style="min-width:120px;display:flex;">
+      <sc-if value="{{ showBack }}" hint-placeholder-val="{{ true }}">
+        <button onClick="{{ back }}" style="display:inline-flex;align-items:center;gap:8px;background:none;border:0;cursor:pointer;color:#8EA1B8;font:600 12.5px 'Archivo';padding:0;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M15 5l-7 7 7 7"/></svg>Back
+        </button>
+      </sc-if>
+    </div>
+    <div style="display:flex;align-items:center;gap:11px;">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" style="stroke:var(--accent,#22D3EE);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;"><path d="M4 8h6l-2-3M20 16h-6l2 3"/><path d="M13 4l-2 7h4l-2 9"/></svg>
+      <span style="font:800 13px 'Archivo';letter-spacing:.05em;">BREAK THE <span style="color:var(--accent,#22D3EE);">PATTERN</span></span>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;min-width:120px;justify-content:flex-end;">
+      <button onClick="{{ toggleSound }}" title="{{ soundTitle }}" style="display:grid;place-items:center;width:28px;height:28px;border-radius:8px;border:1px solid rgba(120,140,166,.24);background:rgba(10,16,28,.5);cursor:pointer;color:{{ soundColor }};">
+        <sc-if value="{{ soundOn }}" hint-placeholder-val="{{ true }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></sc-if>
+        <sc-if value="{{ soundOff }}" hint-placeholder-val="{{ false }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M22 9l-6 6M16 9l6 6"/></svg></sc-if>
+      </button>
+    </div>
+  </header>
+
+  <!-- INTRO -->
+  <sc-if value="{{ isIntro }}" hint-placeholder-val="{{ true }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;text-align:center;padding:20px clamp(26px,4vw,58px) 60px;">
+      <div class="fa-in" style="display:inline-flex;align-items:center;gap:10px;margin-bottom:20px;font:600 12px 'IBM Plex Mono';letter-spacing:.4em;color:var(--accent,#22D3EE);">
+        <span style="width:6px;height:6px;border-radius:50%;background:var(--accent,#22D3EE);box-shadow:0 0 8px var(--accent,#22D3EE);animation:fa-blink 1.6s ease-in-out infinite;"></span>CREATIVITY · SPOT THE MOMENT
+      </div>
+      <h1 class="fa-in" style="margin:0 0 16px;font:800 clamp(36px,5.4vw,74px)/0.97 'Archivo';letter-spacing:-0.03em;text-wrap:balance;max-width:920px;animation-delay:.06s;">The safe ball goes<br>round and round.</h1>
+      <p class="fa-in" style="margin:0 0 26px;max-width:640px;font:400 clamp(15px,1.3vw,18px)/1.6 'Archivo';color:#9FB0C5;text-wrap:pretty;animation-delay:.12s;">Watch the possession loop — sideways, safe, predictable. Every time it comes round, a runner flashes free for a heartbeat and nobody plays it. <strong style="color:#EAF2FB;">Your job is to be the one who does.</strong> Hit BREAK the instant the line can be split — too eager and you force it into trouble, too safe and the moment's gone.</p>
+
+      <div class="fa-in" style="margin-bottom:12px;font:600 10px 'IBM Plex Mono';letter-spacing:.28em;color:#61748c;animation-delay:.2s;">CHOOSE YOUR LEVEL</div>
+      <div class="fa-in" style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;max-width:560px;margin-bottom:34px;animation-delay:.22s;">
+        <sc-for list="{{ diffs }}" as="d" hint-placeholder-count="3">
+          <button onClick="{{ d.pick }}" style="flex:1 1 150px;min-width:148px;text-align:left;padding:16px 18px;border-radius:15px;border:1px solid {{ d.border }};background:{{ d.bg }};cursor:pointer;transition:border-color .14s ease,background .14s ease;">
+            <div style="font:800 16px 'Archivo';color:{{ d.titleColor }};margin-bottom:3px;">{{ d.name }}</div>
+            <div style="font:400 11.5px/1.45 'Archivo';color:#9FB0C5;">{{ d.desc }}</div>
+          </button>
+        </sc-for>
+      </div>
+
+      <button onClick="{{ begin }}" class="fa-in" style="display:inline-flex;align-items:center;gap:12px;padding:18px 46px;border-radius:13px;border:0;background:var(--accent,#22D3EE);color:#0b0518;font:700 16px 'Archivo';cursor:pointer;box-shadow:0 14px 46px color-mix(in srgb,var(--accent,#22D3EE) 42%,transparent);transition:transform .16s ease;animation-delay:.3s;" style-hover="transform:translateY(-2px);">
+        Read the first loop
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12h13M12 6l6 6-6 6"/></svg>
+      </button>
+      <div class="fa-in" style="margin-top:18px;font:500 10px 'IBM Plex Mono';letter-spacing:.14em;color:#4f627a;animation-delay:.36s;">{{ bestLine }}</div>
+    </main>
+  </sc-if>
+
+  <!-- PLAY -->
+  <sc-if value="{{ isPlay }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow:hidden;gap:12px;padding:0 clamp(16px,2.4vw,42px) 20px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;width:100%;max-width:720px;">
+        <div style="text-align:left;min-width:96px;">
+          <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.2em;color:#61748c;">ROUND</div>
+          <div style="font:800 24px 'IBM Plex Mono';color:#F2F8FE;line-height:1.05;">{{ trialLabel }}</div>
+        </div>
+        <div style="text-align:center;">
+          <div ref="{{ modeRef }}" style="font:800 16px 'Archivo';letter-spacing:.03em;color:#9FB0C5;transition:color .15s ease;">READ THE PATTERN</div>
+          <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.14em;color:#7688a0;margin-top:2px;">{{ modeSub }}</div>
+        </div>
+        <div style="text-align:right;min-width:96px;">
+          <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.2em;color:#61748c;">SPRUNG</div>
+          <div style="font:800 24px 'IBM Plex Mono';color:var(--accent,#22D3EE);line-height:1.05;">{{ sprungLabel }}</div>
+        </div>
+      </div>
+
+      <div style="position:relative;width:100%;max-width:720px;flex:1;min-height:0;border-radius:18px;overflow:hidden;border:1px solid rgba(120,140,166,.22);touch-action:none;">
+        <canvas ref="{{ canvasRef }}" onPointerDown="{{ onTap }}" style="display:block;width:100%;height:100%;cursor:pointer;"></canvas>
+        <div ref="{{ flashRef }}" style="position:absolute;inset:0;pointer-events:none;opacity:0;"></div>
+        <div ref="{{ verdictRef }}" style="position:absolute;left:0;right:0;top:14px;text-align:center;pointer-events:none;opacity:0;font:800 26px 'Archivo';letter-spacing:.02em;"></div>
+      </div>
+
+      <button onClick="{{ onTap }}" ref="{{ breakBtnRef }}" style="width:100%;max-width:720px;padding:16px;border-radius:14px;border:0;background:#33405a;color:#8EA1B8;font:800 17px 'Archivo';letter-spacing:.08em;cursor:pointer;transition:background .12s ease,color .12s ease;">BREAK</button>
+    </main>
+  </sc-if>
+
+  <!-- OVER -->
+  <sc-if value="{{ isOver }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;text-align:center;padding:20px clamp(26px,4vw,58px) 70px;">
+      <div class="fa-in" style="display:inline-flex;align-items:center;gap:9px;margin-bottom:16px;padding:6px 14px;border:1px solid color-mix(in srgb,var(--accent,#22D3EE) 32%,transparent);border-radius:999px;font:600 10px 'IBM Plex Mono';letter-spacing:.28em;color:var(--accent,#22D3EE);">CREATIVITY REPORT</div>
+      <div class="fa-in" style="font:600 10px 'IBM Plex Mono';letter-spacing:.24em;color:#7688a0;margin-bottom:6px;animation-delay:.05s;">BREAK RATING</div>
+      <h1 class="fa-in" style="margin:0 0 2px;font:800 clamp(46px,8vw,96px)/0.9 'IBM Plex Mono';letter-spacing:-0.02em;color:{{ rateColor }};animation-delay:.08s;">{{ rateValue }}</h1>
+      <div class="fa-in" style="font:600 11px 'IBM Plex Mono';letter-spacing:.2em;color:#7688a0;margin-bottom:8px;animation-delay:.09s;">PATTERNS BROKEN AT THE RIGHT MOMENT</div>
+      <div class="fa-in" style="font:700 13px 'Archivo';color:#B4C2D4;margin-bottom:18px;max-width:560px;text-wrap:pretty;animation-delay:.1s;">{{ rateVerdict }}</div>
+
+      <div class="fa-in" style="width:100%;max-width:520px;margin:0 auto 22px;animation-delay:.16s;">
+        <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.2em;color:#7688a0;margin-bottom:9px;text-align:left;">HOW YOUR ROUNDS ENDED</div>
+        <div style="display:flex;height:26px;border-radius:8px;overflow:hidden;border:1px solid rgba(120,140,166,.2);">
+          <sc-for list="{{ mix }}" as="m" hint-placeholder-count="3">
+            <div style="width:{{ m.width }};background:{{ m.color }};display:grid;place-items:center;font:800 10px 'IBM Plex Mono';color:#0b0518;">{{ m.pct }}</div>
+          </sc-for>
+        </div>
+        <div style="display:flex;gap:16px;justify-content:center;margin-top:9px;flex-wrap:wrap;">
+          <sc-for list="{{ mix }}" as="m" hint-placeholder-count="3">
+            <span style="display:inline-flex;align-items:center;gap:6px;font:700 10px 'IBM Plex Mono';letter-spacing:.06em;color:#9FB0C5;"><span style="width:9px;height:9px;border-radius:2px;background:{{ m.color }};"></span>{{ m.name }}</span>
+          </sc-for>
+        </div>
+      </div>
+
+      <div class="fa-in" style="max-width:600px;margin-bottom:20px;padding:18px 22px;border-radius:14px;border:1px dashed rgba(120,140,166,.3);background:rgba(10,16,28,.4);text-align:left;animation-delay:.26s;">
+        <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.2em;color:#7688a0;margin-bottom:8px;">WHAT THIS LEANS TOWARD</div>
+        <div style="font:500 14px/1.6 'Archivo';color:#C6D3E2;">{{ softRead }}</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;">
+          <sc-for list="{{ traitChips }}" as="c" hint-placeholder-count="2">
+            <span style="display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border-radius:8px;border:1px solid color-mix(in srgb,var(--accent,#22D3EE) 30%,transparent);background:color-mix(in srgb,var(--accent,#22D3EE) 8%,transparent);font:700 11px 'IBM Plex Mono';letter-spacing:.06em;color:#C6D3E2;"><span style="font-weight:800;color:var(--accent,#22D3EE);">{{ c.key }}</span>{{ c.label }}</span>
+          </sc-for>
+        </div>
+        <div style="margin-top:12px;font:500 11px/1.5 'Archivo';color:#7688a0;text-wrap:pretty;">Breaking a pattern is <strong style="color:#9FB0C5;">risk and vision together</strong> — spotting the gap the pattern hides, and daring to play it. We read the balance of the two.</div>
+      </div>
+
+      <div class="fa-in" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:14px;animation-delay:.32s;">
+        <button onClick="{{ retake }}" style="display:inline-flex;align-items:center;gap:11px;padding:18px 44px;border-radius:13px;border:0;background:var(--accent,#22D3EE);color:#0b0518;font:700 16px 'Archivo';cursor:pointer;box-shadow:0 14px 46px color-mix(in srgb,var(--accent,#22D3EE) 42%,transparent);transition:transform .16s ease;" style-hover="transform:translateY(-2px);">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" style="stroke:#0b0518;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
+          Go again
+        </button>
+        <a href="Assessment.dc.html" style="display:inline-flex;align-items:center;gap:9px;padding:18px 26px;border-radius:13px;border:1px solid rgba(157,176,198,.28);background:rgba(12,18,30,.4);color:#C6D3E2;font:600 15px 'Archivo';" style-hover="border-color:color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);color:#EAF2FB;">Back to the scan</a>
+      </div>
+      <div class="fa-in" style="margin-top:20px;font:500 10px 'IBM Plex Mono';letter-spacing:.14em;color:#4f627a;animation-delay:.38s;">{{ dataLine }}</div>
+    </main>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1100,&quot;height&quot;:840},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#22D3EE&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#22D3EE&quot;,&quot;#A78BFA&quot;,&quot;#C6FF3A&quot;,&quot;#FF7A45&quot;,&quot;#FF4D8D&quot;]},&quot;motion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;embedded&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;onDone&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;(counts:any, meta:any)=&gt;void&quot;}}">
+class Component extends DCLogic {
+  ROUNDS = 7;
+  NODES = [ {x:0.28,y:0.30}, {x:0.44,y:0.20}, {x:0.58,y:0.40}, {x:0.44,y:0.64}, {x:0.28,y:0.74} ];
+  RING = [0,1,2,3,4];
+  DEFS = [ {x:0.64,y:0.26}, {x:0.66,y:0.5}, {x:0.64,y:0.74}, {x:0.5,y:0.5} ];
+  RD = [
+    { brk:2, breaker:{x:0.82,y:0.30} }, { brk:2, breaker:{x:0.82,y:0.66} },
+    { brk:1, breaker:{x:0.80,y:0.22} }, { brk:3, breaker:{x:0.80,y:0.74} },
+    { brk:2, breaker:{x:0.85,y:0.48} }, { brk:1, breaker:{x:0.82,y:0.38} },
+    { brk:3, breaker:{x:0.82,y:0.60} },
+  ];
+  DIFFS = {
+    academy: { name:'Academy', desc:'Slow loop, the gap is signposted.', dwell:920, travel:280, hideLane:false, liveRings:3 },
+    pro:     { name:'Pro',     desc:'Game-tempo recycling.',            dwell:680, travel:240, hideLane:false, liveRings:2 },
+    elite:   { name:'Elite',   desc:'Fast, and the gap goes dark.',     dwell:520, travel:200, hideLane:true,  liveRings:2 },
+  };
+  ORDER = ['academy','pro','elite'];
+  DEMO_RINGS = 2;
+
+  state = { view:'intro', diff:'pro', round:0 };
+
+  componentDidMount(){
+    try { this._soundOn = localStorage.getItem('fa_sound') !== '0'; } catch(e){ this._soundOn=true; }
+    try { const p=JSON.parse(localStorage.getItem('fa_am_break')||'null'); this._bestR = p&&p.measures? p.measures.breakRatingPct : null; } catch(e){ this._bestR=null; }
+    this._onResize=()=>{ this._resize(); }; window.addEventListener('resize', this._onResize);
+  }
+  componentWillUnmount(){ window.removeEventListener('resize', this._onResize); this._stop(); clearTimeout(this._nx); }
+
+  // ---------- audio ----------
+  _audio(){ if(this._actx===undefined){ try{ this._actx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ this._actx=null; } } if(this._actx&&this._actx.state==='suspended') this._actx.resume(); return this._actx; }
+  _tone(f,d,t,g,slide){ const c=this._audio(); if(!c||this._soundOn===false) return; const o=c.createOscillator(),a=c.createGain(); o.type=t||'sine'; o.frequency.setValueAtTime(f,c.currentTime); if(slide) o.frequency.exponentialRampToValueAtTime(Math.max(20,slide),c.currentTime+d); o.connect(a); a.connect(c.destination); const n=c.currentTime; a.gain.setValueAtTime(0.0001,n); a.gain.exponentialRampToValueAtTime(g||0.05,n+0.008); a.gain.exponentialRampToValueAtTime(0.0001,n+d); o.start(n); o.stop(n+d+0.02); }
+  _haptic(ms){ try{ if(navigator.vibrate) navigator.vibrate(ms||8); }catch(e){} }
+  _sfx(k){ if(this._soundOn===false) return;
+    if(k==='pass'){ this._tone(430,0.05,'sine',0.03,520); }
+    else if(k==='open'){ this._tone(880,0.08,'sine',0.04,1100); }
+    else if(k==='sprung'){ this._tone(660,0.09,'triangle',0.055); setTimeout(()=>this._tone(990,0.13,'sine',0.045),55); setTimeout(()=>this._tone(1320,0.16,'sine',0.04),120); }
+    else if(k==='forced'){ this._tone(240,0.26,'sawtooth',0.055,120); }
+    else if(k==='held'){ this._tone(320,0.22,'sine',0.045,240); }
+    else if(k==='whistle'){ this._tone(900,0.16,'sine',0.05,1200); }
+    else if(k==='tap'){ this._tone(520,0.05,'square',0.03); }
+  }
+  _toggleSound(){ const on=this._soundOn===false; this._soundOn=on; try{ localStorage.setItem('fa_sound', on?'1':'0'); }catch(e){} if(on){ this._audio(); this._sfx('tap'); } this.forceUpdate(); }
+
+  // ---------- canvas ----------
+  _resize(){ const cv=this._canvas; if(!cv) return; const r=cv.getBoundingClientRect(); const dpr=Math.min(2,window.devicePixelRatio||1); cv.width=Math.max(2,Math.round(r.width*dpr)); cv.height=Math.max(2,Math.round(r.height*dpr)); this._dpr=dpr; this._W=r.width; this._H=r.height; }
+  _cvRef(el){ this._canvas=el; if(el){ requestAnimationFrame(()=>this._resize()); } }
+  _flRef(el){ this._flashEl=el; }
+  _modeRef(el){ this._modeEl=el; }
+  _verdictRef(el){ this._verdictEl=el; }
+  _breakBtnRef(el){ this._breakBtn=el; }
+  _px(nx,ny){ const padX=this._W*0.08, padY=this._H*0.09; return [ padX + nx*(this._W-2*padX), padY + ny*(this._H-2*padY) ]; }
+
+  // ---------- flow ----------
+  _pickDiff(d){ this._sfx('tap'); this.setState({ diff:d }); }
+  _begin(){
+    this._audio(); this._sfx('whistle'); this._haptic(12);
+    this._cfg=this.DIFFS[this.state.diff];
+    const order=this.RD.map((_,i)=>i);
+    for(let i=order.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [order[i],order[j]]=[order[j],order[i]]; }
+    this._order=order; this._log=[]; this._sprung=0;
+    this.setState({ view:'play', round:0 }, ()=>{ this._resize(); this._startRound(0); this._start(); });
+  }
+
+  _startRound(i){
+    const rd=this.RD[this._order[i%this._order.length]]; this._rd=rd; this._brk=rd.brk;
+    this._mode='demo'; this._ringInMode=0; this._stepIdx=0; this._src=0; this._dst=this.RING[1];
+    this._phase='travel'; this._pT=performance.now(); this._winOpen=false; this._resolved=false; this._breakerFwd=0;
+    this.setState({ round:i });
+    if(this._breakBtn){ this._breakBtn.style.background='#33405a'; this._breakBtn.style.color='#8EA1B8'; }
+    if(this._verdictEl) this._verdictEl.style.opacity='0';
+  }
+
+  _start(){ this._running=true; this._raf=requestAnimationFrame((t)=>this._loop(t)); }
+  _stop(){ this._running=false; if(this._raf) cancelAnimationFrame(this._raf); }
+  _loop(now){
+    if(!this._running) return; this._raf=requestAnimationFrame((tt)=>this._loop(tt));
+    if((!this._W||!this._H)&&this._canvas) this._resize();
+    if(this.state.view==='play' && !this._resolved) this._tick(now);
+    this._draw(now);
+  }
+  _tick(now){
+    const c=this._cfg; const el=now-this._pT;
+    if(this._phase==='travel'){
+      if(el>=c.travel){ this._phase='dwell'; this._pT=now; this._sfx('pass');
+        if(this._dst===this._brk){ this._winOpen=true; this._winStart=now; this._breakerFwd=0; this._sfx('open'); this._updBtn(true); }
+      }
+    } else { // dwell
+      if(this._winOpen){ this._breakerFwd=Math.min(1,(now-this._winStart)/(c.dwell)); }
+      if(el>=c.dwell){
+        if(this._winOpen){ this._winOpen=false; this._updBtn(false); }
+        this._src=this._dst; this._stepIdx=(this._stepIdx+1)%this.RING.length;
+        this._dst=this.RING[(this.RING.indexOf(this._src)+1)%this.RING.length];
+        this._phase='travel'; this._pT=now;
+        if(this._stepIdx===0){ // completed a ring
+          this._ringInMode++;
+          if(this._mode==='demo' && this._ringInMode>=this.DEMO_RINGS){ this._mode='live'; this._ringInMode=0; if(this._modeEl){ this._modeEl.textContent='BREAK IT NOW'; this._modeEl.style.color='#C6FF3A'; } this._updBtn(false,true); }
+          else if(this._mode==='live' && this._ringInMode>=c.liveRings){ this._resolve('held'); }
+        }
+      }
+    }
+  }
+  _updBtn(open,live){
+    const b=this._breakBtn; if(!b) return;
+    if(this._mode==='live'||live){ if(open){ b.style.background=this._accent||'#22D3EE'; b.style.color='#0b0518'; } else { b.style.background='#2a3346'; b.style.color='#C6D3E2'; } }
+  }
+
+  _onTap(){
+    if(this.state.view!=='play'||this._resolved) return;
+    if(this._mode!=='live'){ this._flash('rgba(120,140,166,.2)'); return; }
+    const now=performance.now(); const off = this._winOpen? Math.round(now-this._winStart) : null;
+    this._resolve(this._winOpen?'sprung':'forced', off);
+  }
+
+  _resolve(v, off){
+    this._resolved=true; this._outcome=v; this._sfx(v);
+    this._log.push({ round:this.state.round, rd:this._order[this.state.round], verdict:v, offsetMs: off!=null?off:null });
+    if(v==='sprung'){ this._sprung++; this._flash('color-mix(in srgb,'+(this._accent||'#22D3EE')+' 30%,transparent)'); this._showVerdict('SPRUNG','#3BE07A'); this._haptic(18); this._breakDrive=performance.now(); }
+    else if(v==='forced'){ this._flash('rgba(255,74,95,.28)'); this._showVerdict('FORCED IT','#FF5A6E'); this._haptic(10); }
+    else { this._flash('rgba(255,176,32,.18)'); this._showVerdict('KEPT IT SAFE','#FFB020'); this._haptic(8); }
+    if(this._breakBtn){ this._breakBtn.style.background='#33405a'; this._breakBtn.style.color='#8EA1B8'; }
+    clearTimeout(this._nx);
+    this._nx=setTimeout(()=>{ const n=this.state.round+1; if(n>=this.ROUNDS) this._gameOver(); else this._startRound(n); }, 1350);
+  }
+  _showVerdict(t,col){ const el=this._verdictEl; if(!el) return; el.textContent=t; el.style.color=col; el.style.transition='none'; el.style.opacity='0'; el.style.transform='translateY(-8px)'; void el.offsetWidth; el.style.transition='opacity .3s ease,transform .3s ease'; el.style.opacity='1'; el.style.transform='translateY(0)'; }
+
+  // ---------- drawing ----------
+  _drawBall(ctx,x,y,r){ ctx.shadowColor='rgba(255,255,255,.8)'; ctx.shadowBlur=8; const g=ctx.createRadialGradient(x-r*0.3,y-r*0.35,r*0.15,x,y,r); g.addColorStop(0,'#ffffff'); g.addColorStop(1,'#cfe0ee'); ctx.fillStyle=g; ctx.beginPath(); ctx.arc(x,y,r,0,7); ctx.fill(); ctx.shadowBlur=0; }
+  _token(ctx,x,y,r,fill,stroke){ ctx.fillStyle='rgba(0,0,0,.3)'; ctx.beginPath(); ctx.ellipse(x,y+r*0.8,r*0.9,r*0.3,0,0,7); ctx.fill(); ctx.fillStyle=fill; ctx.strokeStyle=stroke||'rgba(255,255,255,.2)'; ctx.lineWidth=1.5; ctx.beginPath(); ctx.arc(x,y-r*0.16,r,0,7); ctx.fill(); ctx.stroke(); }
+  _chevron(ctx,x,y,r,col){ ctx.save(); ctx.translate(x,y); ctx.fillStyle=col; ctx.beginPath(); ctx.moveTo(-r,0); ctx.lineTo(r*0.55,-r*0.85); ctx.lineTo(r*0.15,0); ctx.lineTo(r*0.55,r*0.85); ctx.closePath(); ctx.fill(); ctx.restore(); }
+  _lerp(a,b,t){ return a+(b-a)*Math.max(0,Math.min(1,t)); }
+
+  _ballPos(now){
+    const c=this._cfg; const s=this.NODES[this._src], d=this.NODES[this._dst];
+    if(this._phase==='travel'){ const t=Math.min(1,(now-this._pT)/c.travel); return { x:this._lerp(s.x,d.x,t), y:this._lerp(s.y,d.y,t) }; }
+    return { x:d.x, y:d.y };
+  }
+
+  _draw(now){
+    const ctx=this._canvas&&this._canvas.getContext('2d'); if(!ctx) return;
+    const W=this._W,H=this._H,dpr=this._dpr||1; if(!W||!H||!isFinite(W)) return;
+    const acc=this._accent||'#22D3EE'; const rd=this._rd; if(!rd){ ctx.save(); ctx.scale(dpr,dpr); ctx.clearRect(0,0,W,H); ctx.restore(); return; }
+    ctx.save(); ctx.scale(dpr,dpr); ctx.clearRect(0,0,W,H);
+    const bg=ctx.createLinearGradient(0,0,W,0); bg.addColorStop(0,'#0d1c2e'); bg.addColorStop(0.6,'#0a1728'); bg.addColorStop(1,'#0a1b2b'); ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
+    // goal at right
+    ctx.strokeStyle='rgba(120,200,230,.4)'; ctx.lineWidth=3; const gx=this._px(0.985,0)[0]; ctx.beginPath(); ctx.moveTo(gx,this._px(0,0.4)[1]); ctx.lineTo(gx,this._px(0,0.6)[1]); ctx.stroke();
+
+    const r=Math.max(11,W*0.02);
+    const winOpen=this._winOpen; const hideLane=this._cfg.hideLane && this._mode==='live';
+    const ball=this._ballPos(now);
+    // carrier index
+    const carrier = this._phase==='dwell'? this._dst : this._dst;
+    // breaker position (runs forward during window)
+    const bpBase=rd.breaker; const bp = { x:bpBase.x + (this._breakerFwd*0.06), y:bpBase.y };
+
+    // faint ring path
+    ctx.save(); ctx.strokeStyle='rgba(120,140,166,.12)'; ctx.lineWidth=1.2; ctx.setLineDash([3,6]); ctx.beginPath(); this.RING.forEach((n,i)=>{ const [x,y]=this._px(this.NODES[n].x,this.NODES[n].y); if(i===0)ctx.moveTo(x,y-r*0.16); else ctx.lineTo(x,y-r*0.16); }); ctx.closePath(); ctx.stroke(); ctx.setLineDash([]); ctx.restore();
+
+    // break lane (carrier -> breaker) when window open
+    if(winOpen && !hideLane){
+      const [cx,cy]=this._px(this.NODES[carrier].x,this.NODES[carrier].y); const [bx,by]=this._px(bp.x,bp.y);
+      const pulse=0.5+0.5*Math.sin(now/90);
+      ctx.save(); ctx.strokeStyle='rgba(198,255,58,'+(0.5+pulse*0.4)+')'; ctx.lineWidth=3; ctx.setLineDash([8,7]); ctx.lineDashOffset=-(now/22); ctx.beginPath(); ctx.moveTo(cx,cy-r*0.16); ctx.lineTo(bx,by-r*0.16); ctx.stroke(); ctx.setLineDash([]); ctx.restore();
+    }
+
+    // defenders (shift slightly toward the ball)
+    this.DEFS.forEach((d0)=>{ const [x,y]=this._px(d0.x+ (ball.x-0.44)*0.04, d0.y+(ball.y-0.47)*0.04); this._chevron(ctx,x,y,Math.max(9,W*0.016),'#FF5A6E'); });
+    // breaker's marker: sits on breaker when closed, steps to ball when open
+    const mk = winOpen? { x:this._lerp(bp.x-0.12,this.NODES[carrier].x, 0.5), y:this._lerp(bp.y,this.NODES[carrier].y,0.4) } : { x:bp.x-0.11, y:bp.y };
+    const [mkx,mky]=this._px(mk.x,mk.y); this._chevron(ctx,mkx,mky,Math.max(9,W*0.016),'#FF5A6E');
+
+    // ring nodes
+    this.RING.forEach((n)=>{ const [x,y]=this._px(this.NODES[n].x,this.NODES[n].y); const isCar=(n===carrier); this._token(ctx,x,y,isCar?r:r*0.82, isCar?acc:'#2f7f96', isCar?'rgba(255,255,255,.3)':null); });
+    // breaker
+    const [bx,by]=this._px(bp.x,bp.y);
+    if(winOpen && !hideLane){ ctx.save(); ctx.strokeStyle='rgba(198,255,58,.9)'; ctx.lineWidth=2.4; ctx.beginPath(); ctx.arc(bx,by-r*0.16,r*1.5,0,7); ctx.stroke(); ctx.restore(); }
+    this._token(ctx,bx,by,r*0.9, winOpen?'#C6FF3A':'#3aa8c4', 'rgba(255,255,255,.22)');
+
+    // ball
+    let bpp = this.NODES[carrier];
+    if(this._outcome==='sprung' && this._breakDrive){ const t=Math.min(1,(now-this._breakDrive)/700); bpp={ x:this._lerp(this.NODES[carrier].x,0.96,t), y:this._lerp(this.NODES[carrier].y,bp.y,t) }; }
+    else bpp=ball;
+    const [pbx,pby]=this._px(bpp.x,bpp.y); this._drawBall(ctx,pbx,pby,Math.max(6,W*0.011));
+
+    ctx.restore();
+  }
+  _flash(col){ const el=this._flashEl; if(!el) return; el.style.background='radial-gradient(circle at 50% 45%,'+col+',transparent 62%)'; el.style.animation='none'; void el.offsetWidth; el.style.animation='fa-flash .55s ease forwards'; }
+
+  // ---------- results ----------
+  _gameOver(){
+    this._stop(); this._sfx('whistle'); this._haptic(24);
+    const L=this._log; const n=L.length||1;
+    const cnt={sprung:0,forced:0,held:0}; L.forEach(x=>cnt[x.verdict]=(cnt[x.verdict]||0)+1);
+    const rating=Math.round(cnt.sprung/n*100);
+    const offs=L.filter(x=>x.verdict==='sprung'&&x.offsetMs!=null); const avgOff= offs.length? Math.round(offs.reduce((s,x)=>s+x.offsetMs,0)/offs.length):null;
+    let lean='mixed';
+    if(cnt.sprung>=Math.ceil(n*0.5)) lean='creative';
+    else if(cnt.forced>=Math.ceil(n*0.4)) lean='reckless';
+    else if(cnt.held>=Math.ceil(n*0.4)) lean='safe';
+    const isPB=this._bestR==null||rating>this._bestR; if(isPB) this._bestR=rating;
+    const result={ instrument:'break-the-pattern', version:'am-break-1.0', position:'am', completedAt:new Date().toISOString(),
+      difficulty:this.state.diff, rounds:this.ROUNDS,
+      measures:{ breakRatingPct:rating, sprung:cnt.sprung, forced:cnt.forced, held:cnt.held, avgBreakOffsetMs:avgOff, lean },
+      counts:cnt, trials_log:L, maps:{ RSK:'daring to break', VIS:'seeing the gap', note:'spotting the moment a predictable pattern can be split \u2014 creative risk, not reaction speed' } };
+    try{ localStorage.setItem('fa_am_break', JSON.stringify(result)); }catch(e){}
+    this._final={ rating, cnt, avgOff, lean, n, isPB };
+    if(this.props.embedded && typeof this.props.onDone==='function'){ try{ this.props.onDone(cnt, result); }catch(e){} }
+    this.setState({ view:'over' });
+  }
+  _retake(){ this._begin(); }
+  _back(){ this._sfx('tap'); if(this.state.view==='intro'){ window.location.href='Assessment.dc.html'; } else { this._stop(); clearTimeout(this._nx); this.setState({ view:'intro' }); } }
+
+  renderVals(){
+    const accent=this.props.accent ?? '#22D3EE'; this._accent=accent;
+    const V=this.state.view, S=this.state, soundOn=this._soundOn!==false;
+    const base={ accent,
+      isIntro:V==='intro', isPlay:V==='play', isOver:V==='over', showBack:V!=='over',
+      soundOn, soundOff:!soundOn, soundColor:soundOn?accent:'#61748c', soundTitle:soundOn?'Sound on':'Sound off',
+      toggleSound:()=>this._toggleSound(), back:()=>this._back(), begin:()=>this._begin(), retake:()=>this._retake(),
+      canvasRef:(el)=>this._cvRef(el), flashRef:(el)=>this._flRef(el), modeRef:(el)=>this._modeRef(el), verdictRef:(el)=>this._verdictRef(el), breakBtnRef:(el)=>this._breakBtnRef(el), onTap:()=>this._onTap(),
+      bestLine:(this._bestR!=null?('YOUR BEST · '+this._bestR+' BREAK RATING'):'FIRST RUN · SET THE BAR'),
+      modeSub:'watch, then break the line', trialLabel:(Math.min(S.round+1,this.ROUNDS))+' / '+this.ROUNDS, sprungLabel:(this._sprung!=null?this._sprung:0)+'' };
+    base.diffs=this.ORDER.map(id=>{ const d=this.DIFFS[id]; const sel=S.diff===id; return { name:d.name, desc:d.desc, pick:()=>this._pickDiff(id),
+      border: sel?accent:'rgba(120,140,166,.24)', bg: sel?('color-mix(in srgb,'+accent+' 14%,transparent)'):'rgba(10,16,28,.5)', titleColor: sel?accent:'#EAF2FB' }; });
+
+    const f=this._final||{}; const cnt=f.cnt||{sprung:0,forced:0,held:0}; const n=f.n||this.ROUNDS;
+    base.rateValue=(f.rating!=null?f.rating:0)+'%';
+    base.rateColor = f.rating>=60?'#3BE07A': f.rating>=35?'#FFB020':'#FF7A8A';
+    if(f.rating>=70) base.rateVerdict='You see the gap the pattern hides and you take it. That is the rarest thing in a #10 — the courage to break a safe cycle at exactly the right moment.';
+    else if(f.rating>=45) base.rateVerdict='You broke the line more often than not. Tighten the timing and trust the picture and you are genuinely creative under structure.';
+    else if(cnt.forced>=cnt.held) base.rateVerdict='You want to break it — but you pull the trigger before the gap is really there. The vision needs to catch up to the daring.';
+    else base.rateVerdict='You kept the pattern safe most of the time. Nothing wrong with it — but the moments to break a game open went by. Back yourself.';
+    base.mix=[ {name:'SPRUNG',color:'#3BE07A',pct:Math.round(cnt.sprung/n*100)+'%',width:Math.max(Math.round(cnt.sprung/n*100),6)+'%'},
+               {name:'FORCED',color:'#FF7A8A',pct:Math.round(cnt.forced/n*100)+'%',width:Math.max(Math.round(cnt.forced/n*100),6)+'%'},
+               {name:'HELD SAFE',color:'#FFB020',pct:Math.round(cnt.held/n*100)+'%',width:Math.max(Math.round(cnt.held/n*100),6)+'%'} ];
+
+    const reads={ creative:['You break patterns at the right instant — the vision to see the gap and the risk appetite to play it. That balance is the Maestro\u2019s and the best Maverick\u2019s creative edge.', [{key:'VIS',label:'Vision'},{key:'RSK',label:'Risk'}]],
+      reckless:['You force the break before it\u2019s on — plenty of daring, not yet enough reading. Pure Maverick risk; the vision is the trainable half.', [{key:'RSK',label:'Risk'},{key:'VIS',label:'Vision'}]],
+      safe:['You keep the pattern turning safely and rarely gamble on the line-breaker. That\u2019s the Architect\u2019s low-risk discipline \u2014 add one killer ball and you\u2019re complete.', [{key:'CMP',label:'Composure'},{key:'RSK',label:'Risk'}]],
+      mixed:['A blend of well-timed breaks, a few forced, a few held. The read is developing; the consistency of picking the moment is the work.', [{key:'VIS',label:'Vision'},{key:'RSK',label:'Risk'}]] };
+    const rdd=reads[f.lean||'mixed']||reads.mixed; base.softRead=rdd[0]; base.traitChips=rdd[1];
+    base.dataLine='MEASURED \u00B7 CREATIVE RISK \u00B7 '+this.ROUNDS+' ROUNDS \u00B7 '+(S.diff||'pro').toUpperCase()+' \u00B7 am-break-1.0';
+    return base;
+  }
+}
+</script>
+</body>
+</html>

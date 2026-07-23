@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:#04060c;}
+  a{color:var(--accent,#22D3EE);text-decoration:none;}
+  a:hover{opacity:.92;}
+  @keyframes fa-blink{0%,100%{opacity:1;}50%{opacity:.25;}}
+  @keyframes fa-rise{0%{transform:translateY(16px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-rise-sm{0%{transform:translateY(10px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-pulse{0%,100%{transform:scale(1);opacity:.55;}50%{transform:scale(1.16);opacity:1;}}
+  @keyframes fa-bar{from{transform:scaleX(0);}to{transform:scaleX(1);}}
+  @keyframes fa-flash{0%{opacity:0;}12%{opacity:1;}100%{opacity:0;}}
+  .fa-in{opacity:0;animation:fa-rise .6s cubic-bezier(.2,.7,.2,1) forwards;}
+  .fa-in-sm{opacity:0;animation:fa-rise-sm .5s cubic-bezier(.2,.7,.2,1) forwards;}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;}.fa-in,.fa-in-sm{opacity:1!important;transform:none!important;}}
+</style>
+</helmet>
+<div data-screen-label="Eighty Minutes" style="position:relative;display:flex;flex-direction:column;min-height:100dvh;width:100%;overflow:hidden;background:radial-gradient(120% 90% at 50% 6%,#0e1a2d 0%,#080e1a 44%,#04060c 100%);color:#EAF2FB;font-family:'Archivo',system-ui,sans-serif;--accent:{{ accent }};">
+
+  <div style="position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.4;background:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0px,rgba(255,255,255,.02) 1px,transparent 1px,transparent 4px);"></div>
+  <div style="position:absolute;top:20px;left:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;top:20px;right:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;left:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;right:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+
+  <!-- ========= TOP BAR ========= -->
+  <sc-if value="{{ showChrome }}" hint-placeholder-val="{{ true }}">
+    <header style="position:relative;z-index:6;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px clamp(24px,3.4vw,54px);">
+      <div style="min-width:110px;display:flex;">
+        <a href="Assessment.dc.html" style="display:inline-flex;align-items:center;gap:8px;color:#8EA1B8;font:600 12.5px 'Archivo';">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M15 5l-7 7 7 7"/></svg>Back to the scan
+        </a>
+      </div>
+      <div style="display:flex;align-items:center;gap:11px;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" style="stroke:var(--accent,#22D3EE);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+        <span style="font:800 13px 'Archivo';letter-spacing:.05em;">EIGHTY <span style="color:var(--accent,#22D3EE);">MINUTES</span></span>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;min-width:110px;justify-content:flex-end;">
+        <button onClick="{{ toggleSound }}" title="{{ soundTitle }}" style="display:grid;place-items:center;width:28px;height:28px;border-radius:8px;border:1px solid rgba(120,140,166,.24);background:rgba(10,16,28,.5);cursor:pointer;color:{{ soundColor }};">
+          <sc-if value="{{ soundOn }}" hint-placeholder-val="{{ true }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></sc-if>
+          <sc-if value="{{ soundOff }}" hint-placeholder-val="{{ false }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M22 9l-6 6M16 9l6 6"/></svg></sc-if>
+        </button>
+      </div>
+    </header>
+  </sc-if>
+
+  <!-- ========= INTRO ========= -->
+  <sc-if value="{{ isIntro }}" hint-placeholder-val="{{ true }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;text-align:center;padding:14px clamp(24px,4vw,54px) 54px;">
+      <div class="fa-in" style="display:inline-flex;align-items:center;gap:10px;margin-bottom:18px;font:600 12px 'IBM Plex Mono';letter-spacing:.4em;color:var(--accent,#22D3EE);">
+        <span style="width:6px;height:6px;border-radius:50%;background:var(--accent,#22D3EE);box-shadow:0 0 8px var(--accent,#22D3EE);animation:fa-blink 1.6s ease-in-out infinite;"></span>THE FATIGUE GAUNTLET
+      </div>
+      <h1 class="fa-in" style="margin:0 0 14px;font:800 clamp(34px,5.2vw,68px)/0.98 'Archivo';letter-spacing:-0.03em;text-wrap:balance;max-width:800px;animation-delay:.05s;">How deep can you keep your standards up?</h1>
+      <p class="fa-in" style="margin:0 0 30px;max-width:560px;font:400 clamp(14px,1.25vw,17px)/1.6 'Archivo';color:#9FB0C5;text-wrap:pretty;animation-delay:.1s;">The clock starts at the 60th minute and runs to 90+. Your legs drain with every sprint. Situations come faster and faster &mdash; read each one and pick your action before the window closes. Good reads keep you alive. Poor or late ones cost you your legs.</p>
+      <div class="fa-in" style="width:100%;max-width:440px;margin-bottom:26px;animation-delay:.16s;">
+        <div style="font:600 10px 'IBM Plex Mono';letter-spacing:.24em;color:#61748c;margin-bottom:12px;text-align:left;">CHOOSE YOUR LEVEL</div>
+        <div style="display:flex;gap:10px;">
+          <sc-for list="{{ levels }}" as="lv" hint-placeholder-count="3">
+            <button onClick="{{ lv.onPick }}" style="flex:1;padding:16px 10px;border-radius:13px;cursor:pointer;font:700 14px 'Archivo';transition:all .16s ease;border:1px solid {{ lv.border }};background:{{ lv.bg }};color:{{ lv.fg }};">
+              {{ lv.label }}
+              <div style="font:500 9.5px 'IBM Plex Mono';letter-spacing:.08em;margin-top:5px;color:{{ lv.subColor }};">{{ lv.sub }}</div>
+            </button>
+          </sc-for>
+        </div>
+      </div>
+      <button onClick="{{ start }}" class="fa-in" style="display:inline-flex;align-items:center;gap:12px;padding:17px 42px;border-radius:13px;border:0;background:var(--accent,#22D3EE);color:#0b0805;font:700 16px 'Archivo';cursor:pointer;box-shadow:0 14px 44px color-mix(in srgb,var(--accent,#22D3EE) 42%,transparent);transition:transform .16s ease;animation-delay:.22s;" style-hover="transform:translateY(-2px);">
+        Kick off &mdash; 60th minute
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12h13M12 6l6 6-6 6"/></svg>
+      </button>
+      <div class="fa-in" style="margin-top:16px;font:500 10px 'IBM Plex Mono';letter-spacing:.14em;color:#4f627a;animation-delay:.3s;">{{ bestLine }}</div>
+    </main>
+  </sc-if>
+
+  <!-- ========= PLAY ========= -->
+  <sc-if value="{{ isPlay }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:6px clamp(18px,3.5vw,54px) 40px;">
+      <div style="width:100%;max-width:1040px;margin:0 auto;">
+
+        <!-- HUD: minute + legs -->
+        <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px;">
+          <div style="flex:0 0 auto;text-align:center;">
+            <div style="font:800 clamp(30px,4.6vw,44px)/1 'Archivo';color:{{ clockColor }};letter-spacing:-0.02em;">{{ minuteLabel }}<span style="font-size:.5em;color:#7688a0;">'</span></div>
+            <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.2em;color:#61748c;margin-top:2px;">MATCH CLOCK</div>
+          </div>
+          <div style="flex:1;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+              <span style="font:600 9.5px 'IBM Plex Mono';letter-spacing:.2em;color:#8EA1B8;">LEGS</span>
+              <span style="font:700 11px 'IBM Plex Mono';color:{{ legsColor }};">{{ legsPct }}</span>
+            </div>
+            <div style="height:12px;border-radius:99px;background:rgba(120,140,166,.14);overflow:hidden;border:1px solid rgba(120,140,166,.14);">
+              <div style="height:100%;border-radius:99px;width:{{ legsPct }};background:{{ legsFill }};box-shadow:0 0 12px {{ legsGlow }};transition:width .35s cubic-bezier(.3,.8,.3,1);"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- scenario -->
+        <div style="width:100%;">
+          <div class="fa-in-sm" style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+            <span style="font:600 9.5px 'IBM Plex Mono';letter-spacing:.2em;color:var(--accent,#22D3EE);">{{ phaseKicker }}</span>
+            <span style="flex:1;height:1px;background:rgba(120,140,166,.16);"></span>
+            <span style="font:600 9.5px 'IBM Plex Mono';letter-spacing:.14em;color:#61748c;">CALL {{ roundLabel }}</span>
+          </div>
+
+          <!-- mini pitch schematic -->
+          <div class="fa-in-sm" style="position:relative;width:100%;height:min(32vh,210px);border-radius:14px;overflow:hidden;margin-bottom:14px;border:1px solid rgba(120,140,166,.16);background:radial-gradient(130% 120% at 50% 100%,#0d1c2e,#091324,#050c17);animation-delay:.04s;">
+            <div style="position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0,transparent 11.11%,rgba(120,180,220,.05) 11.11%,rgba(120,180,220,.05) 22.22%);"></div>
+            <div style="position:absolute;top:8%;bottom:8%;left:{{ pBallX }};width:2px;background:rgba(120,180,220,.12);"></div>
+            <!-- you -->
+            <div style="position:absolute;top:{{ pYouY }};left:{{ pYouX }};transform:translate(-50%,-50%);width:0;height:0;border-left:7px solid transparent;border-right:7px solid transparent;border-bottom:13px solid var(--accent,#22D3EE);filter:drop-shadow(0 0 6px color-mix(in srgb,var(--accent,#22D3EE) 70%,transparent));"></div>
+            <!-- opponent -->
+            <div style="position:absolute;top:{{ pOppY }};left:{{ pOppX }};transform:translate(-50%,-50%);width:13px;height:13px;border-radius:3px;background:#E0413C;box-shadow:0 0 6px rgba(224,65,60,.6);"></div>
+            <!-- teammate -->
+            <div style="position:absolute;top:{{ pMateY }};left:{{ pMateX }};transform:translate(-50%,-50%);width:11px;height:11px;border-radius:50%;background:#8fd8e6;opacity:.8;"></div>
+            <!-- ball -->
+            <div style="position:absolute;top:{{ pBallY }};left:{{ pBallX }};transform:translate(-50%,-50%);width:9px;height:9px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,#c9d6e2);box-shadow:0 0 8px rgba(255,255,255,.8);"></div>
+          </div>
+
+          <h1 class="fa-in-sm" style="margin:0 0 14px;font:800 clamp(18px,2.3vw,26px)/1.22 'Archivo';letter-spacing:-0.015em;text-wrap:pretty;animation-delay:.06s;">{{ scenarioPrompt }}</h1>
+
+          <!-- window timer -->
+          <div style="height:5px;border-radius:99px;background:rgba(120,140,166,.14);overflow:hidden;margin-bottom:16px;">
+            <div style="height:100%;border-radius:99px;background:{{ windowFill }};width:{{ windowW }};transition:width {{ windowDur }} linear;"></div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+            <sc-for list="{{ choices }}" as="c" hint-placeholder-count="5">
+              <button onClick="{{ c.onPick }}" class="fa-in-sm" style="text-align:left;padding:14px 16px;border-radius:13px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.55);color:#EAF2FB;font:700 14px/1.28 'Archivo';cursor:pointer;transition:border-color .14s ease,background .14s ease,transform .14s ease;animation-delay:{{ c.delay }};{{ c.span }}" style-hover="border-color:color-mix(in srgb,var(--accent,#22D3EE) 58%,transparent);background:rgba(16,20,37,.85);transform:translateY(-2px);">
+                {{ c.text }}
+                <div style="display:flex;align-items:center;gap:5px;margin-top:7px;">
+                  <sc-for list="{{ c.pips }}" as="p" hint-placeholder-count="3"><span style="width:14px;height:3px;border-radius:2px;background:{{ p.on }};"></span></sc-for>
+                  <span style="font:600 8.5px 'IBM Plex Mono';letter-spacing:.12em;color:#5c6e85;margin-left:3px;">EFFORT</span>
+                </div>
+              </button>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </main>
+  </sc-if>
+
+  <!-- ========= RESULT ========= -->
+  <sc-if value="{{ isResult }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:10px clamp(20px,4vw,54px) 64px;">
+      <div style="width:100%;max-width:640px;">
+        <div class="fa-in" style="text-align:center;margin-bottom:22px;">
+          <div style="font:600 11px 'IBM Plex Mono';letter-spacing:.4em;color:#7688a0;margin-bottom:12px;">{{ endReason }}</div>
+          <div style="font:900 clamp(64px,13vw,120px)/0.9 'Archivo';letter-spacing:-0.04em;color:var(--accent,#22D3EE);text-shadow:0 0 48px color-mix(in srgb,var(--accent,#22D3EE) 45%,transparent);">{{ finalMinute }}<span style="font-size:.42em;color:#7688a0;">'</span></div>
+          <div style="margin-top:6px;font:600 clamp(15px,1.7vw,20px) 'Archivo';color:#DCE6F2;">{{ survivalHeadline }}</div>
+        </div>
+
+        <div class="fa-in" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:22px;animation-delay:.06s;">
+          <div style="padding:15px 12px;border-radius:13px;border:1px solid rgba(120,140,166,.18);background:rgba(10,16,28,.45);text-align:center;">
+            <div style="font:800 22px 'Archivo';color:#EAF2FB;">{{ statGood }}</div>
+            <div style="font:600 8.5px 'IBM Plex Mono';letter-spacing:.14em;color:#61748c;margin-top:4px;">GOOD READS</div>
+          </div>
+          <div style="padding:15px 12px;border-radius:13px;border:1px solid rgba(120,140,166,.18);background:rgba(10,16,28,.45);text-align:center;">
+            <div style="font:800 22px 'Archivo';color:#EAF2FB;">{{ statCalls }}</div>
+            <div style="font:600 8.5px 'IBM Plex Mono';letter-spacing:.14em;color:#61748c;margin-top:4px;">CALLS MADE</div>
+          </div>
+          <div style="padding:15px 12px;border-radius:13px;border:1px solid rgba(120,140,166,.18);background:rgba(10,16,28,.45);text-align:center;">
+            <div style="font:800 22px 'Archivo';color:{{ frozeColor }};">{{ statFroze }}</div>
+            <div style="font:600 8.5px 'IBM Plex Mono';letter-spacing:.14em;color:#61748c;margin-top:4px;">FROZE ON CLOCK</div>
+          </div>
+        </div>
+
+        <!-- fatigue shift -->
+        <div class="fa-in" style="padding:18px 20px;border-radius:15px;border:1px solid color-mix(in srgb,var(--accent,#22D3EE) 26%,transparent);background:color-mix(in srgb,var(--accent,#22D3EE) 7%,transparent);margin-bottom:20px;animation-delay:.1s;">
+          <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:var(--accent,#22D3EE);margin-bottom:9px;">WHAT FATIGUE DID TO YOUR CHOICES</div>
+          <p style="margin:0;font:500 15px/1.55 'Archivo';color:#EAF2FB;text-wrap:pretty;">{{ shiftLine }}</p>
+        </div>
+
+        <!-- choice fingerprint -->
+        <div class="fa-in" style="padding:20px 22px;border-radius:16px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);margin-bottom:20px;animation-delay:.14s;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+            <span style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:#61748c;">YOUR CHOICE FINGERPRINT</span>
+            <span style="font:600 9px 'IBM Plex Mono';letter-spacing:.14em;color:#61748c;">OBSERVED, NOT SCORED</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:11px;">
+            <sc-for list="{{ fingerprint }}" as="f" hint-placeholder-count="5">
+              <div style="display:flex;flex-direction:column;gap:5px;">
+                <div style="display:flex;align-items:baseline;justify-content:space-between;">
+                  <span style="font:700 12.5px 'Archivo';color:{{ f.labelColor }};">{{ f.emoji }} {{ f.label }}</span>
+                  <span style="font:800 12px 'IBM Plex Mono';color:{{ f.numColor }};">{{ f.pct }}</span>
+                </div>
+                <div style="height:8px;border-radius:99px;background:rgba(120,140,166,.14);overflow:hidden;"><div style="height:100%;border-radius:99px;width:{{ f.barW }};transform-origin:left;animation:fa-bar .7s cubic-bezier(.3,.8,.3,1) both;{{ f.barLook }}"></div></div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div class="fa-in" style="padding-left:16px;border-left:3px solid var(--accent,#22D3EE);margin-bottom:24px;animation-delay:.2s;">
+          <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:#61748c;margin-bottom:7px;">A SOFT READ</div>
+          <p style="margin:0;font:500 clamp(15px,1.7vw,18px)/1.5 'Archivo';color:#EAF2FB;text-wrap:pretty;">{{ softRead }}</p>
+        </div>
+
+        <div class="fa-in" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:12px;animation-delay:.26s;">
+          <button onClick="{{ again }}" style="display:inline-flex;align-items:center;gap:10px;padding:15px 30px;border-radius:12px;border:0;background:var(--accent,#22D3EE);color:#0b0805;font:700 15px 'Archivo';cursor:pointer;box-shadow:0 12px 36px color-mix(in srgb,var(--accent,#22D3EE) 40%,transparent);transition:transform .16s ease;" style-hover="transform:translateY(-2px);">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:#0b0805;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
+            Go again
+          </button>
+          <a href="Assessment.dc.html" style="display:inline-flex;align-items:center;gap:9px;padding:15px 24px;border-radius:12px;border:1px solid rgba(157,176,198,.28);background:rgba(12,18,30,.4);color:#C6D3E2;font:600 14px 'Archivo';" style-hover="border-color:color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);color:#EAF2FB;">Back to the scan</a>
+        </div>
+      </div>
+    </main>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:940,&quot;height&quot;:720},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#22D3EE&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#22D3EE&quot;,&quot;#A78BFA&quot;,&quot;#C6FF3A&quot;,&quot;#FF7A45&quot;,&quot;#FF4D8D&quot;]},&quot;motion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;embedded&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;level&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;pro&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;academy&quot;,&quot;pro&quot;,&quot;elite&quot;]}}">
+class Component extends DCLogic {
+  // canonical actions (opaque mapping — never shown to the player during play)
+  ACT = {
+    engine:   { label:'Engine',    emoji:'\uD83D\uDD01', color:'#FF7A2F' },
+    deliverer:{ label:'Deliverer', emoji:'\uD83C\uDFF9', color:'#22C776' },
+    sentinel: { label:'Sentinel',  emoji:'\uD83D\uDEE1\uFE0F', color:'#D9A521' },
+    weaver:   { label:'Weaver',    emoji:'\uD83E\uDDF5', color:'#22D3EE' },
+    renegade: { label:'Renegade',  emoji:'\uD83D\uDD25', color:'#F0359C' },
+  };
+  ORDER = ['engine','deliverer','sentinel','weaver','renegade'];
+
+  LEVELS = {
+    academy:{ label:'Academy', sub:'2.8S \u2192 1.6S', base:2800, floor:1600, drain:1.0 },
+    pro:    { label:'Pro',     sub:'2.2S \u2192 1.2S', base:2200, floor:1200, drain:1.18 },
+    elite:  { label:'Elite',   sub:'1.7S \u2192 0.9S', base:1700, floor:900,  drain:1.4 },
+  };
+
+  // scenarios loop; each has a mini-pitch layout + 5 options.
+  // opt: { t, a(archetype), e(effort 1-3), good(is a sound read here) }
+  // ball/you/opp/mate positions are % strings for the schematic.
+  SCN = [
+    { p:"Their full-back has broken past you down the line. What do you do?",
+      pos:{ballX:'62%',ballY:'34%',youX:'44%',youY:'52%',oppX:'70%',oppY:'34%',mateX:'30%',mateY:'70%'},
+      o:[ {t:'Sprint back and track him',a:'engine',e:3,good:true},
+          {t:'Jockey, force him back',a:'sentinel',e:2,good:true},
+          {t:'Let him go, save it for the counter',a:'renegade',e:1,good:false},
+          {t:'Show him inside to your cover',a:'weaver',e:2,good:false},
+          {t:'Hold width for the switch out',a:'deliverer',e:1,good:false} ] },
+    { p:"You win it back on the touchline, striker peeling off the back post.",
+      pos:{ballX:'40%',ballY:'40%',youX:'38%',youY:'42%',oppX:'52%',oppY:'50%',mateX:'82%',mateY:'30%'},
+      o:[ {t:'First-time cross to the run',a:'deliverer',e:2,good:true},
+          {t:'Drive infield at the line',a:'engine',e:3,good:false},
+          {t:'One-two to get in behind',a:'weaver',e:2,good:true},
+          {t:'Take the full-back on',a:'renegade',e:3,good:false},
+          {t:'Recycle, keep the shape',a:'sentinel',e:1,good:false} ] },
+    { p:"Ball drops to you in the half-space, 25 yards out, defender closing.",
+      pos:{ballX:'50%',ballY:'46%',youX:'50%',youY:'48%',oppX:'58%',oppY:'42%',mateX:'70%',mateY:'62%'},
+      o:[ {t:'Slip the one-two and spin off',a:'weaver',e:2,good:true},
+          {t:'Take him on, beat him',a:'renegade',e:3,good:true},
+          {t:'Whip an early ball to the box',a:'deliverer',e:2,good:false},
+          {t:'Carry it, draw a second man',a:'engine',e:3,good:false},
+          {t:'Lay it back, reset',a:'sentinel',e:1,good:false} ] },
+    { p:"They're 2-on-1 on your flank. Full-back and winger coming at you.",
+      pos:{ballX:'64%',ballY:'38%',youX:'50%',youY:'50%',oppX:'66%',oppY:'34%',mateX:'40%',mateY:'66%'},
+      o:[ {t:'Hold the line, force them back',a:'sentinel',e:2,good:true},
+          {t:'Run both of them into the ground',a:'engine',e:3,good:true},
+          {t:'Drop inside so they can\u2019t isolate you',a:'weaver',e:1,good:false},
+          {t:'Nick it and go the other way',a:'renegade',e:3,good:false},
+          {t:'Body between them, clear it long',a:'deliverer',e:1,good:false} ] },
+    { p:"0-0, 84th minute. Your team wins it deep. You're empty.",
+      pos:{ballX:'34%',ballY:'54%',youX:'30%',youY:'56%',oppX:'46%',oppY:'46%',mateX:'64%',mateY:'34%'},
+      o:[ {t:'Sprint the flank anyway, get in the box',a:'engine',e:3,good:true},
+          {t:'One clever short pass, let others run',a:'weaver',e:1,good:true},
+          {t:'Stay disciplined, don\u2019t get caught',a:'sentinel',e:1,good:false},
+          {t:'Demand it \u2014 one moment wins it',a:'renegade',e:2,good:false},
+          {t:'Get to a crossing spot',a:'deliverer',e:2,good:false} ] },
+    { p:"Overlap on. Your full-back is screaming outside you.",
+      pos:{ballX:'46%',ballY:'44%',youX:'46%',youY:'46%',oppX:'56%',oppY:'40%',mateX:'62%',mateY:'30%'},
+      o:[ {t:'Release him, spin inside',a:'weaver',e:2,good:true},
+          {t:'Keep it, take your man on',a:'renegade',e:3,good:false},
+          {t:'Stay wide, protect your cross',a:'deliverer',e:1,good:false},
+          {t:'Drive the channel between them',a:'engine',e:3,good:true},
+          {t:'Play safe, keep the ball',a:'sentinel',e:1,good:false} ] },
+    { p:"Their attack breaks and you're the last man tracking across.",
+      pos:{ballX:'58%',ballY:'40%',youX:'44%',youY:'54%',oppX:'62%',oppY:'40%',mateX:'34%',mateY:'64%'},
+      o:[ {t:'Recovery sprint, get goalside',a:'engine',e:3,good:true},
+          {t:'Read the pass, cut the angle',a:'sentinel',e:2,good:true},
+          {t:'Commit to the tackle now',a:'renegade',e:2,good:false},
+          {t:'Shepherd him wide',a:'weaver',e:1,good:false},
+          {t:'Drop off, buy time',a:'deliverer',e:1,good:false} ] },
+    { p:"Set piece cleared to you on the edge. Second phase.",
+      pos:{ballX:'52%',ballY:'40%',youX:'52%',youY:'44%',oppX:'48%',oppY:'34%',mateX:'70%',mateY:'52%'},
+      o:[ {t:'First-time ball back into the mixer',a:'deliverer',e:2,good:true},
+          {t:'Take a touch, combine out',a:'weaver',e:1,good:true},
+          {t:'Drive at the retreating line',a:'engine',e:3,good:false},
+          {t:'Try to beat your man for the shot',a:'renegade',e:3,good:false},
+          {t:'Screen and reset the shape',a:'sentinel',e:1,good:false} ] },
+  ];
+
+  END = {
+    legs:'YOUR LEGS ARE GONE',
+    full:'FULL TIME \u2014 YOU MADE IT',
+  };
+
+  state = { view:'intro', level:'pro', minute:60, legs:100, round:0, timerRun:false,
+    good:0, calls:0, froze:0, counts:null, earlyCounts:null, lateCounts:null, avgEffort:{early:0,late:0},
+    endReason:'', finalMinute:60 };
+
+  componentDidMount(){
+    try{ this._soundOn=localStorage.getItem('fa_sound')!=='0'; }catch(e){ this._soundOn=true; }
+    try{ const b=JSON.parse(localStorage.getItem('fa_om_eighty')||'null'); this._best=b&&b.bestMinute?b.bestMinute:null; }catch(e){ this._best=null; }
+    this._level=this.props.level||'pro';
+    this._embedded=this.props.embedded===true;
+    if(this._embedded){ this._begin(); }
+    else this.forceUpdate();
+  }
+  componentWillUnmount(){ clearTimeout(this._winTo); clearTimeout(this._rafTo); }
+
+  _blank(){ const o={}; this.ORDER.forEach(a=>o[a]=0); return o; }
+
+  // ---------- sound ----------
+  _audio(){ if(this._actx===undefined){ try{ this._actx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ this._actx=null; } } if(this._actx&&this._actx.state==='suspended') this._actx.resume(); return this._actx; }
+  _tone(f,d,t,g){ const c=this._audio(); if(!c||this._soundOn===false) return; const o=c.createOscillator(),a=c.createGain(); o.type=t||'sine'; o.frequency.value=f; o.connect(a); a.connect(c.destination); const n=c.currentTime; a.gain.setValueAtTime(0,n); a.gain.linearRampToValueAtTime(g||0.05,n+0.01); a.gain.exponentialRampToValueAtTime(0.0001,n+d); o.start(n); o.stop(n+d); }
+  _sfx(k){ if(this._soundOn===false) return;
+    if(k==='good'){ this._tone(600,0.1,'triangle',0.05); setTimeout(()=>this._tone(820,0.12,'triangle',0.045),60); }
+    else if(k==='poor') this._tone(240,0.16,'sawtooth',0.04);
+    else if(k==='froze') this._tone(150,0.28,'sawtooth',0.05);
+    else if(k==='whistle') this._tone(900,0.18,'sine',0.05);
+    else if(k==='end'){ this._tone(500,0.14,'triangle',0.05); setTimeout(()=>this._tone(680,0.14,'triangle',0.05),120); setTimeout(()=>this._tone(900,0.28,'triangle',0.05),240); }
+    else this._tone(430,0.08,'sine',0.04); }
+  _toggleSound(){ const on=this._soundOn===false; this._soundOn=on; try{ localStorage.setItem('fa_sound', on?'1':'0'); }catch(e){} if(on){ this._audio(); this._sfx('click'); } this.forceUpdate(); }
+
+  // ---------- flow ----------
+  _pickLevel(k){ this._sfx('click'); this._level=k; this.setState({ level:k }); }
+  _begin(){
+    this._sfx('whistle');
+    this._counts=this._blank(); this._early=this._blank(); this._late=this._blank();
+    this._effEarly=[]; this._effLate=[];
+    this._order=this._shuffle(this.SCN.map((_,i)=>i));
+    this._oi=0;
+    this.setState({ view:'play', minute:60, legs:100, round:0, good:0, calls:0, froze:0 },()=>this._nextRound());
+  }
+  _shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+  _curScn(){ if(this._oi>=this._order.length){ this._order=this._shuffle(this.SCN.map((_,i)=>i)); this._oi=0; } return this.SCN[this._order[this._oi]]; }
+
+  _windowMs(){ const L=this.LEVELS[this._level]; const t=Math.min(1,(this.state.minute-60)/34); return Math.round(L.base-(L.base-L.floor)*t); }
+
+  _nextRound(){
+    this._scn=this._curScn();
+    this._picked=false;
+    const dur=this._windowMs();
+    this._winDur=dur;
+    // reset then run the shrinking window
+    this.setState({ timerRun:false }, ()=>{
+      clearTimeout(this._rafTo);
+      this._rafTo=setTimeout(()=>{ if(!this._picked) this.setState({ timerRun:true }); }, 40);
+    });
+    clearTimeout(this._winTo);
+    this._winTo=setTimeout(()=>{ if(!this._picked) this._timeout(); }, dur+70);
+  }
+
+  _phaseOf(min){ return min>=76?'late':'early'; }
+
+  _apply(opt){
+    if(this._picked) return; this._picked=true; clearTimeout(this._winTo);
+    const L=this.LEVELS[this._level];
+    const phase=this._phaseOf(this.state.minute);
+    this._counts[opt.a]+=1;
+    if(phase==='late'){ this._late[opt.a]+=1; this._effLate.push(opt.e); } else { this._early[opt.a]+=1; this._effEarly.push(opt.e); }
+    // legs cost: base + effort, scaled by level; good read gives a small relief
+    let drain=(3.5+opt.e*3.2)*L.drain;
+    let step=opt.good?4:2;   // good reads move the clock on more
+    if(opt.good){ drain-=2; this._sfx('good'); } else this._sfx('poor');
+    drain=Math.max(2,drain);
+    const legs=Math.max(0,this.state.legs-drain);
+    const minute=this.state.minute+step;
+    const good=this.state.good+(opt.good?1:0);
+    const calls=this.state.calls+1;
+    this._advance(legs,minute,good,calls,this.state.froze);
+  }
+
+  _timeout(){
+    if(this._picked) return; this._picked=true;
+    this._sfx('froze');
+    const L=this.LEVELS[this._level];
+    const legs=Math.max(0,this.state.legs-14*L.drain);   // freezing costs you dear
+    const minute=this.state.minute+1;
+    this._advance(legs,minute,this.state.good,this.state.calls+1,this.state.froze+1);
+  }
+
+  _advance(legs,minute,good,calls,froze){
+    if(legs<=0){ this.setState({ legs:0, minute, good, calls, froze }, ()=>this._end('legs',minute)); return; }
+    if(minute>=95){ this.setState({ legs, minute:95, good, calls, froze }, ()=>this._end('full',95)); return; }
+    this.setState({ legs, minute, good, calls, froze, round:this.state.round+1 }, ()=>{ this._oi+=1; this._nextRound(); });
+  }
+
+  _end(reason,minute){
+    clearTimeout(this._winTo); clearTimeout(this._rafTo);
+    this._sfx('end');
+    const avg=(arr)=> arr.length? arr.reduce((s,v)=>s+v,0)/arr.length : 0;
+    const meta={ minute, reason, good:this.state.good, calls:this.state.calls, froze:this.state.froze,
+      counts:{...this._counts}, early:{...this._early}, late:{...this._late},
+      effEarly:avg(this._effEarly), effLate:avg(this._effLate), level:this._level };
+    this._meta=meta;
+    if(!this._embedded){
+      try{
+        const best=Math.max(this._best||0,minute);
+        localStorage.setItem('fa_om_eighty', JSON.stringify({ bestMinute:best, lastMinute:minute, counts:meta.counts, at:new Date().toISOString(), weight:0 }));
+        this._best=best;
+      }catch(e){}
+    }
+    this.setState({ view:'result', endReason:this.END[reason], finalMinute:minute });
+    if(this._embedded && typeof this.props.onDone==='function'){ this.props.onDone(meta.counts, meta); }
+  }
+
+  _again(){ this._begin(); }
+
+  // ---------- render helpers ----------
+  _fingerprint(counts,total){
+    const entries=this.ORDER.map(a=>[a,counts[a]||0]).sort((x,y)=>y[1]-x[1]);
+    const max=Math.max(...entries.map(e=>e[1]),1);
+    const top=entries[0][0];
+    return { bars:entries.map(([a,v])=>{ const A=this.ACT[a]; const isT=a===top&&v>0; const pct= total?Math.round(v/total*100):0;
+      return { emoji:A.emoji, label:A.label, pct:pct+'%', barW:Math.round(v/max*100)+'%',
+        labelColor:isT?'#F2F8FE':'#9FB0C5', numColor:isT?A.color:'#9FB0C5',
+        barLook:v>0?('background:linear-gradient(90deg,'+A.color+',color-mix(in srgb,'+A.color+' 45%,transparent));box-shadow:0 0 10px color-mix(in srgb,'+A.color+' 50%,transparent);'):'background:rgba(140,160,186,.28);' }; }), top };
+  }
+
+  _shift(meta){
+    const eff=meta.effLate-meta.effEarly;
+    const lateTotal=this.ORDER.reduce((s,a)=>s+meta.late[a],0);
+    const lateTop=this.ORDER.map(a=>[a,meta.late[a]]).sort((x,y)=>y[1]-x[1])[0];
+    if(lateTotal===0) return "You didn't get deep enough into the match for fatigue to show its hand. Last longer and the late-game picture opens up.";
+    if(eff<=-0.6) return "As your legs went, you pulled your efforts in \u2014 shorter, safer, more disciplined. That's a Sentinel's late game: protect what you have.";
+    if(eff>=0.6) return "Your legs emptied and you kept picking the hard, high-effort action anyway. That refusal to hide is an Engine's signature \u2014 or a Renegade who won't be caged.";
+    const A=this.ACT[lateTop[0]];
+    return "Late on you leaned into "+A.label+"-type choices "+A.emoji+" \u2014 when tired, that's the instinct you fall back on. Notice it; it's the truest read in the game.";
+  }
+
+  _soft(meta){
+    const total=this.state.calls||1;
+    const fp=this._fingerprint(meta.counts,total);
+    const A=this.ACT[fp.top];
+    const pct=Math.round((meta.counts[fp.top]||0)/total*100);
+    const map={
+      engine:"you defaulted to getting there \u2014 track it, drive it, be in it. The workhorse habit.",
+      deliverer:"you kept looking to deliver \u2014 the ball did your damage, not your legs.",
+      sentinel:"you kept choosing to hold and protect \u2014 the guardian's calm under load.",
+      weaver:"you kept combining and slipping inside \u2014 the connector's answer to pressure.",
+      renegade:"you kept backing yourself to take him on \u2014 flair that won't switch off.",
+    };
+    return "Under a shrinking clock and draining legs, "+pct+"% of the time "+map[fp.top]+" This is a behaviour \u2014 not a verdict. Your archetype comes from the scan.";
+  }
+
+  renderVals(){
+    const accent=this.props.accent ?? '#22D3EE';
+    const V=this.state.view;
+    const soundOn=this._soundOn!==false;
+    const base={
+      accent, showChrome:!this._embedded && V!=='play',
+      isIntro:V==='intro', isPlay:V==='play', isResult:V==='result',
+      soundOn, soundOff:!soundOn, soundColor:soundOn?accent:'#61748c', soundTitle:soundOn?'Sound on':'Sound off',
+      toggleSound:()=>this._toggleSound(), start:()=>this._begin(), again:()=>this._again(),
+      bestLine: this._best? ('YOUR BEST \u00b7 LASTED TO THE '+this._best+"'") : 'FIRST RUN \u00b7 SEE HOW DEEP YOU GET',
+    };
+
+    // levels
+    base.levels=Object.keys(this.LEVELS).map(k=>{ const L=this.LEVELS[k]; const on=this.state.level===k;
+      return { key:k, label:L.label, sub:L.sub, onPick:()=>this._pickLevel(k),
+        bg:on?'color-mix(in srgb,'+accent+' 16%,transparent)':'rgba(10,16,28,.5)',
+        border:on?'color-mix(in srgb,'+accent+' 60%,transparent)':'rgba(120,140,166,.22)',
+        fg:on?'#F2F8FE':'#C6D3E2', subColor:on?accent:'#61748c' }; });
+
+    // play HUD
+    const legs=Math.round(this.state.legs);
+    base.legsPct=legs+'%';
+    base.legsColor= legs>50?'#9FB0C5': legs>25?'#FFB020':'#FF5A6E';
+    base.legsFill= legs>50?'linear-gradient(90deg,'+accent+',color-mix(in srgb,'+accent+' 50%,transparent))': legs>25?'linear-gradient(90deg,#FFB020,#FF7A2F)':'linear-gradient(90deg,#FF5A6E,#FF2D55)';
+    base.legsGlow= legs>25?('color-mix(in srgb,'+accent+' 45%,transparent)'):'rgba(255,90,110,.5)';
+    base.minuteLabel=this.state.minute;
+    base.clockColor= this.state.minute>=90?accent:'#EAF2FB';
+    base.phaseKicker= this.state.minute>=76?'THE EIGHTIETH MINUTE':'SECOND HALF';
+    base.roundLabel=(this.state.round+1);
+
+    // scenario
+    const scn=this._scn||this.SCN[0];
+    base.scenarioPrompt=scn.p;
+    const P=scn.pos;
+    base.pBallX=P.ballX; base.pBallY=P.ballY; base.pYouX=P.youX; base.pYouY=P.youY;
+    base.pOppX=P.oppX; base.pOppY=P.oppY; base.pMateX=P.mateX; base.pMateY=P.mateY;
+
+    // window timer
+    base.windowW= this.state.timerRun?'0%':'100%';
+    base.windowDur=((this._winDur||2000)/1000).toFixed(2)+'s';
+    base.windowFill='linear-gradient(90deg,'+accent+',#FF5A6E)';
+
+    // choices (shuffled per round, mapping hidden)
+    const opts=this._scn? this._shuffle(this._scn.o.map((o,i)=>({...o,i}))) : [];
+    // keep stable within a round: cache
+    if(this._scn){ if(this._roundKey!==(this.state.round+'-'+this._oi)){ this._roundKey=this.state.round+'-'+this._oi; this._shownOpts=this._shuffle(this._scn.o.slice()); } }
+    const shown=this._shownOpts||[];
+    base.choices=shown.map((o,di)=>({
+      text:o.t, delay:(0.04+di*0.04).toFixed(2)+'s',
+      span: di===4?'grid-column:1 / -1;':'',
+      pips:[0,1,2].map(n=>({ on: n<o.e?accent:'rgba(120,140,166,.22)' })),
+      onPick:()=>this._apply(o),
+    }));
+
+    // result
+    base.endReason=this.state.endReason||'';
+    base.finalMinute=this.state.finalMinute;
+    base.survivalHeadline= this.state.finalMinute>=95?'You saw the whole thing out.': this.state.finalMinute>=90?'Deep into stoppage time.': this.state.finalMinute>=85?'You dug into the final stretch.':'The legs went before the whistle.';
+    base.statGood=this.state.good; base.statCalls=this.state.calls; base.statFroze=this.state.froze;
+    base.frozeColor= this.state.froze>0?'#FF5A6E':'#EAF2FB';
+    const meta=this._meta;
+    if(meta){
+      const fp=this._fingerprint(meta.counts,this.state.calls||1);
+      base.fingerprint=fp.bars;
+      base.shiftLine=this._shift(meta);
+      base.softRead=this._soft(meta);
+    } else { base.fingerprint=[]; base.shiftLine=''; base.softRead=''; }
+
+    return base;
+  }
+}
+</script>
+</body>
+</html>

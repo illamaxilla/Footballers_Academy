@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:#04060c;}
+  a{color:var(--accent,#22D3EE);text-decoration:none;}
+  a:hover{opacity:.92;}
+  @keyframes fa-blink{0%,100%{opacity:1;}50%{opacity:.25;}}
+  @keyframes fa-rise{0%{transform:translateY(16px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-rise-sm{0%{transform:translateY(10px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-flash{0%{opacity:0;}18%{opacity:.9;}100%{opacity:0;}}
+  @keyframes fa-grow{from{transform:scaleX(0);}to{transform:scaleX(1);}}
+  .fa-in{opacity:0;animation:fa-rise .7s cubic-bezier(.2,.7,.2,1) forwards;}
+  .fa-in-sm{opacity:0;animation:fa-rise-sm .5s cubic-bezier(.2,.7,.2,1) forwards;}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;}.fa-in,.fa-in-sm{opacity:1!important;transform:none!important;}}
+</style>
+</helmet>
+<div data-screen-label="The Half-Turn" style="position:relative;display:flex;flex-direction:column;min-height:100dvh;width:100%;overflow:hidden;background:radial-gradient(120% 90% at 50% 6%,#0e1a2d 0%,#080e1a 44%,#04060c 100%);color:#EAF2FB;font-family:'Archivo',system-ui,sans-serif;--accent:{{ accent }};">
+
+  <div style="position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.4;background:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0px,rgba(255,255,255,.02) 1px,transparent 1px,transparent 4px);"></div>
+  <div style="position:absolute;top:20px;left:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;top:20px;right:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;left:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;right:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+
+  <!-- TOP BAR -->
+  <header style="position:relative;z-index:6;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px clamp(26px,3.4vw,58px);">
+    <div style="min-width:120px;display:flex;">
+      <sc-if value="{{ showBack }}" hint-placeholder-val="{{ true }}">
+        <button onClick="{{ back }}" style="display:inline-flex;align-items:center;gap:8px;background:none;border:0;cursor:pointer;color:#8EA1B8;font:600 12.5px 'Archivo';padding:0;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M15 5l-7 7 7 7"/></svg>Back
+        </button>
+      </sc-if>
+    </div>
+    <div style="display:flex;align-items:center;gap:11px;">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" style="stroke:var(--accent,#22D3EE);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;"><path d="M4 12a8 8 0 0 1 8-8 8 8 0 0 1 7 4"/><path d="M19 4v4h-4"/><circle cx="12" cy="12" r="2.4"/></svg>
+      <span style="font:800 13px 'Archivo';letter-spacing:.05em;">THE HALF-<span style="color:var(--accent,#22D3EE);">TURN</span></span>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;min-width:120px;justify-content:flex-end;">
+      <button onClick="{{ toggleSound }}" title="{{ soundTitle }}" style="display:grid;place-items:center;width:28px;height:28px;border-radius:8px;border:1px solid rgba(120,140,166,.24);background:rgba(10,16,28,.5);cursor:pointer;color:{{ soundColor }};">
+        <sc-if value="{{ soundOn }}" hint-placeholder-val="{{ true }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></sc-if>
+        <sc-if value="{{ soundOff }}" hint-placeholder-val="{{ false }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M22 9l-6 6M16 9l6 6"/></svg></sc-if>
+      </button>
+    </div>
+  </header>
+
+  <!-- INTRO -->
+  <sc-if value="{{ isIntro }}" hint-placeholder-val="{{ true }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;text-align:center;padding:20px clamp(26px,4vw,58px) 60px;">
+      <div class="fa-in" style="display:inline-flex;align-items:center;gap:10px;margin-bottom:20px;font:600 12px 'IBM Plex Mono';letter-spacing:.4em;color:var(--accent,#22D3EE);">
+        <span style="width:6px;height:6px;border-radius:50%;background:var(--accent,#22D3EE);box-shadow:0 0 8px var(--accent,#22D3EE);animation:fa-blink 1.6s ease-in-out infinite;"></span>RECEIVING · HOW YOU OPEN UP
+      </div>
+      <h1 class="fa-in" style="margin:0 0 16px;font:800 clamp(36px,5.4vw,74px)/0.97 'Archivo';letter-spacing:-0.03em;text-wrap:balance;max-width:900px;animation-delay:.06s;">The ball's coming.<br>Which way do you turn?</h1>
+      <p class="fa-in" style="margin:0 0 26px;max-width:640px;font:400 clamp(15px,1.3vw,18px)/1.6 'Archivo';color:#9FB0C5;text-wrap:pretty;animation-delay:.12s;">A defender is closing — from your shoulder, your front, or one side. Before it lands, decide your body shape: <strong style="color:var(--accent,#22D3EE);">open into the half-space</strong>, <strong style="color:#B79BFF;">spin and drive at him</strong>, or <strong style="color:#9FB6D0;">set it safe</strong>. There's a right answer in every picture — and the way you lean tells us who you are.</p>
+
+      <div class="fa-in" style="margin-bottom:12px;font:600 10px 'IBM Plex Mono';letter-spacing:.28em;color:#61748c;animation-delay:.2s;">CHOOSE YOUR LEVEL</div>
+      <div class="fa-in" style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;max-width:560px;margin-bottom:34px;animation-delay:.22s;">
+        <sc-for list="{{ diffs }}" as="d" hint-placeholder-count="3">
+          <button onClick="{{ d.pick }}" style="flex:1 1 150px;min-width:148px;text-align:left;padding:16px 18px;border-radius:15px;border:1px solid {{ d.border }};background:{{ d.bg }};cursor:pointer;transition:border-color .14s ease,background .14s ease;">
+            <div style="font:800 16px 'Archivo';color:{{ d.titleColor }};margin-bottom:3px;">{{ d.name }}</div>
+            <div style="font:400 11.5px/1.45 'Archivo';color:#9FB0C5;">{{ d.desc }}</div>
+          </button>
+        </sc-for>
+      </div>
+
+      <button onClick="{{ begin }}" class="fa-in" style="display:inline-flex;align-items:center;gap:12px;padding:18px 46px;border-radius:13px;border:0;background:var(--accent,#22D3EE);color:#0b0518;font:700 16px 'Archivo';cursor:pointer;box-shadow:0 14px 46px color-mix(in srgb,var(--accent,#22D3EE) 42%,transparent);transition:transform .16s ease;animation-delay:.3s;" style-hover="transform:translateY(-2px);">
+        Receive the first ball
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12h13M12 6l6 6-6 6"/></svg>
+      </button>
+      <div class="fa-in" style="margin-top:18px;font:500 10px 'IBM Plex Mono';letter-spacing:.14em;color:#4f627a;animation-delay:.36s;">{{ bestLine }}</div>
+    </main>
+  </sc-if>
+
+  <!-- PLAY -->
+  <sc-if value="{{ isPlay }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;gap:14px;padding:0 clamp(16px,2.4vw,42px) 24px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;width:100%;max-width:640px;">
+        <div style="text-align:left;min-width:96px;">
+          <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.2em;color:#61748c;">RECEIVE</div>
+          <div style="font:800 24px 'IBM Plex Mono';color:#F2F8FE;line-height:1.05;">{{ trialLabel }}</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="font:800 15px 'Archivo';letter-spacing:.02em;color:{{ phaseColor }};transition:color .2s ease;">{{ phaseTitle }}</div>
+          <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.14em;color:#7688a0;margin-top:2px;">{{ phaseSub }}</div>
+        </div>
+        <div style="min-width:96px;display:flex;justify-content:flex-end;">
+          <div style="position:relative;width:44px;height:44px;">
+            <svg width="44" height="44" viewBox="0 0 44 44" style="transform:rotate(-90deg);"><circle cx="22" cy="22" r="18" fill="none" stroke="rgba(120,140,166,.2)" stroke-width="4"/><circle ref="{{ ringRef }}" cx="22" cy="22" r="18" fill="none" stroke="{{ ringColor }}" stroke-width="4" stroke-linecap="round" stroke-dasharray="113.1" stroke-dashoffset="0"/></svg>
+            <div style="position:absolute;inset:0;display:grid;place-items:center;font:800 11px 'IBM Plex Mono';color:{{ ringColor }};">{{ ringGlyph }}</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="position:relative;width:100%;max-width:520px;aspect-ratio:5/6;flex:0 1 auto;min-height:0;border-radius:18px;overflow:hidden;border:1px solid rgba(120,140,166,.22);">
+        <canvas ref="{{ canvasRef }}" style="display:block;width:100%;height:100%;"></canvas>
+        <div ref="{{ flashRef }}" style="position:absolute;inset:0;pointer-events:none;opacity:0;"></div>
+      </div>
+
+      <!-- DECIDE -->
+      <sc-if value="{{ isDecide }}" hint-placeholder-val="{{ true }}">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;max-width:520px;">
+          <sc-for list="{{ actions }}" as="a" hint-placeholder-count="4">
+            <button onClick="{{ a.pick }}" style="display:flex;align-items:center;gap:11px;text-align:left;padding:13px 15px;border-radius:14px;border:1px solid {{ a.border }};background:{{ a.bg }};cursor:pointer;transition:transform .12s ease;" style-hover="transform:translateY(-2px);">
+              <span style="display:grid;place-items:center;width:34px;height:34px;border-radius:10px;background:color-mix(in srgb,{{ a.color }} 16%,transparent);color:{{ a.color }};flex-shrink:0;" innerHTML="{{ a.icon }}"></span>
+              <span>
+                <span style="display:block;font:800 14px 'Archivo';color:{{ a.color }};">{{ a.name }}</span>
+                <span style="display:block;font:500 10.5px/1.3 'Archivo';color:#9FB0C5;">{{ a.sub }}</span>
+              </span>
+            </button>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <!-- REVEAL -->
+      <sc-if value="{{ isReveal }}" hint-placeholder-val="{{ false }}">
+        <div style="width:100%;max-width:520px;display:flex;flex-direction:column;gap:7px;">
+          <sc-for list="{{ bars }}" as="b" hint-placeholder-count="4">
+            <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:11px;border:1px solid {{ b.border }};background:{{ b.bg }};">
+              <span style="width:96px;flex-shrink:0;font:800 11.5px 'Archivo';color:{{ b.color }};">{{ b.name }}</span>
+              <span style="flex:1;height:10px;border-radius:99px;background:rgba(120,140,166,.14);overflow:hidden;"><span style="display:block;height:100%;width:{{ b.width }};border-radius:99px;background:{{ b.color }};transform-origin:left;animation:fa-grow .5s cubic-bezier(.3,.8,.3,1) both;"></span></span>
+              <span style="width:74px;flex-shrink:0;text-align:right;font:700 9px 'IBM Plex Mono';letter-spacing:.08em;color:{{ b.tagColor }};">{{ b.tag }}</span>
+            </div>
+          </sc-for>
+          <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin-top:4px;">
+            <div style="font:600 12px/1.45 'Archivo';color:#C6D3E2;max-width:340px;text-wrap:pretty;">{{ verdict }}</div>
+            <button onClick="{{ next }}" style="display:inline-flex;align-items:center;gap:9px;padding:12px 26px;border-radius:12px;border:0;background:var(--accent,#22D3EE);color:#0b0518;font:700 14px 'Archivo';cursor:pointer;flex-shrink:0;" style-hover="transform:translateY(-2px);">
+              {{ nextLabel }}
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12h13M12 6l6 6-6 6"/></svg>
+            </button>
+          </div>
+        </div>
+      </sc-if>
+    </main>
+  </sc-if>
+
+  <!-- OVER -->
+  <sc-if value="{{ isOver }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;text-align:center;padding:20px clamp(26px,4vw,58px) 70px;">
+      <div class="fa-in" style="display:inline-flex;align-items:center;gap:9px;margin-bottom:16px;padding:6px 14px;border:1px solid color-mix(in srgb,var(--accent,#22D3EE) 32%,transparent);border-radius:999px;font:600 10px 'IBM Plex Mono';letter-spacing:.28em;color:var(--accent,#22D3EE);">RECEIVING REPORT</div>
+      <div class="fa-in" style="font:600 10px 'IBM Plex Mono';letter-spacing:.24em;color:#7688a0;margin-bottom:6px;animation-delay:.05s;">YOU RECEIVE LIKE</div>
+      <h1 class="fa-in" style="margin:0 0 6px;font:800 clamp(40px,7vw,84px)/0.92 'Archivo';letter-spacing:-0.02em;color:{{ styleColor }};animation-delay:.08s;">{{ styleName }}</h1>
+      <div class="fa-in" style="font:700 13px 'Archivo';color:#B4C2D4;margin-bottom:18px;max-width:560px;text-wrap:pretty;animation-delay:.1s;">{{ styleVerdict }}</div>
+
+      <!-- fingerprint -->
+      <div class="fa-in" style="width:100%;max-width:520px;margin:0 auto 22px;animation-delay:.16s;">
+        <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.2em;color:#7688a0;margin-bottom:9px;text-align:left;">YOUR BODY-SHAPE FINGERPRINT</div>
+        <div style="display:flex;height:26px;border-radius:8px;overflow:hidden;border:1px solid rgba(120,140,166,.2);">
+          <sc-for list="{{ mix }}" as="m" hint-placeholder-count="3">
+            <div style="width:{{ m.width }};background:{{ m.color }};display:grid;place-items:center;font:800 10px 'IBM Plex Mono';color:#0b0518;">{{ m.pct }}</div>
+          </sc-for>
+        </div>
+        <div style="display:flex;gap:16px;justify-content:center;margin-top:9px;flex-wrap:wrap;">
+          <sc-for list="{{ mix }}" as="m" hint-placeholder-count="3">
+            <span style="display:inline-flex;align-items:center;gap:6px;font:700 10px 'IBM Plex Mono';letter-spacing:.06em;color:#9FB0C5;"><span style="width:9px;height:9px;border-radius:2px;background:{{ m.color }};"></span>{{ m.name }}</span>
+          </sc-for>
+        </div>
+      </div>
+
+      <div class="fa-in" style="display:flex;flex-wrap:wrap;gap:22px;justify-content:center;margin-bottom:24px;animation-delay:.2s;">
+        <div style="text-align:center;"><div style="font:800 26px 'IBM Plex Mono';color:{{ qualColor }};">{{ qualValue }}</div><div style="font:600 9px 'IBM Plex Mono';letter-spacing:.12em;color:#61748c;margin-top:3px;">RIGHT SHAPE CHOSEN</div></div>
+        <div style="width:1px;background:rgba(120,140,166,.2);"></div>
+        <div style="text-align:center;"><div style="font:800 26px 'IBM Plex Mono';color:#EAF2FB;">{{ readValue }}</div><div style="font:600 9px 'IBM Plex Mono';letter-spacing:.12em;color:#61748c;margin-top:3px;">OPENED INTO SPACE</div></div>
+      </div>
+
+      <div class="fa-in" style="max-width:600px;margin-bottom:20px;padding:18px 22px;border-radius:14px;border:1px dashed rgba(120,140,166,.3);background:rgba(10,16,28,.4);text-align:left;animation-delay:.26s;">
+        <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.2em;color:#7688a0;margin-bottom:8px;">WHAT THIS LEANS TOWARD</div>
+        <div style="font:500 14px/1.6 'Archivo';color:#C6D3E2;">{{ softRead }}</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;">
+          <sc-for list="{{ traitChips }}" as="c" hint-placeholder-count="2">
+            <span style="display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border-radius:8px;border:1px solid color-mix(in srgb,var(--accent,#22D3EE) 30%,transparent);background:color-mix(in srgb,var(--accent,#22D3EE) 8%,transparent);font:700 11px 'IBM Plex Mono';letter-spacing:.06em;color:#C6D3E2;"><span style="font-weight:800;color:var(--accent,#22D3EE);">{{ c.key }}</span>{{ c.label }}</span>
+          </sc-for>
+        </div>
+        <div style="margin-top:12px;font:500 11px/1.5 'Archivo';color:#7688a0;text-wrap:pretty;">Body orientation on the receive is the clearest tell of an <strong style="color:#9FB0C5;">Architect</strong> (opens and progresses) from a <strong style="color:#9FB0C5;">Maverick</strong> (spins and takes on). We read your lean, not your touch.</div>
+      </div>
+
+      <div class="fa-in" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:14px;animation-delay:.32s;">
+        <button onClick="{{ retake }}" style="display:inline-flex;align-items:center;gap:11px;padding:18px 44px;border-radius:13px;border:0;background:var(--accent,#22D3EE);color:#0b0518;font:700 16px 'Archivo';cursor:pointer;box-shadow:0 14px 46px color-mix(in srgb,var(--accent,#22D3EE) 42%,transparent);transition:transform .16s ease;" style-hover="transform:translateY(-2px);">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" style="stroke:#0b0518;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
+          Receive again
+        </button>
+        <a href="Assessment.dc.html" style="display:inline-flex;align-items:center;gap:9px;padding:18px 26px;border-radius:13px;border:1px solid rgba(157,176,198,.28);background:rgba(12,18,30,.4);color:#C6D3E2;font:600 15px 'Archivo';" style-hover="border-color:color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);color:#EAF2FB;">Back to the scan</a>
+      </div>
+      <div class="fa-in" style="margin-top:20px;font:500 10px 'IBM Plex Mono';letter-spacing:.14em;color:#4f627a;animation-delay:.38s;">{{ dataLine }}</div>
+    </main>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1000,&quot;height&quot;:860},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#22D3EE&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#22D3EE&quot;,&quot;#A78BFA&quot;,&quot;#C6FF3A&quot;,&quot;#FF7A45&quot;,&quot;#FF4D8D&quot;]},&quot;motion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;embedded&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;onDone&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;(counts:any, meta:any)=&gt;void&quot;}}">
+class Component extends DCLogic {
+  N_TRIALS = 10;
+  ACT = {
+    openL:{ name:'OPEN LEFT', group:'open', color:'#22D3EE', sub:'Half-turn into the left half-space.', icon:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M18 18L7 7M7 7v8M7 7h8"/></svg>' },
+    openR:{ name:'OPEN RIGHT', group:'open', color:'#22D3EE', sub:'Half-turn into the right half-space.', icon:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M6 18L17 7M17 7v8M17 7H9"/></svg>' },
+    set:{ name:'SET IT', group:'set', color:'#9FB6D0', sub:'Shield and lay it back safe.', icon:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M12 5v13M7 13l5 5 5-5"/></svg>' },
+    spin:{ name:'SPIN & DRIVE', group:'spin', color:'#B79BFF', sub:'Turn sharp and take him on.', icon:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M20 11a8 8 0 1 0-2 6"/><path d="M20 5v6h-6"/></svg>' },
+  };
+  // press: where the defender closes from · free: open half-space side · behind: grass beyond him · boxed: no out
+  DIL = [
+    { press:'BR', free:'L', behind:false, boxed:false },
+    { press:'BL', free:'R', behind:false, boxed:false },
+    { press:'F',  free:null, behind:true, boxed:false },
+    { press:'F',  free:null, behind:false, boxed:true },
+    { press:'R',  free:'L', behind:false, boxed:false },
+    { press:'L',  free:'R', behind:true, boxed:false },
+    { press:'BL', free:'R', behind:false, boxed:false },
+    { press:'BR', free:null, behind:true, boxed:false },
+    { press:'F',  free:'L', behind:false, boxed:false },
+    { press:'BR', free:'L', behind:false, boxed:true },
+  ];
+  DIFFS = {
+    academy: { name:'Academy', desc:'A long look before it lands.', winMs:5200 },
+    pro:     { name:'Pro',     desc:'Read it as it arrives.',        winMs:3400 },
+    elite:   { name:'Elite',   desc:'Decide on the half-turn.',      winMs:2100 },
+  };
+  ORDER = ['academy','pro','elite'];
+
+  state = { view:'intro', diff:'pro', trial:0, phase:'decide' };
+
+  componentDidMount(){
+    try { this._soundOn = localStorage.getItem('fa_sound') !== '0'; } catch(e){ this._soundOn=true; }
+    try { const p=JSON.parse(localStorage.getItem('fa_am_halfturn')||'null'); this._bestQ = p&&p.measures? p.measures.rightShapePct : null; } catch(e){ this._bestQ=null; }
+    this._onResize=()=>{ this._resize(); this._draw(); }; window.addEventListener('resize', this._onResize);
+  }
+  componentWillUnmount(){ window.removeEventListener('resize', this._onResize); clearTimeout(this._to); }
+
+  // ---------- audio ----------
+  _audio(){ if(this._actx===undefined){ try{ this._actx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ this._actx=null; } } if(this._actx&&this._actx.state==='suspended') this._actx.resume(); return this._actx; }
+  _tone(f,d,t,g,slide){ const c=this._audio(); if(!c||this._soundOn===false) return; const o=c.createOscillator(),a=c.createGain(); o.type=t||'sine'; o.frequency.setValueAtTime(f,c.currentTime); if(slide) o.frequency.exponentialRampToValueAtTime(Math.max(20,slide),c.currentTime+d); o.connect(a); a.connect(c.destination); const n=c.currentTime; a.gain.setValueAtTime(0.0001,n); a.gain.exponentialRampToValueAtTime(g||0.05,n+0.008); a.gain.exponentialRampToValueAtTime(0.0001,n+d); o.start(n); o.stop(n+d+0.02); }
+  _haptic(ms){ try{ if(navigator.vibrate) navigator.vibrate(ms||8); }catch(e){} }
+  _sfx(k){ if(this._soundOn===false) return;
+    if(k==='good'){ this._tone(660,0.09,'triangle',0.055); setTimeout(()=>this._tone(990,0.14,'sine',0.045),60); setTimeout(()=>this._tone(1320,0.16,'sine',0.04),130); }
+    else if(k==='ok'){ this._tone(520,0.1,'triangle',0.05); }
+    else if(k==='bad'){ this._tone(240,0.26,'sawtooth',0.055,120); }
+    else if(k==='froze'){ this._tone(200,0.3,'sawtooth',0.05,110); }
+    else if(k==='whistle'){ this._tone(900,0.16,'sine',0.05,1200); }
+    else if(k==='tap'){ this._tone(520,0.05,'square',0.03); }
+  }
+  _toggleSound(){ const on=this._soundOn===false; this._soundOn=on; try{ localStorage.setItem('fa_sound', on?'1':'0'); }catch(e){} if(on){ this._audio(); this._sfx('tap'); } this.forceUpdate(); }
+
+  // ---------- canvas ----------
+  _resize(){ const cv=this._canvas; if(!cv) return; const r=cv.getBoundingClientRect(); const dpr=Math.min(2,window.devicePixelRatio||1); cv.width=Math.max(2,Math.round(r.width*dpr)); cv.height=Math.max(2,Math.round(r.height*dpr)); this._dpr=dpr; this._W=r.width; this._H=r.height; }
+  _cvRef(el){ this._canvas=el; if(el){ requestAnimationFrame(()=>{ this._resize(); this._draw(); }); } }
+  _flRef(el){ this._flashEl=el; }
+  _ringRef(el){ this._ringEl=el; }
+  _px(nx,ny){ const padX=this._W*0.1, padY=this._H*0.08; return [ padX + nx*(this._W-2*padX), padY + ny*(this._H-2*padY) ]; }
+
+  // ---------- geometry ----------
+  _geo(d){
+    const me={x:0.5,y:0.66}, passer={x:0.5,y:0.94};
+    const dp={ BL:{x:0.4,y:0.8}, BR:{x:0.6,y:0.8}, F:{x:0.5,y:0.5}, L:{x:0.33,y:0.63}, R:{x:0.67,y:0.63} }[d.press];
+    const freeZone = d.free==='L'? {x:0.28,y:0.44} : d.free==='R'? {x:0.72,y:0.44} : null;
+    const behindZone = d.behind? {x:0.5,y:0.32} : null;
+    return { me, passer, def:dp, freeZone, behindZone };
+  }
+  _ev(d){
+    return { openL: d.boxed?0.2 : (d.free==='L'?0.82:0.2),
+             openR: d.boxed?0.2 : (d.free==='R'?0.82:0.2),
+             set:   d.boxed?0.55:0.45,
+             spin:  d.behind?0.9:0.12 };
+  }
+
+  // ---------- flow ----------
+  _pickDiff(d){ this._sfx('tap'); this.setState({ diff:d }); }
+  _begin(){
+    this._audio(); this._sfx('whistle'); this._haptic(12);
+    this._cfg=this.DIFFS[this.state.diff];
+    const order=this.DIL.map((_,i)=>i);
+    for(let i=order.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [order[i],order[j]]=[order[j],order[i]]; }
+    this._order=order; this._log=[]; this._counts={open:0,set:0,spin:0,froze:0};
+    this._sumChosen=0; this._sumMax=0; this._right=0; this._opens=0; this._openCorrect=0;
+    this.setState({ view:'play', trial:0, phase:'decide' }, ()=>{ this._resize(); this._startTrial(0); });
+  }
+
+  _startTrial(i){
+    const d=this.DIL[this._order[i]]; this._d=d; this._g=this._geo(d); this._e=this._ev(d);
+    this._best=Object.keys(this._e).reduce((a,b)=>this._e[b]>this._e[a]?b:a,'set');
+    this._maxEV=this._e[this._best]; this._chosen=null;
+    this.setState({ trial:i, phase:'decide' }, ()=>{ this._draw(); this._startRing(); });
+    this._sfx('tap');
+  }
+  _startRing(){
+    const el=this._ringEl; const win=this._cfg.winMs;
+    if(el){ el.style.transition='none'; el.style.strokeDashoffset='0'; void el.offsetWidth; el.style.transition='stroke-dashoffset '+win+'ms linear'; el.style.strokeDashoffset='113.1'; }
+    clearTimeout(this._to);
+    this._to=setTimeout(()=>{ if(this.state.phase==='decide') this._choose(null); }, win);
+  }
+
+  _choose(action){
+    if(this.state.phase!=='decide') return;
+    clearTimeout(this._to);
+    const el=this._ringEl; if(el){ const cs=getComputedStyle(el); el.style.transition='none'; el.style.strokeDashoffset=cs.strokeDashoffset; }
+    const d=this._d; const ev=action?this._e[action]:0; const grp=action?this.ACT[action].group:null;
+    this._chosen=action;
+    if(action===null){ this._counts.froze++; this._sfx('froze'); this._flash('rgba(120,140,166,.28)'); }
+    else {
+      this._counts[grp]++; this._sumChosen+=ev;
+      if(grp==='open'){ this._opens++; const correctOpen=(action==='openL'&&d.free==='L')||(action==='openR'&&d.free==='R'); if(correctOpen) this._openCorrect++; }
+      if(action===this._best){ this._right++; this._sfx('good'); this._flash('color-mix(in srgb,'+(this._accent||'#22D3EE')+' 30%,transparent)'); this._haptic(16); }
+      else if(ev>=this._maxEV*0.72){ this._sfx('ok'); this._flash('rgba(255,176,32,.22)'); this._haptic(10); }
+      else { this._sfx('bad'); this._flash('rgba(255,74,95,.26)'); this._haptic(9); }
+    }
+    this._sumMax+=this._maxEV;
+    this._log.push({ dil:this._order[this.state.trial], press:d.press, chosen:action||'froze', group:grp||'froze', ev:+ev.toFixed(2), best:this._best, bestEV:+this._maxEV.toFixed(2), optimal:action===this._best });
+    this.setState({ phase:'reveal' }, ()=>this._draw());
+  }
+  _next(){ const n=this.state.trial+1; if(n>=this.N_TRIALS) this._gameOver(); else this._startTrial(n); }
+
+  // ---------- drawing ----------
+  _drawBall(ctx,x,y,r){ const g=ctx.createRadialGradient(x-r*0.3,y-r*0.35,r*0.15,x,y,r); g.addColorStop(0,'#ffffff'); g.addColorStop(1,'#cfe0ee'); ctx.fillStyle=g; ctx.beginPath(); ctx.arc(x,y,r,0,7); ctx.fill(); ctx.fillStyle='rgba(20,40,60,.5)'; ctx.beginPath(); ctx.arc(x-r*0.15,y-r*0.1,r*0.26,0,7); ctx.fill(); }
+  _token(ctx,x,y,r,fill,stroke,label,labelCol){ ctx.fillStyle='rgba(0,0,0,.32)'; ctx.beginPath(); ctx.ellipse(x,y+r*0.85,r*0.9,r*0.3,0,0,7); ctx.fill(); ctx.fillStyle=fill; ctx.strokeStyle=stroke||'rgba(255,255,255,.22)'; ctx.lineWidth=1.5; ctx.beginPath(); ctx.arc(x,y-r*0.16,r,0,7); ctx.fill(); ctx.stroke(); if(label){ ctx.fillStyle=labelCol||'#04121a'; ctx.font="800 "+Math.max(8,this._W*0.028)+"px 'IBM Plex Mono'"; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(label,x,y-r*0.16); ctx.textBaseline='alphabetic'; } }
+  _chevron(ctx,x,y,r,col){ ctx.save(); ctx.translate(x,y); ctx.fillStyle=col; ctx.beginPath(); ctx.moveTo(-r,0); ctx.lineTo(r*0.55,-r*0.85); ctx.lineTo(r*0.15,0); ctx.lineTo(r*0.55,r*0.85); ctx.closePath(); ctx.fill(); ctx.restore(); }
+  _zone(ctx,cx,cy,rw,rh,col){ ctx.save(); ctx.fillStyle=col; ctx.beginPath(); if(ctx.roundRect) ctx.roundRect(cx-rw,cy-rh,rw*2,rh*2,10); else ctx.rect(cx-rw,cy-rh,rw*2,rh*2); ctx.fill(); ctx.restore(); }
+  _arrow(ctx,x0,y0,x1,y1,col,w){ ctx.save(); ctx.strokeStyle=col; ctx.fillStyle=col; ctx.lineWidth=w; ctx.lineCap='round'; ctx.beginPath(); ctx.moveTo(x0,y0); ctx.lineTo(x1,y1); ctx.stroke(); const a=Math.atan2(y1-y0,x1-x0); ctx.translate(x1,y1); ctx.rotate(a); ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(-10,-6); ctx.lineTo(-10,6); ctx.closePath(); ctx.fill(); ctx.restore(); }
+
+  _draw(){
+    const ctx=this._canvas&&this._canvas.getContext('2d'); if(!ctx) return;
+    const W=this._W,H=this._H,dpr=this._dpr||1; if(!W||!H||!isFinite(W)) return;
+    const acc=this._accent||'#22D3EE'; const d=this._d, g=this._g; if(!d||!g){ ctx.save(); ctx.scale(dpr,dpr); ctx.clearRect(0,0,W,H); ctx.restore(); return; }
+    ctx.save(); ctx.scale(dpr,dpr); ctx.clearRect(0,0,W,H);
+    const bg=ctx.createLinearGradient(0,0,0,H); bg.addColorStop(0,'#0e2135'); bg.addColorStop(0.5,'#0a1728'); bg.addColorStop(1,'#060d18'); ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
+    ctx.strokeStyle='rgba(120,200,230,.4)'; ctx.lineWidth=3; const gy=this._px(0,0.02)[1]; ctx.beginPath(); ctx.moveTo(this._px(0.36,0)[0],gy); ctx.lineTo(this._px(0.64,0)[0],gy); ctx.stroke();
+    ctx.font="600 "+Math.max(8,W*0.02)+"px 'IBM Plex Mono'"; ctx.fillStyle='rgba(150,180,205,.4)'; ctx.textAlign='center'; ctx.fillText('ATTACK', W/2, this._px(0,0.055)[1]);
+    const reveal=this.state.phase==='reveal'; const chosen=this._chosen; const r=Math.max(13,W*0.05);
+
+    // zones
+    if(g.freeZone){ const [zx,zy]=this._px(g.freeZone.x,g.freeZone.y); this._zone(ctx,zx,zy,W*0.11,H*0.07,'rgba(59,224,122,'+(reveal&&this.ACT[chosen||'']&&this.ACT[chosen].group!=='open'?0.06:0.16)+')'); ctx.fillStyle='rgba(59,224,122,.7)'; ctx.font="700 "+Math.max(7,W*0.017)+"px 'IBM Plex Mono'"; ctx.fillText('SPACE', zx, zy+3); }
+    if(g.behindZone){ const [zx,zy]=this._px(g.behindZone.x,g.behindZone.y); this._zone(ctx,zx,zy,W*0.13,H*0.055,'rgba(183,155,255,'+(reveal&&chosen!=='spin'?0.06:0.15)+')'); ctx.fillStyle='rgba(183,155,255,.75)'; ctx.font="700 "+Math.max(7,W*0.017)+"px 'IBM Plex Mono'"; ctx.fillText('GRASS IN BEHIND', zx, zy+3); }
+
+    const [mx,my]=this._px(g.me.x,g.me.y); const [px,py]=this._px(g.passer.x,g.passer.y); const [dx,dy]=this._px(g.def.x,g.def.y);
+    // pass trail + ball
+    ctx.save(); ctx.strokeStyle='rgba(200,220,235,.25)'; ctx.setLineDash([4,6]); ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(px,py-r*0.1); ctx.lineTo(mx,my); ctx.stroke(); ctx.setLineDash([]); ctx.restore();
+    // pressure arrow (defender -> you)
+    if(!reveal){ this._arrow(ctx,dx,dy-r*0.16,mx+(mx>dx?-r*0.9:r*0.9),my-r*0.16,'rgba(255,90,110,.8)',3); }
+
+    // reveal: chosen action arrow + outcome
+    let outcome=null;
+    if(reveal && chosen){
+      const grp=this.ACT[chosen].group; let tgt=null, good=false;
+      if(chosen==='openL'){ tgt={x:0.28,y:0.44}; good=d.free==='L'; }
+      else if(chosen==='openR'){ tgt={x:0.72,y:0.44}; good=d.free==='R'; }
+      else if(chosen==='set'){ tgt=g.passer; good=true; }
+      else if(chosen==='spin'){ tgt=g.behindZone||{x:0.5,y:0.34}; good=!!d.behind; }
+      const isBest=chosen===this._best; const col = isBest?'#3BE07A':(good?'#FFB020':'#FF5A6E');
+      if(tgt){ const [tx,ty]=this._px(tgt.x,tgt.y); this._arrow(ctx,mx,my-r*0.16,tx,ty,col,3.4); }
+      outcome = isBest?['BEST BALL','#3BE07A'] : good?['PLAYED ON','#FFB020'] : (grp==='set'?['SAFE','#FFB020']:['LOST IT','#FF5A6E']);
+    }
+
+    // tokens
+    this._chevron(ctx,dx,dy,Math.max(10,W*0.032),'#FF5A6E');
+    this._token(ctx,px,py,r*0.72,'#3aa8c4',null,'',null);
+    this._token(ctx,mx,my,r,acc,'rgba(255,255,255,.28)','10','#160a2e');
+    this._drawBall(ctx,mx+r*0.5,my+r*0.35,Math.max(6,W*0.02));
+
+    if(outcome){ ctx.textAlign='center'; ctx.fillStyle=outcome[1]; ctx.font="800 "+Math.max(16,W*0.05)+"px 'Archivo'"; ctx.fillText(outcome[0], W/2, this._px(0,0.14)[1]); }
+    ctx.restore();
+  }
+  _flash(col){ const el=this._flashEl; if(!el) return; el.style.background='radial-gradient(circle at 50% 55%,'+col+',transparent 62%)'; el.style.animation='none'; void el.offsetWidth; el.style.animation='fa-flash .55s ease forwards'; }
+
+  // ---------- results ----------
+  _gameOver(){
+    this._sfx('whistle'); this._haptic(24);
+    const played=this._counts.open+this._counts.set+this._counts.spin;
+    const qual=this._sumMax>0?Math.round(this._sumChosen/this._sumMax*100):0;
+    const rates={ open: played?Math.round(this._counts.open/played*100):0, set: played?Math.round(this._counts.set/played*100):0, spin: played?Math.round(this._counts.spin/played*100):0 };
+    const readAcc = this._opens? Math.round(this._openCorrect/this._opens*100) : null;
+    let style='balanced';
+    if(rates.open>=Math.max(rates.set,rates.spin)+12) style='architect';
+    else if(rates.spin>=Math.max(rates.open,rates.set)+12) style='maverick';
+    else if(rates.set>=Math.max(rates.open,rates.spin)+12) style='safe';
+    const isPB=this._bestQ==null||qual>this._bestQ; if(isPB) this._bestQ=qual;
+    const result={ instrument:'the-half-turn', version:'am-halfturn-1.0', position:'am', completedAt:new Date().toISOString(),
+      difficulty:this.state.diff, trials:this.N_TRIALS,
+      measures:{ rightShapePct:qual, openIntoSpacePct:readAcc, openRatePct:rates.open, spinRatePct:rates.spin, setRatePct:rates.set, froze:this._counts.froze, style },
+      counts:this._counts, trials_log:this._log,
+      maps:{ HSP:'opens into half-space', DRB:'spins & drives', CMP:'safe under pressure', note:'body orientation on the receive \u2014 the Architect vs Maverick tell, disposition not touch' } };
+    try{ localStorage.setItem('fa_am_halfturn', JSON.stringify(result)); }catch(e){}
+    this._final={ qual, rates, readAcc, style, isPB };
+    if(this.props.embedded && typeof this.props.onDone==='function'){ try{ this.props.onDone(this._counts, result); }catch(e){} }
+    this.setState({ view:'over' });
+  }
+  _retake(){ this._begin(); }
+  _back(){ this._sfx('tap'); if(this.state.view==='intro'){ window.location.href='Assessment.dc.html'; } else { clearTimeout(this._to); this.setState({ view:'intro' }); } }
+
+  renderVals(){
+    const accent=this.props.accent ?? '#22D3EE'; this._accent=accent;
+    const V=this.state.view, S=this.state, soundOn=this._soundOn!==false;
+    const base={ accent,
+      isIntro:V==='intro', isPlay:V==='play', isOver:V==='over', showBack:V!=='over',
+      isDecide:S.phase==='decide', isReveal:S.phase==='reveal',
+      soundOn, soundOff:!soundOn, soundColor:soundOn?accent:'#61748c', soundTitle:soundOn?'Sound on':'Sound off',
+      toggleSound:()=>this._toggleSound(), back:()=>this._back(), begin:()=>this._begin(), retake:()=>this._retake(), next:()=>this._next(),
+      canvasRef:(el)=>this._cvRef(el), flashRef:(el)=>this._flRef(el), ringRef:(el)=>this._ringRef(el),
+      bestLine:(this._bestQ!=null?('YOUR BEST · '+this._bestQ+'% RIGHT SHAPE'):'FIRST RUN · SET THE BAR') };
+    base.diffs=this.ORDER.map(id=>{ const d=this.DIFFS[id]; const sel=S.diff===id; return { name:d.name, desc:d.desc, pick:()=>this._pickDiff(id),
+      border: sel?accent:'rgba(120,140,166,.24)', bg: sel?('color-mix(in srgb,'+accent+' 14%,transparent)'):'rgba(10,16,28,.5)', titleColor: sel?accent:'#EAF2FB' }; });
+
+    base.trialLabel=(Math.min(S.trial+1,this.N_TRIALS))+' / '+this.N_TRIALS;
+    const ph=S.phase; const pmap={ decide:['SHAPE UP','which way do you open?','#EAF2FB'], reveal:['THE PICTURE','what each shape was worth','#3BE07A'] };
+    const pm=pmap[ph]||pmap.decide; base.phaseTitle=pm[0]; base.phaseSub=pm[1]; base.phaseColor=pm[2];
+    base.ringColor = ph==='decide'? accent : '#3BE07A'; base.ringGlyph = ph==='decide'? '' : '\u2713';
+
+    base.actions=['openL','openR','set','spin'].map(k=>{ const a=this.ACT[k]; return { name:a.name, sub:a.sub, color:a.color, icon:a.icon, pick:()=>this._choose(k),
+      border:'color-mix(in srgb,'+a.color+' 34%,transparent)', bg:'color-mix(in srgb,'+a.color+' 8%,rgba(10,16,28,.5))' }; });
+
+    // reveal bars
+    const e=this._e||{openL:0,openR:0,set:0,spin:0}; const chosen=this._chosen; const best=this._best; const maxEV=this._maxEV||1;
+    base.bars=['openL','openR','set','spin'].map(k=>{ const a=this.ACT[k]; const v=e[k]; const isBest=k===best; const isMine=k===chosen;
+      return { name:a.name, color:a.color, width:Math.round(v/maxEV*100)+'%',
+        tag:isMine?'YOUR SHAPE':(isBest?'BEST':''), tagColor:isMine?a.color:(isBest?'#3BE07A':'#61748c'),
+        border:isMine?('color-mix(in srgb,'+a.color+' 55%,transparent)'):(isBest?'rgba(59,224,122,.4)':'rgba(120,140,166,.16)'),
+        bg:isMine?('color-mix(in srgb,'+a.color+' 10%,rgba(10,16,28,.4))'):'rgba(10,16,28,.4)' }; });
+    (function(self){ const d=self._d; if(!d){ base.verdict=''; return; } const froze=chosen===null; const optimal=chosen===best;
+      if(froze) base.verdict='You waited too long and got caught in two minds. The shape here was to '+self.ACT[best].name.toLowerCase()+'.';
+      else if(optimal) base.verdict='Right shape. You turned into the value in the picture.';
+      else base.verdict='The bigger opening was to '+self.ACT[best].name.toLowerCase()+' — you turned away from it.'; })(this);
+    base.nextLabel=(S.trial+1>=this.N_TRIALS)?'See your report':'Next ball';
+
+    // results
+    const f=this._final||{}; const rates=f.rates||{open:0,set:0,spin:0};
+    const styleMap={ architect:['THE ARCHITECT','#22D3EE'], maverick:['THE MAVERICK','#B79BFF'], safe:['A SAFE PAIR OF FEET','#9FB6D0'], balanced:['A COMPLETE RECEIVER','#EAF2FB'] };
+    const sm=styleMap[f.style||'balanced']||styleMap.balanced; base.styleName=sm[0]; base.styleColor=sm[1];
+    const sv={ architect:'You open your body and progress the ball more than anything else — the half-space operator who turns pressure into a forward pass.',
+      maverick:'You back yourself to spin and take him on. High risk, high reward — the receive of a player who makes chaos.',
+      safe:'You protect the ball and set it safe first. Composed and low-risk — you rarely give it away, but you rarely break a line either.',
+      balanced:'You read each picture and picked the shape it asked for — open when there\u2019s space, spin when there\u2019s grass, safe when there isn\u2019t.' };
+    base.styleVerdict=sv[f.style||'balanced'];
+    base.mix=[ {name:'OPEN UP',color:'#22D3EE',pct:rates.open+'%',width:Math.max(rates.open,6)+'%'},
+               {name:'SPIN',color:'#B79BFF',pct:rates.spin+'%',width:Math.max(rates.spin,6)+'%'},
+               {name:'SET SAFE',color:'#9FB6D0',pct:rates.set+'%',width:Math.max(rates.set,6)+'%'} ];
+    base.qualValue=(f.qual!=null?f.qual:0)+'%'; base.qualColor=f.qual>=72?'#3BE07A':f.qual>=52?'#FFB020':'#FF7A8A';
+    base.readValue=(f.readAcc!=null?f.readAcc+'%':'\u2014');
+    const reads={ architect:['Opening into the half-space and playing forward is the Architect\u2019s signature receive — line-breaking from a stable body shape.', [{key:'HSP',label:'Half-Space'},{key:'CMP',label:'Composure'}]],
+      maverick:['Spinning to drive at the defender is the Maverick\u2019s tell — the take-on begins the moment the ball arrives.', [{key:'DRB',label:'Take-On'},{key:'RSK',label:'Risk'}]],
+      safe:['Setting it safe under pressure keeps possession but sits below the line-breakers. A Maestro releases; an Architect opens. Add one of those.', [{key:'CMP',label:'Composure'},{key:'PAS',label:'Release'}]],
+      balanced:['You adapt your body shape to the picture rather than defaulting to one move — the mark of a rounded receiver.', [{key:'HSP',label:'Half-Space'},{key:'CMP',label:'Composure'}]] };
+    const rd=reads[f.style||'balanced']||reads.balanced; base.softRead=rd[0]; base.traitChips=rd[1];
+    base.dataLine='MEASURED \u00B7 BODY ORIENTATION \u00B7 '+this.N_TRIALS+' RECEIVES \u00B7 '+(S.diff||'pro').toUpperCase()+' \u00B7 am-halfturn-1.0';
+    return base;
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:#04060c;}
+  a{color:var(--accent,#22D3EE);text-decoration:none;}
+  a:hover{opacity:.92;}
+  @keyframes fa-blink{0%,100%{opacity:1;}50%{opacity:.25;}}
+  @keyframes fa-rise{0%{transform:translateY(16px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-rise-sm{0%{transform:translateY(10px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-flash{0%{opacity:0;}18%{opacity:.9;}100%{opacity:0;}}
+  .fa-in{opacity:0;animation:fa-rise .7s cubic-bezier(.2,.7,.2,1) forwards;}
+  .fa-in-sm{opacity:0;animation:fa-rise-sm .5s cubic-bezier(.2,.7,.2,1) forwards;}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;}.fa-in,.fa-in-sm{opacity:1!important;transform:none!important;}}
+</style>
+</helmet>
+<div data-screen-label="Ghost Run" style="position:relative;display:flex;flex-direction:column;min-height:100dvh;width:100%;overflow:hidden;background:radial-gradient(120% 90% at 50% 6%,#0e1a2d 0%,#080e1a 44%,#04060c 100%);color:#EAF2FB;font-family:'Archivo',system-ui,sans-serif;--accent:{{ accent }};">
+
+  <div style="position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.4;background:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0px,rgba(255,255,255,.02) 1px,transparent 1px,transparent 4px);"></div>
+  <div style="position:absolute;top:20px;left:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;top:20px;right:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;left:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;right:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+
+  <!-- TOP BAR -->
+  <header style="position:relative;z-index:6;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px clamp(26px,3.4vw,58px);">
+    <div style="min-width:120px;display:flex;">
+      <sc-if value="{{ showBack }}" hint-placeholder-val="{{ true }}">
+        <button onClick="{{ back }}" style="display:inline-flex;align-items:center;gap:8px;background:none;border:0;cursor:pointer;color:#8EA1B8;font:600 12.5px 'Archivo';padding:0;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M15 5l-7 7 7 7"/></svg>Back
+        </button>
+      </sc-if>
+    </div>
+    <div style="display:flex;align-items:center;gap:11px;">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" style="stroke:var(--accent,#22D3EE);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="2.6"/></svg>
+      <span style="font:800 13px 'Archivo';letter-spacing:.05em;">GHOST <span style="color:var(--accent,#22D3EE);">RUN</span></span>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;min-width:120px;justify-content:flex-end;">
+      <button onClick="{{ toggleSound }}" title="{{ soundTitle }}" style="display:grid;place-items:center;width:28px;height:28px;border-radius:8px;border:1px solid rgba(120,140,166,.24);background:rgba(10,16,28,.5);cursor:pointer;color:{{ soundColor }};">
+        <sc-if value="{{ soundOn }}" hint-placeholder-val="{{ true }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></sc-if>
+        <sc-if value="{{ soundOff }}" hint-placeholder-val="{{ false }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M22 9l-6 6M16 9l6 6"/></svg></sc-if>
+      </button>
+    </div>
+  </header>
+
+  <!-- INTRO -->
+  <sc-if value="{{ isIntro }}" hint-placeholder-val="{{ true }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;text-align:center;padding:20px clamp(26px,4vw,58px) 60px;">
+      <div class="fa-in" style="display:inline-flex;align-items:center;gap:10px;margin-bottom:20px;font:600 12px 'IBM Plex Mono';letter-spacing:.4em;color:var(--accent,#22D3EE);">
+        <span style="width:6px;height:6px;border-radius:50%;background:var(--accent,#22D3EE);box-shadow:0 0 8px var(--accent,#22D3EE);animation:fa-blink 1.6s ease-in-out infinite;"></span>MOVEMENT · THE BLIND-SIDE RUN
+      </div>
+      <h1 class="fa-in" style="margin:0 0 16px;font:800 clamp(36px,5.4vw,74px)/0.97 'Archivo';letter-spacing:-0.03em;text-wrap:balance;max-width:900px;animation-delay:.06s;">Move the moment<br>he stops watching.</h1>
+      <p class="fa-in" style="margin:0 0 26px;max-width:640px;font:400 clamp(15px,1.3vw,18px)/1.6 'Archivo';color:#9FB0C5;text-wrap:pretty;animation-delay:.12s;">Your marker's eyes flick between you and the ball. The winger is driving to the byline. <strong style="color:#EAF2FB;">Tap to burst into the box the instant he looks away</strong> — too soon and you overrun it, too late and the cross beats you, but hit the blind side and you arrive unmarked. The ghost's whole game is timing.</p>
+
+      <div class="fa-in" style="margin-bottom:12px;font:600 10px 'IBM Plex Mono';letter-spacing:.28em;color:#61748c;animation-delay:.2s;">CHOOSE YOUR LEVEL</div>
+      <div class="fa-in" style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;max-width:560px;margin-bottom:34px;animation-delay:.22s;">
+        <sc-for list="{{ diffs }}" as="d" hint-placeholder-count="3">
+          <button onClick="{{ d.pick }}" style="flex:1 1 150px;min-width:148px;text-align:left;padding:16px 18px;border-radius:15px;border:1px solid {{ d.border }};background:{{ d.bg }};cursor:pointer;transition:border-color .14s ease,background .14s ease;">
+            <div style="font:800 16px 'Archivo';color:{{ d.titleColor }};margin-bottom:3px;">{{ d.name }}</div>
+            <div style="font:400 11.5px/1.45 'Archivo';color:#9FB0C5;">{{ d.desc }}</div>
+          </button>
+        </sc-for>
+      </div>
+
+      <button onClick="{{ begin }}" class="fa-in" style="display:inline-flex;align-items:center;gap:12px;padding:18px 46px;border-radius:13px;border:0;background:var(--accent,#22D3EE);color:#0b0518;font:700 16px 'Archivo';cursor:pointer;box-shadow:0 14px 46px color-mix(in srgb,var(--accent,#22D3EE) 42%,transparent);transition:transform .16s ease;animation-delay:.3s;" style-hover="transform:translateY(-2px);">
+        Make your first run
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12h13M12 6l6 6-6 6"/></svg>
+      </button>
+      <div class="fa-in" style="margin-top:18px;font:500 10px 'IBM Plex Mono';letter-spacing:.14em;color:#4f627a;animation-delay:.36s;">{{ bestLine }}</div>
+    </main>
+  </sc-if>
+
+  <!-- PLAY -->
+  <sc-if value="{{ isPlay }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow:hidden;gap:12px;padding:0 clamp(16px,2.4vw,42px) 20px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;width:100%;max-width:640px;">
+        <div style="text-align:left;min-width:96px;">
+          <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.2em;color:#61748c;">RUN</div>
+          <div style="font:800 24px 'IBM Plex Mono';color:#F2F8FE;line-height:1.05;">{{ trialLabel }}</div>
+        </div>
+        <div style="text-align:center;">
+          <div ref="{{ gazeRef }}" style="font:800 17px 'Archivo';letter-spacing:.03em;color:#7688a0;transition:color .12s ease;">READY</div>
+          <div ref="{{ crossRef }}" style="font:600 9px 'IBM Plex Mono';letter-spacing:.16em;color:#7688a0;margin-top:2px;">WATCH THE BUILD-UP</div>
+        </div>
+        <div style="text-align:right;min-width:96px;">
+          <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.2em;color:#61748c;">GHOSTED</div>
+          <div style="font:800 24px 'IBM Plex Mono';color:var(--accent,#22D3EE);line-height:1.05;">{{ ghostLabel }}</div>
+        </div>
+      </div>
+
+      <div style="position:relative;width:100%;max-width:640px;flex:1;min-height:0;border-radius:18px;overflow:hidden;border:1px solid rgba(120,140,166,.22);touch-action:none;">
+        <canvas ref="{{ canvasRef }}" onPointerDown="{{ onTap }}" style="display:block;width:100%;height:100%;cursor:pointer;"></canvas>
+        <div ref="{{ flashRef }}" style="position:absolute;inset:0;pointer-events:none;opacity:0;"></div>
+        <div ref="{{ verdictRef }}" style="position:absolute;left:0;right:0;top:14px;text-align:center;pointer-events:none;opacity:0;font:800 26px 'Archivo';letter-spacing:.02em;"></div>
+        <div style="position:absolute;left:0;right:0;bottom:12px;text-align:center;pointer-events:none;font:600 10px 'IBM Plex Mono';letter-spacing:.2em;color:rgba(200,215,232,.55);">TAP ANYWHERE TO BURST INTO THE BOX</div>
+      </div>
+    </main>
+  </sc-if>
+
+  <!-- OVER -->
+  <sc-if value="{{ isOver }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;text-align:center;padding:20px clamp(26px,4vw,58px) 70px;">
+      <div class="fa-in" style="display:inline-flex;align-items:center;gap:9px;margin-bottom:16px;padding:6px 14px;border:1px solid color-mix(in srgb,var(--accent,#22D3EE) 32%,transparent);border-radius:999px;font:600 10px 'IBM Plex Mono';letter-spacing:.28em;color:var(--accent,#22D3EE);">MOVEMENT REPORT</div>
+      <div class="fa-in" style="font:600 10px 'IBM Plex Mono';letter-spacing:.24em;color:#7688a0;margin-bottom:6px;animation-delay:.05s;">GHOST RATING</div>
+      <h1 class="fa-in" style="margin:0 0 2px;font:800 clamp(46px,8vw,96px)/0.9 'IBM Plex Mono';letter-spacing:-0.02em;color:{{ rateColor }};animation-delay:.08s;">{{ rateValue }}</h1>
+      <div class="fa-in" style="font:600 11px 'IBM Plex Mono';letter-spacing:.2em;color:#7688a0;margin-bottom:8px;animation-delay:.09s;">UNMARKED ARRIVALS, TIMED RIGHT</div>
+      <div class="fa-in" style="font:700 13px 'Archivo';color:#B4C2D4;margin-bottom:18px;max-width:560px;text-wrap:pretty;animation-delay:.1s;">{{ rateVerdict }}</div>
+
+      <!-- outcome breakdown -->
+      <div class="fa-in" style="width:100%;max-width:520px;margin:0 auto 22px;animation-delay:.16s;">
+        <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.2em;color:#7688a0;margin-bottom:9px;text-align:left;">HOW YOUR RUNS ENDED</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <sc-for list="{{ outcomes }}" as="o" hint-placeholder-count="4">
+            <div style="display:flex;align-items:center;gap:12px;">
+              <span style="width:96px;flex-shrink:0;text-align:left;font:700 11px 'IBM Plex Mono';letter-spacing:.04em;color:{{ o.color }};">{{ o.name }}</span>
+              <span style="flex:1;height:12px;border-radius:99px;background:rgba(120,140,166,.14);overflow:hidden;"><span style="display:block;height:100%;width:{{ o.width }};border-radius:99px;background:{{ o.color }};"></span></span>
+              <span style="width:34px;flex-shrink:0;text-align:right;font:800 13px 'IBM Plex Mono';color:#EAF2FB;">{{ o.count }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div class="fa-in" style="display:flex;flex-wrap:wrap;gap:22px;justify-content:center;margin-bottom:24px;animation-delay:.2s;">
+        <div style="text-align:center;"><div style="font:800 26px 'IBM Plex Mono';color:#EAF2FB;">{{ blindRate }}</div><div style="font:600 9px 'IBM Plex Mono';letter-spacing:.12em;color:#61748c;margin-top:3px;">WENT ON THE BLIND SIDE</div></div>
+        <div style="width:1px;background:rgba(120,140,166,.2);"></div>
+        <div style="text-align:center;"><div style="font:800 26px 'IBM Plex Mono';color:#EAF2FB;">{{ avgTiming }}</div><div style="font:600 9px 'IBM Plex Mono';letter-spacing:.12em;color:#61748c;margin-top:3px;">AVG TIMING MISS</div></div>
+      </div>
+
+      <div class="fa-in" style="max-width:600px;margin-bottom:20px;padding:18px 22px;border-radius:14px;border:1px dashed rgba(120,140,166,.3);background:rgba(10,16,28,.4);text-align:left;animation-delay:.26s;">
+        <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.2em;color:#7688a0;margin-bottom:8px;">WHAT THIS LEANS TOWARD</div>
+        <div style="font:500 14px/1.6 'Archivo';color:#C6D3E2;">{{ softRead }}</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;">
+          <sc-for list="{{ traitChips }}" as="c" hint-placeholder-count="2">
+            <span style="display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border-radius:8px;border:1px solid color-mix(in srgb,var(--accent,#22D3EE) 30%,transparent);background:color-mix(in srgb,var(--accent,#22D3EE) 8%,transparent);font:700 11px 'IBM Plex Mono';letter-spacing:.06em;color:#C6D3E2;"><span style="font-weight:800;color:var(--accent,#22D3EE);">{{ c.key }}</span>{{ c.label }}</span>
+          </sc-for>
+        </div>
+        <div style="margin-top:12px;font:500 11px/1.5 'Archivo';color:#7688a0;text-wrap:pretty;">We score <strong style="color:#9FB0C5;">when you chose to move</strong> relative to the marker's gaze and the cross — a timing behaviour, not your sprint speed.</div>
+      </div>
+
+      <div class="fa-in" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:14px;animation-delay:.32s;">
+        <button onClick="{{ retake }}" style="display:inline-flex;align-items:center;gap:11px;padding:18px 44px;border-radius:13px;border:0;background:var(--accent,#22D3EE);color:#0b0518;font:700 16px 'Archivo';cursor:pointer;box-shadow:0 14px 46px color-mix(in srgb,var(--accent,#22D3EE) 42%,transparent);transition:transform .16s ease;" style-hover="transform:translateY(-2px);">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" style="stroke:#0b0518;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
+          Run it again
+        </button>
+        <a href="Assessment.dc.html" style="display:inline-flex;align-items:center;gap:9px;padding:18px 26px;border-radius:13px;border:1px solid rgba(157,176,198,.28);background:rgba(12,18,30,.4);color:#C6D3E2;font:600 15px 'Archivo';" style-hover="border-color:color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);color:#EAF2FB;">Back to the scan</a>
+      </div>
+      <div class="fa-in" style="margin-top:20px;font:500 10px 'IBM Plex Mono';letter-spacing:.14em;color:#4f627a;animation-delay:.38s;">{{ dataLine }}</div>
+    </main>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1000,&quot;height&quot;:820},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#22D3EE&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#22D3EE&quot;,&quot;#A78BFA&quot;,&quot;#C6FF3A&quot;,&quot;#FF7A45&quot;,&quot;#FF4D8D&quot;]},&quot;motion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;embedded&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;onDone&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;(counts:any, meta:any)=&gt;void&quot;}}">
+class Component extends DCLogic {
+  REPS = 8;
+  RUN_MS = 900; CROSS_MS = 700;
+  DIFFS = {
+    academy: { name:'Academy', desc:'Slow eyes, wide blind windows.', gazeP:1600, watchFrac:0.42, tol:260, delMin:2800, delMax:4000 },
+    pro:     { name:'Pro',     desc:'Game-speed marker and delivery.', gazeP:1200, watchFrac:0.5,  tol:180, delMin:2300, delMax:3500 },
+    elite:   { name:'Elite',   desc:'Darting eyes. Razor timing.',     gazeP:950,  watchFrac:0.56, tol:120, delMin:1900, delMax:3100 },
+  };
+  ORDER = ['academy','pro','elite'];
+  OUT = { perfect:{name:'UNMARKED',color:'#3BE07A'}, early:{name:'OVERRAN',color:'#FFB020'}, late:{name:'BEAT BY IT',color:'#FF9A5A'}, caught:{name:'TRACKED',color:'#FF5A6E'}, missed:{name:'DIDN\u2019T GO',color:'#7688a0'} };
+
+  state = { view:'intro', diff:'pro', rep:0, phase:'live' };
+
+  componentDidMount(){
+    try { this._soundOn = localStorage.getItem('fa_sound') !== '0'; } catch(e){ this._soundOn=true; }
+    try { const p=JSON.parse(localStorage.getItem('fa_am_ghost')||'null'); this._bestR = p&&p.measures? p.measures.ghostRatingPct : null; } catch(e){ this._bestR=null; }
+    this._onResize=()=>{ this._resize(); }; window.addEventListener('resize', this._onResize);
+  }
+  componentWillUnmount(){ window.removeEventListener('resize', this._onResize); this._stop(); clearTimeout(this._nx); }
+
+  // ---------- audio ----------
+  _audio(){ if(this._actx===undefined){ try{ this._actx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ this._actx=null; } } if(this._actx&&this._actx.state==='suspended') this._actx.resume(); return this._actx; }
+  _tone(f,d,t,g,slide){ const c=this._audio(); if(!c||this._soundOn===false) return; const o=c.createOscillator(),a=c.createGain(); o.type=t||'sine'; o.frequency.setValueAtTime(f,c.currentTime); if(slide) o.frequency.exponentialRampToValueAtTime(Math.max(20,slide),c.currentTime+d); o.connect(a); a.connect(c.destination); const n=c.currentTime; a.gain.setValueAtTime(0.0001,n); a.gain.exponentialRampToValueAtTime(g||0.05,n+0.008); a.gain.exponentialRampToValueAtTime(0.0001,n+d); o.start(n); o.stop(n+d+0.02); }
+  _haptic(ms){ try{ if(navigator.vibrate) navigator.vibrate(ms||8); }catch(e){} }
+  _sfx(k){ if(this._soundOn===false) return;
+    if(k==='perfect'){ this._tone(660,0.09,'triangle',0.055); setTimeout(()=>this._tone(990,0.13,'sine',0.045),55); setTimeout(()=>this._tone(1320,0.16,'sine',0.04),120); }
+    else if(k==='ok'){ this._tone(520,0.1,'triangle',0.05); setTimeout(()=>this._tone(700,0.12,'sine',0.04),60); }
+    else if(k==='bad'){ this._tone(240,0.26,'sawtooth',0.055,120); }
+    else if(k==='cross'){ this._tone(520,0.08,'sine',0.045,760); }
+    else if(k==='whistle'){ this._tone(900,0.16,'sine',0.05,1200); }
+    else if(k==='tap'){ this._tone(520,0.05,'square',0.03); }
+  }
+  _toggleSound(){ const on=this._soundOn===false; this._soundOn=on; try{ localStorage.setItem('fa_sound', on?'1':'0'); }catch(e){} if(on){ this._audio(); this._sfx('tap'); } this.forceUpdate(); }
+
+  // ---------- canvas ----------
+  _resize(){ const cv=this._canvas; if(!cv) return; const r=cv.getBoundingClientRect(); const dpr=Math.min(2,window.devicePixelRatio||1); cv.width=Math.max(2,Math.round(r.width*dpr)); cv.height=Math.max(2,Math.round(r.height*dpr)); this._dpr=dpr; this._W=r.width; this._H=r.height; }
+  _cvRef(el){ this._canvas=el; if(el){ requestAnimationFrame(()=>this._resize()); } }
+  _flRef(el){ this._flashEl=el; }
+  _gazeRef(el){ this._gazeEl=el; }
+  _crossRef(el){ this._crossEl=el; }
+  _verdictRef(el){ this._verdictEl=el; }
+  _px(nx,ny){ const padX=this._W*0.09, padTop=this._H*0.06, padBot=this._H*0.09; return [ padX + nx*(this._W-2*padX), padTop + ny*(this._H-padTop-padBot) ]; }
+
+  // ---------- flow ----------
+  _pickDiff(d){ this._sfx('tap'); this.setState({ diff:d }); }
+  _begin(){
+    this._audio(); this._sfx('whistle'); this._haptic(12);
+    this._cfg=this.DIFFS[this.state.diff];
+    this._log=[]; this._ghosted=0;
+    this.setState({ view:'play', rep:0, phase:'live' }, ()=>{ this._resize(); this._startRep(0); this._start(); });
+  }
+
+  _rand(a,b){ return a+Math.random()*(b-a); }
+  _startRep(i){
+    const c=this._cfg;
+    this._tDeliver=Math.round(this._rand(c.delMin,c.delMax));
+    this._ballArrive=this._tDeliver+this.CROSS_MS;
+    // target in the box (near post / spot / far post); winger on the near side
+    const targets=[0.34,0.5,0.64]; this._target={ x:targets[Math.floor(Math.random()*targets.length)], y:this._rand(0.2,0.3) };
+    this._pStart={ x:0.5, y:0.74 };
+    this._wStart={ x: this._target.x<0.5?0.9:0.1, y:0.62 }; this._wByline={ x:this._target.x<0.5?0.8:0.2, y:0.16 };
+    this._gazePhase=Math.random(); // random start so it's not memorisable
+    this._answered=false; this._runStart=null; this._verdict=null;
+    this._t0=performance.now();
+    if(this._verdictEl){ this._verdictEl.style.opacity='0'; }
+    this.setState({ rep:i, phase:'live' });
+  }
+
+  _isBlind(t){
+    // everyone ball-watches around the delivery
+    if(t>=this._tDeliver-150 && t<=this._ballArrive+150) return true;
+    const c=this._cfg; const ph=(((t/c.gazeP)+this._gazePhase)%1+1)%1;
+    return ph>=c.watchFrac; // watching during the first watchFrac of each cycle
+  }
+
+  _start(){ this._running=true; this._raf=requestAnimationFrame((t)=>this._loop(t)); }
+  _stop(){ this._running=false; if(this._raf) cancelAnimationFrame(this._raf); }
+  _loop(now){
+    if(!this._running) return; this._raf=requestAnimationFrame((tt)=>this._loop(tt));
+    if((!this._W||!this._H)&&this._canvas) this._resize();
+    const t=now-this._t0;
+    // HUD
+    if(this.state.phase==='live'){
+      const blind=this._isBlind(t);
+      if(this._gazeEl){ if(blind){ this._gazeEl.textContent='BLIND SIDE'; this._gazeEl.style.color='#3BE07A'; } else { this._gazeEl.textContent="HE'S WATCHING"; this._gazeEl.style.color='#FF5A6E'; } }
+      if(this._crossEl){ if(t>=this._tDeliver){ this._crossEl.textContent='CROSS IN!'; this._crossEl.style.color='#EAF2FB'; } else if(t>=this._tDeliver-600){ this._crossEl.textContent='CROSS COMING\u2026'; this._crossEl.style.color='#FFB020'; } else { this._crossEl.textContent='BUILDING\u2026'; this._crossEl.style.color='#7688a0'; } }
+      if(!this._crossFired && t>=this._tDeliver){ this._crossFired=true; this._sfx('cross'); }
+      if(!this._answered && t>=this._ballArrive+400){ this._resolve(null,t); }
+    }
+    this._draw(t);
+  }
+
+  _onTap(){
+    if(this.state.view!=='play'||this.state.phase!=='live'||this._answered) return;
+    const t=performance.now()-this._t0;
+    this._resolve(t,t);
+  }
+
+  _resolve(tapT,t){
+    this._answered=true;
+    const c=this._cfg; const idealTap=this._ballArrive-this.RUN_MS;
+    let v, err=null, blind=false;
+    if(tapT===null){ v='missed'; }
+    else {
+      this._runStart=tapT; blind=this._isBlind(tapT); err=Math.round(tapT-idealTap);
+      if(!blind) v='caught';
+      else if(err < -c.tol) v='early';
+      else if(err >  c.tol) v='late';
+      else v='perfect';
+    }
+    this._verdict=v;
+    this._log.push({ rep:this.state.rep, verdict:v, blind, errMs:err, tapT: tapT!=null?Math.round(tapT):null, idealTap:Math.round(idealTap) });
+    if(v==='perfect'){ this._ghosted++; this._sfx('perfect'); this._flash('color-mix(in srgb,'+(this._accent||'#22D3EE')+' 30%,transparent)'); this._haptic(18); this._crossFired=false; }
+    else if(v==='early'||v==='late'){ this._sfx('ok'); this._flash('rgba(255,176,32,.22)'); this._haptic(10); }
+    else { this._sfx('bad'); this._flash('rgba(255,74,95,.26)'); this._haptic(10); }
+    this._showVerdict(this.OUT[v]);
+    this.setState({ phase:'settle' });
+    clearTimeout(this._nx);
+    this._nx=setTimeout(()=>{ this._crossFired=false; const n=this.state.rep+1; if(n>=this.REPS) this._gameOver(); else this._startRep(n); }, 1250);
+  }
+  _showVerdict(o){ const el=this._verdictEl; if(!el) return; el.textContent=o.name; el.style.color=o.color; el.style.transition='none'; el.style.opacity='0'; el.style.transform='translateY(-8px)'; void el.offsetWidth; el.style.transition='opacity .3s ease,transform .3s ease'; el.style.opacity='1'; el.style.transform='translateY(0)'; }
+
+  // ---------- drawing ----------
+  _drawBall(ctx,x,y,r){ ctx.shadowColor='rgba(255,255,255,.8)'; ctx.shadowBlur=10; const g=ctx.createRadialGradient(x-r*0.3,y-r*0.35,r*0.15,x,y,r); g.addColorStop(0,'#ffffff'); g.addColorStop(1,'#cfe0ee'); ctx.fillStyle=g; ctx.beginPath(); ctx.arc(x,y,r,0,7); ctx.fill(); ctx.shadowBlur=0; }
+  _token(ctx,x,y,r,fill,stroke,label,labelCol){ ctx.fillStyle='rgba(0,0,0,.32)'; ctx.beginPath(); ctx.ellipse(x,y+r*0.85,r*0.9,r*0.3,0,0,7); ctx.fill(); ctx.fillStyle=fill; ctx.strokeStyle=stroke||'rgba(255,255,255,.22)'; ctx.lineWidth=1.5; ctx.beginPath(); ctx.arc(x,y-r*0.16,r,0,7); ctx.fill(); ctx.stroke(); if(label){ ctx.fillStyle=labelCol||'#04121a'; ctx.font="800 "+Math.max(8,this._W*0.013)+"px 'IBM Plex Mono'"; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(label,x,y-r*0.16); ctx.textBaseline='alphabetic'; } }
+
+  _lerp(a,b,t){ return a+(b-a)*Math.max(0,Math.min(1,t)); }
+  _draw(t){
+    const ctx=this._canvas&&this._canvas.getContext('2d'); if(!ctx) return;
+    const W=this._W,H=this._H,dpr=this._dpr||1; if(!W||!H||!isFinite(W)) return;
+    const acc=this._accent||'#22D3EE';
+    ctx.save(); ctx.scale(dpr,dpr); ctx.clearRect(0,0,W,H);
+    const g=ctx.createLinearGradient(0,0,0,H); g.addColorStop(0,'#0e2135'); g.addColorStop(0.5,'#0a1728'); g.addColorStop(1,'#060d18'); ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+    // goal at top + box
+    ctx.strokeStyle='rgba(90,150,190,.14)'; ctx.lineWidth=1.2;
+    const [bx0,by0]=this._px(0.16,0.0),[bx1,by1]=this._px(0.84,0.44); ctx.strokeRect(bx0,this._px(0,0)[1]-2,bx1-bx0,by1-this._px(0,0)[1]);
+    const [sx0,sy0]=this._px(0.36,0.0),[sx1,sy1]=this._px(0.64,0.16); ctx.strokeRect(sx0,this._px(0,0)[1]-2,sx1-sx0,sy1-this._px(0,0)[1]);
+    const [gmx0]=this._px(0.4,0),[gmx1]=this._px(0.6,0); ctx.strokeStyle='rgba(120,200,230,.5)'; ctx.lineWidth=3.5; const gy=this._px(0,0)[1]; ctx.beginPath(); ctx.moveTo(gmx0,gy); ctx.lineTo(gmx1,gy); ctx.stroke();
+
+    const r=Math.max(12,W*0.026);
+    const settle=this.state.phase==='settle';
+    // positions
+    const wP = t<this._tDeliver? { x:this._lerp(this._wStart.x,this._wByline.x,t/this._tDeliver), y:this._lerp(this._wStart.y,this._wByline.y,t/this._tDeliver) } : this._wByline;
+    // ball
+    let ball;
+    if(t<this._tDeliver) ball={ x:wP.x+(this._wByline.x<0.5?0.03:-0.03), y:wP.y };
+    else ball={ x:this._lerp(this._wByline.x,this._target.x,(t-this._tDeliver)/this.CROSS_MS), y:this._lerp(this._wByline.y,this._target.y,(t-this._tDeliver)/this.CROSS_MS) };
+    // player run
+    let pP=this._pStart, runF=0;
+    if(this._runStart!=null){ runF=(t-this._runStart)/this.RUN_MS; pP={ x:this._lerp(this._pStart.x,this._target.x,runF), y:this._lerp(this._pStart.y,this._target.y,runF) }; }
+    // defender: caught -> tracks goal-side of player; else holds near start (trailing)
+    let dP;
+    if(this._verdict==='caught' && this._runStart!=null){ dP={ x:this._lerp(this._pStart.x-0.05,this._target.x-0.02,runF), y:this._lerp(this._pStart.y-0.06,this._target.y-0.06,runF) }; }
+    else { dP={ x:this._pStart.x-0.055, y:this._pStart.y-0.055 }; if(settle && this._runStart!=null && (this._verdict==='early')){ dP={ x:this._lerp(dP.x,this._target.x-0.03,Math.max(0,runF-0.35)), y:this._lerp(dP.y,this._target.y-0.04,Math.max(0,runF-0.35)) }; } }
+
+    // target marker
+    const [tx,ty]=this._px(this._target.x,this._target.y);
+    ctx.save(); ctx.strokeStyle='rgba(59,224,122,.5)'; ctx.setLineDash([5,5]); ctx.lineWidth=2; ctx.beginPath(); ctx.arc(tx,ty,r*1.2,0,7); ctx.stroke(); ctx.setLineDash([]); ctx.restore();
+
+    // defender + gaze cone (only meaningful pre-run)
+    const [dx,dy]=this._px(dP.x,dP.y);
+    const blindNow = this._runStart==null? this._isBlind(t) : this._isBlind(this._runStart);
+    const [px,py]=this._px(pP.x,pP.y);
+    const [wx,wy]=this._px(wP.x,wP.y);
+    // gaze cone
+    if(this._runStart==null || settle){
+      const look = blindNow? [wx,wy] : [px,py];
+      const ang=Math.atan2(look[1]-dy,look[0]-dx); const spread=0.42, len=r*3.4;
+      ctx.save(); ctx.translate(dx,dy-r*0.16); ctx.rotate(ang);
+      const cg=ctx.createLinearGradient(0,0,len,0); const col=blindNow?'59,224,122':'255,90,110'; cg.addColorStop(0,'rgba('+col+',.32)'); cg.addColorStop(1,'rgba('+col+',0)');
+      ctx.fillStyle=cg; ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(len*Math.cos(spread),len*Math.sin(spread)); ctx.lineTo(len,0); ctx.lineTo(len*Math.cos(spread),-len*Math.sin(spread)); ctx.closePath(); ctx.fill(); ctx.restore();
+    }
+    // separation line on success
+    if(settle && this._runStart!=null && (this._verdict==='perfect')){ ctx.save(); ctx.strokeStyle='rgba(59,224,122,.5)'; ctx.setLineDash([3,4]); ctx.lineWidth=1.6; ctx.beginPath(); ctx.moveTo(px,py-r*0.16); ctx.lineTo(dx,dy-r*0.16); ctx.stroke(); ctx.setLineDash([]); ctx.restore(); }
+
+    // draw defender, winger, player, ball
+    this._token(ctx,dx,dy,r*0.92,'#FF5A6E','rgba(255,255,255,.2)','',null);
+    this._token(ctx,wx,wy,r*0.86,'#3aa8c4',null,'',null);
+    this._token(ctx,px,py,r,acc,'rgba(255,255,255,.28)','10','#160a2e');
+    this._drawBall(ctx,ball&&this._px(ball.x,ball.y)[0], ball&&this._px(ball.x,ball.y)[1], Math.max(6,W*0.012));
+    ctx.restore();
+  }
+  _flash(col){ const el=this._flashEl; if(!el) return; el.style.background='radial-gradient(circle at 50% 45%,'+col+',transparent 62%)'; el.style.animation='none'; void el.offsetWidth; el.style.animation='fa-flash .55s ease forwards'; }
+
+  // ---------- results ----------
+  _gameOver(){
+    this._stop(); this._sfx('whistle'); this._haptic(24);
+    const L=this._log; const n=L.length||1;
+    const cnt={perfect:0,early:0,late:0,caught:0,missed:0}; L.forEach(x=>{ cnt[x.verdict]=(cnt[x.verdict]||0)+1; });
+    const rating=Math.round((cnt.perfect + 0.5*(cnt.early+cnt.late))/n*100);
+    const blindGoes=L.filter(x=>x.blind).length; const blindRate=Math.round(blindGoes/n*100);
+    const timed=L.filter(x=>x.errMs!=null && x.blind); const avgTiming= timed.length? Math.round(timed.reduce((s,x)=>s+Math.abs(x.errMs),0)/timed.length):null;
+    let lean='mixed';
+    if(cnt.perfect>=Math.ceil(n*0.5)) lean='ghost';
+    else if(cnt.caught>=Math.ceil(n*0.4)) lean='telegraph';
+    else if(cnt.early>=Math.ceil(n*0.4)) lean='eager';
+    const isPB=this._bestR==null||rating>this._bestR; if(isPB) this._bestR=rating;
+    const result={ instrument:'ghost-run', version:'am-ghost-1.0', position:'am', completedAt:new Date().toISOString(),
+      difficulty:this.state.diff, reps:this.REPS,
+      measures:{ ghostRatingPct:rating, blindSideRatePct:blindRate, avgTimingErrMs:avgTiming, unmarked:cnt.perfect, tracked:cnt.caught, lean },
+      counts:cnt, trials_log:L, maps:{ MOV:'late-run timing', GOL:'box arrival', note:'reads the marker\u2019s blind side and times the run to the cross \u2014 timing behaviour, not sprint speed' } };
+    try{ localStorage.setItem('fa_am_ghost', JSON.stringify(result)); }catch(e){}
+    this._final={ rating, cnt, blindRate, avgTiming, lean, n, isPB };
+    if(this.props.embedded && typeof this.props.onDone==='function'){ try{ this.props.onDone(cnt, result); }catch(e){} }
+    this.setState({ view:'over' });
+  }
+  _retake(){ this._begin(); }
+  _back(){ this._sfx('tap'); if(this.state.view==='intro'){ window.location.href='Assessment.dc.html'; } else { this._stop(); clearTimeout(this._nx); this.setState({ view:'intro' }); } }
+
+  renderVals(){
+    const accent=this.props.accent ?? '#22D3EE'; this._accent=accent;
+    const V=this.state.view, S=this.state, soundOn=this._soundOn!==false;
+    const base={ accent,
+      isIntro:V==='intro', isPlay:V==='play', isOver:V==='over', showBack:V!=='over',
+      soundOn, soundOff:!soundOn, soundColor:soundOn?accent:'#61748c', soundTitle:soundOn?'Sound on':'Sound off',
+      toggleSound:()=>this._toggleSound(), back:()=>this._back(), begin:()=>this._begin(), retake:()=>this._retake(),
+      canvasRef:(el)=>this._cvRef(el), flashRef:(el)=>this._flRef(el), gazeRef:(el)=>this._gazeRef(el), crossRef:(el)=>this._crossRef(el), verdictRef:(el)=>this._verdictRef(el), onTap:()=>this._onTap(),
+      bestLine:(this._bestR!=null?('YOUR BEST · '+this._bestR+' GHOST RATING'):'FIRST RUN · SET THE BAR') };
+    base.diffs=this.ORDER.map(id=>{ const d=this.DIFFS[id]; const sel=S.diff===id; return { name:d.name, desc:d.desc, pick:()=>this._pickDiff(id),
+      border: sel?accent:'rgba(120,140,166,.24)', bg: sel?('color-mix(in srgb,'+accent+' 14%,transparent)'):'rgba(10,16,28,.5)', titleColor: sel?accent:'#EAF2FB' }; });
+
+    base.trialLabel=(Math.min(S.rep+1,this.REPS))+' / '+this.REPS;
+    base.ghostLabel=(this._ghosted!=null?this._ghosted:0)+'';
+
+    const f=this._final||{}; const cnt=f.cnt||{perfect:0,early:0,late:0,caught:0,missed:0}; const n=f.n||this.REPS;
+    base.rateValue=(f.rating!=null?f.rating:0);
+    base.rateColor = f.rating>=70?'#3BE07A': f.rating>=45?'#FFB020':'#FF7A8A';
+    if(f.rating>=75) base.rateVerdict='You live on the blind side. Marker looks away, you\u2019re gone, and you arrive as the ball does — pure poacher timing.';
+    else if(f.rating>=52) base.rateVerdict='You find the blind side often, but the timing to the cross still slips. Sharpen the beat and you\u2019re unmarkable.';
+    else if(f.rating>=32) base.rateVerdict='Your runs are readable — you move while he\u2019s still watching, or you go too soon. Patience is the fix.';
+    else base.rateVerdict='The marker read you most of the time. The ghost waits for the eyes to leave — watch his gaze, not just the ball.';
+    base.outcomes=['perfect','early','late','caught','missed'].map(k=>({ name:this.OUT[k].name, color:this.OUT[k].color, count:cnt[k]||0, width:Math.round((cnt[k]||0)/n*100)+'%' }));
+    base.blindRate=(f.blindRate!=null?f.blindRate:0)+'%';
+    base.avgTiming=(f.avgTiming!=null?('\u00B1'+f.avgTiming+'ms'):'\u2014');
+
+    const reads={ ghost:['You time the blind-side run like a Phantom — the archetype that appears in space because it moved the instant nobody was watching.', [{key:'MOV',label:'Movement'},{key:'GOL',label:'Box Threat'}]],
+      telegraph:['You break too early, while the marker\u2019s eyes are still on you, so he tracks the run. The Phantom\u2019s edge is waiting for the look to leave.', [{key:'MOV',label:'Movement'},{key:'CMP',label:'Patience'}]],
+      eager:['You go a beat too soon and overrun the ball. Great instinct to attack the space — hold it half a second and you\u2019re a Phantom.', [{key:'MOV',label:'Movement'},{key:'RSK',label:'Eagerness'}]],
+      mixed:['A mix of well-timed ghosts and mistimed breaks. The read is there; the consistency of the blind-side beat is the work.', [{key:'MOV',label:'Movement'},{key:'GOL',label:'Box Threat'}]] };
+    const rd=reads[f.lean||'mixed']||reads.mixed; base.softRead=rd[0]; base.traitChips=rd[1];
+    base.dataLine='MEASURED \u00B7 RUN TIMING \u00B7 '+this.REPS+' RUNS \u00B7 '+(S.diff||'pro').toUpperCase()+' \u00B7 am-ghost-1.0';
+    return base;
+  }
+}
+</script>
+</body>
+</html>

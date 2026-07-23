@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;} html,body{margin:0;padding:0;background:#04060c;}
+  a{color:var(--accent,#C8102E);text-decoration:none;} a:hover{opacity:.92;}
+  @keyframes fa-blink{0%,100%{opacity:1;}50%{opacity:.25;}}
+  @keyframes fa-rise{0%{transform:translateY(16px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-rise-sm{0%{transform:translateY(10px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-bar{from{transform:scaleX(0);}to{transform:scaleX(1);}}
+  @keyframes fa-pop{0%{transform:scale(.7);opacity:0;}60%{transform:scale(1.06);}100%{transform:scale(1);opacity:1;}}
+  @keyframes fa-ballpulse{0%,100%{box-shadow:0 0 8px rgba(255,255,255,.6);}50%{box-shadow:0 0 16px rgba(255,255,255,.95);}}
+  input[type=range]{-webkit-appearance:none;appearance:none;background:transparent;}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:26px;height:26px;border-radius:50%;background:var(--accent,#C8102E);border:3px solid #fff;box-shadow:0 0 14px color-mix(in srgb,var(--accent,#C8102E) 60%,transparent);cursor:grab;margin-top:-11px;}
+  input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:var(--accent,#C8102E);border:3px solid #fff;cursor:grab;}
+  input[type=range]::-webkit-slider-runnable-track{height:5px;border-radius:99px;background:rgba(120,140,166,.24);}
+  input[type=range]::-moz-range-track{height:5px;border-radius:99px;background:rgba(120,140,166,.24);}
+  .fa-in{opacity:0;animation:fa-rise .7s cubic-bezier(.2,.7,.2,1) forwards;}
+  @media (prefers-reduced-motion:reduce){*{animation-duration:.001s!important;}.fa-in{opacity:1!important;transform:none!important;}}
+</style>
+</helmet>
+<div data-screen-label="Rewind" style="position:relative;display:flex;flex-direction:column;min-height:100dvh;width:100%;overflow:hidden;background:radial-gradient(120% 90% at 50% 6%,#0e1a2d 0%,#080e1a 44%,#04060c 100%);color:#EAF2FB;font-family:'Archivo',system-ui,sans-serif;--accent:{{ accent }};">
+
+  <div style="position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.4;background:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0px,rgba(255,255,255,.02) 1px,transparent 1px,transparent 4px);"></div>
+  <div style="position:absolute;top:20px;left:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#C8102E) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#C8102E) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;top:20px;right:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#C8102E) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#C8102E) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;left:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#C8102E) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#C8102E) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;right:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#C8102E) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#C8102E) 50%,transparent);z-index:4;pointer-events:none;"></div>
+
+  <sc-if value="{{ showChrome }}" hint-placeholder-val="{{ true }}">
+    <header style="position:relative;z-index:6;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px clamp(26px,3.4vw,58px);">
+      <div style="min-width:120px;display:flex;"><a href="Assessment.dc.html" style="display:inline-flex;align-items:center;gap:8px;color:#8EA1B8;font:600 12.5px 'Archivo';" style-hover="color:#EAF2FB;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M15 5l-7 7 7 7"/></svg>Back to the scan</a></div>
+      <div style="display:flex;align-items:center;gap:11px;"><svg width="20" height="22" viewBox="0 0 28 32" fill="none"><path d="M14 2 25 6v10c0 8-5.4 12.4-11 14C8.4 28.4 3 24 3 16V6z" style="stroke:var(--accent,#C8102E);stroke-width:1.6;fill:color-mix(in srgb,var(--accent,#C8102E) 12%,transparent);"/><path d="M17 10a5 5 0 1 0 2 4M17 10v-3M17 10h3" style="stroke:var(--accent,#C8102E);stroke-width:1.5;fill:none;stroke-linecap:round;stroke-linejoin:round;"/></svg><span style="font:800 13px 'Archivo';letter-spacing:.05em;"><span style="color:var(--accent,#C8102E);">RE</span>WIND</span></div>
+      <div style="display:flex;align-items:center;gap:12px;min-width:120px;justify-content:flex-end;">
+        <button onClick="{{ toggleSound }}" title="{{ soundTitle }}" style="display:grid;place-items:center;width:28px;height:28px;border-radius:8px;border:1px solid rgba(120,140,166,.24);background:rgba(10,16,28,.5);cursor:pointer;color:{{ soundColor }};" style-hover="border-color:color-mix(in srgb,var(--accent,#C8102E) 55%,transparent);">
+          <sc-if value="{{ soundOn }}" hint-placeholder-val="{{ true }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg></sc-if>
+          <sc-if value="{{ soundOff }}" hint-placeholder-val="{{ false }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M22 9l-6 6M16 9l6 6"/></svg></sc-if>
+        </button>
+      </div>
+    </header>
+  </sc-if>
+
+  <!-- INTRO -->
+  <sc-if value="{{ isIntro }}" hint-placeholder-val="{{ true }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;text-align:center;padding:20px clamp(26px,4vw,58px) 60px;">
+      <div class="fa-in" style="display:inline-flex;align-items:center;gap:10px;margin-bottom:20px;font:600 12px 'IBM Plex Mono';letter-spacing:.4em;color:var(--accent,#C8102E);"><span style="width:6px;height:6px;border-radius:50%;background:var(--accent,#C8102E);box-shadow:0 0 8px var(--accent,#C8102E);animation:fa-blink 1.6s ease-in-out infinite;"></span>JUST FOR FUN · FIND THE MISTAKE</div>
+      <h1 class="fa-in" style="margin:0 0 16px;font:800 clamp(36px,5.4vw,72px)/0.98 'Archivo';letter-spacing:-0.03em;text-wrap:balance;max-width:820px;animation-delay:.06s;">Where did it go wrong?</h1>
+      <p class="fa-in" style="margin:0 0 26px;max-width:600px;font:400 clamp(15px,1.3vw,18px)/1.6 'Archivo';color:#9FB0C5;text-wrap:pretty;animation-delay:.12s;">A goal goes in. Rewind it and find the exact moment it broke down &mdash; then say what the mistake was. The tackle at the end is the easy answer. The real one is usually three seconds earlier, in a position nobody was watching.</p>
+      <div class="fa-in" style="margin-bottom:24px;animation-delay:.18s;">
+        <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:#61748c;margin-bottom:11px;">HOW TIGHT&rsquo;S THE MARGIN?</div>
+        <div style="display:flex;gap:9px;flex-wrap:wrap;justify-content:center;"><sc-for list="{{ diffs }}" as="d" hint-placeholder-count="3"><button onClick="{{ d.onPick }}" style="padding:11px 20px;border-radius:11px;border:1px solid {{ d.border }};background:{{ d.bg }};color:{{ d.color }};font:700 13.5px 'Archivo';cursor:pointer;display:flex;flex-direction:column;gap:2px;align-items:center;" style-hover="border-color:color-mix(in srgb,var(--accent,#C8102E) 55%,transparent);"><span>{{ d.label }}</span><span style="font:500 9.5px 'IBM Plex Mono';letter-spacing:.06em;color:{{ d.subColor }};">{{ d.sub }}</span></button></sc-for></div>
+      </div>
+      <button onClick="{{ begin }}" class="fa-in" style="display:inline-flex;align-items:center;gap:12px;padding:18px 44px;border-radius:13px;border:0;background:var(--accent,#C8102E);color:#fff;font:700 16px 'Archivo';cursor:pointer;box-shadow:0 14px 46px color-mix(in srgb,var(--accent,#C8102E) 42%,transparent);animation-delay:.22s;" style-hover="transform:translateY(-2px);">Watch it go in<svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12h13M12 6l6 6-6 6"/></svg></button>
+    </main>
+  </sc-if>
+
+  <!-- PLAY (watch / scrub / whose) -->
+  <sc-if value="{{ isPlay }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:6px clamp(18px,3vw,50px) 30px;gap:12px;">
+      <div style="width:100%;max-width:1120px;display:flex;flex-direction:column;gap:12px;align-items:center;flex:1;min-height:0;justify-content:center;">
+        <div style="width:100%;display:flex;align-items:center;gap:12px;">
+          <span style="font:600 10px 'IBM Plex Mono';letter-spacing:.2em;color:var(--accent,#C8102E);">CLIP {{ clipNo }}</span>
+          <span style="flex:1;height:1px;background:rgba(120,140,166,.18);"></span>
+          <span style="font:600 10px 'IBM Plex Mono';letter-spacing:.14em;color:#9FB0C5;">{{ phaseLabel }}</span>
+        </div>
+
+        <!-- pitch -->
+        <div style="position:relative;height:min(60vh,560px);aspect-ratio:16/12;max-width:100%;margin:0 auto;align-self:center;border-radius:16px;overflow:hidden;border:1px solid {{ sceneBorder }};background:radial-gradient(130% 120% at 50% 0%,#0d1c2e,#091324 60%,#050c17);transition:border-color .2s;">
+          <svg viewBox="0 0 160 120" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;" fill="none" stroke="rgba(120,180,210,.13)" stroke-width="0.5"><rect x="3" y="3" width="154" height="114"></rect><path d="M55 3 v13 h50 v-13"></path><rect x="70" y="3" width="20" height="6"></rect><line x1="3" y1="60" x2="157" y2="60"></line></svg>
+          <div style="position:absolute;left:{{ atk.left }};top:{{ atk.top }};width:18px;height:18px;margin:-9px 0 0 -9px;border-radius:50%;background:radial-gradient(125% 125% at 34% 24%,#ff9a9a,#c0322f);box-shadow:0 2px 4px rgba(0,0,0,.5),0 0 7px rgba(255,90,110,.42);z-index:3;transition:left {{ moveDur }},top {{ moveDur }};"></div>
+          <div style="position:absolute;left:{{ run.left }};top:{{ run.top }};width:15px;height:15px;margin:-7.5px 0 0 -7.5px;border-radius:50%;background:radial-gradient(125% 125% at 34% 24%,#ffb0b0,#d24440);border:1.5px solid rgba(255,182,182,.9);box-shadow:0 2px 4px rgba(0,0,0,.5),0 0 7px rgba(255,90,110,.42);z-index:3;transition:left {{ moveDur }},top {{ moveDur }};"></div>
+          <div style="position:absolute;left:{{ def.left }};top:{{ def.top }};width:18px;height:18px;margin:-9px 0 0 -9px;z-index:3;transition:left {{ moveDur }},top {{ moveDur }};"><div style="width:100%;height:100%;border-radius:50%;background:radial-gradient(125% 125% at 34% 24%,color-mix(in srgb,var(--accent,#C8102E) 82%,#fff),color-mix(in srgb,var(--accent,#C8102E) 48%,#000));border:2px solid #fff;"></div></div>
+          <div style="position:absolute;left:{{ ball.left }};top:{{ ball.top }};width:9px;height:9px;margin:-4.5px 0 0 -4.5px;border-radius:50%;background:#fff;z-index:4;transition:left {{ moveDur }},top {{ moveDur }};animation:fa-ballpulse 1s ease-in-out infinite;"></div>
+
+          <sc-if value="{{ isWatch }}" hint-placeholder-val="{{ true }}"><div style="position:absolute;top:8px;left:50%;transform:translateX(-50%);font:700 11px 'Archivo';color:#EAF2FB;background:rgba(4,6,12,.55);padding:5px 14px;border-radius:99px;z-index:6;">Watch it go in&hellip;</div></sc-if>
+          <sc-if value="{{ showGoal }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;inset:0;display:grid;place-items:center;z-index:6;"><div style="font:900 clamp(30px,6vw,52px) 'Archivo';letter-spacing:.16em;color:#FF5A6E;text-shadow:0 0 30px rgba(255,90,110,.6);animation:fa-pop .3s ease both;">GOAL</div></div></sc-if>
+        </div>
+
+        <!-- SCRUB -->
+        <sc-if value="{{ isScrub }}" hint-placeholder-val="{{ false }}">
+          <div style="width:100%;display:flex;flex-direction:column;gap:10px;">
+            <div style="font:700 14px 'Archivo';color:#EAF2FB;text-align:center;">Rewind to the moment it broke down</div>
+            <input type="range" min="0" max="100" value="{{ scrubPct }}" onInput="{{ scrub }}" style="width:100%;height:26px;" />
+            <div style="display:flex;justify-content:space-between;font:600 9px 'IBM Plex Mono';letter-spacing:.1em;color:#61748c;"><span>BUILD-UP</span><span>{{ scrubTime }}</span><span>GOAL</span></div>
+            <button onClick="{{ lock }}" style="width:100%;padding:16px;border-radius:14px;border:0;background:var(--accent,#C8102E);color:#fff;font:800 16px 'Archivo';cursor:pointer;box-shadow:0 10px 30px color-mix(in srgb,var(--accent,#C8102E) 36%,transparent);" style-active="transform:scale(.99);">Lock this moment</button>
+          </div>
+        </sc-if>
+
+        <!-- WHOSE -->
+        <sc-if value="{{ isWhose }}" hint-placeholder-val="{{ false }}">
+          <div style="width:100%;display:flex;flex-direction:column;gap:9px;">
+            <div style="font:700 14px 'Archivo';color:#EAF2FB;text-align:center;">And what was the mistake?</div>
+            <sc-for list="{{ whoseOpts }}" as="w" hint-placeholder-count="4">
+              <button onClick="{{ w.onPick }}" style="text-align:left;padding:14px 16px;border-radius:12px;border:1px solid rgba(120,140,166,.22);background:rgba(10,16,28,.55);color:#EAF2FB;font:700 14px 'Archivo';cursor:pointer;transition:transform .1s,border-color .15s;" style-active="transform:scale(.98);" style-hover="border-color:color-mix(in srgb,var(--accent,#C8102E) 55%,transparent);">{{ w.label }}</button>
+            </sc-for>
+          </div>
+        </sc-if>
+      </div>
+    </main>
+  </sc-if>
+
+  <!-- RESULT -->
+  <sc-if value="{{ isResult }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:14px clamp(20px,4vw,58px) 66px;">
+      <div style="width:100%;max-width:600px;">
+        <div class="fa-in" style="text-align:center;font:600 11px 'IBM Plex Mono';letter-spacing:.4em;color:#7688a0;margin-bottom:10px;">REWIND</div>
+        <h1 class="fa-in" style="margin:0 0 6px;text-align:center;font:800 clamp(28px,4.4vw,50px)/1.0 'Archivo';letter-spacing:-0.02em;color:{{ headColor }};animation-delay:.05s;">{{ resHeadline }}</h1>
+        <p class="fa-in" style="margin:0 auto 22px;max-width:500px;text-align:center;font:400 14.5px/1.55 'Archivo';color:#B4C2D4;animation-delay:.1s;">{{ resSub }}</p>
+
+        <!-- timeline compare -->
+        <div class="fa-in" style="width:100%;padding:20px 22px 24px;border-radius:16px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);margin-bottom:16px;animation-delay:.14s;">
+          <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.22em;color:#61748c;margin-bottom:18px;">YOUR MOMENT vs THE COACHES&rsquo;</div>
+          <div style="position:relative;height:36px;margin:0 6px;">
+            <div style="position:absolute;top:16px;left:0;right:0;height:4px;border-radius:99px;background:rgba(120,140,166,.2);"></div>
+            <div style="position:absolute;top:6px;left:{{ consensusPct }};transform:translateX(-50%);text-align:center;"><div style="width:3px;height:24px;margin:0 auto;background:#8CFFC4;"></div><div style="font:700 8px 'IBM Plex Mono';color:#8CFFC4;margin-top:2px;white-space:nowrap;">COACHES</div></div>
+            <div style="position:absolute;top:-8px;left:{{ yourPct }};transform:translateX(-50%);text-align:center;"><div style="font:700 8px 'IBM Plex Mono';color:var(--accent,#C8102E);margin-bottom:2px;white-space:nowrap;">YOU</div><div style="width:3px;height:24px;margin:0 auto;background:var(--accent,#C8102E);"></div></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;font:600 9px 'IBM Plex Mono';letter-spacing:.1em;color:#61748c;margin-top:6px;"><span>BUILD-UP</span><span>GOAL</span></div>
+        </div>
+
+        <div class="fa-in" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;animation-delay:.18s;">
+          <div style="padding:16px 18px;border-radius:14px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.4);text-align:center;"><div style="font:600 9px 'IBM Plex Mono';letter-spacing:.14em;color:#61748c;margin-bottom:7px;">OFF BY</div><div style="font:800 22px 'Archivo';color:{{ deltaColor }};">{{ deltaLabel }}</div></div>
+          <div style="padding:16px 18px;border-radius:14px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.4);text-align:center;"><div style="font:600 9px 'IBM Plex Mono';letter-spacing:.14em;color:#61748c;margin-bottom:7px;">THE CAUSE</div><div style="font:800 15px 'Archivo';color:{{ causeColor }};">{{ causeLabel }}</div></div>
+        </div>
+
+        <div class="fa-in" style="padding:16px 18px;border-radius:14px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.45);margin-bottom:16px;animation-delay:.2s;">
+          <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.2em;color:#8CFFC4;margin-bottom:7px;">WHAT THE COACHES SAW</div>
+          <p style="margin:0;font:400 13.5px/1.55 'Archivo';color:#C6D3E2;text-wrap:pretty;">{{ coaching }}</p>
+        </div>
+
+        <div class="fa-in" style="padding:16px 18px;border-radius:14px;border:1px solid color-mix(in srgb,{{ leanColor }} 30%,transparent);background:color-mix(in srgb,{{ leanColor }} 8%,transparent);margin-bottom:22px;animation-delay:.24s;">
+          <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.2em;color:{{ leanColor }};margin-bottom:7px;">A SOFT READ &mdash; NOT A VERDICT</div>
+          <p style="margin:0;font:400 13px/1.55 'Archivo';color:#C6D3E2;text-wrap:pretty;">{{ softRead }}</p>
+        </div>
+
+        <div class="fa-in" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:13px;animation-delay:.3s;">
+          <button onClick="{{ again }}" style="display:inline-flex;align-items:center;gap:10px;padding:16px 30px;border-radius:12px;border:0;background:var(--accent,#C8102E);color:#fff;font:700 15px 'Archivo';cursor:pointer;box-shadow:0 12px 38px color-mix(in srgb,var(--accent,#C8102E) 40%,transparent);" style-hover="transform:translateY(-2px);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>Next clip</button>
+          <sc-if value="{{ showChrome }}" hint-placeholder-val="{{ true }}"><a href="Assessment.dc.html" style="display:inline-flex;align-items:center;gap:9px;padding:16px 24px;border-radius:12px;border:1px solid rgba(157,176,198,.28);background:rgba(12,18,30,.4);color:#C6D3E2;font:600 14px 'Archivo';" style-hover="border-color:color-mix(in srgb,var(--accent,#C8102E) 55%,transparent);color:#EAF2FB;">Back to the scan</a></sc-if>
+        </div>
+        <div class="fa-in" style="margin-top:20px;text-align:center;font:500 10px 'IBM Plex Mono';letter-spacing:.14em;color:#4f627a;animation-delay:.36s;">{{ dataLine }}</div>
+      </div>
+    </main>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:960,&quot;height&quot;:820},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#C8102E&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#C8102E&quot;,&quot;#00E5FF&quot;,&quot;#E8B33A&quot;,&quot;#8B5CF6&quot;]},&quot;embedded&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;onDone&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;(counts:object, meta:object)=&gt;void&quot;}}">
+class Component extends DCLogic {
+  DIFF={ academy:{label:'Academy',sub:'generous',tol:22}, pro:{label:'Pro',sub:'tight',tol:14}, elite:{label:'Elite',sub:'razor',tol:8} };
+  // paths as keyframes [t,x,y] (t 0..1). goal at top. consensus = t of root cause.
+  CLIPS=[
+    { title:'Caught square',
+      atk:[[0,50,64],[0.3,50,52],[0.6,53,38],[0.85,52,24],[1,50,10]],
+      run:[[0,66,60],[0.4,68,48],[0.7,72,30],[1,74,14]],
+      def:[[0,50,74],[0.3,49,66],[0.55,47,60],[0.8,46,58],[1,45,56]],
+      ball:[[0,50,64],[0.55,52,42],[0.63,72,30],[0.9,72,18],[1,50,8]],
+      consensus:0.30, causeEarly:true,
+      opts:[ {t:'You stepped up and left the space behind',early:true,root:true},
+             {t:'You didn\u2019t track the runner',early:false,root:false},
+             {t:'You dived into the tackle too late',early:false,root:false},
+             {t:'You were slow to recover',early:false,root:false} ],
+      coach:'It looks like a late tackle, but the goal was made three seconds earlier: you stepped up and squared the line, and the runner had the whole channel to attack.' },
+    { title:'Ball-watching',
+      atk:[[0,30,58],[0.35,40,46],[0.65,52,34],[0.9,54,22],[1,52,10]],
+      run:[[0,58,62],[0.3,58,56],[0.6,58,40],[0.85,56,24],[1,54,12]],
+      def:[[0,52,72],[0.35,50,64],[0.6,44,58],[0.82,44,52],[1,46,48]],
+      ball:[[0,30,58],[0.6,52,34],[0.68,56,28],[0.9,54,18],[1,52,8]],
+      consensus:0.55, causeEarly:false,
+      opts:[ {t:'You watched the ball and lost your runner',early:false,root:true},
+             {t:'You started too deep',early:true,root:false},
+             {t:'You mistimed the jump',early:false,root:false},
+             {t:'You didn\u2019t clear your lines',early:false,root:false} ],
+      coach:'Your eyes went to the ball and your man drifted off your shoulder. The moment it turned was when you stopped feeling the runner \u2014 not the finish.' },
+    { title:'Dived in',
+      atk:[[0,54,60],[0.25,52,52],[0.5,50,44],[0.7,46,40],[1,40,20]],
+      run:[[0,40,56],[0.4,36,44],[0.7,30,32],[1,26,16]],
+      def:[[0,50,70],[0.3,50,62],[0.55,50,54],[0.72,48,46],[1,44,44]],
+      ball:[[0,54,60],[0.5,50,44],[0.72,46,40],[0.85,34,30],[1,20,10]],
+      consensus:0.72, causeEarly:false,
+      opts:[ {t:'You dived in and got beaten',early:false,root:true},
+             {t:'You were caught too high',early:true,root:false},
+             {t:'You didn\u2019t show him wide',early:false,root:false},
+             {t:'Nobody covered you',early:false,root:false} ],
+      coach:'This one really was the tackle \u2014 you committed early and he rolled you. Stay on your feet, show him the touchline, and the danger fizzles out.' },
+  ];
+
+  state = { view:'intro', diff:'pro', clip:0, phase:'watch', scrubT:1, lockedT:null, whose:null, playT:0 };
+
+  componentDidMount(){ try { this._soundOn=localStorage.getItem('fa_sound')!=='0'; } catch(e){ this._soundOn=true; } if(this.props.embedded) this._start(); else this.forceUpdate(); }
+  componentWillUnmount(){ this._clear(); }
+  _clear(){ (this._timers||[]).forEach(t=>clearTimeout(t)); this._timers=[]; clearInterval(this._raf); }
+
+  _audio(){ if(this._actx===undefined){ try{ this._actx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ this._actx=null; } } if(this._actx&&this._actx.state==='suspended') this._actx.resume(); return this._actx; }
+  _tone(f,d,t,g){ const c=this._audio(); if(!c||this._soundOn===false) return; const o=c.createOscillator(),a=c.createGain(); o.type=t||'sine'; o.frequency.value=f; o.connect(a); a.connect(c.destination); const n=c.currentTime; a.gain.setValueAtTime(0,n); a.gain.linearRampToValueAtTime(g||0.05,n+0.01); a.gain.exponentialRampToValueAtTime(0.0001,n+d); o.start(n); o.stop(n+d); }
+  _sfx(k){ if(this._soundOn===false) return; if(k==='goal') this._tone(160,0.4,'sawtooth',0.06); else if(k==='lock'){ this._tone(520,0.09,'triangle',0.05); setTimeout(()=>this._tone(720,0.11,'triangle',0.045),50);} else if(k==='good'){ this._tone(620,0.09,'triangle',0.05); setTimeout(()=>this._tone(900,0.12,'triangle',0.05),55);} else if(k==='ok') this._tone(440,0.12,'sine',0.05); }
+  _toggleSound(){ const on=this._soundOn===false; this._soundOn=on; try{ localStorage.setItem('fa_sound', on?'1':'0'); }catch(e){} if(on){ this._audio(); this._tone(560,0.1,'triangle',0.05);} this.forceUpdate(); }
+
+  _setDiff(d){ this._sfx('lock'); this.setState({ diff:d }); }
+  _start(){ this._begin(); }
+  _begin(){ this._sfx('lock'); this._clipOrder=this._clipOrder||[0,1,2]; this.setState({ view:'play', clip:this.state.clip, phase:'watch', scrubT:0, lockedT:null, whose:null }, ()=>this._watch()); }
+
+  _watch(){
+    this._clear(); const dur=3200; const t0=Date.now();
+    this._raf=setInterval(()=>{ const p=Math.min(1,(Date.now()-t0)/dur); this.setState({ playT:p });
+      if(p>=1){ clearInterval(this._raf); this._sfx('goal'); this.setState({ phase:'goal' });
+        this._later(()=>this.setState({ phase:'scrub', scrubT:1 }),900); } }, 40);
+  }
+  _later(fn,ms){ (this._timers=this._timers||[]).push(setTimeout(fn,ms)); }
+
+  _scrub(e){ const v=parseFloat(e.target.value)/100; this.setState({ scrubT:v }); }
+  _lock(){ this._sfx('lock'); this.setState({ phase:'whose', lockedT:this.state.scrubT }); }
+  _whose(o){
+    this._sfx(o.root?'good':'ok');
+    this.setState({ whose:o }, ()=>this._finish());
+  }
+
+  _finish(){
+    const clip=this.CLIPS[this.state.clip];
+    const delta=Math.abs(this.state.lockedT-clip.consensus)*100; // in timeline %
+    const tol=this.DIFF[this.state.diff].tol;
+    const close=delta<=tol;
+    const rootRight=this.state.whose.root;
+    const flaggedEarly=this.state.whose.early || this.state.lockedT<clip.consensus-0.05;
+    this._res={ delta, tol, close, rootRight, flaggedEarly, consensus:clip.consensus, locked:this.state.lockedT, clip };
+    const out={ version:'cb-rewind-1.0', task:'rewind', completedAt:new Date().toISOString(), weight:0,
+      difficulty:this.state.diff, clip:clip.title, deltaPct:Math.round(delta), foundRoot:rootRight, flaggedEarly,
+      shape:{ flaggedEarly } };
+    try{ localStorage.setItem('fa_cb_rewind', JSON.stringify(out)); }catch(e){}
+    if(this.props.embedded && typeof this.props.onDone==='function'){ try{ this.props.onDone({ close, rootRight }, out); }catch(e){} }
+    this.setState({ view:'result' });
+  }
+  _again(){ const next=(this.state.clip+1)%this.CLIPS.length; this.setState({ clip:next, view:this.props.embedded?'play':'intro', phase:'watch' }, ()=>{ if(this.props.embedded) this._begin(); }); }
+
+  _at(path,t){ if(t<=path[0][0]) return [path[0][1],path[0][2]]; if(t>=path[path.length-1][0]) { const l=path[path.length-1]; return [l[1],l[2]]; } for(let i=0;i<path.length-1;i++){ const a=path[i],b=path[i+1]; if(t>=a[0]&&t<=b[0]){ const f=(t-a[0])/(b[0]-a[0]||1); return [a[1]+(b[1]-a[1])*f, a[2]+(b[2]-a[2])*f]; } } const l=path[path.length-1]; return [l[1],l[2]]; }
+
+  renderVals(){
+    const accent=this.props.accent ?? '#C8102E';
+    const V=this.state.view; const soundOn=this._soundOn!==false;
+    const base={
+      accent, showChrome:!this.props.embedded, isEmbedded:!!this.props.embedded,
+      isIntro:V==='intro', isPlay:V==='play', isResult:V==='result',
+      soundOn, soundOff:!soundOn, soundColor:soundOn?accent:'#61748c', soundTitle:soundOn?'Sound on':'Sound off',
+      toggleSound:()=>this._toggleSound(), begin:()=>this._begin(), scrub:(e)=>this._scrub(e), lock:()=>this._lock(), again:()=>this._again(),
+      clipNo:(this.state.clip+1)+' / '+this.CLIPS.length,
+    };
+    base.diffs=['academy','pro','elite'].map(k=>{ const d=this.DIFF[k]; const sel=this.state.diff===k; return { label:d.label, sub:d.sub, onPick:()=>this._setDiff(k), border:sel?'color-mix(in srgb,'+accent+' 70%,transparent)':'rgba(120,140,166,.22)', bg:sel?'color-mix(in srgb,'+accent+' 16%,transparent)':'rgba(10,16,28,.5)', color:sel?'#F2F8FE':'#B4C2D4', subColor:sel?accent:'#61748c' }; });
+
+    const ph=this.state.phase; const playing=V==='play';
+    base.isWatch=playing&&ph==='watch'; base.isScrub=playing&&ph==='scrub'; base.isWhose=playing&&ph==='whose'; base.showGoal=playing&&ph==='goal';
+    base.phaseLabel = ph==='watch'?'LIVE' : ph==='goal'?'\u2014' : ph==='scrub'?'REWIND' : 'THE CALL';
+    const clip=this.CLIPS[this.state.clip];
+    const t = (ph==='watch')?this.state.playT : (ph==='goal')?1 : this.state.scrubT;
+    const A=this._at(clip.atk,t), R=this._at(clip.run,t), D=this._at(clip.def,t), B=this._at(clip.ball,t);
+    base.atk={left:A[0]+'%',top:A[1]+'%'}; base.run={left:R[0]+'%',top:R[1]+'%'}; base.def={left:D[0]+'%',top:D[1]+'%'}; base.ball={left:B[0]+'%',top:B[1]+'%'};
+    base.moveDur = (ph==='watch')?'0.12s' : (ph==='scrub')?'0.05s' : '0.12s';
+    base.sceneBorder = ph==='goal'?'color-mix(in srgb,#FF5A6E 45%,transparent)':'rgba(120,140,166,.2)';
+    base.scrubPct=Math.round(this.state.scrubT*100)+''; base.scrubTime=(this.state.scrubT*3.2).toFixed(1)+'s';
+    base.whoseOpts=(clip.opts||[]).map(o=>({ label:o.t, onPick:()=>this._whose(o) }));
+
+    // result
+    Object.assign(base,{ resHeadline:'', headColor:accent, resSub:'', consensusPct:'50%', yourPct:'50%', deltaLabel:'', deltaColor:accent, causeLabel:'', causeColor:accent, coaching:'', leanColor:accent, softRead:'', dataLine:'' });
+    const r=this._res;
+    if(V==='result' && r){
+      base.consensusPct=Math.round(r.consensus*100)+'%'; base.yourPct=Math.round(r.locked*100)+'%';
+      const secs=(r.delta/100*3.2);
+      base.deltaLabel=secs.toFixed(1)+'s'; base.deltaColor=r.close?'#8CFFC4':'#FFB020';
+      base.causeLabel=r.rootRight?'You nailed it':'Not quite'; base.causeColor=r.rootRight?'#8CFFC4':'#FF8A98';
+      base.headColor = (r.close&&r.rootRight)?'#8CFFC4':(r.close||r.rootRight)?'#E8B33A':accent;
+      base.resHeadline = (r.close&&r.rootRight)?'Found it.' : r.close?'Right spot, wrong reason' : r.rootRight?'Right idea, wrong moment' : 'Keep looking';
+      base.resSub = 'You marked it '+secs.toFixed(1)+'s from where the coaches did'+(r.rootRight?' and named the real cause.':', and the cause was elsewhere.');
+      base.coaching=r.clip.coach;
+      // soft read: early (positioning) vs late (tackle) tendency
+      if(r.flaggedEarly){ base.leanColor='#E8B33A'; base.softRead='You looked for the mistake early \u2014 in the positioning, before the ball even arrived. That\u2019s how a Sentinel sees the game: the error is the half-second nobody claps for. A hint, logged separately from your scan.'; }
+      else { base.leanColor='#C8102E'; base.softRead='You flagged the moment of contact \u2014 the tackle, the duel, the visible bit. That\u2019s a Colossus\u2019s eye: the game is won and lost in the challenge. Both reads are useful; great defenders learn to see both. A hint, not a verdict.'; }
+      base.dataLine='JUST FOR FUN · POSITIONING-vs-TACKLE TELL · WEIGHT 0 · CB REWIND v1.0';
+    }
+    return base;
+  }
+}
+</script>
+</body>
+</html>

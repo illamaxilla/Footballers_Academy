@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;} html,body{margin:0;padding:0;background:#04060c;}
+  a{color:var(--accent,#C8102E);text-decoration:none;} a:hover{opacity:.92;}
+  @keyframes fa-blink{0%,100%{opacity:1;}50%{opacity:.25;}}
+  @keyframes fa-rise{0%{transform:translateY(16px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-rise-sm{0%{transform:translateY(10px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-bar{from{transform:scaleX(0);}to{transform:scaleX(1);}}
+  @keyframes fa-pop{0%{transform:scale(.7);opacity:0;}60%{transform:scale(1.06);}100%{transform:scale(1);opacity:1;}}
+  .fa-in{opacity:0;animation:fa-rise .7s cubic-bezier(.2,.7,.2,1) forwards;}
+  .fa-in-sm{opacity:0;animation:fa-rise-sm .5s cubic-bezier(.2,.7,.2,1) forwards;}
+  @media (prefers-reduced-motion:reduce){*{animation-duration:.001s!important;}.fa-in,.fa-in-sm{opacity:1!important;transform:none!important;}}
+</style>
+</helmet>
+<div data-screen-label="The Partnership" style="position:relative;display:flex;flex-direction:column;min-height:100dvh;width:100%;overflow:hidden;background:radial-gradient(120% 90% at 50% 6%,#0e1a2d 0%,#080e1a 44%,#04060c 100%);color:#EAF2FB;font-family:'Archivo',system-ui,sans-serif;--accent:{{ accent }};">
+
+  <div style="position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.4;background:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0px,rgba(255,255,255,.02) 1px,transparent 1px,transparent 4px);"></div>
+  <div style="position:absolute;top:20px;left:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#C8102E) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#C8102E) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;top:20px;right:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#C8102E) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#C8102E) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;left:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#C8102E) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#C8102E) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;right:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#C8102E) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#C8102E) 50%,transparent);z-index:4;pointer-events:none;"></div>
+
+  <sc-if value="{{ showChrome }}" hint-placeholder-val="{{ true }}">
+    <header style="position:relative;z-index:6;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px clamp(26px,3.4vw,58px);">
+      <div style="min-width:120px;display:flex;"><a href="Assessment.dc.html" style="display:inline-flex;align-items:center;gap:8px;color:#8EA1B8;font:600 12.5px 'Archivo';" style-hover="color:#EAF2FB;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M15 5l-7 7 7 7"/></svg>Back to the scan</a></div>
+      <div style="display:flex;align-items:center;gap:11px;"><svg width="20" height="22" viewBox="0 0 28 32" fill="none"><path d="M14 2 25 6v10c0 8-5.4 12.4-11 14C8.4 28.4 3 24 3 16V6z" style="stroke:var(--accent,#C8102E);stroke-width:1.6;fill:color-mix(in srgb,var(--accent,#C8102E) 12%,transparent);"/><circle cx="10.5" cy="15" r="2.4" style="fill:var(--accent,#C8102E);"/><circle cx="17.5" cy="15" r="2.4" style="fill:var(--accent,#C8102E);"/></svg><span style="font:800 13px 'Archivo';letter-spacing:.05em;">THE <span style="color:var(--accent,#C8102E);">PARTNERSHIP</span></span></div>
+      <div style="display:flex;align-items:center;gap:12px;min-width:120px;justify-content:flex-end;">
+        <button onClick="{{ toggleSound }}" title="{{ soundTitle }}" style="display:grid;place-items:center;width:28px;height:28px;border-radius:8px;border:1px solid rgba(120,140,166,.24);background:rgba(10,16,28,.5);cursor:pointer;color:{{ soundColor }};" style-hover="border-color:color-mix(in srgb,var(--accent,#C8102E) 55%,transparent);">
+          <sc-if value="{{ soundOn }}" hint-placeholder-val="{{ true }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg></sc-if>
+          <sc-if value="{{ soundOff }}" hint-placeholder-val="{{ false }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M22 9l-6 6M16 9l6 6"/></svg></sc-if>
+        </button>
+        <sc-if value="{{ inGame }}" hint-placeholder-val="{{ false }}"><span style="font:600 10px 'IBM Plex Mono';letter-spacing:.14em;color:color-mix(in srgb,var(--accent,#C8102E) 80%,#fff);white-space:nowrap;">R {{ roundNum }}/{{ rounds }}</span></sc-if>
+      </div>
+    </header>
+  </sc-if>
+
+  <!-- INTRO -->
+  <sc-if value="{{ isIntro }}" hint-placeholder-val="{{ true }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;text-align:center;padding:20px clamp(26px,4vw,58px) 60px;">
+      <div class="fa-in" style="display:inline-flex;align-items:center;gap:10px;margin-bottom:20px;font:600 12px 'IBM Plex Mono';letter-spacing:.4em;color:var(--accent,#C8102E);"><span style="width:6px;height:6px;border-radius:50%;background:var(--accent,#C8102E);box-shadow:0 0 8px var(--accent,#C8102E);animation:fa-blink 1.6s ease-in-out infinite;"></span>PASS THE PHONE · CO-OP</div>
+      <h1 class="fa-in" style="margin:0 0 16px;font:800 clamp(36px,5.4vw,72px)/0.98 'Archivo';letter-spacing:-0.03em;text-wrap:balance;max-width:820px;animation-delay:.06s;">You’re the two centre backs.</h1>
+      <p class="fa-in" style="margin:0 0 24px;max-width:600px;font:400 clamp(15px,1.3vw,18px)/1.6 'Archivo';color:#9FB0C5;text-wrap:pretty;animation-delay:.12s;">Same picture, one at a time, no peeking at each other’s call. You only win the round when your two decisions <strong style="color:#EAF2FB;">complement</strong> — one steps, one covers. Both step and the runner’s through. Both drop and the striker turns and shoots. This is the one thing no football app has ever let two defenders practise.</p>
+      <div class="fa-in" style="display:flex;gap:12px;margin-bottom:22px;flex-wrap:wrap;justify-content:center;animation-delay:.15s;">
+        <label style="display:flex;flex-direction:column;gap:5px;text-align:left;"><span style="font:600 9px 'IBM Plex Mono';letter-spacing:.16em;color:#61748c;">DEFENDER 1</span><input value="{{ p1 }}" onInput="{{ setP1 }}" maxlength="14" style="width:150px;padding:11px 14px;border-radius:10px;border:1px solid rgba(120,140,166,.3);background:rgba(10,16,28,.6);color:#EAF2FB;font:700 14px 'Archivo';outline:none;" style-focus="border-color:color-mix(in srgb,var(--accent,#C8102E) 60%,transparent);"></input></label>
+        <label style="display:flex;flex-direction:column;gap:5px;text-align:left;"><span style="font:600 9px 'IBM Plex Mono';letter-spacing:.16em;color:#61748c;">DEFENDER 2</span><input value="{{ p2 }}" onInput="{{ setP2 }}" maxlength="14" style="width:150px;padding:11px 14px;border-radius:10px;border:1px solid rgba(120,140,166,.3);background:rgba(10,16,28,.6);color:#EAF2FB;font:700 14px 'Archivo';outline:none;" style-focus="border-color:color-mix(in srgb,var(--accent,#C8102E) 60%,transparent);"></input></label>
+      </div>
+      <div class="fa-in" style="margin-bottom:24px;animation-delay:.18s;">
+        <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:#61748c;margin-bottom:11px;">HOW MANY ROUNDS?</div>
+        <div style="display:flex;gap:9px;flex-wrap:wrap;justify-content:center;"><sc-for list="{{ roundOpts }}" as="r" hint-placeholder-count="3"><button onClick="{{ r.onPick }}" style="padding:11px 22px;border-radius:11px;border:1px solid {{ r.border }};background:{{ r.bg }};color:{{ r.color }};font:700 14px 'Archivo';cursor:pointer;" style-hover="border-color:color-mix(in srgb,var(--accent,#C8102E) 55%,transparent);">{{ r.label }}</button></sc-for></div>
+      </div>
+      <button onClick="{{ begin }}" class="fa-in" style="display:inline-flex;align-items:center;gap:12px;padding:18px 44px;border-radius:13px;border:0;background:var(--accent,#C8102E);color:#fff;font:700 16px 'Archivo';cursor:pointer;box-shadow:0 14px 46px color-mix(in srgb,var(--accent,#C8102E) 42%,transparent);animation-delay:.22s;" style-hover="transform:translateY(-2px);">Start together<svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12h13M12 6l6 6-6 6"/></svg></button>
+    </main>
+  </sc-if>
+
+  <!-- SECRET PICK -->
+  <sc-if value="{{ isPick }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:6px clamp(20px,4vw,58px) 40px;gap:12px;">
+      <div style="width:100%;max-width:580px;display:flex;flex-direction:column;gap:12px;align-items:center;">
+        <div style="display:inline-flex;align-items:center;gap:9px;padding:8px 16px;border-radius:99px;border:1px solid color-mix(in srgb,{{ activeColor }} 40%,transparent);background:color-mix(in srgb,{{ activeColor }} 10%,transparent);font:700 13px 'Archivo';color:{{ activeColor }};"><span style="width:7px;height:7px;border-radius:50%;background:{{ activeColor }};box-shadow:0 0 8px {{ activeColor }};"></span>{{ activeName }}’S CALL — PARTNER, LOOK AWAY</div>
+        <div style="font:600 10px 'IBM Plex Mono';letter-spacing:.2em;color:#61748c;">ROUND {{ roundNum }} / {{ rounds }}</div>
+
+        <!-- scene -->
+        <div style="position:relative;width:100%;aspect-ratio:16/10;max-height:250px;border-radius:16px;overflow:hidden;border:1px solid rgba(120,140,166,.2);background:radial-gradient(130% 120% at 50% 0%,#0d1c2e,#091324 60%,#050c17);">
+          <svg viewBox="0 0 160 100" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;" fill="none" stroke="rgba(120,180,210,.13)" stroke-width="0.5"><rect x="3" y="3" width="154" height="94"></rect><path d="M55 3 v11 h50 v-11"></path><line x1="3" y1="50" x2="157" y2="50"></line></svg>
+          <sc-for list="{{ sceneDots }}" as="d" hint-placeholder-count="3"><div style="position:absolute;left:{{ d.left }};top:{{ d.top }};width:{{ d.size }};height:{{ d.size }};margin:{{ d.mar }};border-radius:50%;background:{{ d.bg }};border:{{ d.bd }};box-shadow:{{ d.sh }};z-index:2;"></div></sc-for>
+        </div>
+        <div style="font:700 clamp(16px,2.4vw,22px)/1.2 'Archivo';color:#EAF2FB;text-align:center;text-wrap:pretty;max-width:480px;">{{ prompt }}</div>
+
+        <div style="width:100%;display:grid;grid-template-columns:1fr 1fr;gap:9px;">
+          <sc-for list="{{ actions }}" as="a" hint-placeholder-count="4">
+            <button onClick="{{ a.onPick }}" style="display:flex;flex-direction:column;gap:2px;align-items:flex-start;text-align:left;padding:14px 16px;border-radius:13px;border:1px solid rgba(120,140,166,.24);background:rgba(10,16,28,.55);color:#EAF2FB;font:800 15px 'Archivo';cursor:pointer;transition:transform .1s,border-color .15s;" style-active="transform:scale(.97);" style-hover="border-color:color-mix(in srgb,{{ activeColor }} 58%,transparent);"><span>{{ a.name }}</span><span style="font:500 9.5px 'IBM Plex Mono';letter-spacing:.06em;color:#61748c;">{{ a.sub }}</span></button>
+          </sc-for>
+        </div>
+        <div style="font:500 10px 'IBM Plex Mono';letter-spacing:.16em;color:#4f627a;">TAP YOUR CALL — KEEP IT SECRET</div>
+      </div>
+    </main>
+  </sc-if>
+
+  <!-- HANDOFF -->
+  <sc-if value="{{ isHandoff }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;text-align:center;padding:20px clamp(26px,4vw,58px) 70px;">
+      <div class="fa-in" style="font-size:54px;margin-bottom:16px;">\uD83E\uDD1D</div>
+      <div class="fa-in" style="font:600 11px 'IBM Plex Mono';letter-spacing:.36em;color:#7688a0;margin-bottom:12px;animation-delay:.05s;">CALL LOCKED IN</div>
+      <h1 class="fa-in" style="margin:0 0 8px;font:800 clamp(30px,4.6vw,52px)/1.0 'Archivo';letter-spacing:-0.02em;animation-delay:.1s;">Pass the phone to<br><span style="color:{{ nextColor }};">{{ nextName }}</span></h1>
+      <p class="fa-in" style="margin:0 0 32px;max-width:420px;font:400 15px/1.6 'Archivo';color:#9FB0C5;animation-delay:.16s;">Same picture, your own call. Don’t say a word.</p>
+      <button onClick="{{ handoffGo }}" class="fa-in" style="display:inline-flex;align-items:center;gap:11px;padding:17px 40px;border-radius:12px;border:0;background:{{ nextColor }};color:#fff;font:700 16px 'Archivo';cursor:pointer;box-shadow:0 12px 38px color-mix(in srgb,{{ nextColor }} 40%,transparent);animation-delay:.22s;" style-hover="transform:translateY(-2px);">I’m {{ nextName }} — my call<svg width="17" height="17" viewBox="0 0 24 24" fill="none" style="stroke:#fff;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12h13M12 6l6 6-6 6"/></svg></button>
+    </main>
+  </sc-if>
+
+  <!-- REVEAL -->
+  <sc-if value="{{ isReveal }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:10px clamp(20px,4vw,58px) 50px;">
+      <div style="width:100%;max-width:560px;">
+        <div class="fa-in" style="text-align:center;font:800 clamp(26px,4.4vw,44px) 'Archivo';letter-spacing:-0.02em;color:{{ outColor }};margin-bottom:4px;">{{ outTitle }}</div>
+        <p class="fa-in" style="margin:0 auto 20px;max-width:440px;text-align:center;font:400 14px/1.55 'Archivo';color:#B4C2D4;animation-delay:.06s;">{{ outSub }}</p>
+
+        <div class="fa-in" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px;animation-delay:.1s;">
+          <div style="padding:16px;border-radius:14px;border:1px solid color-mix(in srgb,{{ p1c }} 34%,transparent);background:color-mix(in srgb,{{ p1c }} 8%,transparent);text-align:center;"><div style="font:600 9px 'IBM Plex Mono';letter-spacing:.14em;color:{{ p1c }};margin-bottom:6px;">{{ p1 }}</div><div style="font:800 18px 'Archivo';color:#EAF2FB;">{{ p1move }}</div></div>
+          <div style="padding:16px;border-radius:14px;border:1px solid color-mix(in srgb,{{ p2c }} 34%,transparent);background:color-mix(in srgb,{{ p2c }} 8%,transparent);text-align:center;"><div style="font:600 9px 'IBM Plex Mono';letter-spacing:.14em;color:{{ p2c }};margin-bottom:6px;">{{ p2 }}</div><div style="font:800 18px 'Archivo';color:#EAF2FB;">{{ p2move }}</div></div>
+        </div>
+
+        <div class="fa-in" style="display:flex;align-items:center;justify-content:space-between;gap:14px;padding:16px 20px;border-radius:14px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.45);margin-bottom:22px;animation-delay:.16s;">
+          <span style="font:600 10px 'IBM Plex Mono';letter-spacing:.16em;color:#61748c;">CHEMISTRY</span>
+          <span style="font:800 18px 'Archivo';color:var(--accent,#C8102E);">{{ chemLabel }}</span>
+        </div>
+
+        <div class="fa-in" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:12px;animation-delay:.22s;">
+          <button onClick="{{ nextRound }}" style="display:inline-flex;align-items:center;gap:10px;padding:16px 34px;border-radius:12px;border:0;background:var(--accent,#C8102E);color:#fff;font:700 15px 'Archivo';cursor:pointer;box-shadow:0 12px 38px color-mix(in srgb,var(--accent,#C8102E) 40%,transparent);" style-hover="transform:translateY(-2px);">{{ nextLabel }}<svg width="17" height="17" viewBox="0 0 24 24" fill="none" style="stroke:#fff;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12h13M12 6l6 6-6 6"/></svg></button>
+        </div>
+      </div>
+    </main>
+  </sc-if>
+
+  <!-- FINAL -->
+  <sc-if value="{{ isFinal }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;text-align:center;padding:14px clamp(20px,4vw,58px) 66px;">
+      <div style="width:100%;max-width:560px;">
+        <div class="fa-in" style="font:600 11px 'IBM Plex Mono';letter-spacing:.4em;color:#7688a0;margin-bottom:12px;">{{ p1 }} &amp; {{ p2 }}</div>
+        <div class="fa-in" style="font:800 clamp(64px,14vw,120px)/0.85 'Archivo';letter-spacing:-0.03em;color:{{ finalColor }};animation-delay:.05s;">{{ chemPct }}</div>
+        <div class="fa-in" style="font:600 12px 'IBM Plex Mono';letter-spacing:.22em;color:#9FB0C5;margin-bottom:10px;animation-delay:.1s;">CHEMISTRY · {{ syncLine }}</div>
+        <h1 class="fa-in" style="margin:6px 0 10px;font:800 clamp(26px,4.4vw,42px)/1.0 'Archivo';letter-spacing:-0.02em;color:{{ finalColor }};animation-delay:.14s;">{{ finalTitle }}</h1>
+        <p class="fa-in" style="margin:0 auto 26px;max-width:460px;font:400 14.5px/1.6 'Archivo';color:#B4C2D4;text-wrap:pretty;animation-delay:.18s;">{{ finalSub }}</p>
+
+        <div class="fa-in" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:13px;animation-delay:.26s;">
+          <button onClick="{{ again }}" style="display:inline-flex;align-items:center;gap:10px;padding:16px 30px;border-radius:12px;border:0;background:var(--accent,#C8102E);color:#fff;font:700 15px 'Archivo';cursor:pointer;box-shadow:0 12px 38px color-mix(in srgb,var(--accent,#C8102E) 40%,transparent);" style-hover="transform:translateY(-2px);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>Again</button>
+          <sc-if value="{{ showChrome }}" hint-placeholder-val="{{ true }}"><a href="Assessment.dc.html" style="display:inline-flex;align-items:center;gap:9px;padding:16px 24px;border-radius:12px;border:1px solid rgba(157,176,198,.28);background:rgba(12,18,30,.4);color:#C6D3E2;font:600 14px 'Archivo';" style-hover="border-color:color-mix(in srgb,var(--accent,#C8102E) 55%,transparent);color:#EAF2FB;">Back to the scan</a></sc-if>
+        </div>
+        <div class="fa-in" style="margin-top:22px;text-align:center;font:500 10px 'IBM Plex Mono';letter-spacing:.14em;color:#4f627a;animation-delay:.32s;">{{ dataLine }}</div>
+      </div>
+    </main>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1000,&quot;height&quot;:800},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#C8102E&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#C8102E&quot;,&quot;#00E5FF&quot;,&quot;#E8B33A&quot;,&quot;#8B5CF6&quot;]},&quot;p1Name&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Marcus&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;p2Name&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Rio&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  ACTIONS = [
+    { id:'step',    name:'STEP',    sub:'engage the ball' },
+    { id:'cover',   name:'COVER',   sub:'drop in behind' },
+    { id:'hold',    name:'HOLD',    sub:'hold the line' },
+    { id:'squeeze', name:'SQUEEZE', sub:'push up together' },
+  ];
+  MOVE={ step:'Stepped in', cover:'Dropped to cover', hold:'Held the line', squeeze:'Squeezed up' };
+  // each scenario needs a complementary PAIR (two different roles). dots = schematic.
+  SC=[
+    { prompt:'A striker drops to feet \u2014 and a runner spins in behind him.', need:['step','cover'],
+      good:'One of you steps to the striker, the other drops with the runner. Nothing through.',
+      bad:'You both went the same way \u2014 either the striker turned, or the runner was clean in behind.',
+      dots:[[46,40,'19px','#c0392b','none'],[62,30,'16px','rgba(255,120,120,.8)','1.5px solid #ff8a8a'],[50,60,'0','x','x']] },
+    { prompt:'Ball’s wide, a cross is coming \u2014 near post and back post to guard.', need:['step','cover'],
+      good:'One attacks the near-post ball, the other holds the back-post runner. Covered.',
+      bad:'Both bit on the same post \u2014 the other one was wide open.',
+      dots:[[22,26,'16px','#c0392b','none'],[64,22,'16px','rgba(255,120,120,.8)','1.5px solid #ff8a8a'],[50,40,'16px','rgba(255,120,120,.6)','1.5px solid #ff8a8a']] },
+    { prompt:'They’ve got a 2v2 with the ball central and a runner peeling wide.', need:['hold','cover'],
+      good:'One holds the middle, the other slides to cover the wide run. Balanced.',
+      bad:'You both slid the same way and left a hole where the ball actually went.',
+      dots:[[50,34,'19px','#c0392b','none'],[70,44,'16px','rgba(255,120,120,.8)','1.5px solid #ff8a8a'],[36,44,'16px','rgba(255,120,120,.6)','1.5px solid #ff8a8a']] },
+    { prompt:'The ball’s about to be played over the top of a high line.', need:['squeeze','cover'],
+      good:'One squeezes to play him offside, the other drops as the safety net. Textbook.',
+      bad:'Both did the same \u2014 either you stepped him onside, or you both dropped and invited it.',
+      dots:[[50,26,'19px','#c0392b','none'],[52,16,'16px','rgba(255,120,120,.8)','1.5px solid #ff8a8a'],[50,44,'0','x','x']] },
+    { prompt:'A midfielder carries at the line with a striker on your shoulder.', need:['step','hold'],
+      good:'One steps to the carrier, the other holds the line on the striker. Contained.',
+      bad:'You both went to the ball \u2014 or both sat off. The gap was obvious.',
+      dots:[[50,40,'19px','#c0392b','none'],[50,26,'16px','rgba(255,120,120,.8)','1.5px solid #ff8a8a'],[50,60,'0','x','x']] },
+    { prompt:'Loose ball drops between you both on the edge of the box.', need:['step','cover'],
+      good:'One attacks it, the other covers behind in case it breaks. Won the second ball.',
+      bad:'You both dived in \u2014 or both hung back. Either way it fell to them.',
+      dots:[[50,44,'11px','#fff','1.5px solid #fff'],[38,30,'19px','#c0392b','none'],[62,30,'16px','rgba(255,120,120,.8)','1.5px solid #ff8a8a']] },
+    { prompt:'Their number 10 gets it between the lines, half-turned to shoot.', need:['step','cover'],
+      good:'One jumps out to press him, the other tucks in behind. No time, no space.',
+      bad:'You both stepped out \u2014 the runner off him was gone.',
+      dots:[[50,38,'19px','#c0392b','none'],[64,30,'16px','rgba(255,120,120,.8)','1.5px solid #ff8a8a'],[50,58,'0','x','x']] },
+    { prompt:'Overload on your left \u2014 winger and overlapping full-back.', need:['hold','cover'],
+      good:'One holds central, the other shifts across to the overlap. Numbers matched.',
+      bad:'You both shifted \u2014 the middle was wide open for the cut-back.',
+      dots:[[36,40,'19px','#c0392b','none'],[22,34,'16px','rgba(255,120,120,.8)','1.5px solid #ff8a8a'],[58,44,'16px','rgba(255,120,120,.6)','1.5px solid #ff8a8a']] },
+    { prompt:'Striker checks short, second striker holds the last line.', need:['step','hold'],
+      good:'One follows the drop, the other stays with the last man. Both marked.',
+      bad:'You both followed the same striker \u2014 the other was free.',
+      dots:[[44,44,'16px','rgba(255,120,120,.8)','1.5px solid #ff8a8a'],[56,26,'16px','rgba(255,120,120,.6)','1.5px solid #ff8a8a'],[50,40,'0','x','x']] },
+  ];
+
+  state = { view:'intro', diff:'', rounds:5, round:0, active:0, p1move:null, p2move:null, chem:0, order:[], copied:false, p1:'', p2:'' };
+
+  componentDidMount(){ try { this._soundOn=localStorage.getItem('fa_sound')!=='0'; } catch(e){ this._soundOn=true; }
+    this._p1=this.props.p1Name||'Marcus'; this._p2=this.props.p2Name||'Rio'; this.forceUpdate(); }
+  componentWillUnmount(){ this._clear(); }
+  _clear(){ (this._timers||[]).forEach(t=>clearTimeout(t)); this._timers=[]; }
+
+  _audio(){ if(this._actx===undefined){ try{ this._actx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ this._actx=null; } } if(this._actx&&this._actx.state==='suspended') this._actx.resume(); return this._actx; }
+  _tone(f,d,t,g){ const c=this._audio(); if(!c||this._soundOn===false) return; const o=c.createOscillator(),a=c.createGain(); o.type=t||'sine'; o.frequency.value=f; o.connect(a); a.connect(c.destination); const n=c.currentTime; a.gain.setValueAtTime(0,n); a.gain.linearRampToValueAtTime(g||0.05,n+0.01); a.gain.exponentialRampToValueAtTime(0.0001,n+d); o.start(n); o.stop(n+d); }
+  _sfx(k){ if(this._soundOn===false) return; if(k==='sync'){ this._tone(560,0.09,'triangle',0.05); this._later=this._later||((f,m)=>setTimeout(f,m)); setTimeout(()=>this._tone(840,0.12,'triangle',0.05),55);} else if(k==='gap') this._tone(200,0.2,'sawtooth',0.05); else if(k==='click') this._tone(500,0.08,'sine',0.04); else if(k==='complete'){ this._tone(520,0.14,'triangle',0.05); setTimeout(()=>this._tone(780,0.2,'triangle',0.05),120);} }
+  _toggleSound(){ const on=this._soundOn===false; this._soundOn=on; try{ localStorage.setItem('fa_sound', on?'1':'0'); }catch(e){} if(on){ this._audio(); this._tone(560,0.1,'triangle',0.05);} this.forceUpdate(); }
+
+  _setRounds(n){ this._sfx('click'); this.setState({ rounds:n }); }
+  _setP1(e){ this._p1=e.target.value; this.forceUpdate(); }
+  _setP2(e){ this._p2=e.target.value; this.forceUpdate(); }
+  _shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+  _begin(){ this._sfx('click'); this._p1=(this._p1||'').trim()||'Marcus'; this._p2=(this._p2||'').trim()||'Rio'; this.setState({ view:'pick', round:0, active:0, chem:0, p1move:null, p2move:null, order:this._shuffle(this.SC.map((s,i)=>i)) }); }
+
+  _sc(){ const o=this.state.order; return this.SC[o[this.state.round % o.length]]; }
+  _pick(a){
+    this._sfx('click');
+    if(this.state.active===0){ this.setState({ p1move:a.id, view:'handoff' }); }
+    else { this._resolve(a.id); }
+  }
+  _handoffGo(){ this._sfx('click'); this.setState({ view:'pick', active:1 }); }
+
+  _resolve(p2move){
+    const sc=this._sc(); const p1=this.state.p1move, p2=p2move;
+    const set=[p1,p2].sort().join('+'); const needSet=sc.need.slice().sort().join('+');
+    const complementary = set===needSet && p1!==p2;
+    const partial = !complementary && (sc.need.indexOf(p1)>=0 || sc.need.indexOf(p2)>=0) && p1!==p2;
+    const pts = complementary?1: partial?0.5:0;
+    this._sfx(complementary?'sync':'gap');
+    this._lastOutcome = complementary?'good': partial?'half':'bad';
+    this.setState({ view:'reveal', p2move, chem:this.state.chem+pts });
+  }
+  _nextRound(){
+    this._sfx('click');
+    const next=this.state.round+1;
+    if(next>=this.state.rounds){ this._finish(); return; }
+    this.setState({ view:'pick', round:next, active:0, p1move:null, p2move:null });
+  }
+  _finish(){
+    this._sfx('complete');
+    const pct=Math.round(this.state.chem/this.state.rounds*100);
+    const out={ version:'cb-partnership-1.0', task:'the_partnership', completedAt:new Date().toISOString(), weight:0,
+      rounds:this.state.rounds, chemistry:this.state.chem, chemistryPct:pct, p1:this._p1, p2:this._p2 };
+    try{ localStorage.setItem('fa_cb_partnership', JSON.stringify(out)); }catch(e){}
+    this.setState({ view:'final' });
+  }
+  _again(){ this.setState({ view:'intro' }); }
+
+  renderVals(){
+    const accent=this.props.accent ?? '#C8102E';
+    const V=this.state.view; const soundOn=this._soundOn!==false;
+    const P1C='#C8102E', P2C='#00E5FF';
+    const base={
+      accent, showChrome:!this.props.embedded,
+      isIntro:V==='intro', isPick:V==='pick', isHandoff:V==='handoff', isReveal:V==='reveal', isFinal:V==='final',
+      inGame: V==='pick'||V==='handoff'||V==='reveal',
+      soundOn, soundOff:!soundOn, soundColor:soundOn?accent:'#61748c', soundTitle:soundOn?'Sound on':'Sound off',
+      toggleSound:()=>this._toggleSound(), begin:()=>this._begin(), setP1:(e)=>this._setP1(e), setP2:(e)=>this._setP2(e),
+      handoffGo:()=>this._handoffGo(), nextRound:()=>this._nextRound(), again:()=>this._again(),
+      p1:this._p1||'Marcus', p2:this._p2||'Rio', p1c:P1C, p2c:P2C,
+      roundNum:(this.state.round+1)+'', rounds:this.state.rounds+'',
+    };
+    base.roundOpts=[5,7,9].map(n=>{ const sel=this.state.rounds===n; return { label:n+'', onPick:()=>this._setRounds(n), border:sel?'color-mix(in srgb,'+accent+' 70%,transparent)':'rgba(120,140,166,.22)', bg:sel?'color-mix(in srgb,'+accent+' 16%,transparent)':'rgba(10,16,28,.5)', color:sel?'#F2F8FE':'#B4C2D4' }; });
+
+    // pick
+    const sc=(V==='pick'||V==='handoff'||V==='reveal')?this._sc():this.SC[0];
+    base.prompt=sc.prompt;
+    base.activeName=this.state.active===0?base.p1:base.p2;
+    base.activeColor=this.state.active===0?P1C:P2C;
+    base.actions=this.ACTIONS.map(a=>({ name:a.name, sub:a.sub, onPick:()=>this._pick(a) }));
+    base.sceneDots=(sc.dots||[]).filter(d=>d[3]!=='x').map(d=>{ const R='radial-gradient(125% 125% at 34% 24%,'; let bg=d[3], sh='0 2px 4px rgba(0,0,0,.5)'; if(d[3]==='#c0392b'){bg=R+'#ff9a9a,#c0322f)';sh='0 2px 4px rgba(0,0,0,.5),0 0 7px rgba(255,90,110,.42)';} else if(d[3]==='rgba(255,120,120,.8)'||d[3]==='rgba(255,120,120,.6)'){bg=R+'#ffb0b0,#d24440)';sh='0 2px 4px rgba(0,0,0,.5),0 0 7px rgba(255,90,110,.42)';} else if(d[3]==='#fff'){bg=R+'#fff,#dfe8f0)';sh='0 0 6px 1px rgba(255,255,255,.85),0 1px 2px rgba(0,0,0,.45)';} return { left:d[0]+'%', top:d[1]+'%', size:d[2], mar:'-'+ (parseInt(d[2])/2) +'px 0 0 -'+(parseInt(d[2])/2)+'px', bg:bg, bd:d[4], sh:sh }; });
+
+    // handoff
+    base.nextName=base.p2; base.nextColor=P2C;
+
+    // reveal
+    Object.assign(base,{ outTitle:'', outColor:accent, outSub:'', p1move:'', p2move:'', chemLabel:'', nextLabel:'Next round' });
+    if(V==='reveal'){
+      const oc=this._lastOutcome;
+      base.outTitle = oc==='good'?'COMPLEMENTARY' : oc==='half'?'HALF THERE' : 'GAP OPENED';
+      base.outColor = oc==='good'?'#8CFFC4' : oc==='half'?'#FFB020' : '#FF8A98';
+      base.outSub = oc==='good'?sc.good : oc==='half'?'One of you read it, the other didn\u2019t quite match. Half a step off and they’d punish it.' : sc.bad;
+      base.p1move=this.MOVE[this.state.p1move]||'\u2014'; base.p2move=this.MOVE[this.state.p2move]||'\u2014';
+      const inSync=Math.floor(this.state.chem); // whole complementary rounds approx
+      base.chemLabel=this.state.chem.toString().replace(/\.0$/,'')+' / '+(this.state.round+1)+' rounds';
+      base.nextLabel = (this.state.round+1>=this.state.rounds)?'See your chemistry':'Next round';
+    }
+
+    // final
+    Object.assign(base,{ chemPct:'', finalColor:accent, syncLine:'', finalTitle:'', finalSub:'', dataLine:'' });
+    if(V==='final'){
+      const pct=Math.round(this.state.chem/this.state.rounds*100);
+      base.chemPct=pct+'%';
+      base.finalColor = pct>=80?'#8CFFC4':pct>=55?'#E8B33A':accent;
+      base.syncLine = this.state.chem.toString().replace(/\.0$/,'')+' OF '+this.state.rounds+' IN SYNC';
+      if(pct>=85){ base.finalTitle='Telepathic'; base.finalSub='You barely need to talk. One steps, one covers, every time \u2014 the kind of pairing a manager builds a defence around. Play it every night and watch it climb.'; }
+      else if(pct>=60){ base.finalTitle='A real partnership'; base.finalSub='You cover for each other more often than not. The gaps are where you both went the same way \u2014 talk those out and you’re elite.'; }
+      else if(pct>=35){ base.finalTitle='Still learning each other'; base.finalSub='Some rounds clicked, plenty didn’t. Partnerships take a hundred games \u2014 this is game one. Keep passing the phone.'; }
+      else { base.finalTitle='Two soloists'; base.finalSub='Right now you’re both defending the same picture the same way. That’s not a fault \u2014 it’s the whole point of this game. Play again and start reading what your partner will do.'; }
+      base.dataLine='CO-OP · CHEMISTRY, NOT A SCORE · WEIGHT 0 · CB PARTNERSHIP v1.0';
+    }
+    return base;
+  }
+}
+</script>
+</body>
+</html>

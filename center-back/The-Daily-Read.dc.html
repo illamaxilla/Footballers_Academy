@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;} html,body{margin:0;padding:0;background:#04060c;}
+  a{color:var(--accent,#C8102E);text-decoration:none;} a:hover{opacity:.92;}
+  @keyframes fa-blink{0%,100%{opacity:1;}50%{opacity:.25;}}
+  @keyframes fa-rise{0%{transform:translateY(16px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-rise-sm{0%{transform:translateY(10px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-bar{from{width:0!important;}to{}}
+  @keyframes fa-pop{0%{transform:scale(.7);opacity:0;}60%{transform:scale(1.06);}100%{transform:scale(1);opacity:1;}}
+  @keyframes fa-ballpulse{0%,100%{box-shadow:0 0 8px rgba(255,255,255,.6);}50%{box-shadow:0 0 16px rgba(255,255,255,.95);}}
+  .fa-in{opacity:0;animation:fa-rise .7s cubic-bezier(.2,.7,.2,1) forwards;}
+  .fa-in-sm{opacity:0;animation:fa-rise-sm .55s cubic-bezier(.2,.7,.2,1) forwards;}
+  @media (prefers-reduced-motion:reduce){*{animation-duration:.001s!important;}.fa-in,.fa-in-sm{opacity:1!important;transform:none!important;}}
+</style>
+</helmet>
+<div data-screen-label="The Daily Read" style="position:relative;display:flex;flex-direction:column;min-height:100dvh;width:100%;overflow:hidden;background:radial-gradient(120% 90% at 50% 6%,#0e1a2d 0%,#080e1a 44%,#04060c 100%);color:#EAF2FB;font-family:'Archivo',system-ui,sans-serif;--accent:{{ accent }};">
+
+  <div style="position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.4;background:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0px,rgba(255,255,255,.02) 1px,transparent 1px,transparent 4px);"></div>
+  <div style="position:absolute;top:20px;left:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#C8102E) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#C8102E) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;top:20px;right:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#C8102E) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#C8102E) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;left:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#C8102E) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#C8102E) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;right:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#C8102E) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#C8102E) 50%,transparent);z-index:4;pointer-events:none;"></div>
+
+  <sc-if value="{{ showChrome }}" hint-placeholder-val="{{ true }}">
+    <header style="position:relative;z-index:6;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px clamp(26px,3.4vw,58px);">
+      <div style="min-width:120px;display:flex;"><a href="Assessment.dc.html" style="display:inline-flex;align-items:center;gap:8px;color:#8EA1B8;font:600 12.5px 'Archivo';" style-hover="color:#EAF2FB;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M15 5l-7 7 7 7"/></svg>Back to the scan</a></div>
+      <div style="display:flex;align-items:center;gap:11px;"><svg width="20" height="22" viewBox="0 0 28 32" fill="none"><path d="M14 2 25 6v10c0 8-5.4 12.4-11 14C8.4 28.4 3 24 3 16V6z" style="stroke:var(--accent,#C8102E);stroke-width:1.6;fill:color-mix(in srgb,var(--accent,#C8102E) 12%,transparent);"/><circle cx="14" cy="15" r="5" style="stroke:var(--accent,#C8102E);stroke-width:1.6;fill:none;"/><circle cx="14" cy="15" r="1.6" style="fill:var(--accent,#C8102E);"/></svg><span style="font:800 13px 'Archivo';letter-spacing:.05em;">THE DAILY <span style="color:var(--accent,#C8102E);">READ</span></span></div>
+      <div style="display:flex;align-items:center;gap:12px;min-width:120px;justify-content:flex-end;">
+        <button onClick="{{ toggleSound }}" title="{{ soundTitle }}" style="display:grid;place-items:center;width:28px;height:28px;border-radius:8px;border:1px solid rgba(120,140,166,.24);background:rgba(10,16,28,.5);cursor:pointer;color:{{ soundColor }};" style-hover="border-color:color-mix(in srgb,var(--accent,#C8102E) 55%,transparent);">
+          <sc-if value="{{ soundOn }}" hint-placeholder-val="{{ true }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg></sc-if>
+          <sc-if value="{{ soundOff }}" hint-placeholder-val="{{ false }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M22 9l-6 6M16 9l6 6"/></svg></sc-if>
+        </button>
+        <div style="display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border-radius:99px;border:1px solid color-mix(in srgb,var(--accent,#C8102E) 34%,transparent);background:color-mix(in srgb,var(--accent,#C8102E) 8%,transparent);font:700 11px 'Archivo';color:var(--accent,#C8102E);"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M12 2s6 4 6 10a6 6 0 0 1-12 0c0-2 1-3 1-3s2 2 3 1c1.5-1.5-1-4 2-8z"/></svg>{{ streakNum }}</div>
+      </div>
+    </header>
+  </sc-if>
+
+  <!-- READ -->
+  <sc-if value="{{ isRead }}" hint-placeholder-val="{{ true }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:6px clamp(20px,4vw,58px) 40px;gap:12px;">
+      <div style="width:100%;max-width:1120px;display:flex;flex-direction:column;gap:12px;align-items:center;flex:1;min-height:0;justify-content:center;">
+        <div class="fa-in" style="text-align:center;">
+          <div style="font:600 11px 'IBM Plex Mono';letter-spacing:.4em;color:var(--accent,#C8102E);margin-bottom:4px;">THE DAILY READ · #{{ puzzleNo }}</div>
+          <div style="font:500 12px 'Archivo';color:#7688a0;">{{ dateLabel }} · everyone gets the same one</div>
+        </div>
+        <h1 class="fa-in" style="margin:2px 0 2px;text-align:center;font:800 clamp(21px,2.9vw,30px)/1.15 'Archivo';letter-spacing:-0.01em;text-wrap:pretty;max-width:520px;animation-delay:.05s;">{{ prompt }}</h1>
+
+        <!-- frozen scene -->
+        <div class="fa-in" style="position:relative;height:min(60vh,560px);aspect-ratio:16/11;max-width:100%;margin:0 auto;align-self:center;border-radius:16px;overflow:hidden;border:1px solid rgba(120,140,166,.2);background:radial-gradient(130% 120% at 50% 0%,#0d1c2e,#091324 60%,#050c17);animation-delay:.1s;">
+          <svg viewBox="0 0 160 110" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;" fill="none" stroke="rgba(120,180,210,.13)" stroke-width="0.5"><rect x="3" y="3" width="154" height="104"></rect><path d="M55 3 v12 h50 v-12"></path><rect x="70" y="3" width="20" height="6"></rect><line x1="3" y1="55" x2="157" y2="55"></line></svg>
+          <div style="position:absolute;left:{{ runner.left }};top:{{ runner.top }};width:16px;height:16px;margin:-8px 0 0 -8px;border-radius:50%;background:radial-gradient(125% 125% at 34% 24%,#ffb0b0,#d24440);border:1.5px solid rgba(255,182,182,.9);box-shadow:0 2px 4px rgba(0,0,0,.5),0 0 7px rgba(255,90,110,.42);z-index:2;"></div>
+          <div style="position:absolute;left:{{ carrier.left }};top:{{ carrier.top }};width:19px;height:19px;margin:-9.5px 0 0 -9.5px;border-radius:50%;background:radial-gradient(125% 125% at 34% 24%,#ff9a9a,#c0322f);box-shadow:0 2px 4px rgba(0,0,0,.5),0 0 7px rgba(255,90,110,.42);z-index:3;"></div>
+          <div style="position:absolute;left:{{ ball.left }};top:{{ ball.top }};width:9px;height:9px;margin:-4.5px 0 0 -4.5px;border-radius:50%;background:#fff;z-index:4;transition:left .5s linear,top .5s linear;animation:fa-ballpulse 1s ease-in-out infinite;"></div>
+          <sc-if value="{{ locked }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;left:{{ ansTarget.left }};top:{{ ansTarget.top }};width:26px;height:26px;margin:-13px 0 0 -13px;border-radius:50%;border:2px dashed #8CFFC4;z-index:2;"></div></sc-if>
+          <sc-if value="{{ notLocked }}" hint-placeholder-val="{{ true }}"><div style="position:absolute;right:8px;bottom:8px;font:800 clamp(22px,4vw,34px) 'Archivo';color:color-mix(in srgb,var(--accent,#C8102E) 80%,#fff);opacity:.5;">?</div></sc-if>
+        </div>
+
+        <sc-if value="{{ notLocked }}" hint-placeholder-val="{{ true }}">
+          <div style="width:100%;display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:9px;animation:none;">
+            <sc-for list="{{ options }}" as="o" hint-placeholder-count="4">
+              <button onClick="{{ o.onPick }}" class="fa-in-sm" style="display:flex;align-items:center;gap:11px;text-align:left;padding:15px 15px;border-radius:13px;border:1px solid rgba(120,140,166,.22);background:rgba(10,16,28,.55);color:#EAF2FB;font:700 14px 'Archivo';cursor:pointer;transition:transform .1s,border-color .15s;animation-delay:{{ o.delay }};" style-active="transform:scale(.97);" style-hover="border-color:color-mix(in srgb,var(--accent,#C8102E) 58%,transparent);"><span style="flex:0 0 auto;width:26px;height:26px;border-radius:7px;display:grid;place-items:center;border:1px solid rgba(120,140,166,.28);font:700 11px 'IBM Plex Mono';color:#9FB0C5;">{{ o.key }}</span><span>{{ o.label }}</span></button>
+            </sc-for>
+          </div>
+          <div style="font:500 10px 'IBM Plex Mono';letter-spacing:.16em;color:#4f627a;">ONE READ. ONE TAP. COME BACK TOMORROW.</div>
+        </sc-if>
+      </div>
+    </main>
+  </sc-if>
+
+  <!-- REVEAL -->
+  <sc-if value="{{ isReveal }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:8px clamp(20px,4vw,58px) 60px;">
+      <div style="width:100%;max-width:600px;">
+        <div class="fa-in" style="text-align:center;margin-bottom:14px;">
+          <div style="font:600 11px 'IBM Plex Mono';letter-spacing:.36em;color:#7688a0;margin-bottom:8px;">THE DAILY READ · #{{ puzzleNo }}</div>
+          <div style="font:800 clamp(24px,4vw,38px) 'Archivo';letter-spacing:-0.02em;color:{{ verdictColor }};">{{ verdict }}</div>
+          <div style="margin-top:4px;font:500 13.5px 'Archivo';color:#B4C2D4;">You said <strong style="color:#EAF2FB;">{{ yourPick }}</strong>. It was <strong style="color:#8CFFC4;">{{ answer }}</strong>.</div>
+        </div>
+
+        <div class="fa-in" style="padding:14px 18px;border-radius:14px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.45);margin-bottom:18px;animation-delay:.08s;">
+          <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.22em;color:var(--accent,#C8102E);margin-bottom:6px;">THE COACHING</div>
+          <p style="margin:0;font:400 13.5px/1.55 'Archivo';color:#C6D3E2;text-wrap:pretty;">{{ coaching }}</p>
+        </div>
+
+        <!-- House standings -->
+        <div class="fa-in" style="padding:20px 22px;border-radius:16px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);margin-bottom:16px;animation-delay:.14s;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;"><span style="font:600 9px 'IBM Plex Mono';letter-spacing:.22em;color:#61748c;">TODAY’S HOUSES · % WHO READ IT</span><span style="font:600 9px 'IBM Plex Mono';color:#61748c;">{{ crowdNote }}</span></div>
+          <div style="display:flex;flex-direction:column;gap:11px;">
+            <sc-for list="{{ houses }}" as="h" hint-placeholder-count="4">
+              <div style="display:flex;flex-direction:column;gap:5px;">
+                <div style="display:flex;align-items:baseline;justify-content:space-between;"><span style="font:700 12.5px 'Archivo';color:{{ h.labelColor }};">{{ h.emoji }} {{ h.name }}{{ h.youTag }}</span><span style="font:800 12px 'IBM Plex Mono';color:{{ h.numColor }};">{{ h.pct }}</span></div>
+                <div style="height:9px;border-radius:99px;background:rgba(120,140,166,.14);overflow:hidden;"><div style="height:100%;border-radius:99px;width:{{ h.barW }};background:{{ h.barColor }};transition:width .8s cubic-bezier(.3,.8,.3,1);"></div></div>
+              </div>
+            </sc-for>
+          </div>
+          <p style="margin:14px 0 0;font:500 13px/1.5 'Archivo';color:#EAF2FB;text-wrap:pretty;">{{ houseLine }}</p>
+        </div>
+
+        <!-- streak -->
+        <div class="fa-in" style="display:flex;align-items:center;justify-content:space-between;gap:14px;padding:16px 20px;border-radius:14px;border:1px solid color-mix(in srgb,var(--accent,#C8102E) 26%,transparent);background:color-mix(in srgb,var(--accent,#C8102E) 7%,transparent);margin-bottom:20px;animation-delay:.2s;">
+          <div><div style="font:600 9px 'IBM Plex Mono';letter-spacing:.2em;color:var(--accent,#C8102E);margin-bottom:4px;">YOUR STREAK</div><div style="font:400 12.5px 'Archivo';color:#C6D3E2;">{{ streakLine }}</div></div>
+          <div style="font:800 34px 'Archivo';color:var(--accent,#C8102E);display:flex;align-items:center;gap:6px;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" style="stroke:var(--accent,#C8102E);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M12 2s6 4 6 10a6 6 0 0 1-12 0c0-2 1-3 1-3s2 2 3 1c1.5-1.5-1-4 2-8z"/></svg>{{ streakNum }}</div>
+        </div>
+
+        <div class="fa-in" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:13px;animation-delay:.26s;">
+          <button onClick="{{ share }}" style="display:inline-flex;align-items:center;gap:10px;padding:16px 30px;border-radius:12px;border:0;background:var(--accent,#C8102E);color:#fff;font:700 15px 'Archivo';cursor:pointer;box-shadow:0 12px 38px color-mix(in srgb,var(--accent,#C8102E) 40%,transparent);" style-hover="transform:translateY(-2px);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:#fff;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>{{ shareLabel }}</button>
+          <sc-if value="{{ showChrome }}" hint-placeholder-val="{{ true }}"><a href="Assessment.dc.html" style="display:inline-flex;align-items:center;gap:9px;padding:16px 24px;border-radius:12px;border:1px solid rgba(157,176,198,.28);background:rgba(12,18,30,.4);color:#C6D3E2;font:600 14px 'Archivo';" style-hover="border-color:color-mix(in srgb,var(--accent,#C8102E) 55%,transparent);color:#EAF2FB;">Back to the scan</a></sc-if>
+        </div>
+        <div class="fa-in" style="margin-top:20px;text-align:center;font:500 10px 'IBM Plex Mono';letter-spacing:.14em;color:#4f627a;animation-delay:.32s;">{{ dataLine }}</div>
+      </div>
+    </main>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1000,&quot;height&quot;:820},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#C8102E&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#C8102E&quot;,&quot;#00E5FF&quot;,&quot;#E8B33A&quot;,&quot;#8B5CF6&quot;]},&quot;demoNextDay&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Preview&quot;},&quot;embedded&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  ORDER=['colossus','architect','sentinel','libero'];
+  ARCH={ colossus:{name:'Colossi',emoji:'\uD83C\uDFF0',color:'#C8102E'}, architect:{name:'Architects',emoji:'\uD83E\uDDED',color:'#00E5FF'}, sentinel:{name:'Sentinels',emoji:'\uD83D\uDCE1',color:'#E8B33A'}, libero:{name:'Liberos',emoji:'\uD83E\uDE90',color:'#8B5CF6'} };
+  OPTS=[ {id:'runner',key:'A',label:'Pass to the runner'}, {id:'through',key:'B',label:'Through ball in behind'}, {id:'shot',key:'C',label:'Shot'}, {id:'turnback',key:'D',label:'Turn back & recycle'} ];
+  ANSLABEL={ runner:'the pass to the runner', through:'the through ball', shot:'the shot', turnback:'the turn back' };
+  // one shared scenario per day. lens = the House that tends to read it best.
+  POOL=[
+    { prompt:'He’s squared up on the edge of the box, defender backing off.', carrier:[50,42], runner:[68,40], ball:[52,44], ans:'shot', bt:[80,6], lens:'colossus', coach:'Backed off with a yard and the box in front \u2014 he’s shooting. Close the space or block the lane; don’t admire it.' },
+    { prompt:'Striker drops to feet, a runner peels off the shoulder.', carrier:[46,40], runner:[62,34], ball:[48,42], ans:'through', bt:[66,16], lens:'sentinel', coach:'The drop is the decoy \u2014 the runner in behind is the pass. Read the eyes, not the ball.' },
+    { prompt:'Winger cuts inside, a teammate overlaps outside him.', carrier:[64,38], runner:[80,44], ball:[62,40], ans:'runner', bt:[78,44], lens:'libero', coach:'The overlap drags your cover \u2014 the ball’s going wide to the free man. Track the runner, don’t follow the ball.' },
+    { prompt:'He’s hemmed in near the touchline, no forward option.', carrier:[30,36], runner:[52,30], ball:[32,38], ans:'turnback', bt:[24,52], lens:'architect', coach:'No pass forward and pressure on \u2014 he resets. Step up as a unit the moment he turns back.' },
+    { prompt:'Midfielder carries at your line with a runner central.', carrier:[50,40], runner:[52,28], ball:[50,42], ans:'through', bt:[52,16], lens:'sentinel', coach:'The carry commits you \u2014 the split pass to the central runner is on. Delay, don’t dive.' },
+    { prompt:'Cross fizzed low across the six-yard box.', carrier:[22,26], runner:[60,44], ball:[24,28], ans:'runner', bt:[58,46], lens:'colossus', coach:'Low and across \u2014 it’s for the back-post runner. Attack the ball first; if you can’t, block his run.' },
+    { prompt:'He’s taken a heavy touch just outside the D.', carrier:[52,44], runner:[36,40], ball:[62,42], ans:'turnback', bt:[46,52], lens:'colossus', coach:'Heavy touch, off balance \u2014 he’s got to check back. This is your moment to step and win it.' },
+    { prompt:'Number 10 receives between the lines, half-turned.', carrier:[50,38], runner:[66,30], ball:[48,40], ans:'through', bt:[68,18], lens:'sentinel', coach:'Half-turned and facing your goal \u2014 he’s threading the runner. Don’t let him spin; deny the line.' },
+    { prompt:'Striker sets it back for a midfielder arriving late.', carrier:[48,34], runner:[50,50], ball:[49,44], ans:'runner', bt:[50,50], lens:'architect', coach:'The lay-off is the play \u2014 the late runner is the shot. Someone has to step out of the line to him.' },
+    { prompt:'He’s one-on-one with you, shifting the ball onto his stronger foot.', carrier:[50,40], runner:[70,42], ball:[54,40], ans:'shot', bt:[80,6], lens:'colossus', coach:'Onto his shooting foot with a sight of goal \u2014 show him the other way and get your body in the lane.' },
+    { prompt:'Ball wide, striker gambling on the near post.', carrier:[26,28], runner:[64,20], ball:[28,30], ans:'through', bt:[66,10], lens:'libero', coach:'Near-post gamble \u2014 the whipped ball beats the front man. Attack the danger spot before he does.' },
+    { prompt:'Winger dead-ends in the corner, help arriving.', carrier:[20,30], runner:[40,26], ball:[22,32], ans:'turnback', bt:[16,46], lens:'architect', coach:'Trapped in the corner with cover coming \u2014 he plays back. Squeeze the line and win the second ball.' },
+    { prompt:'Overlap outside, striker stood on the last shoulder.', carrier:[60,40], runner:[52,26], ball:[58,42], ans:'through', bt:[52,14], lens:'sentinel', coach:'The wide man is the dummy \u2014 the striker’s timing a run off you. Feel him, don’t ball-watch.' },
+    { prompt:'He shapes to cross but the defender has sold himself.', carrier:[30,34], runner:[58,42], ball:[30,38], ans:'runner', bt:[56,44], lens:'libero', coach:'The stepover bought a yard \u2014 the cut-back to the runner is on. Cover the pull-back, not the byline.' },
+  ];
+
+  state = { view:'read', locked:false, pick:null, copied:false };
+
+  componentDidMount(){
+    try { this._soundOn=localStorage.getItem('fa_sound')!=='0'; } catch(e){ this._soundOn=true; }
+    try{ this._myArch=(JSON.parse(localStorage.getItem('fa_cb_result')||'null')||{}).primary||null; }catch(e){ this._myArch=null; }
+    this._day=this._today();
+    try{ this._store=JSON.parse(localStorage.getItem('fa_cb_dailyread')||'null')||{}; }catch(e){ this._store={}; }
+    // already played today?
+    const rec=this._store[this._day];
+    if(rec && !this.props.demoNextDay){ this._locked=true; this.setState({ view:'reveal', locked:true, pick:rec.pick }); }
+    else { this.forceUpdate(); }
+  }
+  componentWillUnmount(){ this._clear(); }
+  _clear(){ (this._timers||[]).forEach(t=>clearTimeout(t)); this._timers=[]; }
+  _later(fn,ms){ (this._timers=this._timers||[]).push(setTimeout(fn,ms)); }
+
+  _today(){ const base=Math.floor(Date.now()/86400000); return base + (this.props.demoNextDay?1:0); }
+  _puzzleNo(){ return this._day - 20280; }
+  _scIndex(){ return ((this._day%this.POOL.length)+this.POOL.length)%this.POOL.length; }
+  _sc(){ return this.POOL[this._scIndex()]; }
+  _rng(seed){ let s=(seed>>>0)||1; return ()=>{ s=(s*1664525+1013904223)>>>0; return s/4294967296; }; }
+
+  _audio(){ if(this._actx===undefined){ try{ this._actx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ this._actx=null; } } if(this._actx&&this._actx.state==='suspended') this._actx.resume(); return this._actx; }
+  _tone(f,d,t,g){ const c=this._audio(); if(!c||this._soundOn===false) return; const o=c.createOscillator(),a=c.createGain(); o.type=t||'sine'; o.frequency.value=f; o.connect(a); a.connect(c.destination); const n=c.currentTime; a.gain.setValueAtTime(0,n); a.gain.linearRampToValueAtTime(g||0.05,n+0.01); a.gain.exponentialRampToValueAtTime(0.0001,n+d); o.start(n); o.stop(n+d); }
+  _sfx(k){ if(this._soundOn===false) return; if(k==='good'){ this._tone(620,0.09,'triangle',0.05); this._later(()=>this._tone(900,0.12,'triangle',0.05),55);} else if(k==='bad') this._tone(200,0.2,'sawtooth',0.05); else if(k==='click') this._tone(500,0.08,'sine',0.04); }
+  _toggleSound(){ const on=this._soundOn===false; this._soundOn=on; try{ localStorage.setItem('fa_sound', on?'1':'0'); }catch(e){} if(on){ this._audio(); this._tone(560,0.1,'triangle',0.05);} this.forceUpdate(); }
+
+  _pick(o){
+    if(this.state.locked) return;
+    const sc=this._sc(); const correct=o.id===sc.ans;
+    this._sfx(correct?'good':'bad');
+    // streak update
+    let streak=this._store._streak||0; const last=this._store._lastDay; let shield=this._store._shieldDay||0;
+    if(last===undefined||last===null){ streak=1; }
+    else if(last===this._day-1){ streak=streak+1; }
+    else if(last===this._day-2 && (this._day-shield)>=14){ streak=streak+1; shield=this._day; } // forgive one miss / fortnight
+    else if(last===this._day){ /* same day, keep */ }
+    else { streak=1; }
+    if(!this.props.demoNextDay){
+      this._store[this._day]={ pick:o.id, correct };
+      this._store._lastDay=this._day; this._store._streak=streak; this._store._shieldDay=shield;
+      try{ localStorage.setItem('fa_cb_dailyread', JSON.stringify(this._store)); }catch(e){}
+    }
+    this._streak=streak; this._shieldUsedNow=(shield===this._day);
+    this.setState({ view:'reveal', locked:true, pick:o.id });
+  }
+
+  _share(){
+    const h=this._houseData(); const sc=this._sc();
+    const lines=h.map(x=>x.name+' '+x.pct).join('  ');
+    const txt='The Daily Read #'+this._puzzleNo()+' \uD83D\uDEE1\uFE0F\n'+lines+'\nStreak: '+(this._streak||this._store._streak||1)+'. Which defender are you?';
+    try{ if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(txt); }catch(e){}
+    this._sfx('click'); this.setState({ copied:true });
+    clearTimeout(this._ct); this._ct=setTimeout(()=>this.setState({ copied:false }),1900);
+  }
+
+  _houseData(){
+    const sc=this._sc(); const rng=this._rng(this._day*97+13);
+    // each house a % who read it; lens house boosted
+    const base=this.ORDER.map(id=>{ let v=50+Math.floor(rng()*16); if(id===sc.lens) v+=10+Math.floor(rng()*6); return {id,v:Math.min(v,86)}; });
+    base.sort((a,b)=>b.v-a.v);
+    return base.map(x=>({ id:x.id, name:this.ARCH[x.id].name, emoji:this.ARCH[x.id].emoji, color:this.ARCH[x.id].color, pct:x.v+'%', v:x.v }));
+  }
+
+  renderVals(){
+    const accent=this.props.accent ?? '#C8102E';
+    const V=this.state.view; const soundOn=this._soundOn!==false;
+    const sc=this._sc();
+    const base={
+      accent, showChrome:!this.props.embedded,
+      isRead:V==='read', isReveal:V==='reveal',
+      soundOn, soundOff:!soundOn, soundColor:soundOn?accent:'#61748c', soundTitle:soundOn?'Sound on':'Sound off',
+      toggleSound:()=>this._toggleSound(), share:()=>this._share(),
+      streakNum:(this._streak||this._store&&this._store._streak||0)+'',
+      puzzleNo:this._puzzleNo(), dateLabel:new Date(this._day*86400000).toLocaleDateString(undefined,{weekday:'long',month:'short',day:'numeric'}),
+      prompt:sc.prompt,
+      runner:{left:sc.runner[0]+'%',top:sc.runner[1]+'%'}, carrier:{left:sc.carrier[0]+'%',top:sc.carrier[1]+'%'},
+      locked:this.state.locked, notLocked:!this.state.locked,
+      ansTarget:{left:sc.bt[0]+'%',top:sc.bt[1]+'%'},
+    };
+    // ball position: pre-lock at feet; post-lock travels to answer target
+    base.ball = this.state.locked ? {left:sc.bt[0]+'%',top:sc.bt[1]+'%'} : {left:sc.ball[0]+'%',top:sc.ball[1]+'%'};
+    base.options=this.OPTS.map((o,i)=>({ key:o.key, label:o.label, delay:(0.06+i*0.05).toFixed(2)+'s', onPick:()=>this._pick(o) }));
+
+    // reveal
+    Object.assign(base,{ verdict:'', verdictColor:accent, yourPick:'', answer:'', coaching:'', houses:[], houseLine:'', crowdNote:'WORLDWIDE', streakLine:'', shareLabel:'Share', dataLine:'' });
+    if(V==='reveal'){
+      const pick=this.state.pick; const correct=pick===sc.ans;
+      base.verdict = correct?'You read it.':'Not this time.';
+      base.verdictColor = correct?'#8CFFC4':'#FF8A98';
+      base.yourPick = (this.OPTS.find(o=>o.id===pick)||{}).label||'\u2014';
+      base.answer = this.ANSLABEL[sc.ans];
+      base.coaching = sc.coach;
+      const h=this._houseData();
+      const maxV=Math.max(...h.map(x=>x.v),1);
+      base.houses=h.map(x=>({ name:x.name, emoji:x.emoji, pct:x.pct, barW:Math.round(x.v/maxV*100)+'%',
+        barColor:x.color, labelColor:(x.id===this._myArch)?'#F2F8FE':'#9FB0C5', numColor:x.color,
+        youTag:(x.id===this._myArch)?'  \u00b7 YOU':'' }));
+      const top=h[0];
+      if(this._myArch){ const me=h.find(x=>x.id===this._myArch); const myName=this.ARCH[this._myArch].name;
+        base.houseLine = correct ? ('You’re a '+this.ARCH[this._myArch].name.replace(/s$/,'')+'. You got today’s right \u2014 you dragged the '+myName+' average up.')
+          : ('You’re a '+this.ARCH[this._myArch].name.replace(/s$/,'')+'. The '+top.name+' topped this one \u2014 get tomorrow’s back for your House.'); }
+      else { base.houseLine = 'The '+top.name+' read this one best. Take the scan to pick a House and play for it.'; }
+      const st=this._streak||this._store._streak||1;
+      base.streakLine = this._shieldUsedNow ? 'A miss forgiven \u2014 your streak’s safe. Back tomorrow.' : (st>=2? st+' days in a row. One read a day \u2014 come back tomorrow.' : 'Day one. Come back tomorrow to build it.');
+      base.shareLabel=this.state.copied?'Copied':'Share';
+      base.dataLine='ONE PER DAY · HOUSE SPLITS, NOT A SCORE · WEIGHT 0 · CB DAILY v1.0';
+    }
+    return base;
+  }
+}
+</script>
+</body>
+</html>

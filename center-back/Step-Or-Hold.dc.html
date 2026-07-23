@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;} html,body{margin:0;padding:0;background:#04060c;}
+  a{color:var(--accent,#C8102E);text-decoration:none;} a:hover{opacity:.92;}
+  @keyframes fa-blink{0%,100%{opacity:1;}50%{opacity:.25;}}
+  @keyframes fa-rise{0%{transform:translateY(16px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-rise-sm{0%{transform:translateY(10px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-bar{from{transform:scaleX(0);}to{transform:scaleX(1);}}
+  @keyframes fa-win{from{width:100%;}to{width:0%;}}
+  @keyframes fa-pop{0%{transform:scale(.7);opacity:0;}60%{transform:scale(1.06);}100%{transform:scale(1);opacity:1;}}
+  @keyframes fa-ballpulse{0%,100%{box-shadow:0 0 8px rgba(255,255,255,.6);}50%{box-shadow:0 0 16px rgba(255,255,255,.95);}}
+  .fa-in{opacity:0;animation:fa-rise .7s cubic-bezier(.2,.7,.2,1) forwards;}
+  .fa-in-sm{opacity:0;animation:fa-rise-sm .5s cubic-bezier(.2,.7,.2,1) forwards;}
+  @media (prefers-reduced-motion:reduce){*{animation-duration:.001s!important;}.fa-in,.fa-in-sm{opacity:1!important;transform:none!important;}}
+</style>
+</helmet>
+<div data-screen-label="Step or Hold" style="position:relative;display:flex;flex-direction:column;min-height:100dvh;width:100%;overflow:hidden;background:radial-gradient(120% 90% at 50% 6%,#0e1a2d 0%,#080e1a 44%,#04060c 100%);color:#EAF2FB;font-family:'Archivo',system-ui,sans-serif;--accent:{{ accent }};">
+
+  <div style="position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.4;background:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0px,rgba(255,255,255,.02) 1px,transparent 1px,transparent 4px);"></div>
+  <div style="position:absolute;top:20px;left:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#C8102E) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#C8102E) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;top:20px;right:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#C8102E) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#C8102E) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;left:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#C8102E) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#C8102E) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;right:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#C8102E) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#C8102E) 50%,transparent);z-index:4;pointer-events:none;"></div>
+
+  <sc-if value="{{ showChrome }}" hint-placeholder-val="{{ true }}">
+    <header style="position:relative;z-index:6;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px clamp(26px,3.4vw,58px);">
+      <div style="min-width:120px;display:flex;"><a href="Assessment.dc.html" style="display:inline-flex;align-items:center;gap:8px;color:#8EA1B8;font:600 12.5px 'Archivo';" style-hover="color:#EAF2FB;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M15 5l-7 7 7 7"/></svg>Back to the scan</a></div>
+      <div style="display:flex;align-items:center;gap:11px;"><svg width="20" height="22" viewBox="0 0 28 32" fill="none"><path d="M14 2 25 6v10c0 8-5.4 12.4-11 14C8.4 28.4 3 24 3 16V6z" style="stroke:var(--accent,#C8102E);stroke-width:1.6;fill:color-mix(in srgb,var(--accent,#C8102E) 12%,transparent);"/><path d="M9 15l4 4 6-8" style="stroke:var(--accent,#C8102E);stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round;"/></svg><span style="font:800 13px 'Archivo';letter-spacing:.05em;">STEP OR <span style="color:var(--accent,#C8102E);">HOLD</span></span></div>
+      <div style="display:flex;align-items:center;gap:12px;min-width:120px;justify-content:flex-end;">
+        <button onClick="{{ toggleSound }}" title="{{ soundTitle }}" style="display:grid;place-items:center;width:28px;height:28px;border-radius:8px;border:1px solid rgba(120,140,166,.24);background:rgba(10,16,28,.5);cursor:pointer;color:{{ soundColor }};" style-hover="border-color:color-mix(in srgb,var(--accent,#C8102E) 55%,transparent);">
+          <sc-if value="{{ soundOn }}" hint-placeholder-val="{{ true }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg></sc-if>
+          <sc-if value="{{ soundOff }}" hint-placeholder-val="{{ false }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M22 9l-6 6M16 9l6 6"/></svg></sc-if>
+        </button>
+        <div style="width:88px;height:4px;border-radius:99px;background:rgba(120,140,166,.18);overflow:hidden;"><div style="height:100%;border-radius:99px;background:var(--accent,#C8102E);box-shadow:0 0 10px var(--accent,#C8102E);width:{{ progPct }};transition:width .4s cubic-bezier(.3,.8,.3,1);"></div></div>
+        <span style="font:600 10px 'IBM Plex Mono';letter-spacing:.14em;color:color-mix(in srgb,var(--accent,#C8102E) 80%,#fff);white-space:nowrap;">{{ progLabel }}</span>
+      </div>
+    </header>
+  </sc-if>
+
+  <!-- INTRO -->
+  <sc-if value="{{ isIntro }}" hint-placeholder-val="{{ true }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;text-align:center;padding:20px clamp(26px,4vw,58px) 60px;">
+      <div class="fa-in" style="display:inline-flex;align-items:center;gap:10px;margin-bottom:20px;font:600 12px 'IBM Plex Mono';letter-spacing:.4em;color:var(--accent,#C8102E);"><span style="width:6px;height:6px;border-radius:50%;background:var(--accent,#C8102E);box-shadow:0 0 8px var(--accent,#C8102E);animation:fa-blink 1.6s ease-in-out infinite;"></span>COGNITIVE BATTERY · THE FIRST TOUCH</div>
+      <h1 class="fa-in" style="margin:0 0 16px;font:800 clamp(36px,5.4vw,72px)/0.98 'Archivo';letter-spacing:-0.03em;text-wrap:balance;max-width:820px;animation-delay:.06s;">Do you step in, or do you hold?</h1>
+      <p class="fa-in" style="margin:0 0 26px;max-width:600px;font:400 clamp(15px,1.3vw,18px)/1.6 'Archivo';color:#9FB0C5;text-wrap:pretty;animation-delay:.12s;">A striker receives with his back to goal. Watch his first touch. <strong style="color:#EAF2FB;">STEP</strong> the instant it&rsquo;s heavy and the ball&rsquo;s there to be won &mdash; tap. <strong style="color:#EAF2FB;">HOLD</strong> when he&rsquo;s controlled it and set his body: don&rsquo;t touch the button, or he spins you. Most touches are worth stepping &mdash; that&rsquo;s what makes the set ones hard to resist.</p>
+      <div class="fa-in" style="display:flex;gap:16px;margin-bottom:26px;flex-wrap:wrap;justify-content:center;animation-delay:.15s;">
+        <div style="display:flex;align-items:center;gap:9px;padding:10px 16px;border-radius:11px;border:1px solid color-mix(in srgb,#3DD68C 40%,transparent);background:color-mix(in srgb,#3DD68C 8%,transparent);font:600 13px 'Archivo';color:#8CFFC4;">STEP = tap the button</div>
+        <div style="display:flex;align-items:center;gap:9px;padding:10px 16px;border-radius:11px;border:1px solid rgba(120,140,166,.3);background:rgba(10,16,28,.5);font:600 13px 'Archivo';color:#9FB0C5;">HOLD = do nothing</div>
+      </div>
+      <div class="fa-in" style="margin-bottom:24px;animation-delay:.18s;">
+        <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:#61748c;margin-bottom:11px;">HOW FAST?</div>
+        <div style="display:flex;gap:9px;flex-wrap:wrap;justify-content:center;"><sc-for list="{{ diffs }}" as="d" hint-placeholder-count="3"><button onClick="{{ d.onPick }}" style="padding:11px 20px;border-radius:11px;border:1px solid {{ d.border }};background:{{ d.bg }};color:{{ d.color }};font:700 13.5px 'Archivo';cursor:pointer;display:flex;flex-direction:column;gap:2px;align-items:center;" style-hover="border-color:color-mix(in srgb,var(--accent,#C8102E) 55%,transparent);"><span>{{ d.label }}</span><span style="font:500 9.5px 'IBM Plex Mono';letter-spacing:.06em;color:{{ d.subColor }};">{{ d.sub }}</span></button></sc-for></div>
+      </div>
+      <button onClick="{{ begin }}" class="fa-in" style="display:inline-flex;align-items:center;gap:12px;padding:18px 44px;border-radius:13px;border:0;background:var(--accent,#C8102E);color:#fff;font:700 16px 'Archivo';cursor:pointer;box-shadow:0 14px 46px color-mix(in srgb,var(--accent,#C8102E) 42%,transparent);animation-delay:.22s;" style-hover="transform:translateY(-2px);">Kick off<svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12h13M12 6l6 6-6 6"/></svg></button>
+      <div class="fa-in" style="margin-top:20px;font:500 10px 'IBM Plex Mono';letter-spacing:.14em;color:#4f627a;animation-delay:.3s;">40 READS · SCORED ON THE ONES YOU SHOULDN&rsquo;T STEP</div>
+    </main>
+  </sc-if>
+
+  <!-- PLAY -->
+  <sc-if value="{{ isPlay }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:6px clamp(18px,3vw,50px) 30px;gap:14px;">
+      <div style="width:100%;max-width:1120px;display:flex;flex-direction:column;gap:14px;align-items:center;flex:1;min-height:0;justify-content:center;">
+        <div style="width:100%;display:flex;align-items:center;gap:12px;">
+          <span style="font:600 10px 'IBM Plex Mono';letter-spacing:.2em;color:var(--accent,#C8102E);">READ {{ callNum }} / 40</span>
+          <span style="flex:1;height:1px;background:rgba(120,140,166,.18);"></span>
+          <span style="font:600 10px 'IBM Plex Mono';letter-spacing:.14em;color:#9FB0C5;">{{ tallyLabel }}</span>
+        </div>
+
+        <!-- scene -->
+        <div style="position:relative;height:min(60vh,560px);aspect-ratio:16/10;max-width:100%;margin:0 auto;align-self:center;border-radius:16px;overflow:hidden;border:1px solid {{ sceneBorder }};background:radial-gradient(130% 100% at 50% 0%,#0d1c2e,#091324 60%,#050c17);transition:border-color .2s;">
+          <svg viewBox="0 0 160 100" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;" fill="none" stroke="rgba(120,180,210,.13)" stroke-width="0.5"><rect x="3" y="3" width="154" height="94"></rect><path d="M55 3 v10 h50 v-10"></path><circle cx="80" cy="9" r="6"></circle><line x1="3" y1="50" x2="157" y2="50"></line></svg>
+
+          <sc-if value="{{ isSet }}" hint-placeholder-val="{{ true }}">
+            <div style="position:absolute;inset:0;display:grid;place-items:center;"><div style="font:800 clamp(20px,3vw,32px) 'Archivo';letter-spacing:.1em;color:#4f627a;">WATCH THE TOUCH…</div></div>
+          </sc-if>
+
+          <sc-if value="{{ isLive }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;inset:0;animation:fa-pop .18s ease both;">
+              <!-- support dots (well-supported = hold) -->
+              <sc-for list="{{ support }}" as="s" hint-placeholder-count="0"><div style="position:absolute;left:{{ s.left }};top:{{ s.top }};width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;background:radial-gradient(125% 125% at 34% 24%,#8fdcec,#2b8ba6);border:1.5px solid rgba(232,246,255,.9);box-shadow:0 2px 4px rgba(0,0,0,.5),0 0 8px rgba(58,168,196,.5);"></div></sc-for>
+              <!-- set ring (body set = hold) -->
+              <sc-if value="{{ showSet }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;left:{{ foe.left }};top:{{ foe.top }};width:40px;height:40px;margin:-20px 0 0 -20px;border-radius:50%;border:1.5px dashed rgba(160,210,255,.5);"></div></sc-if>
+              <!-- striker (back to goal, facing down) -->
+              <div style="position:absolute;left:{{ foe.left }};top:{{ foe.top }};width:22px;height:22px;margin:-11px 0 0 -11px;"><div style="width:100%;height:100%;background:radial-gradient(125% 125% at 40% 22%,#ff9a9a,#c0322f);clip-path:polygon(50% 100%,100% 0,0 0);"></div></div>
+              <!-- ball -->
+              <div style="position:absolute;left:{{ ball.left }};top:{{ ball.top }};width:10px;height:10px;margin:-5px 0 0 -5px;border-radius:50%;background:#fff;animation:fa-ballpulse 1s ease-in-out infinite;"></div>
+              <!-- cue -->
+              <div style="position:absolute;bottom:10px;left:50%;transform:translateX(-50%);font:700 12px 'Archivo';color:#EAF2FB;background:rgba(4,6,12,.6);padding:6px 14px;border-radius:99px;border:1px solid rgba(120,140,166,.3);white-space:nowrap;">{{ cue }}</div>
+              <!-- window bar -->
+              <div style="position:absolute;top:0;left:0;right:0;height:4px;background:rgba(120,140,166,.14);"><div key="{{ winKey }}" style="height:100%;background:linear-gradient(90deg,var(--accent,#C8102E),#FFB020);animation:fa-win {{ winDur }} linear forwards;"></div></div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ isFeedback }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;inset:0;display:grid;place-items:center;background:color-mix(in srgb,{{ fbColor }} 10%,transparent);">
+              <div style="text-align:center;animation:fa-pop .2s ease both;"><div style="font:800 clamp(20px,3vw,30px) 'Archivo';color:{{ fbColor }};">{{ fbTitle }}</div><div style="margin-top:4px;font:500 12px 'IBM Plex Mono';letter-spacing:.1em;color:#9FB0C5;">{{ fbSub }}</div></div>
+            </div>
+          </sc-if>
+        </div>
+
+        <!-- STEP button -->
+        <button onClick="{{ step }}" style="width:100%;max-width:420px;padding:22px;border-radius:16px;border:2px solid {{ stepBorder }};background:{{ stepBg }};color:{{ stepColor }};font:800 22px 'Archivo';letter-spacing:.04em;cursor:{{ stepCursor }};transition:transform .1s,background .15s,border-color .15s;box-shadow:{{ stepShadow }};" style-active="transform:scale(.97);">STEP</button>
+        <div style="font:500 10px 'IBM Plex Mono';letter-spacing:.16em;color:#4f627a;">HOLD = don&rsquo;t tap</div>
+      </div>
+    </main>
+  </sc-if>
+
+  <!-- RESULT -->
+  <sc-if value="{{ isResult }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:14px clamp(20px,4vw,58px) 66px;">
+      <div style="width:100%;max-width:640px;">
+        <div class="fa-in" style="text-align:center;font:600 11px 'IBM Plex Mono';letter-spacing:.4em;color:#7688a0;margin-bottom:10px;">STEP OR HOLD</div>
+        <h1 class="fa-in" style="margin:0 0 6px;text-align:center;font:800 clamp(28px,4.4vw,52px)/1.0 'Archivo';letter-spacing:-0.02em;color:{{ headColor }};animation-delay:.05s;">{{ resHeadline }}</h1>
+        <p class="fa-in" style="margin:0 auto 24px;max-width:520px;text-align:center;font:400 14.5px/1.55 'Archivo';color:#B4C2D4;animation-delay:.1s;">{{ resSub }}</p>
+
+        <div class="fa-in" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px;animation-delay:.14s;">
+          <div style="padding:18px 20px;border-radius:15px;border:1px solid color-mix(in srgb,#FF5A6E 30%,transparent);background:color-mix(in srgb,#FF5A6E 8%,transparent);"><div style="font:600 9px 'IBM Plex Mono';letter-spacing:.2em;color:#FF8A98;margin-bottom:8px;">STEPPED IN (GOT SPUN)</div><div style="font:800 26px 'Archivo';color:#EAF2FB;">{{ commissionLabel }}</div><p style="margin:6px 0 0;font:400 12px/1.45 'Archivo';color:#9FB0C5;">Stepped when he was set. That&rsquo;s the one that hurts.</p></div>
+          <div style="padding:18px 20px;border-radius:15px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.4);"><div style="font:600 9px 'IBM Plex Mono';letter-spacing:.2em;color:#61748c;margin-bottom:8px;">LET IT GO (BALL WAS THERE)</div><div style="font:800 26px 'Archivo';color:#EAF2FB;">{{ omissionLabel }}</div><p style="margin:6px 0 0;font:400 12px/1.45 'Archivo';color:#9FB0C5;">Held back when the touch was heavy.</p></div>
+        </div>
+
+        <div class="fa-in" style="padding:18px 20px;border-radius:15px;border:1px solid color-mix(in srgb,{{ leanColor }} 30%,transparent);background:color-mix(in srgb,{{ leanColor }} 8%,transparent);margin-bottom:24px;animation-delay:.2s;">
+          <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:{{ leanColor }};margin-bottom:8px;">A SOFT READ &mdash; NOT A VERDICT</div>
+          <p style="margin:0;font:400 13.5px/1.6 'Archivo';color:#C6D3E2;text-wrap:pretty;">{{ softRead }}</p>
+        </div>
+
+        <div class="fa-in" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:13px;animation-delay:.3s;">
+          <button onClick="{{ again }}" style="display:inline-flex;align-items:center;gap:10px;padding:16px 30px;border-radius:12px;border:0;background:var(--accent,#C8102E);color:#fff;font:700 15px 'Archivo';cursor:pointer;box-shadow:0 12px 38px color-mix(in srgb,var(--accent,#C8102E) 40%,transparent);" style-hover="transform:translateY(-2px);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>Play again</button>
+          <sc-if value="{{ showChrome }}" hint-placeholder-val="{{ true }}"><a href="Assessment.dc.html" style="display:inline-flex;align-items:center;gap:9px;padding:16px 24px;border-radius:12px;border:1px solid rgba(157,176,198,.28);background:rgba(12,18,30,.4);color:#C6D3E2;font:600 14px 'Archivo';" style-hover="border-color:color-mix(in srgb,var(--accent,#C8102E) 55%,transparent);color:#EAF2FB;">Back to the scan</a></sc-if>
+          <sc-if value="{{ isEmbedded }}" hint-placeholder-val="{{ false }}"><button onClick="{{ doneEmbedded }}" style="display:inline-flex;align-items:center;gap:9px;padding:16px 28px;border-radius:12px;border:1px solid color-mix(in srgb,var(--accent,#C8102E) 45%,transparent);background:color-mix(in srgb,var(--accent,#C8102E) 12%,transparent);color:#EAF2FB;font:700 14px 'Archivo';cursor:pointer;" style-hover="transform:translateY(-2px);">Continue the scan &rarr;</button></sc-if>
+        </div>
+        <div class="fa-in" style="margin-top:22px;text-align:center;font:500 10px 'IBM Plex Mono';letter-spacing:.14em;color:#4f627a;animation-delay:.36s;">{{ dataLine }}</div>
+      </div>
+    </main>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:960,&quot;height&quot;:720},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#C8102E&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#C8102E&quot;,&quot;#00E5FF&quot;,&quot;#E8B33A&quot;,&quot;#8B5CF6&quot;]},&quot;embedded&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;onDone&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;(counts:object, meta:object)=&gt;void&quot;}}">
+class Component extends DCLogic {
+  DIFF = { academy:{ label:'Academy', sub:'1.1s window', ms:1100 }, pro:{ label:'Pro', sub:'0.8s window', ms:800 }, elite:{ label:'Elite', sub:'0.6s window', ms:600 } };
+  N = 40;
+  GO_CUES = ['Heavy touch \u2014 it got away from him','Loose first touch on the turn','Under-hit control, ball spilled','Bobble \u2014 it\u2019s sitting up for you','Touch too far \u2014 he\u2019s reaching'];
+  NOGO_CUES = ['Clean touch, body already set','Killed it dead, shielding it','Set and strong \u2014 numbers around him','Comfortable, cushioned into space','Controlled \u2014 a teammate short'];
+
+  state = { view:'intro', diff:'pro', idx:0, phase:'set', responses:[], winKey:0, fbTitle:'', fbSub:'', fbColor:'#8CFFC4', stepped:false };
+
+  componentDidMount(){ try { this._soundOn=localStorage.getItem('fa_sound')!=='0'; } catch(e){ this._soundOn=true; } if(this.props.embedded) this._start(); else this.forceUpdate(); }
+  componentWillUnmount(){ this._clear(); }
+  _clear(){ (this._timers||[]).forEach(t=>clearTimeout(t)); this._timers=[]; }
+  _later(fn,ms){ (this._timers=this._timers||[]).push(setTimeout(fn,ms)); }
+
+  _audio(){ if(this._actx===undefined){ try{ this._actx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ this._actx=null; } } if(this._actx&&this._actx.state==='suspended') this._actx.resume(); return this._actx; }
+  _tone(f,d,t,g){ const c=this._audio(); if(!c||this._soundOn===false) return; const o=c.createOscillator(),a=c.createGain(); o.type=t||'sine'; o.frequency.value=f; o.connect(a); a.connect(c.destination); const n=c.currentTime; a.gain.setValueAtTime(0,n); a.gain.linearRampToValueAtTime(g||0.05,n+0.01); a.gain.exponentialRampToValueAtTime(0.0001,n+d); o.start(n); o.stop(n+d); }
+  _sfx(k){ if(this._soundOn===false) return; if(k==='good'){ this._tone(620,0.09,'triangle',0.05); this._later(()=>this._tone(880,0.1,'triangle',0.045),50);} else if(k==='bad') this._tone(190,0.22,'sawtooth',0.05); else if(k==='whistle') this._tone(880,0.16,'sine',0.05); else if(k==='complete'){ this._tone(500,0.14,'triangle',0.05); this._later(()=>this._tone(760,0.2,'triangle',0.05),120);} }
+  _toggleSound(){ const on=this._soundOn===false; this._soundOn=on; try{ localStorage.setItem('fa_sound', on?'1':'0'); }catch(e){} if(on){ this._audio(); this._tone(560,0.1,'triangle',0.05);} this.forceUpdate(); }
+
+  _buildTrials(){
+    const n=this.N, goCount=Math.round(n*0.7);
+    const arr=[];
+    for(let i=0;i<n;i++) arr.push({ go: i<goCount });
+    for(let i=arr.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]]; }
+    return arr.map((t,i)=>{
+      const cue = t.go ? this.GO_CUES[i%this.GO_CUES.length] : this.NOGO_CUES[i%this.NOGO_CUES.length];
+      const fx = 34+Math.random()*92, fy=30+Math.random()*40;
+      return { go:t.go, cue, foe:[fx,fy],
+        ball: t.go ? [fx+(Math.random()<0.5?-15:15), fy+10] : [fx+2, fy+9],
+        support: t.go ? [] : [[fx-17,fy-6],[fx+18,fy+4],[fx+1,fy-16]].slice(0, 2+(i%2)) };
+    });
+  }
+
+  _setDiff(d){ this._sfx('whistle'); this.setState({ diff:d }); }
+  _start(){ this._sfx('whistle'); this._trials=this._buildTrials(); this.setState({ view:'play', idx:0, responses:[] }, ()=>this._runTrial()); }
+
+  _runTrial(){ this._clear(); this.setState({ phase:'set', stepped:false }); const isi=650+Math.random()*550; this._later(()=>this._live(), isi); }
+  _live(){ this._liveStart=Date.now(); this.setState({ phase:'live', winKey:this.state.winKey+1 }); const ms=this.DIFF[this.state.diff].ms; this._later(()=>{ if(this.state.phase==='live') this._resolve(false); }, ms); }
+  _step(){ if(this.state.phase!=='live' || this.state.stepped) return; this.setState({ stepped:true }); this._resolve(true); }
+
+  _resolve(didStep){
+    this._clear();
+    const tr=this._trials[this.state.idx];
+    let outcome;
+    if(tr.go && didStep) outcome='hit';
+    else if(tr.go && !didStep) outcome='omission';
+    else if(!tr.go && didStep) outcome='commission';
+    else outcome='correctHold';
+    const good = outcome==='hit'||outcome==='correctHold';
+    this._sfx(good?'good':'bad');
+    const responses=this.state.responses.concat([{ go:tr.go, didStep, outcome, rt: didStep?Date.now()-this._liveStart:null }]);
+    const fb = outcome==='hit'?{t:'WON IT',s:'good \u2014 the ball was there',c:'#8CFFC4'}
+      : outcome==='correctHold'?{t:'HELD',s:'good discipline \u2014 he was set',c:'#8CFFC4'}
+      : outcome==='commission'?{t:'SPUN',s:'he was set \u2014 you got done',c:'#FF8A98'}
+      : {t:'TOO LATE',s:'that touch was there \u2014 step',c:'#FF8A98'};
+    const next=this.state.idx+1;
+    this.setState({ phase:'feedback', responses, fbTitle:fb.t, fbSub:fb.s, fbColor:fb.c });
+    this._later(()=>{ if(next>=this._trials.length) this._finish(responses); else this.setState({ idx:next }, ()=>this._runTrial()); }, 600);
+  }
+
+  _finish(responses){
+    this._sfx('complete');
+    const nogo=responses.filter(r=>!r.go).length||1;
+    const go=responses.filter(r=>r.go).length||1;
+    const commission=responses.filter(r=>r.outcome==='commission').length;
+    const omission=responses.filter(r=>r.outcome==='omission').length;
+    const hitRts=responses.filter(r=>r.outcome==='hit'&&r.rt!=null).map(r=>r.rt);
+    const goRT=hitRts.length?Math.round(hitRts.reduce((s,v)=>s+v,0)/hitRts.length):null;
+    // post-error slowing: mean goRT on hits immediately after a commission vs overall
+    let postErr=null; { const after=[]; for(let i=1;i<responses.length;i++){ if(responses[i-1].outcome==='commission'&&responses[i].outcome==='hit'&&responses[i].rt!=null) after.push(responses[i].rt); } if(after.length&&goRT!=null) postErr=Math.round(after.reduce((s,v)=>s+v,0)/after.length-goRT); }
+    this._res={ commission, omission, nogo, go, commissionRate:commission/nogo, omissionRate:omission/go, goRT, postErr };
+    const out={ version:'cb-stephold-1.0', task:'step_or_hold', completedAt:new Date().toISOString(), weight:0,
+      difficulty:this.state.diff, trials:responses.length, commissionErrors:commission, omissionErrors:omission,
+      commissionRate:+(commission/nogo).toFixed(3), omissionRate:+(omission/go).toFixed(3), goRT, postErrorSlowing:postErr,
+      shape:{ commissionRate:+(commission/nogo).toFixed(3) } };
+    try{ localStorage.setItem('fa_cb_stephold', JSON.stringify(out)); }catch(e){}
+    if(this.props.embedded && typeof this.props.onDone==='function'){ try{ this.props.onDone({ commission, omission }, out); }catch(e){} }
+    this.setState({ view:'result' });
+  }
+  _again(){ this.setState({ view:this.props.embedded?'play':'intro' }, ()=>{ if(this.props.embedded) this._start(); }); }
+  _doneEmbedded(){ if(typeof this.props.onDone==='function'){ try{ this.props.onDone(null,{done:true}); }catch(e){} } }
+
+  renderVals(){
+    const accent=this.props.accent ?? '#C8102E';
+    const V=this.state.view; const embedded=!!this.props.embedded; const soundOn=this._soundOn!==false;
+    const base={
+      accent, isEmbedded:embedded, showChrome:!embedded,
+      isIntro:V==='intro', isPlay:V==='play', isResult:V==='result',
+      soundOn, soundOff:!soundOn, soundColor:soundOn?accent:'#61748c', soundTitle:soundOn?'Sound on':'Sound off',
+      toggleSound:()=>this._toggleSound(), begin:()=>this._start(), again:()=>this._again(), doneEmbedded:()=>this._doneEmbedded(), step:()=>this._step(),
+      progPct: V==='result'?'100%':(V==='play'?Math.round(this.state.idx/this.N*100)+'%':'0%'),
+      progLabel: V==='play'?('R '+(this.state.idx+1)+'/'+this.N):(V==='result'?'DONE':'READY'),
+    };
+    base.diffs=['academy','pro','elite'].map(k=>{ const d=this.DIFF[k]; const sel=this.state.diff===k; return { label:d.label, sub:d.sub, onPick:()=>this._setDiff(k), border:sel?'color-mix(in srgb,'+accent+' 70%,transparent)':'rgba(120,140,166,.22)', bg:sel?'color-mix(in srgb,'+accent+' 16%,transparent)':'rgba(10,16,28,.5)', color:sel?'#F2F8FE':'#B4C2D4', subColor:sel?accent:'#61748c' }; });
+
+    const ph=this.state.phase;
+    base.isSet=V==='play'&&ph==='set'; base.isLive=V==='play'&&ph==='live'; base.isFeedback=V==='play'&&ph==='feedback';
+    base.callNum=this.state.idx+1;
+    const done=this.state.responses.length; const goodN=this.state.responses.filter(r=>r.outcome==='hit'||r.outcome==='correctHold').length;
+    base.tallyLabel = done?goodN+'/'+done+' right':'\u2014';
+    base.winKey='w'+this.state.winKey; base.winDur=this.DIFF[this.state.diff].ms+'ms';
+    base.fbTitle=this.state.fbTitle; base.fbSub=this.state.fbSub; base.fbColor=this.state.fbColor;
+    base.sceneBorder = ph==='feedback' ? ('color-mix(in srgb,'+this.state.fbColor+' 45%,transparent)') : 'rgba(120,140,166,.2)';
+    if(V==='play' && this._trials && ph==='live'){
+      const tr=this._trials[this.state.idx];
+      base.foe={ left:tr.foe[0]+'%', top:tr.foe[1]+'%' };
+      base.ball={ left:tr.ball[0]+'%', top:tr.ball[1]+'%' };
+      base.support=tr.support.map(s=>({ left:s[0]+'%', top:s[1]+'%' }));
+      base.cue=tr.cue; base.showSet=!tr.go;
+    } else { base.foe={left:'50%',top:'50%'}; base.ball={left:'50%',top:'50%'}; base.support=[]; base.cue=''; base.showSet=false; }
+    const live=ph==='live';
+    base.stepCursor= live?'pointer':'not-allowed';
+    base.stepBg = live?'linear-gradient(180deg,color-mix(in srgb,#3DD68C 26%,#0d1c2e),#0d1c2e)':'rgba(10,16,28,.5)';
+    base.stepBorder = live?'color-mix(in srgb,#3DD68C 60%,transparent)':'rgba(120,140,166,.22)';
+    base.stepColor = live?'#EAFFF4':'#4f627a';
+    base.stepShadow = live?'0 10px 30px color-mix(in srgb,#3DD68C 30%,transparent)':'none';
+
+    Object.assign(base,{ resHeadline:'', headColor:accent, resSub:'', commissionLabel:'', omissionLabel:'', leanColor:accent, softRead:'', dataLine:'' });
+    const r=this._res;
+    if(V==='result' && r){
+      base.commissionLabel=r.commission+' of '+r.nogo;
+      base.omissionLabel=r.omission+' of '+r.go;
+      const badSession = r.commissionRate>0.5 && r.omissionRate>0.35;
+      const hiComm=r.commissionRate>=0.4, loComm=r.commissionRate<=0.15, loOmit=r.omissionRate<=0.2;
+      if(badSession){ base.resHeadline='Noisy session'; base.headColor='#FFB020'; base.leanColor='#FFB020';
+        base.resSub='You both stepped in and let things go \u2014 that\u2019s a scattered read, not a style. Run it again fresh.';
+        base.softRead='When stepping-in and letting-go are both high, it isn\u2019t telling us who you are, only that this rep was noisy. Nothing here touches your archetype.'; }
+      else if(hiComm){ base.resHeadline='You go and win it'; base.headColor='#C8102E'; base.leanColor='#C8102E';
+        base.resSub='You stepped in even when he was set. Front-foot, aggressive \u2014 you back yourself to get there first.';
+        base.softRead='A high step-in rate reads like a Colossus \u2014 the defender who trusts his body and goes to win it, and occasionally gets spun for it. Whether that\u2019s dominance or a gap depends on the cover behind you. A hint, logged separately from your scan.'; }
+      else if(loComm&&loOmit){ base.resHeadline='You read it, then step'; base.headColor='#E8B33A'; base.leanColor='#E8B33A';
+        base.resSub='You stepped on the loose ones and held on the set ones. Patient, hard to bait, rarely caught out.';
+        base.softRead='Low step-ins with few missed chances reads like a Sentinel \u2014 the reader who waits for the moment that\u2019s truly on rather than diving in. A hint, not a verdict.'; }
+      else { base.resHeadline='Balanced read'; base.headColor=accent; base.leanColor=accent;
+        base.resSub='A steady mix \u2014 you pick your moments without either diving in or hanging back.';
+        base.softRead='Nothing extreme in either direction this time. Play it a few more times and the pattern \u2014 stepper or reader \u2014 will sharpen.'; }
+      base.dataLine='INSTRUMENT · COMMISSION-SCORED · WEIGHT 0 · CB STEP-HOLD v1.0';
+    }
+    return base;
+  }
+}
+</script>
+</body>
+</html>

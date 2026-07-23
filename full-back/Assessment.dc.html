@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:#04060c;}
+  a{color:var(--accent,#FF6B1A);text-decoration:none;}
+  a:hover{opacity:.92;}
+  @keyframes fa-blink{0%,100%{opacity:1;}50%{opacity:.25;}}
+  @keyframes fa-rise{0%{transform:translateY(16px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-rise-sm{0%{transform:translateY(10px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-spin{to{transform:rotate(360deg);}}
+  @keyframes fa-spin-r{to{transform:rotate(-360deg);}}
+  @keyframes fa-pulse{0%,100%{transform:scale(1);opacity:.5;}50%{transform:scale(1.14);opacity:1;}}
+  @keyframes fa-indet{0%{left:-42%;}100%{left:100%;}}
+  @keyframes fa-bar{from{transform:scaleX(0);}to{transform:scaleX(1);}}
+  .fa-in{opacity:0;animation:fa-rise .7s cubic-bezier(.2,.7,.2,1) forwards;}
+  .fa-in-sm{opacity:0;animation:fa-rise-sm .55s cubic-bezier(.2,.7,.2,1) forwards;}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;}.fa-in,.fa-in-sm{opacity:1!important;transform:none!important;}}
+</style>
+</helmet>
+<div data-screen-label="Full Back Assessment" style="position:relative;display:flex;flex-direction:column;min-height:100dvh;width:100%;overflow:hidden;background:radial-gradient(120% 90% at 50% 6%,#0e1a2d 0%,#080e1a 44%,#04060c 100%);color:#EAF2FB;font-family:'Archivo',system-ui,sans-serif;--accent:{{ accent }};">
+
+  <div style="position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.4;background:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0px,rgba(255,255,255,.02) 1px,transparent 1px,transparent 4px);"></div>
+  <div style="position:absolute;top:0;bottom:0;left:clamp(16px,3vw,44px);width:1px;background:rgba(230,240,251,.16);z-index:1;pointer-events:none;"></div>
+  <div style="position:absolute;top:20px;left:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#FF6B1A) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#FF6B1A) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;top:20px;right:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#FF6B1A) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#FF6B1A) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;left:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#FF6B1A) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#FF6B1A) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;right:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#FF6B1A) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#FF6B1A) 50%,transparent);z-index:4;pointer-events:none;"></div>
+
+  <!-- ============ TOP BAR ============ -->
+  <header style="position:relative;z-index:6;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px clamp(26px,3.4vw,58px);">
+    <div style="min-width:120px;display:flex;">
+      <sc-if value="{{ showBack }}" hint-placeholder-val="{{ false }}">
+        <button onClick="{{ back }}" style="display:inline-flex;align-items:center;gap:8px;background:none;border:0;cursor:pointer;color:#8EA1B8;font:600 12.5px 'Archivo';padding:0;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M15 5l-7 7 7 7"/></svg>Back
+        </button>
+      </sc-if>
+    </div>
+    <div style="display:flex;align-items:center;gap:11px;">
+      <svg width="22" height="22" viewBox="0 0 32 32" fill="none"><rect x="6" y="4" width="20" height="24" rx="3" style="stroke:var(--accent,#FF6B1A);stroke-width:1.5;fill:color-mix(in srgb,var(--accent,#FF6B1A) 12%,transparent);"/><path d="M16 4v24" style="stroke:var(--accent,#FF6B1A);stroke-width:1.4;opacity:.5;"/><circle cx="16" cy="16" r="3.4" style="stroke:var(--accent,#FF6B1A);stroke-width:1.5;fill:none;"/></svg>
+      <span style="font:800 13px 'Archivo';letter-spacing:.05em;">FULL BACK <span style="color:var(--accent,#FF6B1A);">SCAN</span></span>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;min-width:120px;justify-content:flex-end;">
+      <button onClick="{{ toggleSound }}" title="{{ soundTitle }}" style="display:grid;place-items:center;width:28px;height:28px;border-radius:8px;border:1px solid rgba(120,140,166,.24);background:rgba(10,16,28,.5);cursor:pointer;color:{{ soundColor }};transition:color .16s ease,border-color .16s ease;" style-hover="border-color:color-mix(in srgb,var(--accent,#FF6B1A) 55%,transparent);">
+        <sc-if value="{{ soundOn }}" hint-placeholder-val="{{ true }}">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>
+        </sc-if>
+        <sc-if value="{{ soundOff }}" hint-placeholder-val="{{ false }}">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M22 9l-6 6M16 9l6 6"/></svg>
+        </sc-if>
+      </button>
+      <div style="width:88px;height:4px;border-radius:99px;background:rgba(120,140,166,.18);overflow:hidden;">
+        <div style="height:100%;border-radius:99px;background:var(--accent,#FF6B1A);box-shadow:0 0 10px var(--accent,#FF6B1A);width:{{ scanPct }};transition:width .5s cubic-bezier(.3,.8,.3,1);"></div>
+      </div>
+      <span style="font:600 10px 'IBM Plex Mono';letter-spacing:.14em;color:color-mix(in srgb,var(--accent,#FF6B1A) 80%,#fff);white-space:nowrap;">{{ scanPct }}</span>
+    </div>
+  </header>
+
+  <!-- ============ INTRO ============ -->
+  <sc-if value="{{ isIntro }}" hint-placeholder-val="{{ true }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;text-align:center;padding:20px clamp(26px,4vw,58px) 60px;">
+      <div class="fa-in" style="display:inline-flex;align-items:center;gap:10px;margin-bottom:20px;font:600 12px 'IBM Plex Mono';letter-spacing:.4em;color:var(--accent,#FF6B1A);">
+        <span style="width:6px;height:6px;border-radius:50%;background:var(--accent,#FF6B1A);box-shadow:0 0 8px var(--accent,#FF6B1A);animation:fa-blink 1.6s ease-in-out infinite;"></span>THE CORRIDOR SCAN
+      </div>
+      <h1 class="fa-in" style="margin:0 0 16px;font:800 clamp(38px,5.6vw,76px)/0.98 'Archivo';letter-spacing:-0.03em;text-wrap:balance;max-width:880px;animation-delay:.06s;">Which full back are you?</h1>
+      <p class="fa-in" style="margin:0 0 38px;max-width:600px;font:400 clamp(15px,1.3vw,18px)/1.6 'Archivo';color:#9FB0C5;text-wrap:pretty;animation-delay:.12s;">Twelve questions. Two minutes. No right answers &mdash; only the honest one. We map your instincts up and down the flank and match the shape to your archetype: the Warrior, the Winger, the Sentinel, or the Architect.</p>
+      <button onClick="{{ begin }}" class="fa-in" style="display:inline-flex;align-items:center;gap:12px;padding:18px 44px;border-radius:13px;border:0;background:var(--accent,#FF6B1A);color:#04121a;font:700 16px 'Archivo';cursor:pointer;box-shadow:0 14px 46px color-mix(in srgb,var(--accent,#FF6B1A) 42%,transparent);transition:transform .16s ease,box-shadow .16s ease;animation-delay:.18s;" style-hover="transform:translateY(-2px);">
+        Start the scan
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12h13M12 6l6 6-6 6"/></svg>
+      </button>
+      <div class="fa-in" style="margin-top:20px;font:500 10px 'IBM Plex Mono';letter-spacing:.14em;color:#61748C;animation-delay:.3s;">~2 MINUTES &middot; 12 QUESTIONS &middot; 3 CHAPTERS</div>
+    </main>
+  </sc-if>
+
+  <!-- ============ SYSTEM CONFIRM ============ -->
+  <sc-if value="{{ isConfirm }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;text-align:center;padding:20px clamp(26px,4vw,58px) 60px;">
+      <div class="fa-in" style="font:600 11px 'IBM Plex Mono';letter-spacing:.42em;color:var(--accent,#FF6B1A);margin-bottom:14px;">CONFIRM YOUR SYSTEM</div>
+      <h1 class="fa-in" style="margin:0 0 12px;font:800 clamp(30px,4.4vw,54px)/1.02 'Archivo';letter-spacing:-0.02em;text-wrap:balance;animation-delay:.05s;">How do you line up?</h1>
+      <p class="fa-in" style="margin:0 0 34px;max-width:500px;font:400 clamp(14px,1.2vw,17px)/1.6 'Archivo';color:#9FB0C5;text-wrap:pretty;animation-delay:.1s;">Full back in a back four, or wing back in a back three &mdash; same archetypes, different job. It won&rsquo;t change your result; it just frames the read.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:13px;justify-content:center;">
+        <sc-for list="{{ systems }}" as="sy" hint-placeholder-count="3">
+          <button onClick="{{ sy.onPick }}" class="fa-in-sm" style="min-width:158px;padding:20px 26px;border-radius:15px;border:1px solid rgba(120,140,166,.22);background:rgba(10,16,28,.5);color:#EAF2FB;font:700 16px 'Archivo';cursor:pointer;transition:border-color .16s ease,transform .16s ease,background .16s ease;animation-delay:{{ sy.delay }};" style-hover="border-color:color-mix(in srgb,var(--accent,#FF6B1A) 58%,transparent);background:rgba(14,22,36,.8);transform:translateY(-2px);">
+            <div style="font-size:24px;line-height:1;margin-bottom:8px;font-family:'IBM Plex Mono';color:var(--accent,#FF6B1A);">{{ sy.glyph }}</div>
+            {{ sy.label }}
+            <div style="margin-top:5px;font:500 11px 'Archivo';color:#8EA1B8;">{{ sy.sub }}</div>
+          </button>
+        </sc-for>
+      </div>
+    </main>
+  </sc-if>
+
+  <!-- ============ CHAPTER DIVIDER ============ -->
+  <sc-if value="{{ isChapter }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;text-align:center;padding:20px clamp(26px,4vw,58px) 60px;">
+      <div class="fa-in" style="font:800 clamp(90px,16vw,180px)/0.9 'Archivo';letter-spacing:-0.04em;color:color-mix(in srgb,var(--accent,#FF6B1A) 16%,transparent);text-shadow:0 0 60px color-mix(in srgb,var(--accent,#FF6B1A) 18%,transparent);">{{ chNum }}</div>
+      <div class="fa-in" style="margin-top:6px;font:600 11px 'IBM Plex Mono';letter-spacing:.42em;color:var(--accent,#FF6B1A);animation-delay:.06s;">CHAPTER {{ chNum }}</div>
+      <h1 class="fa-in" style="margin:10px 0 14px;font:800 clamp(32px,4.6vw,58px)/1.0 'Archivo';letter-spacing:-0.02em;text-wrap:balance;animation-delay:.1s;">{{ chTitle }}</h1>
+      <p class="fa-in" style="margin:0 0 36px;max-width:500px;font:400 clamp(14px,1.2vw,17px)/1.6 'Archivo';color:#9FB0C5;text-wrap:pretty;animation-delay:.16s;">{{ chSub }}</p>
+      <button onClick="{{ chapterGo }}" class="fa-in" style="display:inline-flex;align-items:center;gap:11px;padding:16px 36px;border-radius:12px;border:0;background:var(--accent,#FF6B1A);color:#04121a;font:700 15px 'Archivo';cursor:pointer;box-shadow:0 14px 40px color-mix(in srgb,var(--accent,#FF6B1A) 40%,transparent);transition:transform .16s ease;animation-delay:.22s;" style-hover="transform:translateY(-2px);">
+        {{ chapterCta }}
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" style="stroke:#04121a;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12h13M12 6l6 6-6 6"/></svg>
+      </button>
+    </main>
+  </sc-if>
+
+  <!-- ============ QUESTION ============ -->
+  <sc-if value="{{ isQuestion }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:12px clamp(26px,4vw,58px) 54px;">
+      <div style="width:100%;max-width:680px;">
+        <div class="fa-in-sm" style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+          <span style="font:600 10px 'IBM Plex Mono';letter-spacing:.24em;color:var(--accent,#FF6B1A);">{{ chapterKicker }}</span>
+          <span style="flex:1;height:1px;background:rgba(120,140,166,.18);"></span>
+          <span style="font:600 10px 'IBM Plex Mono';letter-spacing:.16em;color:#7688A0;">{{ qNumLabel }}</span>
+        </div>
+        <h1 class="fa-in-sm" style="margin:0 0 26px;font:800 clamp(23px,3vw,37px)/1.16 'Archivo';letter-spacing:-0.02em;text-wrap:pretty;animation-delay:.05s;">{{ qPrompt }}</h1>
+        <div style="display:flex;flex-direction:column;gap:11px;">
+          <sc-for list="{{ options }}" as="opt" hint-placeholder-count="4">
+            <button onClick="{{ opt.onPick }}" class="fa-in-sm" style="display:flex;align-items:center;gap:15px;width:100%;text-align:left;padding:17px 19px;border-radius:14px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);color:#EAF2FB;font:600 15px/1.4 'Archivo';cursor:pointer;transition:border-color .16s ease,background .16s ease,transform .16s ease;animation-delay:{{ opt.delay }};" style-hover="border-color:color-mix(in srgb,var(--accent,#FF6B1A) 58%,transparent);background:rgba(14,22,36,.8);transform:translateY(-2px);">
+              <span style="flex:0 0 auto;width:30px;height:30px;border-radius:8px;display:grid;place-items:center;border:1px solid rgba(120,140,166,.28);font:700 12px 'IBM Plex Mono';color:#9FB0C5;">{{ opt.letter }}</span>
+              <span style="flex:1;">{{ opt.text }}</span>
+            </button>
+          </sc-for>
+        </div>
+      </div>
+    </main>
+  </sc-if>
+
+  <!-- ============ ANALYSING ============ -->
+  <sc-if value="{{ isAnalysing }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;text-align:center;padding:20px clamp(26px,4vw,58px) 70px;">
+      <div style="position:relative;width:168px;height:168px;margin-bottom:40px;">
+        <div style="position:absolute;inset:0;border-radius:50%;border:1.5px dashed color-mix(in srgb,var(--accent,#FF6B1A) 55%,transparent);animation:fa-spin 9s linear infinite;"></div>
+        <div style="position:absolute;inset:22px;border-radius:50%;border:1px solid color-mix(in srgb,var(--accent,#FF6B1A) 30%,transparent);animation:fa-spin-r 14s linear infinite;"></div>
+        <div style="position:absolute;inset:46px;border-radius:50%;border:1.5px solid color-mix(in srgb,var(--accent,#FF6B1A) 50%,transparent);background:color-mix(in srgb,var(--accent,#FF6B1A) 8%,transparent);animation:fa-pulse 1.5s ease-in-out infinite;"></div>
+        <div style="position:absolute;top:50%;left:50%;width:14px;height:14px;transform:translate(-50%,-50%);border-radius:50%;background:var(--accent,#FF6B1A);box-shadow:0 0 24px var(--accent,#FF6B1A);animation:fa-pulse 1.5s ease-in-out infinite;"></div>
+      </div>
+      <div style="font:600 11px 'IBM Plex Mono';letter-spacing:.42em;color:#7E90A8;margin-bottom:16px;">FOUR ARCHETYPES &middot; ONE SHAPE</div>
+      <h2 style="margin:0;font:800 clamp(26px,3.6vw,44px)/1.1 'Archivo';letter-spacing:-0.02em;color:#F2F8FE;">{{ antLabel }}<span style="color:var(--accent,#FF6B1A);">&hellip;</span></h2>
+      <div style="position:relative;margin-top:34px;width:min(320px,74vw);height:3px;border-radius:99px;background:rgba(120,140,166,.16);overflow:hidden;">
+        <div style="position:absolute;top:0;width:42%;height:100%;border-radius:99px;background:linear-gradient(90deg,transparent,var(--accent,#FF6B1A),transparent);animation:fa-indet 1.1s cubic-bezier(.4,0,.6,1) infinite;"></div>
+      </div>
+    </main>
+  </sc-if>
+
+  <!-- ============ REVEAL ============ -->
+  <sc-if value="{{ isReveal }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:14px clamp(20px,4vw,58px) 72px;">
+      <div style="width:100%;max-width:720px;">
+
+        <!-- hero -->
+        <div class="fa-in" style="text-align:center;margin-bottom:8px;">
+          <div style="font:600 11px 'IBM Plex Mono';letter-spacing:.42em;color:#7E90A8;margin-bottom:16px;">{{ revKicker }}</div>
+          <div style="display:flex;justify-content:center;margin-bottom:12px;filter:drop-shadow(0 8px 30px {{ archGlow }});">{{ archEmblemEl }}</div>
+          <h1 style="margin:0;font:900 clamp(40px,6.4vw,84px)/0.95 'Archivo';letter-spacing:-0.035em;color:{{ archColor }};text-shadow:0 0 48px {{ archGlow }};">{{ archName }}</h1>
+          <div style="margin-top:8px;font:600 clamp(13px,1.3vw,16px) 'IBM Plex Mono';letter-spacing:.04em;color:#8EA1B8;">{{ archTagline }}</div>
+          <div style="margin-top:10px;font:600 clamp(16px,1.7vw,22px) 'Archivo';letter-spacing:.01em;color:#C9D6E2;">{{ archIdentity }}</div>
+        </div>
+
+        <!-- tier + band -->
+        <div class="fa-in" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px;margin:16px 0 8px;animation-delay:.08s;">
+          <span style="display:inline-flex;align-items:center;gap:7px;padding:7px 14px;border-radius:999px;border:1px solid color-mix(in srgb,{{ archColor }} 34%,transparent);background:color-mix(in srgb,{{ archColor }} 10%,transparent);font:600 10px 'IBM Plex Mono';letter-spacing:.14em;color:{{ archColor }};"><span style="width:6px;height:6px;border-radius:50%;background:{{ archColor }};box-shadow:0 0 8px {{ archColor }};"></span>{{ bandLabel }}</span>
+        </div>
+        <div class="fa-in" style="display:flex;flex-direction:column;align-items:center;gap:5px;margin-bottom:22px;animation-delay:.1s;">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span style="width:9px;height:9px;border-radius:50%;background:{{ archColor }};box-shadow:0 0 8px {{ archGlow }};"></span>
+            <span style="width:9px;height:9px;border-radius:50%;background:rgba(120,140,166,.28);"></span>
+            <span style="width:9px;height:9px;border-radius:50%;background:rgba(120,140,166,.28);"></span>
+            <span style="margin-left:6px;font:600 10px 'IBM Plex Mono';letter-spacing:.22em;color:#9FB0C5;">DECLARED</span>
+          </div>
+          <span style="font:400 11.5px 'Archivo';color:#7688A0;">Based on how you see your game. Add field tests to demonstrate it.</span>
+        </div>
+
+        <!-- hybrid block -->
+        <sc-if value="{{ isHybrid }}" hint-placeholder-val="{{ false }}">
+          <div class="fa-in" style="margin:0 auto 24px;max-width:620px;padding:18px 20px;border-radius:16px;border:1px solid color-mix(in srgb,{{ secondaryColor }} 34%,transparent);background:color-mix(in srgb,{{ secondaryColor }} 8%,transparent);animation-delay:.12s;">
+            <div style="display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:12px;">
+              <div style="display:flex;flex-direction:column;align-items:center;gap:5px;">{{ archEmblemSmall }}<span style="font:700 12px 'Archivo';color:{{ archColor }};">{{ primaryShort }}</span></div>
+              <span style="font:800 22px 'Archivo';color:#7688A0;">&times;</span>
+              <div style="display:flex;flex-direction:column;align-items:center;gap:5px;">{{ secondaryEmblemEl }}<span style="font:700 12px 'Archivo';color:{{ secondaryColor }};">{{ secondaryShort }}</span></div>
+            </div>
+            <div style="text-align:center;font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:{{ secondaryColor }};margin-bottom:7px;">{{ primaryShort }}&ndash;{{ secondaryShort }} HYBRID</div>
+            <p style="margin:0;text-align:center;font:500 14.5px/1.55 'Archivo';color:#C6D3E2;text-wrap:pretty;">{{ shadeLine }}</p>
+          </div>
+        </sc-if>
+
+        <!-- flat block -->
+        <sc-if value="{{ isFlat }}" hint-placeholder-val="{{ false }}">
+          <div class="fa-in" style="margin:0 auto 24px;max-width:620px;padding:18px 20px;border-radius:16px;border:1px solid rgba(120,140,166,.28);background:rgba(10,16,28,.5);animation-delay:.12s;">
+            <div style="text-align:center;font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:#9FB0C5;margin-bottom:7px;">STILL FORMING</div>
+            <p style="margin:0;text-align:center;font:500 14.5px/1.55 'Archivo';color:#C6D3E2;text-wrap:pretty;">You&rsquo;re not settled into one identity yet &mdash; that&rsquo;s normal, and it&rsquo;s an advantage at your age. Your top two are close, so we&rsquo;re showing both.</p>
+          </div>
+        </sc-if>
+
+        <!-- spread -->
+        <div class="fa-in" style="width:100%;padding:22px 24px;border-radius:18px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.55);margin-bottom:24px;animation-delay:.14s;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+            <span style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:#7688A0;">YOUR SHAPE &middot; 4 ARCHETYPES</span>
+            <span style="font:600 9px 'IBM Plex Mono';letter-spacing:.14em;color:#7688A0;">{{ spreadNote }}</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <sc-for list="{{ spreadBars }}" as="s" hint-placeholder-count="4">
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <div style="display:flex;align-items:baseline;justify-content:space-between;">
+                  <span style="font:700 12.5px 'Archivo';color:{{ s.labelColor }};">{{ s.emoji }} {{ s.label }}</span>
+                  <span style="font:800 13px 'IBM Plex Mono';color:{{ s.numColor }};">{{ s.pct }}</span>
+                </div>
+                <div style="height:9px;border-radius:99px;background:rgba(120,140,166,.14);overflow:hidden;"><div style="height:100%;border-radius:99px;transform-origin:left;animation:fa-bar .8s cubic-bezier(.3,.8,.3,1) both;width:{{ s.barW }};{{ s.barLook }}"></div></div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <!-- reflect-back -->
+        <div class="fa-in" style="margin-bottom:24px;padding-left:18px;border-left:3px solid {{ archColor }};animation-delay:.2s;">
+          <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:#7688A0;margin-bottom:8px;">THE MIRROR</div>
+          <p style="margin:0;font:500 clamp(17px,2vw,22px)/1.45 'Archivo';color:#EAF2FB;text-wrap:pretty;">&ldquo;{{ archReflect }}&rdquo;</p>
+        </div>
+
+        <!-- full sections -->
+        <div class="fa-in" style="animation-delay:.24s;">
+          <p style="margin:0 0 24px;font:400 clamp(15px,1.4vw,17px)/1.66 'Archivo';color:#AEBED2;text-wrap:pretty;">{{ archIsYou }}</p>
+
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-bottom:24px;">
+            <div style="padding:18px 20px;border-radius:15px;border:1px solid rgba(120,140,166,.18);background:rgba(10,16,28,.4);">
+              <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:#7688A0;margin-bottom:12px;">SIGNATURE STRENGTHS</div>
+              <div style="display:flex;flex-wrap:wrap;gap:8px;">
+                <sc-for list="{{ strengths }}" as="st" hint-placeholder-count="3">
+                  <span style="padding:7px 12px;border-radius:9px;border:1px solid color-mix(in srgb,{{ archColor }} 24%,transparent);background:color-mix(in srgb,{{ archColor }} 8%,transparent);font:600 12px 'Archivo';color:#DCE8F5;">{{ st.text }}</span>
+                </sc-for>
+              </div>
+            </div>
+            <div style="padding:18px 20px;border-radius:15px;border:1px solid rgba(120,140,166,.18);background:rgba(10,16,28,.4);">
+              <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:#7688A0;margin-bottom:12px;">YOU PLAY LIKE</div>
+              <div style="font:600 14px/1.7 'Archivo';color:#DCE8F5;">{{ archPlayLike }}</div>
+            </div>
+          </div>
+
+          <div style="padding:20px 22px;border-radius:15px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.4);margin-bottom:16px;">
+            <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:{{ archColor }};margin-bottom:10px;">YOUR EDGE &mdash; THE ONE TO ATTACK</div>
+            <p style="margin:0;font:400 14.5px/1.62 'Archivo';color:#C6D3E2;text-wrap:pretty;">{{ archEdge }}</p>
+          </div>
+        </div>
+
+        <!-- first step (checkable, in-session) -->
+        <div class="fa-in" style="padding:20px 22px;border-radius:15px;border:1px solid color-mix(in srgb,{{ archColor }} 30%,transparent);background:color-mix(in srgb,{{ archColor }} 9%,transparent);margin-bottom:26px;animation-delay:.3s;">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px;">
+            <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:{{ archColor }};">FIRST STEP THIS WEEK</div>
+            <span style="font:600 9px 'IBM Plex Mono';letter-spacing:.14em;color:#7688A0;">{{ signatureLabel }}</span>
+          </div>
+          <p style="margin:0 0 16px;font:500 15px/1.6 'Archivo';color:#EAF2FB;text-wrap:pretty;">{{ archFirstStep }}</p>
+          <button onClick="{{ toggleFirstStep }}" style="display:inline-flex;align-items:center;gap:10px;padding:12px 20px;border-radius:11px;cursor:pointer;font:700 13px 'Archivo';transition:all .16s ease;border:1px solid {{ firstStepBorder }};background:{{ firstStepBg }};color:{{ firstStepFg }};">
+            {{ firstStepIcon }}{{ firstStepLabel }}
+          </button>
+        </div>
+
+        <!-- share + actions -->
+        <div class="fa-in" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:13px;animation-delay:.36s;">
+          <button onClick="{{ copyShare }}" style="display:inline-flex;align-items:center;gap:11px;padding:16px 30px;border-radius:12px;border:0;background:{{ archColor }};color:#04060c;font:700 15px 'Archivo';cursor:pointer;box-shadow:0 12px 38px {{ archGlow }};transition:transform .16s ease;" style-hover="transform:translateY(-2px);">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:#04060c;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>
+            {{ shareLabel }}
+          </button>
+          <button onClick="{{ retake }}" style="display:inline-flex;align-items:center;gap:9px;padding:16px 24px;border-radius:12px;border:1px solid rgba(157,176,198,.28);background:rgba(12,18,30,.4);color:#C6D3E2;font:600 14px 'Archivo';cursor:pointer;transition:border-color .16s ease,color .16s ease;" style-hover="border-color:color-mix(in srgb,var(--accent,#FF6B1A) 55%,transparent);color:#EAF2FB;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
+            Retake
+          </button>
+        </div>
+        <div class="fa-in" style="margin-top:22px;text-align:center;font:500 10px 'IBM Plex Mono';letter-spacing:.14em;color:#61748C;animation-delay:.42s;">{{ dataLine }}</div>
+        <p class="fa-in" style="margin:14px auto 0;max-width:520px;text-align:center;font:400 11.5px/1.55 'Archivo';color:#7688A0;animation-delay:.46s;">This is how you <em>say</em> you play. Log your matches later and we&rsquo;ll check it against what your game actually <em>shows</em>.</p>
+
+      </div>
+    </main>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1200,&quot;height&quot;:840},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#FF6B1A&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#FF6B1A&quot;,&quot;#E5197F&quot;,&quot;#5B9BD5&quot;,&quot;#22D3EE&quot;]},&quot;motion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  // ---------- model (Full Back / Wing Back \u2014 Module 3 handoff) ----------
+  ORDER = ['warrior','winger','sentinel','architect'];
+  // elite share midpoints \u2014 used only for tie-break (rarer wins)
+  DIST = { warrior:32, winger:27, sentinel:22, architect:17 };
+
+  ARCH = {
+    warrior:{ name:'The Warrior', tagline:'The Complete Full Back', identity:'You give everything, both ends.', emoji:'\u2699\uFE0F', color:'#FF6B1A',
+      reflect:"You want to give everything at both ends and never stop running \u2014 the complete two-way full-back.",
+      isYou:"The engine. You attack and defend in equal measure and cover more ground than anyone. When the game demands everything, you deliver it \u2014 the manager never has to worry about your flank, and that is the rarest currency in football.",
+      strengths:['Two-way work rate','Endurance','Reliability in both boxes'],
+      playLike:'Andrew Robertson \u00b7 Jordi Alba \u00b7 Alphonso Davies',
+      edge:"A standout weapon \u2014 sharpen either your delivery or your 1v1 defending so you\u2019re not just complete, but elite at one thing.",
+      firstStep:"Track your up-and-down runs in one session \u2014 support every attack and recover for every defensive moment. Count both. Nobody else in your team will do both.",
+      signature:'CHALLENGE \u00b7 BOTH BOXES',
+      share:'I\u2019m The Warrior \u26bd \u2014 I give everything at both ends. Which full-back are you?',
+      clause:'a relentless two-way engine' },
+
+    winger:{ name:'The Winger', tagline:'The Attacking Full Back', identity:'You start at the back and finish in their box.', emoji:'\uD83C\uDFAF', color:'#E5197F',
+      reflect:"You want to get forward, whip in crosses, and create \u2014 an attacker who starts at full-back.",
+      isYou:"The wide weapon. Your delivery and overlapping runs are a constant threat, and you\u2019d rather create a goal than just prevent one. Your weapon isn\u2019t your body \u2014 it\u2019s the flight of the ball.",
+      strengths:['Crossing & delivery','Attacking runs','Chance creation'],
+      playLike:'Trent Alexander-Arnold \u00b7 Dani Alves \u00b7 Marcelo',
+      edge:"Defensive positioning and recovery, so your attacking never leaves your flank exposed.",
+      firstStep:"Get to the byline and deliver as often as you can \u2014 then be first to recover every time you lose it. That recovery is what separates a Winger who plays from one who gets subbed.",
+      signature:'CHALLENGE \u00b7 FIRST BACK',
+      share:'I\u2019m The Winger \u26bd \u2014 my delivery wins games. Which full-back are you?',
+      clause:'an attacking weapon on the flank' },
+
+    sentinel:{ name:'The Sentinel', tagline:'The Defensive Full Back', identity:'Nothing gets past you on your side.', emoji:'\uD83D\uDEE1\uFE0F', color:'#5B9BD5',
+      reflect:"You want to lock down your flank and shut out their best attacker \u2014 defence first, always.",
+      isYou:"The lockdown specialist. You win your 1v1s, hold your position, and make life miserable for wingers. Solid, disciplined, dependable \u2014 the only player on the pitch measured by what didn\u2019t happen.",
+      strengths:['1v1 defending','Positioning & discipline','Flank security'],
+      playLike:'C\u00e9sar Azpilicueta \u00b7 Kyle Walker \u00b7 Aaron Wan-Bissaka',
+      edge:"Attacking output, so you offer a threat going forward as well as security at the back.",
+      firstStep:"Win every 1v1 on your flank \u2014 force their winger inside to your cover and never get beaten on the outside. Then look at his stat line, not yours.",
+      signature:'CHALLENGE \u00b7 NOTHING PAST ME',
+      share:'I\u2019m The Sentinel \u26bd \u2014 nobody beats me on my flank. Which full-back are you?',
+      clause:'a lockdown defender' },
+
+    architect:{ name:'The Architect', tagline:'The Inverted Full Back', identity:'You tuck in and run the game.', emoji:'\uD83E\uDDED', color:'#22D3EE',
+      reflect:"You want to tuck inside, control the tempo, and dictate \u2014 an extra midfielder from full-back.",
+      isYou:"The modern inverted full-back. You step into midfield, control possession, and dictate the game from unexpected angles. A defender with a playmaker\u2019s brain \u2014 and by vacating the touchline you turn a flat back four into something far more dangerous.",
+      strengths:['On-the-ball control','Positional intelligence','Tempo dictation'],
+      playLike:'Philipp Lahm \u00b7 Joshua Kimmich \u00b7 Oleksandr Zinchenko',
+      edge:"Wide defending fundamentals, so you\u2019re solid when the game asks you to be an orthodox full-back.",
+      firstStep:"When your team has the ball, tuck inside to give a passing option in midfield \u2014 then count how much more you touch the ball. That number is your scorecard.",
+      signature:'CHALLENGE \u00b7 INSIDE TEN',
+      share:'I\u2019m The Architect \u26bd \u2014 a full-back who runs the midfield. Which full-back are you?',
+      clause:'a controlling inverted brain' },
+  };
+
+  CHAPTERS = [
+    { num:'01', title:'Going Forward',       sub:"The ball\u2019s at your feet, space ahead. What do you want to do with the flank?", cta:'Start Chapter 01' },
+    { num:'02', title:'Defending Your Flank', sub:'One against one, your side to protect. What do you do when it\u2019s you against him?', cta:'Continue' },
+    { num:'03', title:'Your Identity',        sub:'No scenarios \u2014 just you. Who are you, honestly, on that flank?', cta:'The last chapter' },
+  ];
+
+  // 12 questions, 4 per chapter, one option per archetype (Module 3 \u00a75)
+  Q = [
+    // Chapter 1 \u2014 Going Forward
+    { ch:0, prompt:'You get the ball wide with space ahead. You\u2026', opts:[
+      { t:'Overlap and whip in a cross \u2014 that\u2019s my weapon.', a:'winger' },
+      { t:'Underlap or tuck inside and keep possession ticking.', a:'architect' },
+      { t:'Drive forward but keep one eye on getting back.', a:'warrior' },
+      { t:'Play safe and hold my position \u2014 attack isn\u2019t my priority.', a:'sentinel' } ] },
+    { ch:0, prompt:'Your team is building an attack. Where do you want to be?', opts:[
+      { t:'High and wide, stretching their defence.', a:'winger' },
+      { t:'Inside, next to midfield, controlling the tempo.', a:'architect' },
+      { t:'Supporting up and down wherever I\u2019m needed.', a:'warrior' },
+      { t:'Holding back to keep us defensively secure.', a:'sentinel' } ] },
+    { ch:0, prompt:'You reach the byline. You\u2026', opts:[
+      { t:'Whip an early cross into the danger zone.', a:'winger' },
+      { t:'Cut it back and keep the move alive.', a:'architect' },
+      { t:'Cross or recycle depending on the runners \u2014 I read it.', a:'warrior' },
+      { t:'Get it in and sprint back into position.', a:'sentinel' } ] },
+    { ch:0, prompt:'In training you enjoy most\u2026', opts:[
+      { t:'Crossing and final-third attacking patterns.', a:'winger' },
+      { t:'Playing out and controlling from inside positions.', a:'architect' },
+      { t:'End-to-end, up-and-down conditioning work.', a:'warrior' },
+      { t:'1v1 defending and shutting down wingers.', a:'sentinel' } ] },
+
+    // Chapter 2 \u2014 Defending Your Flank
+    { ch:1, prompt:'A tricky winger runs at you 1v1. You\u2026', opts:[
+      { t:'Lock him down \u2014 I back myself every time.', a:'sentinel' },
+      { t:'Stay patient, show him inside to my cover.', a:'architect' },
+      { t:'Match his run and recover through effort.', a:'warrior' },
+      { t:'Contain and delay \u2014 I\u2019d rather not get caught upfield.', a:'winger' } ] },
+    { ch:1, prompt:'Your team loses the ball while you\u2019re high up the pitch. You\u2026', opts:[
+      { t:'Sprint 60 yards back to recover \u2014 I always get back.', a:'warrior' },
+      { t:'I\u2019m rarely that exposed \u2014 I stay disciplined positionally.', a:'sentinel' },
+      { t:'Tuck inside to help control the counter centrally.', a:'architect' },
+      { t:'Trust my cover \u2014 attacking\u2019s my job, not chasing back.', a:'winger' } ] },
+    { ch:1, prompt:'Defending a cross into your box, you\u2026', opts:[
+      { t:'Mark tight and win my duel at the back post.', a:'sentinel' },
+      { t:'Read it and step to intercept the delivery.', a:'architect' },
+      { t:'Track my runner and battle for it.', a:'warrior' },
+      { t:'Clear my zone and look to spring the counter.', a:'winger' } ] },
+    { ch:1, prompt:'Your manager\u2019s priority for you is\u2026', opts:[
+      { t:'Lock down your flank defensively above all.', a:'sentinel' },
+      { t:'Control the game from an inverted position.', a:'architect' },
+      { t:'Give everything in both boxes, all game.', a:'warrior' },
+      { t:'Provide the attacking threat and assists.', a:'winger' } ] },
+
+    // Chapter 3 \u2014 Your Identity
+    { ch:2, prompt:'Teammates describe you as\u2026', opts:[
+      { t:'The engine \u2014 up and down all game, never stops.', a:'warrior' },
+      { t:'The one who locks down their best attacker.', a:'sentinel' },
+      { t:'The creator \u2014 my crosses and assists win games.', a:'winger' },
+      { t:'The extra midfielder who controls the tempo.', a:'architect' } ] },
+    { ch:2, prompt:'The compliment that means the most\u2026', opts:[
+      { t:'\u201cYou covered every blade of grass today.\u201d', a:'warrior' },
+      { t:'\u201cTheir winger didn\u2019t get a kick against you.\u201d', a:'sentinel' },
+      { t:'\u201cYour delivery was unplayable \u2014 two assists.\u201d', a:'winger' },
+      { t:'\u201cYou basically played in midfield and ran the game.\u201d', a:'architect' } ] },
+    { ch:2, prompt:'Which full-back do you most want to play like?', opts:[
+      { t:'A relentless two-way engine.', a:'warrior' },
+      { t:'A lockdown defensive specialist.', a:'sentinel' },
+      { t:'An attacking weapon with elite crossing.', a:'winger' },
+      { t:'An inverted full-back who controls the game.', a:'architect' } ] },
+    { ch:2, prompt:'What frustrates you most?', opts:[
+      { t:'Not being able to get forward and join the attack.', a:'winger' },
+      { t:'Getting beaten in a 1v1 on my flank.', a:'sentinel' },
+      { t:'A system that doesn\u2019t let me get on the ball centrally.', a:'architect' },
+      { t:'Feeling like I didn\u2019t contribute enough at both ends.', a:'warrior' } ] },
+  ];
+
+  ANT = ['COUNTING YOUR CALLS','WEIGHING EACH ARCHETYPE','READING YOUR GAME','FINDING YOUR SHAPE'];
+
+  state = { view:'intro', system:null, chIndex:0, qIndex:0, ans:new Array(12).fill(null), antPhrase:0, copied:false, stepDone:false };
+
+  componentDidMount(){
+    const shuf=(arr)=>{ const a=arr.map((o,i)=>({...o,origIdx:i})); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; };
+    this._qopts=this.Q.map(q=>shuf(q.opts));
+    try { this._soundOn=localStorage.getItem('fa_sound')!=='0'; } catch(e){ this._soundOn=true; }
+    this._qStart=Date.now();
+    this.forceUpdate();
+  }
+  componentWillUnmount(){ clearTimeout(this._to); clearInterval(this._antTimer); }
+
+  // ---------- sound ----------
+  _audio(){ if(this._actx===undefined){ try{ this._actx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ this._actx=null; } } if(this._actx&&this._actx.state==='suspended') this._actx.resume(); return this._actx; }
+  _tone(f,d,t,g){ const c=this._audio(); if(!c||this._soundOn===false) return; const o=c.createOscillator(),a=c.createGain(); o.type=t||'sine'; o.frequency.value=f; o.connect(a); a.connect(c.destination); const n=c.currentTime; a.gain.setValueAtTime(0,n); a.gain.linearRampToValueAtTime(g||0.05,n+0.01); a.gain.exponentialRampToValueAtTime(0.0001,n+d); o.start(n); o.stop(n+d); }
+  _sfx(k){ if(this._soundOn===false) return; if(k==='click') this._tone(430,0.09,'sine',0.04); else if(k==='select'){ this._tone(560,0.1,'triangle',0.05); setTimeout(()=>this._tone(760,0.12,'triangle',0.045),55); } else if(k==='whistle'){ this._tone(900,0.16,'sine',0.05); } else if(k==='complete'){ this._tone(520,0.14,'triangle',0.05); setTimeout(()=>this._tone(700,0.14,'triangle',0.05),110); setTimeout(()=>this._tone(940,0.26,'triangle',0.05),230); } }
+  _toggleSound(){ const on=this._soundOn===false; this._soundOn=on; try{ localStorage.setItem('fa_sound', on?'1':'0'); }catch(e){} if(on){ this._audio(); this._sfx('click'); } this.forceUpdate(); }
+
+  // ---------- emblems (distinct shapes \u2014 colour never the sole channel) ----------
+  _emblem(id,color,size){
+    const h=React.createElement; const s=size||88;
+    const svg=(...ch)=>h('svg',{width:s,height:s,viewBox:'0 0 64 64',fill:'none'},...ch);
+    const L=(p,extra)=>h('path',Object.assign({d:p,stroke:color,strokeWidth:3,strokeLinecap:'round',strokeLinejoin:'round',fill:'none'},extra||{}));
+    if(id==='warrior') return svg(                       // piston / engine
+      h('rect',{x:26,y:6,width:12,height:13,rx:2,fill:color}),
+      L('M32 19 L 32 33'),
+      h('circle',{cx:32,cy:45,r:12,stroke:color,strokeWidth:3,fill:'none'}),
+      h('circle',{cx:32,cy:45,r:3,fill:color}));
+    if(id==='winger') return svg(                        // whipped cross / arrow
+      L('M8 52 C 22 20, 44 12, 56 26'),
+      L('M47 18 L 57 26 L 49 35'));
+    if(id==='sentinel') return svg(                      // shield / lock
+      L('M32 7 L 53 15 V31 C53 44 44 52 32 57 C20 52 11 44 11 31 V15 Z'),
+      h('circle',{cx:32,cy:27,r:4,fill:color}),
+      L('M32 31 L 32 40'));
+    if(id==='architect') return svg(                     // inward pivot arrow
+      L('M54 12 C 30 12, 24 30, 30 50'),
+      L('M22 42 L 30 51 L 39 44'));
+    return svg(h('circle',{cx:32,cy:32,r:18,stroke:color,strokeWidth:3}));
+  }
+
+  // ---------- scoring: +1 per call \u2192 % of 12 (Module 3 \u00a76) ----------
+  _score(answers){
+    const counts={}; this.ORDER.forEach(a=>counts[a]=0);
+    for(const a of answers){ if(a) counts[a.arch]+=1; }
+    const spread={}; this.ORDER.forEach(a=> spread[a]= Math.round(counts[a]/12*100));
+    const ranked=[...this.ORDER].sort((a,b)=>{
+      if(counts[b]!==counts[a]) return counts[b]-counts[a];   // 1. more picks
+      return this.DIST[a]-this.DIST[b];                       // 2. rarer archetype wins
+    });
+    const primary=ranked[0], secondary=ranked[1];
+    const gap=spread[primary]-spread[secondary];
+    const isHybrid = gap<=8 && spread[primary]>=30;   // close top-two, but a real primary
+    const isFlat   = spread[primary]<30;              // no archetype exceeds 30%
+    return { counts, spread, ranked, primary, secondary, gap, isHybrid, isFlat };
+  }
+
+  // ---------- flow ----------
+  _begin(){ this._sfx('whistle'); this.setState({ view:'confirm' }); }
+  _pickSystem(system){ this._sfx('click'); this.setState({ system, view:'chapter', chIndex:0 }); }
+  _chapterGo(){ this._sfx('click'); const first=this.state.chIndex*4; this._qStart=Date.now(); this.setState({ view:'question', qIndex:first }); }
+
+  _answer(opt){
+    this._sfx('select');
+    const qi=this.state.qIndex, q=this.Q[qi];
+    const ans=this.state.ans.slice();
+    ans[qi]={ q:'q'+(qi+1), ch:q.ch, arch:opt.a, optionIndex:opt.origIdx, latencyMs:Date.now()-this._qStart };
+    const next=qi+1;
+    if(next>11){ this.setState({ ans }, ()=>this._commit()); return; }
+    if(next%4===0){ this.setState({ ans, view:'chapter', chIndex:next/4 }); return; }
+    this._qStart=Date.now();
+    this.setState({ ans, qIndex:next });
+  }
+
+  _commit(){
+    const flat=this.state.ans.filter(Boolean);
+    const r=this._score(flat);
+    const result={
+      position:'fb', assessmentVersion:'fb-1.0', defensiveSystem:this.state.system, createdAt:new Date().toISOString(),
+      answers:flat.map(a=>({ q:a.q, ch:a.ch, archetypeId:a.arch, optionIndex:a.optionIndex, latencyMs:a.latencyMs })),
+      counts:r.counts, spread:r.spread,
+      primary:r.primary, secondary:r.secondary,
+      isHybrid:r.isHybrid, isFlat:r.isFlat,
+      primaryName:this.ARCH[r.primary].name, secondaryName:this.ARCH[r.secondary].name,
+    };
+    try{ localStorage.setItem('fa_fb_result', JSON.stringify(result)); }catch(e){}
+    this._result=result; this._r=r;
+    this.setState({ view:'analysing', antPhrase:0, copied:false, stepDone:false });
+    clearInterval(this._antTimer);
+    const motion=this.props.motion??true;
+    this._antTimer=setInterval(()=>this.setState(s=>({ antPhrase:Math.min(s.antPhrase+1,this.ANT.length-1) })), motion?460:120);
+    clearTimeout(this._to);
+    this._to=setTimeout(()=>{ clearInterval(this._antTimer); this._sfx('complete'); this.setState({ view:'reveal' }); }, motion?2100:350);
+  }
+
+  _copyShare(){
+    const r=this._result; if(!r) return;
+    const txt=this.ARCH[r.primary].share;
+    try{ if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(txt); }catch(e){}
+    this._sfx('click');
+    this.setState({ copied:true });
+    clearTimeout(this._copyTo); this._copyTo=setTimeout(()=>this.setState({ copied:false }), 1900);
+  }
+  _toggleStep(){ this._sfx('click'); this.setState(s=>({ stepDone:!s.stepDone })); }
+  _retake(){
+    try{ localStorage.removeItem('fa_fb_result'); }catch(e){}
+    clearTimeout(this._to); clearInterval(this._antTimer);
+    this._result=null; this._r=null; this._qStart=Date.now();
+    this.setState({ view:'intro', system:null, chIndex:0, qIndex:0, ans:new Array(12).fill(null), antPhrase:0, copied:false, stepDone:false });
+  }
+  _back(){
+    this._sfx('click');
+    const { view, qIndex, chIndex }=this.state;
+    if(view==='confirm'){ this.setState({ view:'intro' }); }
+    else if(view==='chapter'){ if(chIndex===0){ this.setState({ view:'confirm' }); } else { this._qStart=Date.now(); this.setState({ view:'question', qIndex:chIndex*4-1 }); } }
+    else if(view==='question'){ if(qIndex%4===0){ this.setState({ view:'chapter', chIndex:qIndex/4 }); } else { this._qStart=Date.now(); this.setState({ qIndex:qIndex-1 }); } }
+  }
+
+  // ---------- render ----------
+  renderVals(){
+    const accent=this.props.accent ?? '#FF6B1A';
+    const V=this.state.view;
+    const answered=this.state.ans.filter(Boolean).length;
+    const scanPct=Math.round((answered/12)*100)+'%';
+    const soundOn=this._soundOn!==false;
+
+    const base={
+      accent,
+      isIntro:V==='intro', isConfirm:V==='confirm', isChapter:V==='chapter', isQuestion:V==='question',
+      isAnalysing:V==='analysing', isReveal:V==='reveal',
+      showBack: V==='confirm'||V==='chapter'||V==='question',
+      scanPct,
+      soundOn, soundOff:!soundOn, soundColor:soundOn?accent:'#7688A0', soundTitle:soundOn?'Sound on':'Sound off',
+      toggleSound:()=>this._toggleSound(), back:()=>this._back(), retake:()=>this._retake(),
+      begin:()=>this._begin(), chapterGo:()=>this._chapterGo(), copyShare:()=>this._copyShare(), toggleFirstStep:()=>this._toggleStep(),
+      antLabel:this.ANT[Math.min(this.state.antPhrase,this.ANT.length-1)],
+    };
+
+    // system confirm
+    base.systems=[
+      { key:'back_four',  glyph:'4', label:'Back four', sub:'Full back', delay:'.06s', onPick:()=>this._pickSystem('back_four') },
+      { key:'back_three', glyph:'3', label:'Back three', sub:'Wing back', delay:'.12s', onPick:()=>this._pickSystem('back_three') },
+      { key:'varies',     glyph:'\u21C4', label:'It varies', sub:'Both / either', delay:'.18s', onPick:()=>this._pickSystem('varies') },
+    ];
+
+    // chapter divider
+    const ch=this.CHAPTERS[this.state.chIndex]||this.CHAPTERS[0];
+    base.chNum=ch.num; base.chTitle=ch.title; base.chSub=ch.sub; base.chapterCta=ch.cta;
+
+    // question
+    const qi=this.state.qIndex, q=this.Q[qi]||this.Q[0];
+    base.chapterKicker='CH '+this.CHAPTERS[q.ch].num+' \u00b7 '+this.CHAPTERS[q.ch].title.toUpperCase();
+    base.qNumLabel='Q'+(qi+1)+' / 12';
+    base.qPrompt=q.prompt;
+    const optSrc=(this._qopts&&this._qopts[qi])||q.opts.map((o,i)=>({...o,origIdx:i}));
+    base.options=optSrc.map((o,di)=>({ letter:'ABCD'[di], text:o.t, delay:(0.06+di*0.05).toFixed(2)+'s', onPick:()=>this._answer(o) }));
+
+    // reveal defaults (placeholder-safe)
+    Object.assign(base,{
+      revKicker:'YOUR FULL-BACK ARCHETYPE', archEmblemEl:null, archEmblemSmall:null, secondaryEmblemEl:null,
+      archColor:accent, archGlow:'transparent', archName:'', archTagline:'', archIdentity:'',
+      secondaryColor:accent, secondaryShort:'', primaryShort:'',
+      isHybrid:false, isFlat:false, shadeLine:'', bandLabel:'', spreadNote:'', spreadBars:[],
+      archReflect:'', archIsYou:'', strengths:[], archPlayLike:'', archEdge:'', archFirstStep:'', signatureLabel:'',
+      shareLabel:'Share result', dataLine:'',
+      firstStepLabel:'Mark it done', firstStepIcon:null, firstStepBg:'rgba(12,18,30,.4)', firstStepBorder:'rgba(157,176,198,.3)', firstStepFg:'#C6D3E2',
+    });
+
+    const r=this._r;
+    if(r){
+      const A=this.ARCH[r.primary];
+      const S=this.ARCH[r.secondary];
+      const archColor=A.color;
+      const archGlow='color-mix(in srgb,'+archColor+' 45%,transparent)';
+      const short=(id)=>this.ARCH[id].name.replace('The ','');
+      const h=React.createElement;
+
+      base.revKicker='YOUR FULL-BACK ARCHETYPE';
+      base.archEmblemEl=this._emblem(r.primary,archColor,90);
+      base.archColor=archColor; base.archGlow=archGlow;
+      base.archName=A.name; base.archTagline=A.tagline; base.archIdentity=A.identity;
+      base.primaryShort=short(r.primary); base.secondaryShort=short(r.secondary); base.secondaryColor=S.color;
+
+      base.bandLabel = r.isFlat ? 'STILL FORMING' : r.isHybrid ? 'HYBRID READ' : 'CLEAR READ';
+      base.isHybrid = r.isHybrid && !r.isFlat;
+      base.isFlat = r.isFlat;
+      base.archEmblemSmall=this._emblem(r.primary,archColor,44);
+      base.secondaryEmblemEl=this._emblem(r.secondary,S.color,44);
+      base.shadeLine="Two full-backs in one player: "+A.clause+", with "+S.clause+" woven through. A rare blend on the flank \u2014 and a hard one to play against.";
+
+      base.spreadNote='% OF 12 CALLS';
+      const entries=this.ORDER.map(k=>[k,r.spread[k]]).sort((a,b)=>b[1]-a[1]);
+      const maxV=Math.max(...entries.map(e=>e[1]),1);
+      base.spreadBars=entries.map(([id,v])=>{
+        const isP=id===r.primary; const col=this.ARCH[id].color;
+        return { emoji:this.ARCH[id].emoji, label:short(id),
+          labelColor:isP?'#F2F8FE':'#9FB0C5', numColor:isP?col:'#9FB0C5',
+          pct:v+'%', barW:Math.round((v/maxV)*100)+'%',
+          barLook:isP?('background:linear-gradient(90deg,'+col+',color-mix(in srgb,'+col+' 45%,transparent));box-shadow:0 0 12px color-mix(in srgb,'+col+' 55%,transparent);'):'background:rgba(130,150,176,.4);' };
+      });
+
+      base.archReflect=A.reflect; base.archIsYou=A.isYou; base.archPlayLike=A.playLike; base.archEdge=A.edge;
+      base.strengths=A.strengths.map(s=>({ text:s }));
+      base.archFirstStep=A.firstStep; base.signatureLabel=A.signature;
+      base.shareLabel=this.state.copied?'Copied to clipboard':'Share result';
+      base.dataLine='SELF-REPORTED \u00b7 12 CALLS \u00b7 FULL BACK v1.0';
+
+      const done=this.state.stepDone;
+      base.firstStepLabel=done?'Marked done \u2014 nice':'Mark it done';
+      base.firstStepIcon= done
+        ? h('svg',{width:16,height:16,viewBox:'0 0 24 24',fill:'none',style:{stroke:'#04060c',strokeWidth:2.6,strokeLinecap:'round',strokeLinejoin:'round'}}, h('path',{d:'M4 12l5 5L20 6'}))
+        : h('svg',{width:16,height:16,viewBox:'0 0 24 24',fill:'none',style:{stroke:'currentColor',strokeWidth:2,strokeLinecap:'round',strokeLinejoin:'round'}}, h('rect',{x:4,y:4,width:16,height:16,rx:4}));
+      base.firstStepBg= done? archColor : 'rgba(12,18,30,.4)';
+      base.firstStepBorder= done? archColor : 'color-mix(in srgb,'+archColor+' 40%,transparent)';
+      base.firstStepFg= done? '#04060c' : '#EAF2FB';
+    }
+
+    return base;
+  }
+}
+</script>
+</body>
+</html>

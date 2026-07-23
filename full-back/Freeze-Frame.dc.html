@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:#04060c;}
+  a{color:var(--accent,#FF6B1A);text-decoration:none;}
+  a:hover{opacity:.92;}
+  @keyframes fa-blink{0%,100%{opacity:1;}50%{opacity:.25;}}
+  @keyframes fa-rise{0%{transform:translateY(16px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-rise-sm{0%{transform:translateY(10px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-bar{from{transform:scaleX(0);}to{transform:scaleX(1);}}
+  @keyframes fa-pop{0%{transform:translate(-50%,-50%) scale(0);}60%{transform:translate(-50%,-50%) scale(1.25);}100%{transform:translate(-50%,-50%) scale(1);}}
+  .fa-in{opacity:0;animation:fa-rise .6s cubic-bezier(.2,.7,.2,1) forwards;}
+  .fa-in-sm{opacity:0;animation:fa-rise-sm .5s cubic-bezier(.2,.7,.2,1) forwards;}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;}.fa-in,.fa-in-sm{opacity:1!important;transform:none!important;}}
+</style>
+</helmet>
+<div data-screen-label="Freeze Frame" style="position:relative;display:flex;flex-direction:column;min-height:100dvh;width:100%;overflow:hidden;background:radial-gradient(120% 90% at 50% 6%,#0e1a2d 0%,#080e1a 44%,#04060c 100%);color:#EAF2FB;font-family:'Archivo',system-ui,sans-serif;--accent:{{ accent }};">
+
+  <div style="position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.4;background:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0px,rgba(255,255,255,.02) 1px,transparent 1px,transparent 4px);"></div>
+  <div style="position:absolute;top:20px;left:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#FF6B1A) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#FF6B1A) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;top:20px;right:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#FF6B1A) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#FF6B1A) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;left:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#FF6B1A) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#FF6B1A) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;right:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#FF6B1A) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#FF6B1A) 50%,transparent);z-index:4;pointer-events:none;"></div>
+
+  <sc-if value="{{ showChrome }}" hint-placeholder-val="{{ true }}">
+    <header style="position:relative;z-index:6;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px clamp(24px,3.4vw,54px);">
+      <div style="min-width:110px;display:flex;"><a href="Assessment.dc.html" style="display:inline-flex;align-items:center;gap:8px;color:#8EA1B8;font:600 12.5px 'Archivo';"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M15 5l-7 7 7 7"/></svg>Back to the scan</a></div>
+      <div style="display:flex;align-items:center;gap:11px;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" style="stroke:var(--accent,#FF6B1A);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="10" r="1.5"/><circle cx="15.5" cy="10" r="1.5"/><circle cx="12" cy="15" r="1.5"/></svg><span style="font:800 13px 'Archivo';letter-spacing:.05em;">FREEZE <span style="color:var(--accent,#FF6B1A);">FRAME</span></span></div>
+      <div style="display:flex;align-items:center;gap:12px;min-width:110px;justify-content:flex-end;">
+        <button onClick="{{ toggleSound }}" title="{{ soundTitle }}" style="display:grid;place-items:center;width:28px;height:28px;border-radius:8px;border:1px solid rgba(120,140,166,.24);background:rgba(10,16,28,.5);cursor:pointer;color:{{ soundColor }};">
+          <sc-if value="{{ soundOn }}" hint-placeholder-val="{{ true }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></sc-if>
+          <sc-if value="{{ soundOff }}" hint-placeholder-val="{{ false }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M22 9l-6 6M16 9l6 6"/></svg></sc-if>
+        </button>
+      </div>
+    </header>
+  </sc-if>
+
+  <!-- INTRO -->
+  <sc-if value="{{ isIntro }}" hint-placeholder-val="{{ true }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;text-align:center;padding:14px clamp(24px,4vw,54px) 54px;">
+      <div class="fa-in" style="display:inline-flex;align-items:center;gap:10px;margin-bottom:18px;font:600 12px 'IBM Plex Mono';letter-spacing:.4em;color:var(--accent,#FF6B1A);"><span style="width:6px;height:6px;border-radius:50%;background:var(--accent,#FF6B1A);box-shadow:0 0 8px var(--accent,#FF6B1A);animation:fa-blink 1.6s ease-in-out infinite;"></span>SCAN THE PICTURE</div>
+      <h1 class="fa-in" style="margin:0 0 14px;font:800 clamp(34px,5.2vw,68px)/0.98 'Archivo';letter-spacing:-0.03em;text-wrap:balance;max-width:760px;animation-delay:.05s;">See it for a second. Then rebuild it.</h1>
+      <p class="fa-in" style="margin:0 0 26px;max-width:560px;font:400 clamp(14px,1.25vw,17px)/1.6 'Archivo';color:#9FB0C5;text-wrap:pretty;animation-delay:.1s;">A frame of the game flashes up, then vanishes. Place the players back where they were. The best defenders don&rsquo;t have better eyes &mdash; they read <em>football shapes</em> faster. Some frames are real team shapes; some are pure scatter. The gap between the two is the real skill.</p>
+      <div class="fa-in" style="width:100%;max-width:440px;margin-bottom:24px;animation-delay:.16s;">
+        <div style="font:600 10px 'IBM Plex Mono';letter-spacing:.24em;color:#7688A0;margin-bottom:12px;text-align:left;">CHOOSE YOUR LEVEL</div>
+        <div style="display:flex;gap:10px;">
+          <sc-for list="{{ levels }}" as="lv" hint-placeholder-count="3">
+            <button onClick="{{ lv.onPick }}" style="flex:1;padding:16px 10px;border-radius:13px;cursor:pointer;font:700 14px 'Archivo';transition:all .16s ease;border:1px solid {{ lv.border }};background:{{ lv.bg }};color:{{ lv.fg }};">{{ lv.label }}<div style="font:500 9.5px 'IBM Plex Mono';letter-spacing:.08em;margin-top:5px;color:{{ lv.subColor }};">{{ lv.sub }}</div></button>
+          </sc-for>
+        </div>
+      </div>
+      <button onClick="{{ start }}" class="fa-in" style="display:inline-flex;align-items:center;gap:12px;padding:17px 42px;border-radius:13px;border:0;background:var(--accent,#FF6B1A);color:#04121a;font:700 16px 'Archivo';cursor:pointer;box-shadow:0 14px 44px color-mix(in srgb,var(--accent,#FF6B1A) 42%,transparent);transition:transform .16s ease;animation-delay:.22s;" style-hover="transform:translateY(-2px);">Start scanning<svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12h13M12 6l6 6-6 6"/></svg></button>
+      <div class="fa-in" style="margin-top:16px;font:500 10px 'IBM Plex Mono';letter-spacing:.14em;color:#61748C;animation-delay:.3s;">{{ bestLine }}</div>
+    </main>
+  </sc-if>
+
+  <!-- PLAY -->
+  <sc-if value="{{ isPlay }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:6px clamp(18px,3.5vw,54px) 34px;">
+      <div style="width:100%;max-width:600px;margin:0 auto;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+          <span style="font:600 9.5px 'IBM Plex Mono';letter-spacing:.2em;color:var(--accent,#FF6B1A);">FRAME {{ frameLabel }}</span>
+          <span style="flex:1;height:1px;background:rgba(120,140,166,.16);"></span>
+          <span style="font:600 9.5px 'IBM Plex Mono';letter-spacing:.14em;color:{{ tagColor }};">{{ tagLabel }}</span>
+        </div>
+
+        <div style="text-align:center;font:700 15px 'Archivo';margin-bottom:10px;min-height:22px;color:{{ callColor }};">{{ callText }}</div>
+
+        <!-- pitch -->
+        <div onClick="{{ onPitchTap }}" style="position:relative;width:100%;height:min(62vh,500px);border-radius:16px;overflow:hidden;border:1px solid rgba(120,140,166,.2);background:linear-gradient(180deg,#0d1c2e80,#0a1524,#091324);cursor:{{ pitchCursor }};touch-action:manipulation;">
+          <div style="position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(255,255,255,.012) 0 26px,transparent 26px 52px);pointer-events:none;"></div>
+          <div style="position:absolute;left:5%;right:5%;top:50%;height:1px;background:rgba(90,150,190,.14);pointer-events:none;"></div>
+          <div style="position:absolute;left:50%;top:50%;width:60px;height:60px;border:1px solid rgba(90,150,190,.14);border-radius:50%;transform:translate(-50%,-50%);pointer-events:none;"></div>
+          <div style="position:absolute;left:28%;right:28%;top:0;height:15%;border:1px solid rgba(90,150,190,.16);border-top:0;pointer-events:none;"></div>
+          <div style="position:absolute;left:28%;right:28%;bottom:0;height:15%;border:1px solid rgba(90,150,190,.16);border-bottom:0;pointer-events:none;"></div>
+
+          <!-- study dots -->
+          <sc-for list="{{ studyDots }}" as="d" hint-placeholder-count="0">
+            <div style="position:absolute;left:{{ d.x }};top:{{ d.y }};transform:translate(-50%,-50%);width:17px;height:17px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ff8a8a,#c22b2b);box-shadow:0 0 9px rgba(224,65,60,.6);pointer-events:none;z-index:3;"></div>
+          </sc-for>
+
+          <!-- placed markers -->
+          <sc-for list="{{ placedDots }}" as="p" hint-placeholder-count="0">
+            <div style="position:absolute;left:{{ p.x }};top:{{ p.y }};transform:translate(-50%,-50%);width:16px;height:16px;border-radius:50%;background:color-mix(in srgb,{{ accent }} 55%,#fff);border:2px solid {{ accent }};box-shadow:0 0 10px color-mix(in srgb,{{ accent }} 55%,transparent);pointer-events:none;z-index:4;animation:fa-pop .3s cubic-bezier(.3,.8,.3,1);"></div>
+          </sc-for>
+
+          <!-- reveal: truth rings + connectors -->
+          <sc-for list="{{ truthDots }}" as="t" hint-placeholder-count="0">
+            <div style="position:absolute;left:{{ t.x }};top:{{ t.y }};transform:translate(-50%,-50%);width:18px;height:18px;border-radius:50%;border:2px dashed rgba(255,255,255,.7);pointer-events:none;z-index:3;"></div>
+          </sc-for>
+
+          <!-- countdown ring during study -->
+          <sc-if value="{{ studying }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;top:9px;left:50%;transform:translateX(-50%);font:700 9px 'IBM Plex Mono';letter-spacing:.2em;color:var(--accent,#FF6B1A);background:rgba(4,7,12,.6);padding:4px 10px;border-radius:99px;border:1px solid color-mix(in srgb,var(--accent,#FF6B1A) 40%,transparent);pointer-events:none;">MEMORISE</div>
+          </sc-if>
+        </div>
+
+        <sc-if value="{{ studying }}" hint-placeholder-val="{{ false }}">
+          <div style="height:5px;border-radius:99px;background:rgba(120,140,166,.16);overflow:hidden;margin-top:12px;"><div style="height:100%;border-radius:99px;background:var(--accent,#FF6B1A);width:{{ studyW }};transition:width {{ studyDur }} linear;"></div></div>
+        </sc-if>
+
+        <sc-if value="{{ placing }}" hint-placeholder-val="{{ false }}">
+          <div style="text-align:center;margin-top:12px;font:600 12px 'IBM Plex Mono';letter-spacing:.1em;color:#9FB0C5;">PLACE PLAYER <span style="color:var(--accent,#FF6B1A);">{{ placedCount }}</span> OF {{ totalDots }}</div>
+        </sc-if>
+
+        <sc-if value="{{ revealing }}" hint-placeholder-val="{{ false }}">
+          <div class="fa-in-sm" style="margin-top:12px;padding:13px 16px;border-radius:13px;border:1px solid {{ fbBorder }};background:{{ fbBg }};display:flex;align-items:center;justify-content:space-between;gap:12px;">
+            <div><div style="font:700 14px 'Archivo';color:{{ fbColor }};">{{ fbHead }}</div><div style="font:400 12px 'Archivo';color:#C6D3E2;">Dashed = actual &middot; solid = your placement</div></div>
+            <div style="font:800 24px 'IBM Plex Mono';color:{{ fbColor }};">{{ trialAcc }}</div>
+          </div>
+          <button onClick="{{ next }}" class="fa-in-sm" style="width:100%;margin-top:12px;padding:15px;border-radius:13px;border:0;background:var(--accent,#FF6B1A);color:#04121a;font:700 15px 'Archivo';cursor:pointer;box-shadow:0 12px 34px color-mix(in srgb,var(--accent,#FF6B1A) 38%,transparent);transition:transform .16s ease;animation-delay:.08s;" style-hover="transform:translateY(-2px);">{{ nextLabel }}</button>
+        </sc-if>
+      </div>
+    </main>
+  </sc-if>
+
+  <!-- RESULT -->
+  <sc-if value="{{ isResult }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:10px clamp(20px,4vw,54px) 64px;">
+      <div style="width:100%;max-width:560px;text-align:center;">
+        <div class="fa-in" style="font:600 11px 'IBM Plex Mono';letter-spacing:.4em;color:#7E90A8;margin-bottom:12px;">SPATIAL RECALL</div>
+        <div class="fa-in" style="font:900 clamp(64px,13vw,116px)/0.9 'Archivo';letter-spacing:-0.03em;color:var(--accent,#FF6B1A);text-shadow:0 0 48px color-mix(in srgb,var(--accent,#FF6B1A) 45%,transparent);animation-delay:.04s;">{{ scoreBig }}</div>
+        <div class="fa-in" style="margin-top:6px;font:600 clamp(15px,1.7vw,20px) 'Archivo';color:#C9D6E2;animation-delay:.08s;">{{ resultHeadline }}</div>
+
+        <div class="fa-in" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:24px 0;animation-delay:.12s;">
+          <div style="padding:16px 12px;border-radius:13px;border:1px solid rgba(34,199,118,.28);background:rgba(34,199,118,.07);text-align:center;"><div style="font:800 24px 'IBM Plex Mono';color:#22C776;">{{ structAcc }}</div><div style="font:600 8px 'IBM Plex Mono';letter-spacing:.12em;color:#7688A0;margin-top:5px;">REAL SHAPES</div></div>
+          <div style="padding:16px 12px;border-radius:13px;border:1px solid rgba(120,140,166,.24);background:rgba(10,16,28,.5);text-align:center;"><div style="font:800 24px 'IBM Plex Mono';color:#9FB0C5;">{{ randAcc }}</div><div style="font:600 8px 'IBM Plex Mono';letter-spacing:.12em;color:#7688A0;margin-top:5px;">RANDOM SCATTER</div></div>
+        </div>
+
+        <div class="fa-in" style="padding:18px 20px;border-radius:15px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);text-align:left;margin-bottom:24px;animation-delay:.16s;">
+          <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:var(--accent,#FF6B1A);margin-bottom:8px;">WHAT IT MEANS</div>
+          <p style="margin:0;font:500 14.5px/1.55 'Archivo';color:#C9D6E2;text-wrap:pretty;">{{ softRead }}</p>
+        </div>
+
+        <div class="fa-in" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:12px;animation-delay:.22s;">
+          <button onClick="{{ again }}" style="display:inline-flex;align-items:center;gap:10px;padding:15px 30px;border-radius:12px;border:0;background:var(--accent,#FF6B1A);color:#04121a;font:700 15px 'Archivo';cursor:pointer;box-shadow:0 12px 36px color-mix(in srgb,var(--accent,#FF6B1A) 40%,transparent);transition:transform .16s ease;" style-hover="transform:translateY(-2px);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:#04121a;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>Go again</button>
+          <a href="Assessment.dc.html" style="display:inline-flex;align-items:center;gap:9px;padding:15px 24px;border-radius:12px;border:1px solid rgba(157,176,198,.28);background:rgba(12,18,30,.4);color:#C6D3E2;font:600 14px 'Archivo';" style-hover="border-color:color-mix(in srgb,var(--accent,#FF6B1A) 55%,transparent);color:#EAF2FB;">Back to the scan</a>
+        </div>
+      </div>
+    </main>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:900,&quot;height&quot;:840},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#FF6B1A&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#FF6B1A&quot;,&quot;#E5197F&quot;,&quot;#5B9BD5&quot;,&quot;#22D3EE&quot;]},&quot;motion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;embedded&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;level&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;pro&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;academy&quot;,&quot;pro&quot;,&quot;elite&quot;]}}">
+class Component extends DCLogic {
+  LEVELS={ academy:{ label:'Academy', sub:'4.5s LOOK', expose:4500 }, pro:{ label:'Pro', sub:'3.0s LOOK', expose:3000 }, elite:{ label:'Elite', sub:'2.0s LOOK', expose:2000 } };
+  N=5; TRIALS=6;
+  // structured team shapes (attacking up). x8-92, y6-94.
+  SHAPES=[
+    [{x:22,y:80},{x:42,y:84},{x:60,y:84},{x:80,y:80},{x:51,y:62}],   // back four + pivot
+    [{x:26,y:56},{x:50,y:50},{x:74,y:56},{x:40,y:34},{x:62,y:34}],   // midfield block
+    [{x:34,y:22},{x:56,y:18},{x:74,y:30},{x:48,y:34},{x:26,y:42}],   // attacking overload
+    [{x:50,y:72},{x:32,y:54},{x:68,y:54},{x:50,y:38},{x:50,y:22}],   // diamond + striker
+  ];
+
+  state={ view:'intro', level:'pro', trial:0, phase:'study',
+    studyDots:[], truthDots:[], placedDots:[], studyW:'100%', studyDur:'0s',
+    callText:'', callColor:'#EAF2FB', trialAcc:'', fbHead:'', fbColor:'#22C776', fbBg:'rgba(34,199,118,.1)', fbBorder:'rgba(34,199,118,.3)',
+    scores:[], kinds:[] };
+
+  componentDidMount(){ try{ this._soundOn=localStorage.getItem('fa_sound')!=='0'; }catch(e){ this._soundOn=true; } try{ const b=JSON.parse(localStorage.getItem('fa_fb_freeze')||'null'); this._best=b&&typeof b.bestScore==='number'?b.bestScore:null; }catch(e){ this._best=null; } this._level=this.props.level||'pro'; this._embedded=this.props.embedded===true; if(this._embedded) this._begin(); else this.forceUpdate(); }
+  componentWillUnmount(){ [this._t1,this._t2].forEach(t=>clearTimeout(t)); }
+
+  _audio(){ if(this._actx===undefined){ try{ this._actx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ this._actx=null; } } if(this._actx&&this._actx.state==='suspended') this._actx.resume(); return this._actx; }
+  _tone(f,d,t,g){ const c=this._audio(); if(!c||this._soundOn===false) return; const o=c.createOscillator(),a=c.createGain(); o.type=t||'sine'; o.frequency.value=f; o.connect(a); a.connect(c.destination); const n=c.currentTime; a.gain.setValueAtTime(0,n); a.gain.linearRampToValueAtTime(g||0.05,n+0.01); a.gain.exponentialRampToValueAtTime(0.0001,n+d); o.start(n); o.stop(n+d); }
+  _sfx(k){ if(this._soundOn===false) return; if(k==='drop') this._tone(520,0.07,'triangle',0.045); else if(k==='reveal'){ this._tone(560,0.1,'triangle',0.05); setTimeout(()=>this._tone(780,0.12,'triangle',0.04),60);} else if(k==='hide') this._tone(320,0.1,'sine',0.04); else if(k==='whistle') this._tone(900,0.16,'sine',0.05); else if(k==='end'){ this._tone(520,0.14,'triangle',0.05); setTimeout(()=>this._tone(720,0.14,'triangle',0.05),120); setTimeout(()=>this._tone(940,0.26,'triangle',0.05),240);} else this._tone(430,0.08,'sine',0.04); }
+  _toggleSound(){ const on=this._soundOn===false; this._soundOn=on; try{ localStorage.setItem('fa_sound', on?'1':'0'); }catch(e){} if(on){ this._audio(); this._sfx('click'); } this.forceUpdate(); }
+
+  _pickLevel(k){ this._sfx('click'); this._level=k; this.setState({ level:k }); }
+  _begin(){ this._sfx('whistle'); this._shapeOrder=[0,1,2,3]; for(let i=this._shapeOrder.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [this._shapeOrder[i],this._shapeOrder[j]]=[this._shapeOrder[j],this._shapeOrder[i]]; } this._si=0; this.setState({ view:'play', trial:0, scores:[], kinds:[] },()=>this._runTrial()); }
+
+  _rand(){ const a=[]; for(let i=0;i<this.N;i++) a.push({ x:Math.round(12+Math.random()*76), y:Math.round(12+Math.random()*76) }); return a; }
+
+  _runTrial(){
+    [this._t1,this._t2].forEach(t=>clearTimeout(t));
+    const structured = this.state.trial%2===0;
+    let truth;
+    if(structured){ const idx=this._shapeOrder[this._si%this._shapeOrder.length]; this._si++; truth=this.SHAPES[idx].map(p=>({...p})); }
+    else truth=this._rand();
+    this._truth=truth; this._structured=structured;
+    const L=this.LEVELS[this._level];
+    this.setState({ phase:'study', studyDots:truth.map(p=>({x:p.x+'%',y:p.y+'%'})), truthDots:[], placedDots:[], studyW:'100%', studyDur:'0s', callText:'Memorise the shape\u2026', callColor:'#EAF2FB' },()=>{
+      requestAnimationFrame(()=>this.setState({ studyW:'0%', studyDur:(L.expose/1000)+'s' }));
+      this._t1=setTimeout(()=>{ this._sfx('hide'); this.setState({ phase:'place', studyDots:[], callText:'Now place them back', callColor:this.props.accent ?? '#FF6B1A' }); }, L.expose);
+    });
+  }
+
+  _tap(e){
+    if(this.state.phase!=='place') return;
+    if(this.state.placedDots.length>=this.N) return;
+    const r=e.currentTarget.getBoundingClientRect();
+    const cx=(e.clientX!=null?e.clientX:(e.touches&&e.touches[0]?e.touches[0].clientX:0));
+    const cy=(e.clientY!=null?e.clientY:(e.touches&&e.touches[0]?e.touches[0].clientY:0));
+    let x=(cx-r.left)/r.width*100, y=(cy-r.top)/r.height*100;
+    x=Math.max(2,Math.min(98,x)); y=Math.max(2,Math.min(98,y));
+    this._sfx('drop');
+    const placed=this.state.placedDots.concat([{ x, y }]);
+    this.setState({ placedDots:placed },()=>{ if(placed.length>=this.N) this._reveal(); });
+  }
+
+  _match(placed,truth){
+    const t=truth.map(p=>({...p,used:false})); let sum=0;
+    placed.forEach(p=>{ let bi=-1,bd=1e9; t.forEach((q,i)=>{ if(q.used)return; const d=Math.hypot(p.x-q.x,p.y-q.y); if(d<bd){bd=d;bi=i;} }); if(bi>=0){ t[bi].used=true; sum+=bd; } });
+    return sum/(placed.length||1);
+  }
+  _reveal(){
+    const err=this._match(this.state.placedDots.map(p=>({x:p.x,y:p.y})), this._truth);
+    const acc=Math.max(0,Math.min(100,Math.round(100-err*3.2)));
+    this._sfx('reveal');
+    const good=acc>=70;
+    this.setState({ phase:'reveal', truthDots:this._truth.map(p=>({x:p.x+'%',y:p.y+'%'})),
+      trialAcc:acc+'%', fbHead: good?'Sharp recall':(acc>=45?'Close':'Way off'),
+      fbColor: good?'#22C776':(acc>=45?'#FFB020':'#FF5A6E'),
+      fbBg: good?'rgba(34,199,118,.1)':(acc>=45?'rgba(255,176,32,.1)':'rgba(255,90,110,.1)'),
+      fbBorder: good?'rgba(34,199,118,.3)':(acc>=45?'rgba(255,176,32,.3)':'rgba(255,90,110,.3)'),
+      scores:this.state.scores.concat([acc]), kinds:this.state.kinds.concat([this._structured?'s':'r']) });
+  }
+  _next(){ const nx=this.state.trial+1; if(nx>=this.TRIALS){ this._end(); return; } this._sfx('click'); this.setState({ trial:nx },()=>this._runTrial()); }
+
+  _end(){
+    this._sfx('end');
+    const sc=this.state.scores, kinds=this.state.kinds;
+    const avg=(arr)=> arr.length? Math.round(arr.reduce((a,b)=>a+b,0)/arr.length):0;
+    const overall=avg(sc);
+    const structuredArr=sc.filter((v,i)=>kinds[i]==='s');
+    const randomArr=sc.filter((v,i)=>kinds[i]==='r');
+    const structAcc=avg(structuredArr), randAcc=avg(randomArr);
+    const edge=structAcc-randAcc;
+    this._meta={ overall, structAcc, randAcc, edge, level:this._level };
+    if(!this._embedded){ try{ const best=Math.max(this._best||0,overall); localStorage.setItem('fa_fb_freeze', JSON.stringify({ bestScore:best, lastScore:overall, structAcc, randAcc, at:new Date().toISOString(), weight:0 })); this._best=best; }catch(e){} }
+    this.setState({ view:'result' });
+    if(this._embedded && typeof this.props.onDone==='function'){ this.props.onDone({}, this._meta); }
+  }
+  _again(){ this._begin(); }
+
+  renderVals(){
+    const accent=this.props.accent ?? '#FF6B1A';
+    const V=this.state.view; const soundOn=this._soundOn!==false;
+    const base={ accent, showChrome:!this._embedded && V!=='play',
+      isIntro:V==='intro', isPlay:V==='play', isResult:V==='result',
+      soundOn, soundOff:!soundOn, soundColor:soundOn?accent:'#7688A0', soundTitle:soundOn?'Sound on':'Sound off',
+      toggleSound:()=>this._toggleSound(), start:()=>this._begin(), again:()=>this._again(),
+      onPitchTap:(e)=>this._tap(e), next:()=>this._next(),
+      bestLine: this._best!=null? ('YOUR BEST \u00b7 '+this._best+'%') : '6 FRAMES \u00b7 SKILL, NOT ARCHETYPE' };
+    base.levels=Object.keys(this.LEVELS).map(k=>{ const L=this.LEVELS[k]; const on=this.state.level===k;
+      return { key:k, label:L.label, sub:L.sub, onPick:()=>this._pickLevel(k),
+        bg:on?'color-mix(in srgb,'+accent+' 16%,transparent)':'rgba(10,16,28,.5)',
+        border:on?'color-mix(in srgb,'+accent+' 60%,transparent)':'rgba(120,140,166,.22)',
+        fg:on?'#F2F8FE':'#C6D3E2', subColor:on?accent:'#7688A0' }; });
+
+    // play
+    base.frameLabel=(this.state.trial+1)+' / '+this.TRIALS;
+    const structured=this.state.trial%2===0;
+    base.tagLabel=structured?'REAL SHAPE':'RANDOM';
+    base.tagColor=structured?'#22C776':'#9FB0C5';
+    base.callText=this.state.callText; base.callColor=this.state.callColor;
+    base.studying=this.state.phase==='study'; base.placing=this.state.phase==='place'; base.revealing=this.state.phase==='reveal';
+    base.pitchCursor=this.state.phase==='place'?'crosshair':'default';
+    base.studyDots=this.state.studyDots; base.placedDots=this.state.placedDots;
+    base.truthDots=this.state.phase==='reveal'?this.state.truthDots:[];
+    base.studyW=this.state.studyW; base.studyDur=this.state.studyDur;
+    base.placedCount=Math.min(this.state.placedDots.length+1,this.N); base.totalDots=this.N;
+    base.trialAcc=this.state.trialAcc; base.fbHead=this.state.fbHead; base.fbColor=this.state.fbColor; base.fbBg=this.state.fbBg; base.fbBorder=this.state.fbBorder;
+    base.nextLabel=(this.state.trial+1>=this.TRIALS)?'See your score':'Next frame';
+
+    // result
+    Object.assign(base,{ scoreBig:'0%', resultHeadline:'', structAcc:'\u2013', randAcc:'\u2013', softRead:'' });
+    const m=this._meta;
+    if(m){
+      base.scoreBig=m.overall+'%';
+      base.resultHeadline= m.overall>=75?'Elite scanning.': m.overall>=55?'A sharp eye.':'Keep training the picture.';
+      base.structAcc=m.structAcc+'%'; base.randAcc=m.randAcc+'%';
+      if(m.edge>=12) base.softRead="You recalled real team shapes noticeably better than random scatter \u2014 that gap is the mark of a footballer\u2019s eye. You\u2019re not memorising dots, you\u2019re reading structure, which is exactly what separates good defenders. A skill measure, not your archetype.";
+      else if(m.overall>=65) base.softRead="Strong recall across the board \u2014 though you did about as well on random scatter as on real shapes. That\u2019s excellent visual memory; the football-specific edge comes as you see more of the game. A skill measure, not your archetype.";
+      else base.softRead="Rebuilding a frozen picture is hard, and it improves fast with reps. The players who read the game best aren\u2019t born with better eyes \u2014 they\u2019ve just seen the shapes more often. Come back and beat your score. This measures skill, not archetype.";
+    }
+    return base;
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:#04060c;}
+  a{color:var(--accent,#22D3EE);text-decoration:none;}
+  @keyframes fa-blink{0%,100%{opacity:1;}50%{opacity:.25;}}
+  @keyframes fa-rise{0%{transform:translateY(16px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-rise-sm{0%{transform:translateY(10px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  .fa-in{opacity:0;animation:fa-rise .7s cubic-bezier(.2,.7,.2,1) forwards;}
+  .fa-in-sm{opacity:0;animation:fa-rise-sm .5s cubic-bezier(.2,.7,.2,1) forwards;}
+  @media (prefers-reduced-motion:reduce){*{animation-duration:.001s!important;}.fa-in,.fa-in-sm{opacity:1!important;transform:none!important;}}
+</style>
+</helmet>
+<div data-screen-label="Training Hub" style="position:relative;display:flex;flex-direction:column;min-height:100dvh;width:100%;overflow-x:hidden;background:radial-gradient(120% 90% at 50% 6%,#0e1a2d 0%,#080e1a 44%,#04060c 100%);color:#EAF2FB;font-family:'Archivo',system-ui,sans-serif;--accent:{{ accent }};">
+
+  <div style="position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.4;background:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0px,rgba(255,255,255,.02) 1px,transparent 1px,transparent 4px);"></div>
+  <div style="position:absolute;top:20px;left:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;top:20px;right:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+
+  <!-- TOP BAR -->
+  <header style="position:relative;z-index:6;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px clamp(20px,3.4vw,58px);">
+    <a href="Assessment.dc.html" style="min-width:120px;display:inline-flex;align-items:center;gap:8px;color:#8EA1B8;font:600 12.5px 'Archivo';">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M15 5l-7 7 7 7"/></svg>The scan
+    </a>
+    <div style="display:flex;align-items:center;gap:11px;">
+      <svg width="20" height="20" viewBox="0 0 32 32" fill="none"><path d="M16 2 28 9v14L16 30 4 23V9z" style="stroke:var(--accent,#22D3EE);stroke-width:1.5;fill:color-mix(in srgb,var(--accent,#22D3EE) 12%,transparent);"/><circle cx="16" cy="16" r="4" style="stroke:var(--accent,#22D3EE);stroke-width:1.5;fill:none;"/></svg>
+      <span style="font:800 12.5px 'Archivo';letter-spacing:.05em;">ATTACKING MID <span style="color:var(--accent,#22D3EE);">TRAINING</span></span>
+    </div>
+    <div style="min-width:120px;display:flex;justify-content:flex-end;font:600 10px 'IBM Plex Mono';letter-spacing:.14em;color:#61748c;">{{ doneCountLabel }}</div>
+  </header>
+
+  <main style="position:relative;z-index:3;flex:1;min-height:0;width:100%;max-width:1120px;margin:0 auto;padding:8px clamp(18px,3vw,52px) 80px;">
+
+    <!-- HERO -->
+    <div class="fa-in" style="display:flex;flex-wrap:wrap;align-items:center;gap:18px;justify-content:space-between;padding:22px 24px;border-radius:20px;border:1px solid {{ heroBorder }};background:{{ heroBg }};margin-bottom:14px;">
+      <div style="display:flex;align-items:center;gap:16px;min-width:0;">
+        <div style="font-size:44px;line-height:1;flex-shrink:0;">{{ heroEmoji }}</div>
+        <div style="min-width:0;">
+          <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:#7688a0;margin-bottom:5px;">{{ heroKicker }}</div>
+          <div style="font:800 clamp(22px,3vw,32px)/1 'Archivo';letter-spacing:-0.02em;color:{{ heroColor }};">{{ heroName }}</div>
+          <div style="margin-top:6px;font:500 12.5px/1.4 'Archivo';color:#9FB0C5;max-width:440px;text-wrap:pretty;">{{ heroSub }}</div>
+        </div>
+      </div>
+      <a href="Assessment.dc.html" style="display:inline-flex;align-items:center;gap:9px;padding:14px 24px;border-radius:12px;border:0;background:var(--accent,#22D3EE);color:#03121a;font:700 14px 'Archivo';flex-shrink:0;">{{ heroCta }}
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:#03121a;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12h13M12 6l6 6-6 6"/></svg>
+      </a>
+    </div>
+
+    <!-- EVIDENCE LADDER -->
+    <div class="fa-in" style="display:flex;gap:8px;margin-bottom:32px;animation-delay:.06s;">
+      <sc-for list="{{ ladder }}" as="l" hint-placeholder-count="4">
+        <div style="flex:1;padding:12px 14px;border-radius:13px;border:1px solid {{ l.border }};background:{{ l.bg }};">
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <span style="font:800 12px 'Archivo';color:{{ l.color }};">{{ l.name }}</span>
+            <span style="font:700 9px 'IBM Plex Mono';color:{{ l.tickColor }};">{{ l.tick }}</span>
+          </div>
+          <div style="margin-top:3px;font:500 10px/1.35 'Archivo';color:#7688a0;">{{ l.need }}</div>
+        </div>
+      </sc-for>
+    </div>
+
+    <!-- GROUPS -->
+    <sc-for list="{{ groups }}" as="g" hint-placeholder-count="4">
+      <div class="fa-in-sm" style="margin-bottom:26px;">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+          <span style="font:800 13px 'Archivo';letter-spacing:.02em;color:#EAF2FB;">{{ g.title }}</span>
+          <span style="flex:1;height:1px;background:rgba(120,140,166,.16);"></span>
+          <span style="font:600 9px 'IBM Plex Mono';letter-spacing:.16em;color:#61748c;">{{ g.sub }}</span>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px;">
+          <sc-for list="{{ g.items }}" as="it" hint-placeholder-count="3">
+            <a href="{{ it.href }}" style="display:flex;flex-direction:column;gap:9px;padding:16px 17px;border-radius:15px;border:1px solid {{ it.border }};background:rgba(10,16,28,.5);transition:border-color .16s ease,transform .16s ease;" style-hover="transform:translateY(-3px);border-color:color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);">
+              <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;">
+                <span style="font:800 15px 'Archivo';letter-spacing:-0.01em;color:#F2F8FE;">{{ it.name }}</span>
+                <span style="flex-shrink:0;display:inline-flex;align-items:center;gap:5px;font:700 9px 'IBM Plex Mono';letter-spacing:.08em;color:{{ it.statColor }};">{{ it.statTick }}{{ it.stat }}</span>
+              </div>
+              <div style="font:500 12px/1.5 'Archivo';color:#9FB0C5;text-wrap:pretty;">{{ it.blurb }}</div>
+              <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:2px;">
+                <sc-for list="{{ it.traits }}" as="t" hint-placeholder-count="2">
+                  <span style="font:700 9px 'IBM Plex Mono';letter-spacing:.06em;color:#7688a0;border:1px solid rgba(120,140,166,.2);border-radius:6px;padding:2px 6px;">{{ t.k }}</span>
+                </sc-for>
+              </div>
+            </a>
+          </sc-for>
+        </div>
+      </div>
+    </sc-for>
+
+    <div class="fa-in-sm" style="margin-top:8px;font:500 10px/1.6 'IBM Plex Mono';letter-spacing:.1em;color:#4f627a;text-align:center;">EVERY GAME LOGS TO ITS OWN DEVICE-LOCAL RECORD · A SOFT OBSERVATIONAL READ, NEVER AN ARCHETYPE VERDICT · am-hub-1.0</div>
+  </main>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1160,&quot;height&quot;:900},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#22D3EE&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#22D3EE&quot;,&quot;#A78BFA&quot;,&quot;#C6FF3A&quot;,&quot;#FF7A45&quot;,&quot;#FF4D8D&quot;]}}">
+class Component extends DCLogic {
+  ARCH = {
+    maestro:   { name:'The Maestro',   emoji:'\uD83C\uDFBC', color:'#A78BFA' },
+    maverick:  { name:'The Maverick',  emoji:'\uD83D\uDD25', color:'#FF4D8D' },
+    phantom:   { name:'The Phantom',   emoji:'\uD83D\uDC7B', color:'#C8CED6' },
+    architect: { name:'The Architect', emoji:'\uD83D\uDCD0', color:'#22D3EE' },
+    dynamo:    { name:'The Dynamo',    emoji:'\u2699\uFE0F', color:'#FF7A45' },
+  };
+  GROUPS = [
+    { title:'The scan', sub:'START HERE', items:['result'] },
+    { title:'Read & decide', sub:'MEASURED COGNITION', items:['shoulder','ladder','freeze','chunk','panic','break','xg','halfturn','drift','ghost'] },
+    { title:'Body & risk', sub:'BEHAVIOUR + PHYSICAL', items:['hold','jump'] },
+    { title:'Over time & others\u2019 eyes', sub:'LONGITUDINAL + SOCIAL', items:['checkins','coach','partner'] },
+  ];
+  I = {
+    result:   { file:'Assessment.dc.html',            name:'The Scan',            blurb:'Fifteen questions to your creative archetype and 10-trait shape.', traits:['ALL'], key:'fa_am_result' },
+    shoulder: { file:'Shoulder-Check.dc.html',        name:'The Shoulder Check',  blurb:'Scan the pitch behind you, then play the pass from memory.',      traits:['MOV','VIS','HSP'], key:'fa_am_shoulder' },
+    ladder:   { file:'Vision-Ladder.dc.html',         name:'Vision Ladder',       blurb:'Read the best ball, faster and harder each rung.',                traits:['VIS','HSP'], key:'fa_am_ladder' },
+    freeze:   { file:'The-Freeze.dc.html',            name:'The Freeze',          blurb:'The move freezes early \u2014 read where the ball goes from the cues.', traits:['MOV','VIS'], key:'fa_am_freeze' },
+    chunk:    { file:'Chunk-Test.dc.html',            name:'The Chunk Test',      blurb:'Rebuild a real shape, then a scrambled one. The gap is football memory.', traits:['VIS','HSP'], key:'fa_am_chunk' },
+    panic:    { file:'The-Panic-Clock.dc.html',       name:'The Panic Clock',     blurb:'The same read, four shrinking clocks. Score is your decay curve.', traits:['CMP','VIS'], key:'fa_am_panic' },
+    break:    { file:'Break-The-Pattern.dc.html',     name:'Break the Pattern',   blurb:'Spot the one moment a safe loop can be split \u2014 and take it.', traits:['RSK','VIS'], key:'fa_am_break' },
+    xg:       { file:'The-xG-Dilemma.dc.html',        name:'The xG Dilemma',      blurb:'Shoot, square, or drive \u2014 values hidden until you commit.',    traits:['GOL','VIS'], key:'fa_am_xg' },
+    halfturn: { file:'The-Half-Turn.dc.html',         name:'The Half-Turn',       blurb:'Read the pressure, choose your body shape on the receive.',        traits:['HSP','DRB','CMP'], key:'fa_am_halfturn' },
+    drift:    { file:'The-90-Minute-Drift.dc.html',   name:'The 90-Minute Drift', blurb:'Same reads at kick-off and the death. How much sharpness survives?', traits:['ENG','VIS'], key:'fa_am_drift' },
+    ghost:    { file:'Ghost-Run.dc.html',             name:'Ghost Run',           blurb:'Move on the marker\u2019s blind side and arrive as the cross comes in.', traits:['MOV','GOL'], key:'fa_am_ghost' },
+    hold:     { file:'The-Hold.dc.html',              name:'The Hold',            blurb:'How long do you hold for the bigger ball \u2014 and after you lose it?', traits:['RSK','CMP'], key:'fa_am_hold' },
+    jump:     { file:'The-Jump.dc.html',              name:'The Jump',            blurb:'A slow-mo countermovement jump \u2014 lower-limb explosive power.',  traits:['EXP'], key:'fa_am_jump' },
+    checkins: { file:'Post-Match-Check-Ins.dc.html',  name:'Post-Match Check-Ins', blurb:'Three taps after every game. Over weeks it becomes your variance.', traits:['VAR','ENG'], key:'fa_am_checkins' },
+    coach:    { file:'Coach-360.dc.html',             name:'Coach 360',           blurb:'Ask someone who watches you play. The gap is the coaching.',       traits:['360'], key:'fa_am_coach' },
+    partner:  { file:'Partnership-Chemistry.dc.html', name:'Partnership Chemistry', blurb:'Pair your archetype with a teammate\u2019s. Send it to them.',    traits:['PAIR'], key:'fa_am_partner' },
+  };
+
+  state = { loaded:false };
+
+  componentDidMount(){
+    this._store={};
+    Object.keys(this.I).forEach(id=>{ const k=this.I[id].key; try{ const raw=localStorage.getItem(k); this._store[id]= raw? JSON.parse(raw) : null; }catch(e){ this._store[id]=null; } });
+    this.setState({ loaded:true });
+  }
+
+  _stat(id){
+    const v=this._store[id]; if(v==null) return null;
+    const m=v.measures||{};
+    switch(id){
+      case 'result':  return v.primaryName? v.primaryName.replace('The ','') : (v.primary||'done');
+      case 'shoulder':return (m.scanRatePerSec!=null? m.scanRatePerSec.toFixed(2)+'/s':'done');
+      case 'ladder':  return (m.depth!=null? 'depth '+m.depth : (v.score!=null?'depth '+v.score:'done'));
+      case 'freeze':  return (v.personalBest!=null? v.personalBest+' pts':'done');
+      case 'chunk':   return (m.schemaEdgePts!=null? 'edge '+m.schemaEdgePts:'done');
+      case 'panic':   return (m.composurePct!=null? m.composurePct+'%':'done');
+      case 'break':   return (m.breakRatingPct!=null? m.breakRatingPct+'%':'done');
+      case 'xg':      return (m.decisionQualityPct!=null? m.decisionQualityPct+'%':'done');
+      case 'halfturn':return (m.rightShapePct!=null? m.rightShapePct+'%':'done');
+      case 'drift':   return (m.retentionPct!=null? m.retentionPct+'%':'done');
+      case 'ghost':   return (m.ghostRatingPct!=null? m.ghostRatingPct+' gr':'done');
+      case 'hold':    return (m.intelPct!=null? m.intelPct+'%':(v.personalBest!=null?v.personalBest+' pts':'done'));
+      case 'jump':    return (m.heightCm!=null? m.heightCm+'cm':'logged');
+      case 'checkins':return (Array.isArray(v)? v.length+(v.length===1?' log':' logs'):'logged');
+      case 'coach':   return (v.raters!=null? v.raters+(v.raters===1?' rater':' raters'):'done');
+      case 'partner': return (v.fit!=null? v.fit+'% fit':'done');
+      default: return 'done';
+    }
+  }
+
+  renderVals(){
+    const accent=this.props.accent ?? '#22D3EE';
+    const res=this._store? this._store.result : null;
+    const scanned = res && res.primary && this.ARCH[res.primary];
+    // count completed measured tasks (Read&decide + Body&risk)
+    const measuredIds=['shoulder','ladder','freeze','chunk','panic','break','xg','halfturn','drift','ghost','hold','jump'];
+    const measuredDone = this._store? measuredIds.filter(id=>this._store[id]).length : 0;
+    const totalDone = this._store? Object.keys(this.I).filter(id=>this._store[id]).length : 0;
+    const coachDone = this._store && this._store.coach;
+
+    const base={ accent, doneCountLabel: totalDone+' / '+Object.keys(this.I).length+' PLAYED' };
+
+    // hero
+    if(scanned){ const A=this.ARCH[res.primary];
+      base.heroEmoji=A.emoji; base.heroKicker='YOUR ARCHETYPE'; base.heroName=A.name; base.heroColor=A.color;
+      base.heroBorder='color-mix(in srgb,'+A.color+' 40%,transparent)'; base.heroBg='color-mix(in srgb,'+A.color+' 7%,rgba(10,16,28,.5))';
+      base.heroSub='Every game below sharpens the picture. Add measured reads to strengthen your profile \u2014 your read gets truer, not just longer.';
+      base.heroCta='Retake';
+    } else {
+      base.heroEmoji='\u2753'; base.heroKicker='NOT SCANNED YET'; base.heroName='Run the scan first'; base.heroColor='#EAF2FB';
+      base.heroBorder='rgba(120,140,166,.24)'; base.heroBg='rgba(10,16,28,.5)';
+      base.heroSub='Fifteen questions, four minutes. Get your creative archetype, then come back and put it to the test.';
+      base.heroCta='Start';
+    }
+
+    // evidence ladder
+    const steps=[ {name:'Bronze', need:'The scan', ok:!!scanned},
+                  {name:'Silver', need:'+ 3 measured reads', ok:!!scanned&&measuredDone>=3},
+                  {name:'Gold',   need:'+ 6 measured reads', ok:!!scanned&&measuredDone>=6},
+                  {name:'Elite',  need:'+ a coach\u2019s eye', ok:!!scanned&&measuredDone>=6&&coachDone} ];
+    base.ladder=steps.map(s=>({ name:s.name, need:s.need, color:s.ok?accent:'#7688a0', tick:s.ok?'\u2713':'\u00b7',
+      tickColor:s.ok?'#3BE07A':'#4f627a', border:s.ok?('color-mix(in srgb,'+accent+' 34%,transparent)'):'rgba(120,140,166,.18)',
+      bg:s.ok?('color-mix(in srgb,'+accent+' 9%,transparent)'):'rgba(10,16,28,.4)' }));
+
+    // groups
+    base.groups=this.GROUPS.map(g=>({ title:g.title, sub:g.sub, items:g.items.map(id=>{ const it=this.I[id]; const done=!!(this._store&&this._store[id]); const stat=done?this._stat(id):'PLAY';
+      return { href:it.file, name:it.name, blurb:it.blurb, traits:it.traits.map(k=>({k})),
+        stat:stat, statTick: done?'\u2713 ':'', statColor: done?'#3BE07A':'#61748c',
+        border: done?'color-mix(in srgb,#3BE07A 22%,rgba(120,140,166,.2))':'rgba(120,140,166,.2)' };
+    }) }));
+    return base;
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:#04060c;}
+  a{color:var(--accent,#22D3EE);text-decoration:none;}
+  a:hover{opacity:.92;}
+  @keyframes fa-blink{0%,100%{opacity:1;}50%{opacity:.25;}}
+  @keyframes fa-rise{0%{transform:translateY(16px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-rise-sm{0%{transform:translateY(10px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-pop{0%{transform:scale(.5);opacity:0;}100%{transform:scale(1);opacity:1;}}
+  @keyframes fa-bar{from{transform:scaleX(0);}to{transform:scaleX(1);}}
+  .fa-in{opacity:0;animation:fa-rise .7s cubic-bezier(.2,.7,.2,1) forwards;}
+  .fa-in-sm{opacity:0;animation:fa-rise-sm .5s cubic-bezier(.2,.7,.2,1) forwards;}
+  @media (prefers-reduced-motion:reduce){*{animation-duration:.001s!important;}.fa-in,.fa-in-sm{opacity:1!important;transform:none!important;}}
+</style>
+</helmet>
+<div data-screen-label="The Overlap" style="position:relative;display:flex;flex-direction:column;min-height:100dvh;width:100%;overflow:hidden;background:radial-gradient(120% 90% at 50% 6%,#0e1a2d 0%,#080e1a 44%,#04060c 100%);color:#EAF2FB;font-family:'Archivo',system-ui,sans-serif;--accent:{{ accent }};">
+
+  <div style="position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.4;background:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0px,rgba(255,255,255,.02) 1px,transparent 1px,transparent 4px);"></div>
+  <div style="position:absolute;top:20px;left:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;top:20px;right:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;left:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;right:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+
+  <header style="position:relative;z-index:6;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px clamp(26px,3.4vw,58px);">
+    <div style="min-width:120px;display:flex;">
+      <button onClick="{{ back }}" style="display:inline-flex;align-items:center;gap:8px;background:none;border:0;cursor:pointer;color:#8EA1B8;font:600 12.5px 'Archivo';padding:0;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M15 5l-7 7 7 7"/></svg>{{ backLabel }}
+      </button>
+    </div>
+    <div style="display:flex;align-items:center;gap:11px;">
+      <svg width="20" height="20" viewBox="0 0 32 32" fill="none"><path d="M16 2 28 9v14L16 30 4 23V9z" style="stroke:var(--accent,#22D3EE);stroke-width:1.5;fill:color-mix(in srgb,var(--accent,#22D3EE) 12%,transparent);"/><path d="M10 12l6 4-6 4M22 12l-6 4 6 4" style="stroke:var(--accent,#22D3EE);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;fill:none;"/></svg>
+      <span style="font:800 12.5px 'Archivo';letter-spacing:.05em;">THE OVERLAP</span>
+      <span style="font:600 9px 'IBM Plex Mono';letter-spacing:.16em;color:#5c6e85;border:1px solid rgba(120,140,166,.24);border-radius:6px;padding:3px 6px;">2-PLAYER</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;min-width:120px;justify-content:flex-end;">
+      <button onClick="{{ toggleSound }}" title="{{ soundTitle }}" style="display:grid;place-items:center;width:28px;height:28px;border-radius:8px;border:1px solid rgba(120,140,166,.24);background:rgba(10,16,28,.5);cursor:pointer;color:{{ soundColor }};">
+        <sc-if value="{{ soundOn }}" hint-placeholder-val="{{ true }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></sc-if>
+        <sc-if value="{{ soundOff }}" hint-placeholder-val="{{ false }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M22 9l-6 6M16 9l6 6"/></svg></sc-if>
+      </button>
+      <sc-if value="{{ inMatch }}" hint-placeholder-val="{{ false }}">
+        <div style="display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:99px;border:1px solid rgba(120,140,166,.24);background:rgba(10,16,28,.5);font:700 11px 'IBM Plex Mono';letter-spacing:.06em;">
+          <span style="color:#FF5A6E;">{{ scoreA }}</span><span style="color:#4f627a;">&ndash;</span><span style="color:#6ea8ff;">{{ scoreD }}</span>
+          <span style="color:#61748c;">&middot; R{{ roundNo }}</span>
+        </div>
+      </sc-if>
+    </div>
+  </header>
+
+  <sc-if value="{{ isIntro }}" hint-placeholder-val="{{ true }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;text-align:center;padding:20px clamp(26px,4vw,58px) 60px;">
+      <div class="fa-in" style="display:inline-flex;align-items:center;gap:10px;margin-bottom:18px;font:600 12px 'IBM Plex Mono';letter-spacing:.34em;color:var(--accent,#22D3EE);">
+        <span style="width:6px;height:6px;border-radius:50%;background:var(--accent,#22D3EE);box-shadow:0 0 8px var(--accent,#22D3EE);animation:fa-blink 1.6s ease-in-out infinite;"></span>ONE PHONE &middot; TWO PLAYERS
+      </div>
+      <h1 class="fa-in" style="margin:0 0 16px;font:800 clamp(34px,5.2vw,68px)/0.98 'Archivo';letter-spacing:-0.03em;text-wrap:balance;max-width:800px;animation-delay:.06s;">Outside mid versus full-back. Read each other. Best of {{ roundsLabel }}.</h1>
+      <p class="fa-in" style="margin:0 0 28px;max-width:560px;font:400 clamp(15px,1.3vw,18px)/1.6 'Archivo';color:#9FB0C5;text-wrap:pretty;animation-delay:.12s;">The <span style="color:#FF8A98;font-weight:600;">attacker</span> secretly picks a move. Pass the phone; the <span style="color:#8FC0FF;font-weight:600;">defender</span> secretly picks a response. Reveal who won the duel &mdash; like rock-paper-scissors, but it&rsquo;s football, so reading your opponent is everything.</p>
+
+      <div class="fa-in" style="margin-bottom:26px;animation-delay:.16s;">
+        <div style="font:600 10px 'IBM Plex Mono';letter-spacing:.24em;color:#61748c;margin-bottom:11px;">MATCH LENGTH</div>
+        <div style="display:inline-flex;gap:9px;">
+          <sc-for list="{{ lenOptions }}" as="l" hint-placeholder-count="3">
+            <button onClick="{{ l.onPick }}" style="min-width:96px;padding:13px 16px;border-radius:12px;border:1px solid {{ l.border }};background:{{ l.bg }};color:{{ l.color }};cursor:pointer;font:700 14px 'Archivo';transition:border-color .15s,background .15s;" style-hover="border-color:color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);">Best of {{ l.n }}</button>
+          </sc-for>
+        </div>
+      </div>
+
+      <button onClick="{{ start }}" class="fa-in" style="display:inline-flex;align-items:center;gap:12px;padding:17px 42px;border-radius:13px;border:0;background:var(--accent,#22D3EE);color:#04060c;font:700 16px 'Archivo';cursor:pointer;box-shadow:0 14px 46px color-mix(in srgb,var(--accent,#22D3EE) 42%,transparent);transition:transform .16s ease;animation-delay:.22s;" style-hover="transform:translateY(-2px);">
+        Kick off
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12h13M12 6l6 6-6 6"/></svg>
+      </button>
+      <div class="fa-in" style="margin-top:18px;max-width:520px;font:400 11.5px/1.5 'IBM Plex Mono';letter-spacing:.02em;color:#5c6e85;animation-delay:.3s;">A social toy. The attacker&rsquo;s move tendencies are logged at zero weight &mdash; never scored, never your archetype.</div>
+    </main>
+  </sc-if>
+
+  <sc-if value="{{ isHandoff }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;text-align:center;padding:20px clamp(26px,4vw,58px) 60px;">
+      <div class="fa-in-sm" style="display:grid;place-items:center;width:88px;height:88px;border-radius:22px;margin-bottom:22px;background:{{ handTint }};border:1px solid {{ handBorder }};font-size:40px;">{{ handEmoji }}</div>
+      <div class="fa-in-sm" style="font:600 11px 'IBM Plex Mono';letter-spacing:.3em;color:{{ handColor }};margin-bottom:10px;animation-delay:.04s;">{{ handKicker }}</div>
+      <h1 class="fa-in-sm" style="margin:0 0 12px;font:800 clamp(28px,4.4vw,50px)/1.02 'Archivo';letter-spacing:-0.02em;animation-delay:.08s;">{{ handTitle }}</h1>
+      <p class="fa-in-sm" style="margin:0 0 30px;max-width:460px;font:400 15px/1.55 'Archivo';color:#9FB0C5;animation-delay:.12s;">{{ handSub }}</p>
+      <button onClick="{{ handGo }}" class="fa-in-sm" style="display:inline-flex;align-items:center;gap:11px;padding:16px 36px;border-radius:12px;border:0;background:{{ handColor }};color:#04060c;font:700 15px 'Archivo';cursor:pointer;animation-delay:.16s;transition:transform .16s ease;" style-hover="transform:translateY(-2px);">{{ handBtn }}
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:#04060c;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12h13M12 6l6 6-6 6"/></svg>
+      </button>
+    </main>
+  </sc-if>
+
+  <sc-if value="{{ isPick }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:12px clamp(20px,4vw,58px) 50px;gap:16px;">
+      <div style="text-align:center;">
+        <div style="font:600 11px 'IBM Plex Mono';letter-spacing:.28em;color:{{ pickColor }};margin-bottom:6px;">{{ pickKicker }}</div>
+        <h1 style="margin:0;font:800 clamp(24px,3.6vw,40px)/1.05 'Archivo';letter-spacing:-0.02em;">{{ pickTitle }}</h1>
+        <p style="margin:8px 0 0;font:500 13px 'IBM Plex Mono';letter-spacing:.06em;color:#61748c;">others look away &middot; pick in secret</p>
+      </div>
+      <div style="width:100%;max-width:560px;display:flex;flex-direction:column;gap:10px;">
+        <sc-for list="{{ pickOptions }}" as="o" hint-placeholder-count="5">
+          <button onClick="{{ o.onPick }}" class="fa-in-sm" style="display:flex;align-items:center;gap:14px;text-align:left;padding:15px 18px;border-radius:13px;border:1px solid {{ o.border }};background:rgba(10,16,28,.55);color:#EAF2FB;font:600 15px/1.3 'Archivo';cursor:pointer;transition:border-color .14s,background .14s,transform .14s;animation-delay:{{ o.delay }};" style-hover="border-color:{{ o.hover }};background:rgba(16,20,37,.85);transform:translateX(4px);">
+            <span style="flex:0 0 auto;width:34px;height:34px;border-radius:9px;display:grid;place-items:center;border:1px solid {{ o.dotBorder }};font-size:17px;">{{ o.emoji }}</span>
+            <span style="flex:1;">{{ o.text }}</span>
+            <span style="font:600 10px 'IBM Plex Mono';letter-spacing:.1em;color:#5c6e85;">{{ o.tag }}</span>
+          </button>
+        </sc-for>
+      </div>
+    </main>
+  </sc-if>
+
+  <sc-if value="{{ isReveal }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;text-align:center;padding:16px clamp(20px,4vw,58px) 60px;">
+      <div style="width:100%;max-width:620px;">
+        <div class="fa-in" style="font:600 11px 'IBM Plex Mono';letter-spacing:.3em;color:#7688a0;margin-bottom:8px;">ROUND {{ roundNo }}</div>
+        <h1 class="fa-in" style="margin:0 0 22px;font:800 clamp(30px,4.6vw,54px)/1.0 'Archivo';letter-spacing:-0.025em;color:{{ outcomeColor }};animation-delay:.04s;">{{ outcomeText }}</h1>
+
+        <div class="fa-in" style="display:flex;align-items:stretch;gap:12px;margin-bottom:20px;animation-delay:.08s;">
+          <div style="flex:1;padding:18px 16px;border-radius:15px;border:1px solid {{ aCardBorder }};background:{{ aCardBg }};">
+            <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.18em;color:#FF8A98;margin-bottom:10px;">ATTACKER PLAYED</div>
+            <div style="font-size:30px;margin-bottom:6px;">{{ aEmoji }}</div>
+            <div style="font:700 14px 'Archivo';color:#F2F8FE;">{{ aText }}</div>
+          </div>
+          <div style="flex:0 0 auto;display:grid;place-items:center;font:800 16px 'IBM Plex Mono';color:#4f627a;">VS</div>
+          <div style="flex:1;padding:18px 16px;border-radius:15px;border:1px solid {{ dCardBorder }};background:{{ dCardBg }};">
+            <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.18em;color:#8FC0FF;margin-bottom:10px;">DEFENDER PLAYED</div>
+            <div style="font-size:30px;margin-bottom:6px;">{{ dEmoji }}</div>
+            <div style="font:700 14px 'Archivo';color:#F2F8FE;">{{ dText }}</div>
+          </div>
+        </div>
+
+        <p class="fa-in" style="margin:0 auto 22px;max-width:480px;font:500 14px/1.55 'Archivo';color:#C6D3E2;text-wrap:pretty;animation-delay:.14s;">{{ outcomeNote }}</p>
+
+        <div class="fa-in" style="display:inline-flex;align-items:center;gap:16px;padding:12px 24px;border-radius:99px;border:1px solid rgba(120,140,166,.22);background:rgba(10,16,28,.5);margin-bottom:22px;animation-delay:.18s;">
+          <span style="font:700 13px 'IBM Plex Mono';color:#FF8A98;">Attacker {{ scoreA }}</span>
+          <span style="color:#4f627a;">&ndash;</span>
+          <span style="font:700 13px 'IBM Plex Mono';color:#8FC0FF;">{{ scoreD }} Defender</span>
+        </div>
+
+        <div class="fa-in" style="animation-delay:.22s;">
+          <button onClick="{{ nextRound }}" style="display:inline-flex;align-items:center;gap:10px;padding:15px 32px;border-radius:12px;border:0;background:var(--accent,#22D3EE);color:#04060c;font:700 15px 'Archivo';cursor:pointer;transition:transform .16s ease;" style-hover="transform:translateY(-2px);">{{ nextLabel }}
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:#04060c;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12h13M12 6l6 6-6 6"/></svg>
+          </button>
+        </div>
+      </div>
+    </main>
+  </sc-if>
+
+  <sc-if value="{{ isResults }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;text-align:center;padding:16px clamp(20px,4vw,58px) 72px;">
+      <div style="width:100%;max-width:600px;">
+        <div class="fa-in" style="font:600 11px 'IBM Plex Mono';letter-spacing:.38em;color:#7688a0;margin-bottom:10px;">FULL TIME</div>
+        <div class="fa-in" style="font-size:52px;margin-bottom:6px;animation-delay:.04s;">{{ winEmoji }}</div>
+        <h1 class="fa-in" style="margin:0 0 8px;font:800 clamp(30px,4.6vw,54px)/1.0 'Archivo';letter-spacing:-0.025em;animation-delay:.06s;">{{ winTitle }}</h1>
+        <p class="fa-in" style="margin:0 auto 24px;max-width:460px;font:400 15px/1.55 'Archivo';color:#B4C2D4;animation-delay:.1s;">{{ winSub }}</p>
+
+        <div class="fa-in" style="display:inline-flex;align-items:center;gap:18px;padding:16px 30px;border-radius:16px;border:1px solid rgba(120,140,166,.22);background:rgba(10,16,28,.5);margin-bottom:24px;animation-delay:.14s;">
+          <div><div style="font:800 34px 'Archivo';color:#FF8A98;line-height:1;">{{ scoreA }}</div><div style="font:600 9px 'IBM Plex Mono';letter-spacing:.12em;color:#8496ab;margin-top:5px;">ATTACKER</div></div>
+          <span style="font:700 20px 'IBM Plex Mono';color:#4f627a;">&ndash;</span>
+          <div><div style="font:800 34px 'Archivo';color:#8FC0FF;line-height:1;">{{ scoreD }}</div><div style="font:600 9px 'IBM Plex Mono';letter-spacing:.12em;color:#8496ab;margin-top:5px;">DEFENDER</div></div>
+        </div>
+
+        <div class="fa-in" style="padding:20px 22px;border-radius:16px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);margin-bottom:22px;text-align:left;animation-delay:.2s;">
+          <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:#61748c;margin-bottom:14px;">HOW THE ATTACKER PLAYED</div>
+          <div style="display:flex;flex-direction:column;gap:11px;">
+            <sc-for list="{{ profileBars }}" as="p" hint-placeholder-count="5">
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <div style="display:flex;align-items:baseline;justify-content:space-between;">
+                  <span style="font:700 12.5px 'Archivo';color:{{ p.labelColor }};">{{ p.emoji }} {{ p.label }}</span>
+                  <span style="font:800 12.5px 'IBM Plex Mono';color:{{ p.numColor }};">{{ p.count }}</span>
+                </div>
+                <div style="height:8px;border-radius:99px;background:rgba(120,140,166,.14);overflow:hidden;"><div style="height:100%;border-radius:99px;transform-origin:left;animation:fa-bar .8s cubic-bezier(.3,.8,.3,1) both;width:{{ p.barW }};{{ p.barLook }}"></div></div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div class="fa-in" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:13px;animation-delay:.26s;">
+          <button onClick="{{ rematch }}" style="display:inline-flex;align-items:center;gap:10px;padding:16px 30px;border-radius:12px;border:0;background:var(--accent,#22D3EE);color:#04060c;font:700 15px 'Archivo';cursor:pointer;box-shadow:0 12px 38px color-mix(in srgb,var(--accent,#22D3EE) 40%,transparent);transition:transform .16s ease;" style-hover="transform:translateY(-2px);">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:#04060c;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>Swap roles &amp; rematch
+          </button>
+          <a href="Assessment.dc.html" style="display:inline-flex;align-items:center;gap:9px;padding:16px 24px;border-radius:12px;border:1px solid rgba(157,176,198,.28);background:rgba(12,18,30,.4);color:#C6D3E2;font:600 14px 'Archivo';">Back to the scan</a>
+        </div>
+        <div class="fa-in" style="margin-top:20px;text-align:center;font:500 10px 'IBM Plex Mono';letter-spacing:.14em;color:#4f627a;animation-delay:.32s;">{{ dataLine }}</div>
+      </div>
+    </main>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:940,&quot;height&quot;:760},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#22D3EE&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#22D3EE&quot;,&quot;#A78BFA&quot;,&quot;#C6FF3A&quot;,&quot;#FF7A45&quot;,&quot;#FF4D8D&quot;]},&quot;motion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  ORDER = ['engine','deliverer','sentinel','weaver','renegade'];
+  ARCH = {
+    engine:   { short:'Engine',    emoji:'\uD83D\uDD01', color:'#FF7A2F' },
+    deliverer:{ short:'Deliverer', emoji:'\uD83C\uDFF9', color:'#22C776' },
+    sentinel: { short:'Sentinel',  emoji:'\uD83D\uDEE1\uFE0F', color:'#D9A521' },
+    weaver:   { short:'Weaver',    emoji:'\uD83E\uDDF5', color:'#22D3EE' },
+    renegade: { short:'Renegade',  emoji:'\uD83D\uDD25', color:'#F0359C' },
+  };
+  MOVES = [
+    { id:'renegade',  emoji:'\uD83D\uDD25', text:'Take him on \u2014 go outside', tag:'RENEGADE' },
+    { id:'weaver',    emoji:'\uD83E\uDDF5', text:'Cut inside into the pocket', tag:'WEAVER' },
+    { id:'engine',    emoji:'\uD83D\uDD01', text:'Knock it down the line and race', tag:'ENGINE' },
+    { id:'deliverer', emoji:'\uD83C\uDFF9', text:'Stand up an early cross', tag:'DELIVERER' },
+    { id:'sentinel',  emoji:'\uD83D\uDEE1\uFE0F', text:'Hold it up, wait for support', tag:'SENTINEL' },
+  ];
+  DEFS = [
+    { id:'dive',   emoji:'\uD83E\uDDB5', text:'Dive in \u2014 go to ground' },
+    { id:'jockey', emoji:'\uD83D\uDEA7', text:'Jockey and delay' },
+    { id:'outside',emoji:'\u2194\uFE0F', text:'Show him outside' },
+    { id:'inside', emoji:'\uD83D\uDD03', text:'Show him inside' },
+    { id:'drop',   emoji:'\uD83D\uDCC9', text:'Drop off, give ground' },
+  ];
+  // outcome: 'beat' (attacker point) | 'stop' (defender point) | 'even'
+  M = {
+    renegade:  { dive:'beat', jockey:'stop', outside:'even', inside:'even', drop:'beat' },
+    weaver:    { dive:'beat', jockey:'even', outside:'stop', inside:'beat', drop:'even' },
+    engine:    { dive:'beat', jockey:'even', outside:'beat', inside:'stop', drop:'stop' },
+    deliverer: { dive:'stop', jockey:'beat', outside:'even', inside:'even', drop:'beat' },
+    sentinel:  { dive:'even', jockey:'stop', outside:'even', inside:'even', drop:'beat' },
+  };
+  NOTES = {
+    beat:{
+      renegade:'Backed himself and got to the outside \u2014 the full-back committed and was beaten.',
+      weaver:'Slipped inside into the pocket the full-back left open. Gone.',
+      engine:'Knocked it down the line and simply outran him \u2014 no answer to that.',
+      deliverer:'Stood the cross up before the full-back could get tight. In the box.',
+      sentinel:'Held it up, waited, and the over-eager full-back gifted him the turn.' },
+    stop:{
+      renegade:'The jockey was patient \u2014 the take-on never came, forced back inside.',
+      weaver:'The inside was shut. Nowhere to cut into. Read perfectly.',
+      engine:'The line was cut off before he could run. No space, no pace.',
+      deliverer:'Closed down and blocked \u2014 the cross never got away.',
+      sentinel:'Jockeyed tight and forced the safe man backwards. No progress.' },
+    even:'A stalemate \u2014 nobody won that one. You read each other dead level. No point.',
+  };
+
+  state = { view:'intro', rounds:5, round:1, scoreA:0, scoreD:0, moveA:null, moveD:null, log:[], swapped:false };
+
+  componentDidMount(){ try{ this._soundOn=localStorage.getItem('fa_sound')!=='0'; }catch(e){ this._soundOn=true; } this.forceUpdate(); }
+
+  _audio(){ if(this._actx===undefined){ try{ this._actx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ this._actx=null; } } if(this._actx&&this._actx.state==='suspended') this._actx.resume(); return this._actx; }
+  _tone(f,d,t,g){ const c=this._audio(); if(!c||this._soundOn===false) return; const o=c.createOscillator(),a=c.createGain(); o.type=t||'sine'; o.frequency.value=f; o.connect(a); a.connect(c.destination); const n=c.currentTime; a.gain.setValueAtTime(0,n); a.gain.linearRampToValueAtTime(g||0.05,n+0.01); a.gain.exponentialRampToValueAtTime(0.0001,n+d); o.start(n); o.stop(n+d); }
+  _sfx(k){ if(this._soundOn===false) return; if(k==='beat'){ this._tone(620,0.09,'triangle',0.05); setTimeout(()=>this._tone(920,0.14,'triangle',0.05),70); } else if(k==='stop'){ this._tone(240,0.2,'sawtooth',0.045); } else if(k==='even'){ this._tone(400,0.14,'sine',0.04); } else if(k==='lock'){ this._tone(300,0.14,'sawtooth',0.04); setTimeout(()=>this._tone(560,0.12,'triangle',0.045),90); } else if(k==='done'){ this._tone(520,0.14,'triangle',0.05); setTimeout(()=>this._tone(700,0.14,'triangle',0.05),110); setTimeout(()=>this._tone(940,0.26,'triangle',0.05),230); } else if(k==='click'){ this._tone(430,0.08,'sine',0.04); } }
+  _toggleSound(){ const on=this._soundOn===false; this._soundOn=on; try{ localStorage.setItem('fa_sound', on?'1':'0'); }catch(e){} if(on){ this._audio(); this._sfx('click'); } this.forceUpdate(); }
+
+  _needed(){ return Math.floor(this.state.rounds/2)+1; }
+  _start(){ this._sfx('click'); this.setState({ view:'handoff', phase:'toAttacker', round:1, scoreA:0, scoreD:0, moveA:null, moveD:null, log:[] }); }
+  _handGo(){
+    this._sfx('click');
+    if(this.state.view==='handoff' && this.state.phase==='toAttacker') this.setState({ view:'pick', phase:'attacker' });
+    else if(this.state.view==='handoff' && this.state.phase==='toDefender') this.setState({ view:'pick', phase:'defender' });
+  }
+  _pick(id){
+    this._sfx('lock');
+    if(this.state.phase==='attacker'){ this.setState({ moveA:id, view:'handoff', phase:'toDefender' }); }
+    else { this._resolve(id); }
+  }
+  _resolve(defId){
+    const a=this.state.moveA, out=this.M[a][defId];
+    setTimeout(()=>this._sfx(out),120);
+    const scoreA=this.state.scoreA+(out==='beat'?1:0);
+    const scoreD=this.state.scoreD+(out==='stop'?1:0);
+    this.setState({ moveD:defId, view:'reveal', scoreA, scoreD, log:this.state.log.concat([{ a, d:defId, out }]) });
+  }
+  _nextRound(){
+    this._sfx('click');
+    const need=this._needed();
+    if(this.state.scoreA>=need || this.state.scoreD>=need || this.state.round>=this.state.rounds){ this._finish(); return; }
+    this.setState({ round:this.state.round+1, moveA:null, moveD:null, view:'handoff', phase:'toAttacker' });
+  }
+  _finish(){
+    this._sfx('done');
+    const votes={ engine:0,deliverer:0,sentinel:0,weaver:0,renegade:0 };
+    this.state.log.forEach(l=>votes[l.a]++);
+    const beats=this.state.log.filter(l=>l.out==='beat').length;
+    const meta={ scoreA:this.state.scoreA, scoreD:this.state.scoreD, rounds:this.state.log.length, votes, beats, weight:0 };
+    try{
+      const raw=localStorage.getItem('fa_om_overlap'); const prev=raw?JSON.parse(raw):{ matches:0, wins:0 };
+      const rec={ matches:(prev.matches||0)+1, wins:(prev.wins||0)+(this.state.scoreA>this.state.scoreD?1:0), weight:0, at:new Date().toISOString() };
+      localStorage.setItem('fa_om_overlap', JSON.stringify(rec));
+    }catch(e){}
+    this._meta=meta;
+    this.setState({ view:'results' });
+  }
+  _rematch(){ this._sfx('click'); this.setState({ swapped:!this.state.swapped, view:'handoff', phase:'toAttacker', round:1, scoreA:0, scoreD:0, moveA:null, moveD:null, log:[] }); }
+  _back(){ this._sfx('click'); if(this.state.view==='intro'){ window.location.href='Assessment.dc.html'; } else { this.setState({ view:'intro' }); } }
+
+  renderVals(){
+    const accent=this.props.accent ?? '#22D3EE';
+    const V=this.state.view, ph=this.state.phase;
+    const soundOn=this._soundOn!==false;
+
+    const base={
+      accent, backLabel:V==='intro'?'Back':'Quit', back:()=>this._back(),
+      soundOn, soundOff:!soundOn, soundColor:soundOn?accent:'#61748c', soundTitle:soundOn?'Sound on':'Sound off',
+      toggleSound:()=>this._toggleSound(),
+      isIntro:V==='intro', isHandoff:V==='handoff', isPick:V==='pick', isReveal:V==='reveal', isResults:V==='results',
+      inMatch: V==='handoff'||V==='pick'||V==='reveal',
+      scoreA:this.state.scoreA, scoreD:this.state.scoreD, roundNo:this.state.round,
+      roundsLabel:String(this.state.rounds),
+      start:()=>this._start(), handGo:()=>this._handGo(), nextRound:()=>this._nextRound(), rematch:()=>this._rematch(),
+    };
+
+    base.lenOptions=[3,5,7].map(n=>{ const sel=this.state.rounds===n; return { n:String(n), onPick:()=>{ this._sfx('click'); this.setState({ rounds:n }); },
+      border:sel?'color-mix(in srgb,'+accent+' 70%,transparent)':'rgba(120,140,166,.22)', bg:sel?'color-mix(in srgb,'+accent+' 15%,transparent)':'rgba(10,16,28,.5)', color:sel?'#F2F8FE':'#B4C2D4' }; });
+
+    const toDef = ph==='toDefender';
+    base.handEmoji = toDef?'\uD83D\uDEE1\uFE0F':'\uD83D\uDC5F';
+    base.handColor = toDef?'#6ea8ff':'#FF5A6E';
+    base.handTint = toDef?'rgba(110,168,255,.12)':'rgba(255,90,110,.12)';
+    base.handBorder = toDef?'rgba(110,168,255,.4)':'rgba(255,90,110,.4)';
+    base.handKicker = toDef?'PASS THE PHONE':'ROUND '+this.state.round;
+    base.handTitle = toDef?'Defender\u2019s turn':'Attacker\u2019s turn';
+    base.handSub = toDef?'The attacker has locked in their move. Hand the phone to the full-back \u2014 don\u2019t let them see it.':'Attacker only. Everyone else, look away. Tap when you\u2019re ready to choose your move in secret.';
+    base.handBtn = toDef?'I\u2019m the defender':'I\u2019m the attacker';
+
+    const atk = ph==='attacker';
+    base.pickColor = atk?'#FF5A6E':'#6ea8ff';
+    base.pickKicker = atk?'ATTACKER \u2014 THE OUTSIDE MID':'DEFENDER \u2014 THE FULL-BACK';
+    base.pickTitle = atk?'What\u2019s your move?':'How do you stop him?';
+    const src = atk?this.MOVES:this.DEFS;
+    base.pickOptions = src.map((o,i)=>{ const col=atk?this.ARCH[o.id].color:'#6ea8ff';
+      return { emoji:o.emoji, text:o.text, tag:atk?o.tag:'', delay:(0.03+i*0.05).toFixed(2)+'s',
+        border:'color-mix(in srgb,'+col+' 24%,transparent)', dotBorder:'color-mix(in srgb,'+col+' 40%,transparent)', hover:'color-mix(in srgb,'+col+' 62%,transparent)',
+        onPick:()=>this._pick(o.id) }; });
+
+    if(V==='reveal'){
+      const a=this.state.moveA, d=this.state.moveD, out=this.M[a][d];
+      const mv=this.MOVES.find(m=>m.id===a), df=this.DEFS.find(x=>x.id===d);
+      base.aEmoji=mv.emoji; base.aText=mv.text; base.dEmoji=df.emoji; base.dText=df.text;
+      base.outcomeText = out==='beat'?'BEATEN!':out==='stop'?'STOPPED!':'STALEMATE';
+      base.outcomeColor = out==='beat'?'#FF5A6E':out==='stop'?'#6ea8ff':'#9FB0C5';
+      base.outcomeNote = out==='even'?this.NOTES.even:this.NOTES[out][a];
+      base.aCardBorder = out==='beat'?'rgba(255,90,110,.5)':'rgba(120,140,166,.2)';
+      base.aCardBg = out==='beat'?'rgba(255,90,110,.08)':'rgba(10,16,28,.5)';
+      base.dCardBorder = out==='stop'?'rgba(110,168,255,.5)':'rgba(120,140,166,.2)';
+      base.dCardBg = out==='stop'?'rgba(110,168,255,.08)':'rgba(10,16,28,.5)';
+      const need=this._needed();
+      const matchOver = this.state.scoreA>=need || this.state.scoreD>=need || this.state.round>=this.state.rounds;
+      base.nextLabel = matchOver?'Full time':'Next round';
+    } else { base.aEmoji='';base.aText='';base.dEmoji='';base.dText='';base.outcomeText='';base.outcomeColor=accent;base.outcomeNote='';base.aCardBorder='transparent';base.aCardBg='transparent';base.dCardBorder='transparent';base.dCardBg='transparent';base.nextLabel='Next round'; }
+
+    Object.assign(base,{ winEmoji:'', winTitle:'', winSub:'', profileBars:[], dataLine:'' });
+    const m=this._meta;
+    if(m && V==='results'){
+      const aWon=m.scoreA>m.scoreD, draw=m.scoreA===m.scoreD;
+      base.winEmoji = draw?'\uD83E\uDD1D':aWon?'\u26BD':'\uD83D\uDEE1\uFE0F';
+      base.winTitle = draw?'Honours even.':aWon?'The outside mid wins it.':'The full-back holds firm.';
+      base.winSub = draw?'Neither of you could get the upper hand. Rematch to settle it.':aWon?'Beat your man more often than not \u2014 the flank belonged to the attacker.':'Read the wide man and shut him down. A full-back\u2019s masterclass.';
+      const votes=m.votes; const maxV=Math.max(...Object.values(votes),1);
+      base.profileBars=this.ORDER.map(id=>[id,votes[id]]).sort((a,b)=>b[1]-a[1]).map(([id,v],i)=>{ const isP=i===0&&v>0; const col=this.ARCH[id].color;
+        return { emoji:this.ARCH[id].emoji, label:this.ARCH[id].short, labelColor:isP?'#F2F8FE':'#9FB0C5', numColor:isP?col:'#9FB0C5',
+          count:String(v), barW:Math.round((v/maxV)*100)+'%',
+          barLook:isP?('background:linear-gradient(90deg,'+col+',color-mix(in srgb,'+col+' 45%,transparent));box-shadow:0 0 12px color-mix(in srgb,'+col+' 55%,transparent);'):'background:rgba(140,160,186,.4);' }; });
+      base.dataLine='2-PLAYER TOY \u00b7 WEIGHT 0 \u00b7 '+m.rounds+' ROUNDS \u00b7 '+m.beats+' TAKE-ONS WON';
+    }
+    return base;
+  }
+}
+</script>
+</body>
+</html>

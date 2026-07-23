@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:#04060c;}
+  a{color:var(--accent,#22D3EE);text-decoration:none;}
+  a:hover{opacity:.92;}
+  @keyframes fa-blink{0%,100%{opacity:1;}50%{opacity:.25;}}
+  @keyframes fa-rise{0%{transform:translateY(16px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-rise-sm{0%{transform:translateY(10px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-pop{0%{transform:scale(.7);opacity:0;}100%{transform:scale(1);opacity:1;}}
+  @keyframes fa-bar{from{transform:scaleX(0);}to{transform:scaleX(1);}}
+  .fa-in{opacity:0;animation:fa-rise .7s cubic-bezier(.2,.7,.2,1) forwards;}
+  .fa-in-sm{opacity:0;animation:fa-rise-sm .45s cubic-bezier(.2,.7,.2,1) forwards;}
+  @media (prefers-reduced-motion:reduce){*{animation-duration:.001s!important;}.fa-in,.fa-in-sm{opacity:1!important;transform:none!important;}}
+</style>
+</helmet>
+<div data-screen-label="Tape Test" style="position:relative;display:flex;flex-direction:column;min-height:100dvh;width:100%;overflow:hidden;background:radial-gradient(120% 90% at 50% 6%,#0e1a2d 0%,#080e1a 44%,#04060c 100%);color:#EAF2FB;font-family:'Archivo',system-ui,sans-serif;--accent:{{ accent }};">
+
+  <div style="position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.4;background:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0px,rgba(255,255,255,.02) 1px,transparent 1px,transparent 4px);"></div>
+  <div style="position:absolute;top:20px;left:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;top:20px;right:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;left:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;right:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+
+  <!-- ============ TOP BAR ============ -->
+  <header style="position:relative;z-index:6;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px clamp(26px,3.4vw,58px);">
+    <div style="min-width:120px;display:flex;">
+      <sc-if value="{{ showBack }}" hint-placeholder-val="{{ true }}">
+        <button onClick="{{ back }}" style="display:inline-flex;align-items:center;gap:8px;background:none;border:0;cursor:pointer;color:#8EA1B8;font:600 12.5px 'Archivo';padding:0;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M15 5l-7 7 7 7"/></svg>{{ backLabel }}
+        </button>
+      </sc-if>
+    </div>
+    <div style="display:flex;align-items:center;gap:11px;">
+      <svg width="20" height="20" viewBox="0 0 32 32" fill="none"><path d="M16 2 28 9v14L16 30 4 23V9z" style="stroke:var(--accent,#22D3EE);stroke-width:1.5;fill:color-mix(in srgb,var(--accent,#22D3EE) 12%,transparent);"/><path d="M13 12l7 4-7 4z" style="fill:var(--accent,#22D3EE);"/></svg>
+      <span style="font:800 12.5px 'Archivo';letter-spacing:.05em;">TAPE TEST</span>
+      <span style="font:600 9px 'IBM Plex Mono';letter-spacing:.16em;color:#5c6e85;border:1px solid rgba(120,140,166,.24);border-radius:6px;padding:3px 6px;">EVIDENCE</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;min-width:120px;justify-content:flex-end;">
+      <sc-if value="{{ isCoding }}" hint-placeholder-val="{{ false }}">
+        <span style="font:700 12px 'IBM Plex Mono';letter-spacing:.06em;color:color-mix(in srgb,var(--accent,#22D3EE) 82%,#fff);">{{ recCount }}<span style="color:#5c6e85;"> / 20</span></span>
+      </sc-if>
+    </div>
+  </header>
+
+  <!-- ============ INTRO ============ -->
+  <sc-if value="{{ isIntro }}" hint-placeholder-val="{{ true }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;text-align:center;padding:20px clamp(26px,4vw,58px) 60px;">
+      <div class="fa-in" style="display:inline-flex;align-items:center;gap:10px;margin-bottom:18px;font:600 12px 'IBM Plex Mono';letter-spacing:.32em;color:var(--accent,#22D3EE);">
+        <span style="width:6px;height:6px;border-radius:50%;background:var(--accent,#22D3EE);box-shadow:0 0 8px var(--accent,#22D3EE);animation:fa-blink 1.6s ease-in-out infinite;"></span>WHAT YOUR GAME ACTUALLY SHOWS
+      </div>
+      <h1 class="fa-in" style="margin:0 0 16px;font:800 clamp(34px,5.2vw,68px)/0.99 'Archivo';letter-spacing:-0.03em;text-wrap:balance;max-width:820px;animation-delay:.06s;">Code your own match. We&rsquo;ll read the pattern &mdash; you won&rsquo;t pick the label.</h1>
+      <p class="fa-in" style="margin:0 0 26px;max-width:600px;font:400 clamp(15px,1.3vw,18px)/1.6 'Archivo';color:#9FB0C5;text-wrap:pretty;animation-delay:.12s;">Scrub to each time you got the ball wide or high, and answer what you can see on the screen &mdash; yes or no, never &ldquo;what type am I.&rdquo; A player who thinks he&rsquo;s a dribbler codes everything as a take-on. Binaries take that bias away. Your archetype is <em>derived</em>, never selected.</p>
+
+      <div class="fa-in" style="width:100%;max-width:520px;margin-bottom:22px;animation-delay:.16s;">
+        <div style="font:600 10px 'IBM Plex Mono';letter-spacing:.24em;color:#61748c;margin-bottom:10px;text-align:left;">YOUR FILM (OPTIONAL)</div>
+        <input value="{{ url }}" onInput="{{ onUrlInput }}" placeholder="Paste a YouTube / Veo / Trace / video link" style="width:100%;padding:14px 16px;border-radius:12px;border:1px solid rgba(120,140,166,.28);background:rgba(10,16,28,.6);color:#EAF2FB;font:500 14px 'Archivo';outline:none;margin-bottom:8px;" />
+        <div style="font:400 11.5px/1.5 'Archivo';color:#61748c;text-align:left;">No film handy? Start without it &mdash; you can code from memory, though real tape is the point.</div>
+      </div>
+
+      <button onClick="{{ start }}" class="fa-in" style="display:inline-flex;align-items:center;gap:12px;padding:17px 40px;border-radius:13px;border:0;background:var(--accent,#22D3EE);color:#03121a;font:700 16px 'Archivo';cursor:pointer;box-shadow:0 14px 46px color-mix(in srgb,var(--accent,#22D3EE) 42%,transparent);transition:transform .16s ease;animation-delay:.22s;" style-hover="transform:translateY(-2px);">
+        {{ startLabel }}
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12h13M12 6l6 6-6 6"/></svg>
+      </button>
+      <div class="fa-in" style="margin-top:18px;max-width:520px;font:400 11.5px/1.5 'IBM Plex Mono';letter-spacing:.02em;color:#5c6e85;animation-delay:.3s;">The highest-validity read in the app. Target 20 receptions &mdash; score any time after 6.</div>
+    </main>
+  </sc-if>
+
+  <!-- ============ CODING ============ -->
+  <sc-if value="{{ isCoding }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:row;flex-wrap:wrap;align-items:flex-start;justify-content:center;overflow-y:auto;padding:6px clamp(16px,3vw,42px) 34px;gap:clamp(16px,3vw,30px);">
+
+      <!-- film + progress -->
+      <div style="width:min(400px,90vw);flex:1 1 320px;max-width:440px;">
+        <div style="position:relative;width:100%;aspect-ratio:16/9;border-radius:14px;overflow:hidden;border:1px solid rgba(120,140,166,.22);background:#060b14;margin-bottom:14px;">
+          <sc-if value="{{ hasFilm }}" hint-placeholder-val="{{ false }}">
+            <div style="width:100%;height:100%;">{{ filmEl }}</div>
+          </sc-if>
+          <sc-if value="{{ noFilm }}" hint-placeholder-val="{{ true }}">
+            <div style="width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;background:repeating-linear-gradient(135deg,rgba(120,140,166,.05) 0 10px,transparent 10px 20px);text-align:center;padding:16px;">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" style="stroke:#4f627a;stroke-width:1.6;"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M10 9l5 3-5 3z" style="fill:#4f627a;stroke:none;"/></svg>
+              <div style="font:600 11px 'IBM Plex Mono';letter-spacing:.14em;color:#5c6e85;">NO FILM &middot; CODING FROM MEMORY</div>
+            </div>
+          </sc-if>
+        </div>
+        <div style="height:7px;border-radius:99px;background:rgba(120,140,166,.16);overflow:hidden;margin-bottom:6px;"><div style="height:100%;border-radius:99px;background:var(--accent,#22D3EE);box-shadow:0 0 10px var(--accent,#22D3EE);width:{{ recPct }};transition:width .4s ease;"></div></div>
+        <div style="display:flex;justify-content:space-between;font:500 10px 'IBM Plex Mono';letter-spacing:.08em;color:#7688a0;"><span>{{ recCount }} RECEPTIONS CODED</span><span>TARGET 20</span></div>
+      </div>
+
+      <!-- coder -->
+      <div style="width:min(400px,92vw);flex:1 1 320px;max-width:440px;">
+
+        <!-- between receptions -->
+        <sc-if value="{{ isBetween }}" hint-placeholder-val="{{ true }}">
+          <div class="fa-in-sm" style="padding:20px 22px;border-radius:16px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);">
+            <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:#61748c;margin-bottom:12px;">SCRUB TO YOUR NEXT RECEPTION</div>
+            <button onClick="{{ logReception }}" style="width:100%;display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:16px;border-radius:12px;border:0;background:var(--accent,#22D3EE);color:#03121a;font:700 15px 'Archivo';cursor:pointer;box-shadow:0 10px 30px color-mix(in srgb,var(--accent,#22D3EE) 34%,transparent);transition:transform .14s ease;margin-bottom:16px;" style-hover="transform:translateY(-2px);">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" style="stroke:#03121a;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M12 5v14M5 12h14"/></svg>Log a reception
+            </button>
+
+            <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:#61748c;margin:4px 0 10px;">OFF-BALL COUNTERS &middot; SAME MATCH</div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <sc-for list="{{ offballRows }}" as="o" hint-placeholder-count="4">
+                <div style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:11px;border:1px solid rgba(120,140,166,.18);background:rgba(10,16,28,.4);">
+                  <span style="flex:1;font:600 12.5px 'Archivo';color:#C6D3E2;">{{ o.label }}</span>
+                  <button onClick="{{ o.dec }}" style="width:26px;height:26px;border-radius:8px;border:1px solid rgba(120,140,166,.3);background:rgba(10,16,28,.6);color:#9FB0C5;font:700 15px 'Archivo';cursor:pointer;line-height:1;">&minus;</button>
+                  <span style="min-width:20px;text-align:center;font:800 14px 'IBM Plex Mono';color:{{ o.color }};">{{ o.val }}</span>
+                  <button onClick="{{ o.inc }}" style="width:26px;height:26px;border-radius:8px;border:1px solid color-mix(in srgb,var(--accent,#22D3EE) 40%,transparent);background:color-mix(in srgb,var(--accent,#22D3EE) 12%,transparent);color:#EAF2FB;font:700 15px 'Archivo';cursor:pointer;line-height:1;">+</button>
+                </div>
+              </sc-for>
+            </div>
+
+            <button onClick="{{ score }}" disabled="{{ scoreLocked }}" style="width:100%;margin-top:18px;padding:14px;border-radius:12px;border:1px solid {{ scoreBorder }};background:{{ scoreBg }};color:{{ scoreColor }};font:700 14px 'Archivo';cursor:{{ scoreCursor }};opacity:{{ scoreOpacity }};transition:opacity .2s ease;">{{ scoreLabel }}</button>
+          </div>
+        </sc-if>
+
+        <!-- active reception question -->
+        <sc-if value="{{ isStepping }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:20px 22px;border-radius:16px;border:1px solid color-mix(in srgb,var(--accent,#22D3EE) 26%,transparent);background:rgba(10,16,28,.6);">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+              <span style="font:600 9px 'IBM Plex Mono';letter-spacing:.2em;color:var(--accent,#22D3EE);">RECEPTION {{ recNextNo }} &middot; {{ stepKicker }}</span>
+              <button onClick="{{ cancelRec }}" style="background:none;border:0;color:#61748c;font:600 11px 'Archivo';cursor:pointer;">cancel</button>
+            </div>
+            <h2 class="fa-in-sm" style="margin:0 0 18px;font:800 clamp(19px,2.4vw,26px)/1.2 'Archivo';letter-spacing:-0.01em;text-wrap:pretty;">{{ stepQuestion }}</h2>
+            <div style="display:flex;flex-direction:column;gap:9px;">
+              <sc-for list="{{ stepOptions }}" as="s" hint-placeholder-count="2">
+                <button onClick="{{ s.onPick }}" class="fa-in-sm" style="display:flex;align-items:center;gap:12px;text-align:left;padding:14px 16px;border-radius:12px;border:1px solid {{ s.border }};background:rgba(10,16,28,.5);color:#EAF2FB;font:600 14.5px 'Archivo';cursor:pointer;transition:border-color .12s,background .12s,transform .12s;animation-delay:{{ s.delay }};" style-hover="border-color:{{ s.hover }};background:rgba(14,22,37,.85);transform:translateY(-2px);">
+                  <span style="flex:0 0 auto;width:9px;height:9px;border-radius:50%;background:{{ s.dot }};"></span>
+                  <span style="flex:1;">{{ s.label }}</span>
+                </button>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+      </div>
+    </main>
+  </sc-if>
+
+  <!-- ============ RESULTS ============ -->
+  <sc-if value="{{ isResults }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:16px clamp(20px,4vw,58px) 72px;">
+      <div style="width:100%;max-width:640px;">
+        <div class="fa-in" style="text-align:center;margin-bottom:6px;font:600 11px 'IBM Plex Mono';letter-spacing:.38em;color:#7688a0;">DERIVED FROM YOUR TAPE</div>
+        <h1 class="fa-in" style="margin:0 0 6px;text-align:center;font:800 clamp(28px,4.2vw,50px)/1.03 'Archivo';letter-spacing:-0.025em;text-wrap:balance;animation-delay:.05s;">{{ resTitle }}</h1>
+        <p class="fa-in" style="margin:0 auto 24px;max-width:520px;text-align:center;font:400 15px/1.55 'Archivo';color:#B4C2D4;text-wrap:pretty;animation-delay:.1s;">{{ resSub }}</p>
+
+        <div class="fa-in" style="padding:22px 24px;border-radius:18px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);margin-bottom:20px;animation-delay:.16s;">
+          <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:#61748c;margin-bottom:16px;">WHAT THE TAPE SHOWS &middot; {{ codedCount }} RECEPTIONS</div>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <sc-for list="{{ profileBars }}" as="p" hint-placeholder-count="5">
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <div style="display:flex;align-items:baseline;justify-content:space-between;">
+                  <span style="font:700 12.5px 'Archivo';color:{{ p.labelColor }};">{{ p.emoji }} {{ p.label }}</span>
+                  <span style="font:800 12.5px 'IBM Plex Mono';color:{{ p.numColor }};">{{ p.pct }}</span>
+                </div>
+                <div style="height:9px;border-radius:99px;background:rgba(120,140,166,.14);overflow:hidden;"><div style="height:100%;border-radius:99px;transform-origin:left;animation:fa-bar .8s cubic-bezier(.3,.8,.3,1) both;width:{{ p.barW }};{{ p.barLook }}"></div></div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <!-- The Mirror (if a prior scan exists) -->
+        <sc-if value="{{ showMirror }}" hint-placeholder-val="{{ false }}">
+          <div class="fa-in" style="padding:20px 22px;border-radius:16px;border:1px solid color-mix(in srgb,var(--accent,#22D3EE) 30%,transparent);background:color-mix(in srgb,var(--accent,#22D3EE) 8%,transparent);margin-bottom:20px;animation-delay:.2s;">
+            <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:var(--accent,#22D3EE);margin-bottom:10px;">THE MIRROR</div>
+            <p style="margin:0;font:500 15px/1.55 'Archivo';color:#EAF2FB;text-wrap:pretty;">{{ mirrorCopy }}</p>
+          </div>
+        </sc-if>
+
+        <p class="fa-in" style="margin:0 0 24px;padding:14px 18px;border-radius:12px;border:1px dashed rgba(120,140,166,.28);font:400 12.5px/1.55 'Archivo';color:#8496ab;text-wrap:pretty;animation-delay:.24s;">This is observed behaviour, not self-image &mdash; the strongest read the app can take. The more receptions you code, and the more matches you add, the more it can trust the pattern.</p>
+
+        <div class="fa-in" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:13px;animation-delay:.3s;">
+          <button onClick="{{ again }}" style="display:inline-flex;align-items:center;gap:10px;padding:16px 30px;border-radius:12px;border:0;background:var(--accent,#22D3EE);color:#03121a;font:700 15px 'Archivo';cursor:pointer;box-shadow:0 12px 38px color-mix(in srgb,var(--accent,#22D3EE) 40%,transparent);transition:transform .16s ease;" style-hover="transform:translateY(-2px);">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:#03121a;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>Code another match
+          </button>
+          <sc-if value="{{ showDone }}" hint-placeholder-val="{{ false }}">
+            <button onClick="{{ done }}" style="display:inline-flex;align-items:center;gap:9px;padding:16px 26px;border-radius:12px;border:1px solid color-mix(in srgb,var(--accent,#22D3EE) 45%,transparent);background:rgba(12,18,30,.4);color:#EAF2FB;font:600 14px 'Archivo';cursor:pointer;">Done</button>
+          </sc-if>
+          <sc-if value="{{ showToScan }}" hint-placeholder-val="{{ true }}">
+            <a href="Assessment.dc.html" style="display:inline-flex;align-items:center;gap:9px;padding:16px 24px;border-radius:12px;border:1px solid rgba(157,176,198,.28);background:rgba(12,18,30,.4);color:#C6D3E2;font:600 14px 'Archivo';">Back to the scan</a>
+          </sc-if>
+        </div>
+        <div class="fa-in" style="margin-top:20px;text-align:center;font:500 10px 'IBM Plex Mono';letter-spacing:.14em;color:#4f627a;animation-delay:.38s;">{{ dataLine }}</div>
+      </div>
+    </main>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:940,&quot;height&quot;:760},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#22D3EE&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#22D3EE&quot;,&quot;#A78BFA&quot;,&quot;#C6FF3A&quot;,&quot;#FF7A45&quot;,&quot;#FF4D8D&quot;]},&quot;motion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;embedded&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  ORDER = ['ARTIST','GHOST','SPEEDSTER','PLAYMAKER','HYBRID'];
+  ARCH = {
+    ARTIST:   { name:'The Artist',   emoji:'\uD83C\uDFA8', color:'#E0218A' },
+    GHOST:    { name:'The Ghost',    emoji:'\uD83D\uDC7B', color:'#C8CED6' },
+    SPEEDSTER:{ name:'The Speedster',emoji:'\u26A1',       color:'#2F6BFF' },
+    PLAYMAKER:{ name:'The Playmaker',emoji:'\uD83C\uDFAD', color:'#14B8A6' },
+    HYBRID:   { name:'The Hybrid',   emoji:'\uD83D\uDC51', color:'#22D3EE' },
+  };
+  TARGET = 20;
+  MIN_SCORE = 6;
+
+  OFFBALL = [
+    { key:'sprintBehind', label:'Sprints made in behind',    arch:'SPEEDSTER' },
+    { key:'boxArrivals',  label:'Arrivals in the opp. box',  arch:'GHOST' },
+    { key:'pressFB',      label:'Presses on their full-back',arch:'HYBRID' },
+    { key:'recovery',     label:'Recovery runs into our half',arch:'HYBRID' },
+  ];
+
+  state = {
+    view:'intro', url:'', videoKind:'none', videoSrc:'',
+    receptions:[], offball:{ sprintBehind:0, boxArrivals:0, pressFB:0, recovery:0 },
+    recStep:-1, cur:{},
+  };
+
+  componentDidMount(){
+    try{ this._soundOn=localStorage.getItem('fa_sound')!=='0'; }catch(e){ this._soundOn=true; }
+    try{ const r=localStorage.getItem('fa_wing_result'); this._prior=r?JSON.parse(r):null; }catch(e){ this._prior=null; }
+    this.forceUpdate();
+  }
+
+  _audio(){ if(this._actx===undefined){ try{ this._actx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ this._actx=null; } } if(this._actx&&this._actx.state==='suspended') this._actx.resume(); return this._actx; }
+  _tone(f,d,t,g){ const c=this._audio(); if(!c||this._soundOn===false) return; const o=c.createOscillator(),a=c.createGain(); o.type=t||'sine'; o.frequency.value=f; o.connect(a); a.connect(c.destination); const n=c.currentTime; a.gain.setValueAtTime(0,n); a.gain.linearRampToValueAtTime(g||0.05,n+0.01); a.gain.exponentialRampToValueAtTime(0.0001,n+d); o.start(n); o.stop(n+d); }
+  _sfx(k){ if(this._soundOn===false) return; if(k==='tap') this._tone(500,0.08,'triangle',0.045); else if(k==='logged'){ this._tone(560,0.1,'triangle',0.05); setTimeout(()=>this._tone(780,0.12,'triangle',0.045),55); } else if(k==='done'){ this._tone(520,0.14,'triangle',0.05); setTimeout(()=>this._tone(700,0.14,'triangle',0.05),110); setTimeout(()=>this._tone(940,0.26,'triangle',0.05),230); } else if(k==='click'){ this._tone(430,0.08,'sine',0.04); } }
+
+  _parseUrl(u){
+    u=(u||'').trim();
+    if(!u) return { kind:'none', src:'' };
+    let m=u.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([\w-]{11})/);
+    if(m) return { kind:'yt', src:'https://www.youtube.com/embed/'+m[1] };
+    if(/\.(mp4|webm|ogg|mov|m4v)(\?|$)/i.test(u)) return { kind:'mp4', src:u };
+    return { kind:'none', src:'' };
+  }
+  _onUrlInput(e){ this.setState({ url:e.target.value }); }
+
+  _start(){ this._sfx('click'); const v=this._parseUrl(this.state.url); this.setState({ view:'coding', videoKind:v.kind, videoSrc:v.src, recStep:-1 }); }
+  _logReception(){ this._sfx('tap'); this.setState({ recStep:0, cur:{} }); }
+  _cancelRec(){ this._sfx('click'); this.setState({ recStep:-1, cur:{} }); }
+  _answerStep(field, val, next){
+    this._sfx('tap');
+    const cur={ ...this.state.cur, [field]:val };
+    if(field==='touch' && val===false){ this.setState({ recStep:-1, cur:{} }); return; } // not a reception
+    if(next===null){ this._commitReception(cur); return; }
+    this.setState({ cur, recStep:next });
+  }
+  _commitReception(cur){
+    this._sfx('logged');
+    const receptions=this.state.receptions.concat([cur]);
+    this.setState({ receptions, recStep:-1, cur:{} });
+  }
+  _offInc(key,d){ this._sfx('tap'); this.setState(st=>({ offball:{ ...st.offball, [key]:Math.max(0,(st.offball[key]||0)+d) } })); }
+
+  _derive(){
+    const t={ ARTIST:0,GHOST:0,SPEEDSTER:0,PLAYMAKER:0,HYBRID:0 };
+    for(const r of this.state.receptions){
+      if(r.touch===false) continue;
+      if(r.tried){
+        if(r.defNear){ t.ARTIST += r.past?2:1; }
+        else { t.SPEEDSTER += 2; } // ran at space, not the man
+      } else {
+        if(r.loc==='Box'){ t.GHOST += 2; }
+        else if(r.loc==='Half-space' && r.ballEnd==='Forward'){ t.PLAYMAKER += 2; }
+        else if(r.loc==='Touchline' && r.ballEnd==='Forward'){ t.ARTIST += 1; }
+        else if(r.loc==='Deep'){ t.HYBRID += 1; }
+      }
+      if(r.loc==='Box' && r.ballEnd!=='Lost'){ t.GHOST += 1; } // box presence
+    }
+    const o=this.state.offball;
+    t.SPEEDSTER += o.sprintBehind; t.GHOST += o.boxArrivals; t.HYBRID += o.pressFB + o.recovery;
+    const total=this.ORDER.reduce((s,k)=>s+t[k],0);
+    const prof={}; this.ORDER.forEach(k=>{ prof[k]= total>0? t[k]/total : 0; });
+    const ranked=this.ORDER.slice().sort((a,b)=>prof[b]-prof[a]);
+    return { tally:t, prof, ranked, total, lead:ranked[0], second:ranked[1] };
+  }
+  _score(){
+    if(this.state.receptions.filter(r=>r.touch!==false).length < this.MIN_SCORE) return;
+    this._sfx('done');
+    const d=this._derive();
+    const coded=this.state.receptions.filter(r=>r.touch!==false).length;
+    const meta={ profile:d.prof, tally:d.tally, lead:d.lead, second:d.second, coded, offball:this.state.offball, difficulty:null };
+    try{
+      const raw=localStorage.getItem('fa_tape_progress'); const prev=raw?JSON.parse(raw):{ runs:0 };
+      localStorage.setItem('fa_tape_progress', JSON.stringify({ runs:(prev.runs||0)+1, last:{ ...meta, completedAt:new Date().toISOString() } }));
+    }catch(e){}
+    // additive merge into the scan result (evidence channel) — never clobbers the archetype
+    try{
+      const raw=localStorage.getItem('fa_wing_result');
+      if(raw){ const j=JSON.parse(raw); j.tape={ profile:d.prof, lead:d.lead, coded, at:new Date().toISOString() }; localStorage.setItem('fa_wing_result', JSON.stringify(j)); }
+    }catch(e){}
+    this._meta=d; this._coded=coded;
+    this.setState({ view:'results' });
+    if(this.props.embedded && typeof this.props.onDone==='function'){ try{ this.props.onDone(d.tally, meta); }catch(e){} }
+  }
+  _again(){ this._sfx('click'); this.setState({ view:'intro', url:'', videoKind:'none', videoSrc:'', receptions:[], offball:{ sprintBehind:0,boxArrivals:0,pressFB:0,recovery:0 }, recStep:-1, cur:{} }); }
+  _done(){ if(typeof this.props.onDone==='function'){ try{ this.props.onDone(this._meta&&this._meta.tally, this._meta); }catch(e){} } }
+  _back(){ this._sfx('click'); if(this.state.view==='coding'){ this.setState({ view:'intro', recStep:-1 }); } else { window.location.href='Assessment.dc.html'; } }
+  _toggleSound(){ const on=this._soundOn===false; this._soundOn=on; try{ localStorage.setItem('fa_sound', on?'1':'0'); }catch(e){} this.forceUpdate(); }
+
+  _stepDef(step){
+    const A=this.props.accent ?? '#22D3EE';
+    const yn=(field,next,yLabel,nLabel)=>({ kind:'yn', opts:[
+      { label:yLabel||'Yes', val:true,  onPick:()=>this._answerStep(field,true, typeof next==='function'?next(true):next), dot:A },
+      { label:nLabel||'No',  val:false, onPick:()=>this._answerStep(field,false,typeof next==='function'?next(false):next), dot:'#61748c' } ] });
+    switch(step){
+      case 0: return { kicker:'1 OF 6', q:'Did you get a touch in a wide or attacking area?', ...yn('touch',1,'Yes \u2014 I received it','No \u2014 skip this one') };
+      case 1: return { kicker:'2 OF 6', q:'Was a defender within two yards of you?', ...yn('defNear',2,'Yes, tight','No, I had space') };
+      case 2: return { kicker:'3 OF 6', q:'Did you try to go past him?', ...yn('tried',(v)=>v?3:4,'Yes, I took him on','No') };
+      case 3: return { kicker:'4 OF 6', q:'Did you get past him?', ...yn('past',4,'Yes, beat him','No, lost it / won a foul') };
+      case 4: return { kicker:'5 OF 6', q:'Where did the ball end up?', kind:'choice', opts:[
+        { label:'Forward',  val:'Forward',  onPick:()=>this._answerStep('ballEnd','Forward',5) },
+        { label:'Sideways', val:'Sideways', onPick:()=>this._answerStep('ballEnd','Sideways',5) },
+        { label:'Backward', val:'Backward', onPick:()=>this._answerStep('ballEnd','Backward',5) },
+        { label:'Lost it',  val:'Lost',     onPick:()=>this._answerStep('ballEnd','Lost',5) } ] };
+      case 5: return { kicker:'6 OF 6', q:'Where were you when it left your foot?', kind:'choice', opts:[
+        { label:'Touchline',  val:'Touchline',  onPick:()=>this._answerStep('loc','Touchline',null) },
+        { label:'Half-space', val:'Half-space', onPick:()=>this._answerStep('loc','Half-space',null) },
+        { label:'In the box', val:'Box',        onPick:()=>this._answerStep('loc','Box',null) },
+        { label:'Deep / own half', val:'Deep',  onPick:()=>this._answerStep('loc','Deep',null) } ] };
+      default: return { kicker:'', q:'', kind:'yn', opts:[] };
+    }
+  }
+
+  renderVals(){
+    const accent=this.props.accent ?? '#22D3EE';
+    const V=this.state.view;
+    const embedded=!!this.props.embedded;
+    const coded=this.state.receptions.filter(r=>r.touch!==false).length;
+
+    const base={
+      accent,
+      isIntro:V==='intro', isCoding:V==='coding', isResults:V==='results',
+      showBack:!(embedded&&V==='intro'), backLabel:V==='coding'?'Restart':'Back',
+      back:()=>this._back(), start:()=>this._start(), again:()=>this._again(), done:()=>this._done(),
+      onUrlInput:(e)=>this._onUrlInput(e), url:this.state.url,
+      logReception:()=>this._logReception(), cancelRec:()=>this._cancelRec(), score:()=>this._score(),
+      startLabel:this._parseUrl(this.state.url).kind!=='none'?'Load film & start coding':'Start coding',
+      recCount:coded, recPct:Math.round((coded/this.TARGET)*100)+'%', recNextNo:coded+1,
+      showDone:embedded, showToScan:!embedded,
+      // video — element built here so a src only exists once resolved (never a raw hole in the DOM)
+      hasFilm:this.state.videoKind==='yt'||this.state.videoKind==='mp4', noFilm:!(this.state.videoKind==='yt'||this.state.videoKind==='mp4'),
+      filmEl: this.state.videoKind==='yt'
+        ? React.createElement('iframe',{ src:this.state.videoSrc, allow:'accelerometer;encrypted-media;picture-in-picture', allowFullScreen:true, style:{ width:'100%', height:'100%', border:0, display:'block' } })
+        : this.state.videoKind==='mp4'
+        ? React.createElement('video',{ src:this.state.videoSrc, controls:true, playsInline:true, style:{ width:'100%', height:'100%', objectFit:'contain', background:'#000', display:'block' } })
+        : null,
+      // coder state
+      isBetween:this.state.recStep===-1, isStepping:this.state.recStep>=0,
+    };
+
+    // off-ball rows
+    base.offballRows=this.OFFBALL.map(o=>({ label:o.label, val:this.state.offball[o.key]||0,
+      color:(this.state.offball[o.key]||0)>0?this.ARCH[o.arch].color:'#7688a0',
+      inc:()=>this._offInc(o.key,1), dec:()=>this._offInc(o.key,-1) }));
+
+    // score button
+    const canScore=coded>=this.MIN_SCORE;
+    base.scoreLocked=!canScore;
+    base.scoreLabel=canScore?('Score my tape \u2014 '+coded+' receptions'):('Code '+(this.MIN_SCORE-coded)+' more to score');
+    base.scoreBorder=canScore?'color-mix(in srgb,'+accent+' 55%,transparent)':'rgba(120,140,166,.22)';
+    base.scoreBg=canScore?'color-mix(in srgb,'+accent+' 14%,transparent)':'rgba(10,16,28,.4)';
+    base.scoreColor=canScore?'#F2F8FE':'#61748c';
+    base.scoreCursor=canScore?'pointer':'not-allowed';
+    base.scoreOpacity=canScore?'1':'.7';
+
+    // active step
+    const sd=this._stepDef(this.state.recStep>=0?this.state.recStep:0);
+    base.stepKicker=sd.kicker; base.stepQuestion=sd.q;
+    base.stepOptions=(sd.opts||[]).map((o,i)=>({ label:o.label, onPick:o.onPick, delay:(0.02+i*0.04).toFixed(2)+'s',
+      dot:o.dot||accent, border:'color-mix(in srgb,'+accent+' 24%,transparent)', hover:'color-mix(in srgb,'+accent+' 65%,transparent)' }));
+
+    // results
+    Object.assign(base,{ resTitle:'', resSub:'', profileBars:[], codedCount:coded, showMirror:false, mirrorCopy:'', dataLine:'' });
+    const d=this._meta;
+    if(d && V==='results'){
+      const A=this.ARCH[d.lead];
+      base.resTitle = d.total>0? ('Your tape reads '+A.name.replace('The ','')+'.') : 'Not enough signal yet.';
+      base.resSub = d.total>0? 'Every count came from a yes/no you could see on the screen \u2014 the label is the pattern, not your opinion of yourself.' : 'Code a few more receptions with clearer take-on / location answers.';
+      base.codedCount=this._coded;
+      const entries=this.ORDER.map(k=>[k,d.prof[k]]).sort((a,b)=>b[1]-a[1]);
+      const maxV=Math.max(...entries.map(e=>e[1]),0.0001);
+      base.profileBars=entries.map(([id,v])=>{
+        const isP=id===d.lead && d.total>0; const col=this.ARCH[id].color;
+        return { emoji:this.ARCH[id].emoji, label:this.ARCH[id].name, labelColor:isP?'#F2F8FE':'#9FB0C5',
+          numColor:isP?col:'#9FB0C5', pct:Math.round(v*100)+'%', barW:Math.round((v/maxV)*100)+'%',
+          barLook:isP?('background:linear-gradient(90deg,'+col+',color-mix(in srgb,'+col+' 45%,transparent));box-shadow:0 0 12px color-mix(in srgb,'+col+' 55%,transparent);'):'background:rgba(140,160,186,.4);' };
+      });
+      // Mirror against prior self-report scan
+      if(this._prior && this._prior.primary && d.total>0){
+        base.showMirror=true;
+        const selfName=this.ARCH[this._prior.primary]?this.ARCH[this._prior.primary].name.replace('The ',''):this._prior.primary;
+        const tapeName=A.name.replace('The ','');
+        base.mirrorCopy = (this._prior.primary===d.lead)
+          ? 'You see yourself as the '+selfName+' \u2014 and your tape agrees. Self-image and behaviour line up, which is exactly what raises confidence in a read.'
+          : 'You see yourself as the '+selfName+'. Your tape says '+tapeName+'. That gap isn\u2019t the test failing \u2014 it\u2019s the most useful thing here. Ask a coach which one shows up on Saturday.';
+      }
+      base.dataLine='EVIDENCE \u00b7 '+this._coded+' RECEPTIONS \u00b7 DERIVED, NOT SELECTED';
+    }
+    return base;
+  }
+}
+</script>
+</body>
+</html>

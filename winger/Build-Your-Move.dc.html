@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:#04060c;}
+  a{color:var(--accent,#22D3EE);text-decoration:none;}
+  a:hover{opacity:.92;}
+  input{font-family:'Archivo',system-ui,sans-serif;}
+  @keyframes fa-blink{0%,100%{opacity:1;}50%{opacity:.25;}}
+  @keyframes fa-rise{0%{transform:translateY(16px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-rise-sm{0%{transform:translateY(10px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-bar{from{transform:scaleX(0);}to{transform:scaleX(1);}}
+  @keyframes fa-pop{0%{transform:scale(.6);opacity:0;}100%{transform:scale(1);opacity:1;}}
+  .fa-in{opacity:0;animation:fa-rise .7s cubic-bezier(.2,.7,.2,1) forwards;}
+  .fa-in-sm{opacity:0;animation:fa-rise-sm .5s cubic-bezier(.2,.7,.2,1) forwards;}
+  @media (prefers-reduced-motion:reduce){*{animation-duration:.001s!important;}.fa-in,.fa-in-sm{opacity:1!important;transform:none!important;}}
+</style>
+</helmet>
+<div data-screen-label="Build Your Move" style="position:relative;display:flex;flex-direction:column;min-height:100dvh;width:100%;overflow:hidden;background:radial-gradient(120% 90% at 50% 6%,#0e1a2d 0%,#080e1a 44%,#04060c 100%);color:#EAF2FB;font-family:'Archivo',system-ui,sans-serif;--accent:{{ accent }};">
+
+  <div style="position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.4;background:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0px,rgba(255,255,255,.02) 1px,transparent 1px,transparent 4px);"></div>
+  <div style="position:absolute;top:20px;left:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;top:20px;right:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;left:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;right:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+
+  <header style="position:relative;z-index:6;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px clamp(26px,3.4vw,58px);">
+    <div style="min-width:120px;display:flex;">
+      <button onClick="{{ back }}" style="display:inline-flex;align-items:center;gap:8px;background:none;border:0;cursor:pointer;color:#8EA1B8;font:600 12.5px 'Archivo';padding:0;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M15 5l-7 7 7 7"/></svg>{{ backLabel }}
+      </button>
+    </div>
+    <div style="display:flex;align-items:center;gap:11px;">
+      <svg width="20" height="20" viewBox="0 0 32 32" fill="none"><path d="M16 2 28 9v14L16 30 4 23V9z" style="stroke:var(--accent,#22D3EE);stroke-width:1.5;fill:color-mix(in srgb,var(--accent,#22D3EE) 12%,transparent);"/><path d="M9 16h5l2-4 3 8 2-4h3" style="stroke:var(--accent,#22D3EE);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;fill:none;"/></svg>
+      <span style="font:800 12.5px 'Archivo';letter-spacing:.05em;">BUILD YOUR MOVE</span>
+      <span style="font:600 9px 'IBM Plex Mono';letter-spacing:.16em;color:#5c6e85;border:1px solid rgba(120,140,166,.24);border-radius:6px;padding:3px 6px;">TRAINER</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;min-width:120px;justify-content:flex-end;">
+      <button onClick="{{ toggleSound }}" title="{{ soundTitle }}" style="display:grid;place-items:center;width:28px;height:28px;border-radius:8px;border:1px solid rgba(120,140,166,.24);background:rgba(10,16,28,.5);cursor:pointer;color:{{ soundColor }};">
+        <sc-if value="{{ soundOn }}" hint-placeholder-val="{{ true }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></sc-if>
+        <sc-if value="{{ soundOff }}" hint-placeholder-val="{{ false }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M22 9l-6 6M16 9l6 6"/></svg></sc-if>
+      </button>
+    </div>
+  </header>
+
+  <sc-if value="{{ isIntro }}" hint-placeholder-val="{{ true }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;text-align:center;padding:20px clamp(26px,4vw,58px) 60px;">
+      <div class="fa-in" style="display:inline-flex;align-items:center;gap:10px;margin-bottom:18px;font:600 12px 'IBM Plex Mono';letter-spacing:.34em;color:var(--accent,#22D3EE);">
+        <span style="width:6px;height:6px;border-radius:50%;background:var(--accent,#22D3EE);box-shadow:0 0 8px var(--accent,#22D3EE);animation:fa-blink 1.6s ease-in-out infinite;"></span>DESIGN YOUR SIGNATURE
+      </div>
+      <h1 class="fa-in" style="margin:0 0 16px;font:800 clamp(34px,5.2vw,68px)/0.98 'Archivo';letter-spacing:-0.03em;text-wrap:balance;max-width:820px;animation-delay:.06s;">Build the move that&rsquo;s unmistakably yours.</h1>
+      <p class="fa-in" style="margin:0 0 30px;max-width:580px;font:400 clamp(15px,1.3vw,18px)/1.6 'Archivo';color:#9FB0C5;text-wrap:pretty;animation-delay:.12s;">Pick a setup, a way past your man, the space you attack, and how you finish. As you build, watch your signature take shape &mdash; and learn how the greats combine styles. No archetype is better than another. The best players are the ones defenders can&rsquo;t plan for.</p>
+
+      <button onClick="{{ start }}" class="fa-in" style="display:inline-flex;align-items:center;gap:12px;padding:17px 42px;border-radius:13px;border:0;background:var(--accent,#22D3EE);color:#03121a;font:700 16px 'Archivo';cursor:pointer;box-shadow:0 14px 46px color-mix(in srgb,var(--accent,#22D3EE) 42%,transparent);transition:transform .16s ease;animation-delay:.22s;" style-hover="transform:translateY(-2px);">
+        Start building
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12h13M12 6l6 6-6 6"/></svg>
+      </button>
+      <div class="fa-in" style="margin-top:18px;max-width:520px;font:400 11.5px/1.5 'IBM Plex Mono';letter-spacing:.02em;color:#5c6e85;animation-delay:.3s;">A trainer, not a test. It never scores you and never touches your archetype.</div>
+    </main>
+  </sc-if>
+
+  <sc-if value="{{ isBuild }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:row;flex-wrap:wrap;align-items:flex-start;justify-content:center;overflow-y:auto;padding:6px clamp(16px,3vw,46px) 50px;gap:clamp(16px,2.4vw,28px);">
+
+      <!-- builder -->
+      <div style="flex:1 1 380px;max-width:560px;display:flex;flex-direction:column;gap:13px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
+          <span style="font:600 10px 'IBM Plex Mono';letter-spacing:.2em;color:#8EA1B8;">FOUR STEPS &middot; ONE SIGNATURE</span>
+          <div style="display:flex;gap:8px;">
+            <button onClick="{{ surprise }}" style="display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border-radius:9px;border:1px solid rgba(120,140,166,.24);background:rgba(10,16,28,.5);color:#B4C2D4;font:600 11px 'Archivo';cursor:pointer;" style-hover="border-color:color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);">&#127922; Surprise me</button>
+            <button onClick="{{ clear }}" style="padding:7px 12px;border-radius:9px;border:1px solid rgba(120,140,166,.24);background:rgba(10,16,28,.5);color:#8496ab;font:600 11px 'Archivo';cursor:pointer;" style-hover="color:#EAF2FB;">Clear</button>
+          </div>
+        </div>
+
+        <sc-for list="{{ slots }}" as="s" hint-placeholder-count="4">
+          <div style="padding:14px 15px;border-radius:15px;border:1px solid {{ s.cardBorder }};background:rgba(10,16,28,.42);">
+            <div style="display:flex;align-items:center;gap:9px;margin-bottom:11px;">
+              <span style="width:22px;height:22px;border-radius:7px;display:grid;place-items:center;border:1px solid {{ s.numBorder }};font:700 11px 'IBM Plex Mono';color:{{ s.numColor }};">{{ s.n }}</span>
+              <span style="font:700 12.5px 'IBM Plex Mono';letter-spacing:.14em;color:#C6D3E2;">{{ s.title }}</span>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:7px;">
+              <sc-for list="{{ s.opts }}" as="o" hint-placeholder-count="4">
+                <button onClick="{{ o.onPick }}" style="display:inline-flex;align-items:center;gap:7px;padding:9px 12px;border-radius:10px;border:1px solid {{ o.border }};background:{{ o.bg }};color:{{ o.color }};font:600 12.5px 'Archivo';cursor:pointer;transition:border-color .14s,background .14s,transform .14s;" style-hover="transform:translateY(-1px);">
+                  <span style="font-size:14px;">{{ o.emoji }}</span>{{ o.text }}
+                </button>
+              </sc-for>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+
+      <!-- live read -->
+      <div style="flex:1 1 320px;max-width:420px;position:sticky;top:0;display:flex;flex-direction:column;gap:14px;">
+        <div style="padding:20px 22px;border-radius:18px;border:1px solid {{ readBorder }};background:{{ readBg }};">
+          <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:#61748c;margin-bottom:6px;">{{ readKicker }}</div>
+          <div style="display:flex;align-items:center;gap:11px;margin-bottom:4px;">
+            <span style="font-size:30px;">{{ flavourEmoji }}</span>
+            <h2 style="margin:0;font:800 clamp(20px,2.6vw,28px)/1.05 'Archivo';letter-spacing:-0.02em;color:{{ flavourColor }};">{{ flavourName }}</h2>
+          </div>
+          <p style="margin:6px 0 0;font:500 13.5px/1.5 'Archivo';color:#C6D3E2;text-wrap:pretty;min-height:40px;">{{ flavourLine }}</p>
+        </div>
+
+        <div style="padding:18px 20px;border-radius:16px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);">
+          <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:#61748c;margin-bottom:14px;">SIGNATURE BLEND</div>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <sc-for list="{{ blendBars }}" as="b" hint-placeholder-count="5">
+              <div style="display:flex;align-items:center;gap:10px;">
+                <span style="flex:0 0 88px;font:600 11.5px 'Archivo';color:{{ b.labelColor }};">{{ b.emoji }} {{ b.label }}</span>
+                <div style="flex:1;height:8px;border-radius:99px;background:rgba(120,140,166,.14);overflow:hidden;"><div style="height:100%;border-radius:99px;width:{{ b.barW }};{{ b.barLook }};transition:width .4s cubic-bezier(.3,.8,.3,1);"></div></div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <sc-if value="{{ isComplete }}" hint-placeholder-val="{{ false }}">
+          <div class="fa-in-sm" style="padding:16px 18px;border-radius:15px;border:1px solid color-mix(in srgb,var(--accent,#22D3EE) 26%,transparent);background:color-mix(in srgb,var(--accent,#22D3EE) 6%,transparent);">
+            <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:var(--accent,#22D3EE);margin-bottom:8px;">SCOUTING NOTE</div>
+            <p style="margin:0 0 14px;font:500 13px/1.5 'Archivo';color:#EAF2FB;text-wrap:pretty;">{{ scoutNote }}</p>
+            <label style="display:block;font:600 9px 'IBM Plex Mono';letter-spacing:.18em;color:#7688a0;margin-bottom:7px;">NAME YOUR MOVE</label>
+            <input type="text" placeholder="{{ namePlaceholder }}" onInput="{{ onName }}" style="width:100%;padding:11px 13px;border-radius:10px;border:1px solid rgba(120,140,166,.3);background:rgba(4,8,14,.5);color:#F2F8FE;font:600 14px 'Archivo';outline:none;" />
+            <button onClick="{{ save }}" style="margin-top:11px;width:100%;display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:13px 20px;border-radius:11px;border:0;background:var(--accent,#22D3EE);color:#03121a;font:700 14px 'Archivo';cursor:pointer;transition:transform .16s ease;" style-hover="transform:translateY(-2px);">{{ saveLabel }}</button>
+          </div>
+        </sc-if>
+        <sc-if value="{{ notComplete }}" hint-placeholder-val="{{ true }}">
+          <div style="padding:14px 18px;border-radius:12px;border:1px dashed rgba(120,140,166,.28);font:500 12.5px/1.5 'Archivo';color:#7688a0;text-align:center;">{{ progressHint }}</div>
+        </sc-if>
+      </div>
+    </main>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:980,&quot;height&quot;:760},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#22D3EE&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#22D3EE&quot;,&quot;#E0218A&quot;,&quot;#2F6BFF&quot;,&quot;#14B8A6&quot;,&quot;#C6FF3A&quot;]},&quot;motion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  ORDER = ['artist','ghost','speedster','playmaker','hybrid'];
+  ARCH = {
+    artist:   { short:'Artist',    emoji:'\uD83C\uDFA8', color:'#E0218A' },
+    ghost:    { short:'Ghost',     emoji:'\uD83D\uDC7B', color:'#C8CED6' },
+    speedster:{ short:'Speedster', emoji:'\u26A1',       color:'#2F6BFF' },
+    playmaker:{ short:'Playmaker', emoji:'\uD83C\uDFAD', color:'#14B8A6' },
+    hybrid:   { short:'Hybrid',    emoji:'\uD83D\uDC51', color:'#22D3EE' },
+  };
+  FLAVOUR = {
+    artist:{ name:'The Showman', line:'All about beating your man. When it comes off, nobody in the ground can look away.' },
+    ghost:{ name:'The Assassin', line:'Arrive unseen, finish cold. You do your damage where they aren\u2019t looking.' },
+    speedster:{ name:'The Sprinter', line:'Turn the game into a race \u2014 and win it. Space behind is your whole world.' },
+    playmaker:{ name:'The Creator', line:'You\u2019re the one who makes it for others. The final ball is the point.' },
+    hybrid:{ name:'The Chameleon', line:'No fixed shape. You read what the moment needs and become it.' },
+  };
+  SLOTS = [
+    { key:'setup', title:'THE SETUP', opts:[
+      { id:'feet',     emoji:'\uD83E\uDDE6', text:'Come short to feet',        w:{playmaker:2,hybrid:1} },
+      { id:'shoulder', emoji:'\uD83C\uDFC3', text:'Stay on the last shoulder', w:{speedster:2,ghost:1} },
+      { id:'between',  emoji:'\uD83D\uDD73\uFE0F', text:'Drop between the lines', w:{ghost:2,playmaker:1} },
+      { id:'wide',     emoji:'\u2194\uFE0F', text:'Isolate the full-back wide', w:{artist:2,speedster:1} },
+    ]},
+    { key:'beat', title:'THE BEAT', opts:[
+      { id:'stepover', emoji:'\uD83C\uDFA8', text:'Stepover, go outside',  w:{artist:3} },
+      { id:'knock',    emoji:'\u26A1',       text:'Knock it past and sprint', w:{speedster:3} },
+      { id:'chop',     emoji:'\uD83D\uDD03', text:'Chop inside',           w:{ghost:2,artist:1} },
+      { id:'onetwo',   emoji:'\uD83C\uDFAD', text:'Quick one-two',         w:{playmaker:3} },
+      { id:'feint',    emoji:'\uD83D\uDC51', text:'Feint, wait for the gap', w:{hybrid:2,ghost:1} },
+    ]},
+    { key:'space', title:'THE SPACE', opts:[
+      { id:'byline',   emoji:'\uD83C\uDFA8', text:'Get to the byline',     w:{artist:2,speedster:1} },
+      { id:'backpost', emoji:'\uD83D\uDC7B', text:'Arrive at the back post', w:{ghost:3} },
+      { id:'halfspace',emoji:'\uD83C\uDFAD', text:'Overload the half-space', w:{playmaker:2,hybrid:1} },
+      { id:'behind',   emoji:'\u26A1',       text:'Break in behind',       w:{speedster:3} },
+    ]},
+    { key:'finish', title:'THE END PRODUCT', opts:[
+      { id:'earlycross',emoji:'\uD83C\uDFA8', text:'Whip the early cross', w:{artist:2,playmaker:1} },
+      { id:'cutback',  emoji:'\uD83C\uDFAD', text:'Cut it back',           w:{playmaker:3} },
+      { id:'farcorner',emoji:'\uD83D\uDC7B', text:'Bend it far corner',    w:{ghost:3} },
+      { id:'square',   emoji:'\u26A1',       text:'Square for the tap-in', w:{speedster:1,playmaker:2} },
+      { id:'keepalive',emoji:'\uD83D\uDC51', text:'Take a touch, keep it alive', w:{hybrid:3} },
+    ]},
+  ];
+  PRESETS = { setup:'wide', beat:'stepover', space:'byline', finish:'earlycross' };
+
+  state = { view:'intro', picks:{ setup:null, beat:null, space:null, finish:null }, saved:false };
+  _name='';
+
+  componentDidMount(){ try{ this._soundOn=localStorage.getItem('fa_sound')!=='0'; }catch(e){ this._soundOn=true; } this.forceUpdate(); }
+
+  _audio(){ if(this._actx===undefined){ try{ this._actx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ this._actx=null; } } if(this._actx&&this._actx.state==='suspended') this._actx.resume(); return this._actx; }
+  _tone(f,d,t,g){ const c=this._audio(); if(!c||this._soundOn===false) return; const o=c.createOscillator(),a=c.createGain(); o.type=t||'sine'; o.frequency.value=f; o.connect(a); a.connect(c.destination); const n=c.currentTime; a.gain.setValueAtTime(0,n); a.gain.linearRampToValueAtTime(g||0.05,n+0.01); a.gain.exponentialRampToValueAtTime(0.0001,n+d); o.start(n); o.stop(n+d); }
+  _sfx(k){ if(this._soundOn===false) return; if(k==='pick'){ this._tone(540,0.08,'triangle',0.045); setTimeout(()=>this._tone(760,0.1,'triangle',0.04),45); } else if(k==='complete'){ this._tone(520,0.12,'triangle',0.05); setTimeout(()=>this._tone(700,0.12,'triangle',0.05),90); setTimeout(()=>this._tone(940,0.2,'triangle',0.05),180); } else if(k==='save'){ this._tone(600,0.14,'triangle',0.05); setTimeout(()=>this._tone(900,0.2,'triangle',0.05),110); } else if(k==='click'){ this._tone(430,0.08,'sine',0.04); } }
+  _toggleSound(){ const on=this._soundOn===false; this._soundOn=on; try{ localStorage.setItem('fa_sound', on?'1':'0'); }catch(e){} if(on){ this._audio(); this._sfx('click'); } this.forceUpdate(); }
+
+  _start(){ this._sfx('click'); this.setState({ view:'build' }); }
+  _isComplete(p){ p=p||this.state.picks; return p.setup&&p.beat&&p.space&&p.finish; }
+  _pick(key,id){
+    const wasComplete=this._isComplete();
+    const picks={ ...this.state.picks, [key]:id };
+    if(!wasComplete && this._isComplete(picks)) this._sfx('complete'); else this._sfx('pick');
+    this.setState({ picks, saved:false });
+  }
+  _surprise(){ this._sfx('click'); const picks={}; this.SLOTS.forEach(s=>{ picks[s.key]=s.opts[Math.floor(Math.random()*s.opts.length)].id; }); this.setState({ picks, saved:false }); setTimeout(()=>this._sfx('complete'),80); }
+  _clear(){ this._sfx('click'); this.setState({ picks:{ setup:null, beat:null, space:null, finish:null }, saved:false }); }
+  _onName(e){ this._name=e&&e.target?e.target.value:''; }
+  _save(){
+    this._sfx('save');
+    const v=this._vector();
+    const lead=this._lead(v);
+    try{
+      const raw=localStorage.getItem('fa_wing_buildmove'); const prev=raw?JSON.parse(raw):{ builds:0 };
+      const rec={ builds:(prev.builds||0)+1, lastFlavour:lead, lastName:this._name||'', weight:0, at:new Date().toISOString() };
+      localStorage.setItem('fa_wing_buildmove', JSON.stringify(rec));
+    }catch(e){}
+    this.setState({ saved:true });
+  }
+  _back(){ this._sfx('click'); if(this.state.view==='intro'){ window.location.href='Assessment.dc.html'; } else { this.setState({ view:'intro' }); } }
+
+  _vector(){
+    const v={ artist:0,ghost:0,speedster:0,playmaker:0,hybrid:0 };
+    this.SLOTS.forEach(s=>{ const id=this.state.picks[s.key]; if(!id) return; const o=s.opts.find(x=>x.id===id); if(o) Object.keys(o.w).forEach(k=>v[k]+=o.w[k]); });
+    return v;
+  }
+  _lead(v){ return this.ORDER.slice().sort((a,b)=>v[b]-v[a])[0]; }
+
+  renderVals(){
+    const accent=this.props.accent ?? '#22D3EE';
+    const V=this.state.view;
+    const soundOn=this._soundOn!==false;
+
+    const base={
+      accent, backLabel:V==='intro'?'Back':'Back', back:()=>this._back(),
+      soundOn, soundOff:!soundOn, soundColor:soundOn?accent:'#61748c', soundTitle:soundOn?'Sound on':'Sound off',
+      toggleSound:()=>this._toggleSound(),
+      isIntro:V==='intro', isBuild:V==='build',
+      start:()=>this._start(), surprise:()=>this._surprise(), clear:()=>this._clear(),
+      onName:(e)=>this._onName(e), save:()=>this._save(),
+    };
+
+    // slots
+    base.slots=this.SLOTS.map((s,i)=>{
+      const picked=this.state.picks[s.key];
+      const done=!!picked;
+      return { n:String(i+1), title:s.title,
+        cardBorder: done?'color-mix(in srgb,'+accent+' 30%,transparent)':'rgba(120,140,166,.18)',
+        numBorder: done?'color-mix(in srgb,'+accent+' 50%,transparent)':'rgba(120,140,166,.3)',
+        numColor: done?accent:'#7688a0',
+        opts:s.opts.map(o=>{
+          const sel=picked===o.id;
+          const col=this._optColor(o);
+          return { emoji:o.emoji, text:o.text,
+            border: sel?col:'rgba(120,140,166,.22)',
+            bg: sel?('color-mix(in srgb,'+col+' 16%,transparent)'):'rgba(10,16,28,.5)',
+            color: sel?'#F2F8FE':'#B4C2D4',
+            onPick:()=>this._pick(s.key,o.id) };
+        }) };
+    });
+
+    // vector + blend
+    const v=this._vector();
+    const total=Object.values(v).reduce((a,b)=>a+b,0);
+    const max=Math.max(...Object.values(v),1);
+    const any=total>0;
+    const complete=this._isComplete();
+    const lead=this._lead(v);
+    const sorted=this.ORDER.slice().sort((a,b)=>v[b]-v[a]);
+    const second=sorted[1];
+    const distinct=Object.values(v).filter(x=>x>0).length;
+
+    base.blendBars=this.ORDER.map(id=>({ id, val:v[id] })).sort((a,b)=>b.val-a.val).map(({id,val})=>{
+      const isP=any&&id===lead&&val>0; const col=this.ARCH[id].color;
+      return { emoji:this.ARCH[id].emoji, label:this.ARCH[id].short, labelColor:isP?'#F2F8FE':'#9FB0C5',
+        barW:(any?Math.round((val/max)*100):0)+'%',
+        barLook:isP?('background:linear-gradient(90deg,'+col+',color-mix(in srgb,'+col+' 45%,transparent));box-shadow:0 0 10px color-mix(in srgb,'+col+' 50%,transparent)'):'background:rgba(140,160,186,.4)' };
+    });
+
+    // flavour panel
+    if(any){
+      const F=this.FLAVOUR[lead]; const col=this.ARCH[lead].color;
+      base.readKicker= complete?'YOUR SIGNATURE':'FORMING\u2026';
+      base.flavourEmoji=this.ARCH[lead].emoji; base.flavourColor=col;
+      base.readBorder='color-mix(in srgb,'+col+' 30%,transparent)'; base.readBg='color-mix(in srgb,'+col+' 6%,transparent)';
+      const ratio = v[lead]>0 ? v[second]/v[lead] : 0;
+      const blended = ratio>=0.7 && lead!=='hybrid' && second;
+      if(blended){
+        base.flavourName=F.name+' / '+this.FLAVOUR[second].name.replace('The ','');
+        base.flavourLine='A blended move \u2014 '+this.ARCH[lead].short+' and '+this.ARCH[second].short+' at once. Two threats, one player.';
+      } else {
+        base.flavourName=F.name; base.flavourLine=F.line;
+      }
+    } else {
+      base.readKicker='START PICKING'; base.flavourEmoji='\u2753'; base.flavourColor='#7688a0';
+      base.flavourName='Undefined'; base.flavourLine='Pick a step to see your signature start to form.';
+      base.readBorder='rgba(120,140,166,.2)'; base.readBg='rgba(10,16,28,.5)';
+    }
+
+    base.isComplete=complete; base.notComplete=!complete;
+    const left=4-Object.values(this.state.picks).filter(Boolean).length;
+    base.progressHint = any? (left+' step'+(left===1?'':'s')+' to go \u2014 finish the move to name it') : 'Pick one option from each of the four steps.';
+
+    if(complete){
+      // scouting note based on spread
+      if(distinct<=2){
+        base.scoutNote='A pure move \u2014 devastating when it lands, but a good defender can set for it. Add a wrinkle and you become unreadable.';
+      } else if(distinct>=4){
+        base.scoutNote='Wonderfully unpredictable. There\u2019s no obvious way to plan for this \u2014 defenders have to guess, and that\u2019s exactly where you want them.';
+      } else {
+        base.scoutNote='A balanced threat with a clear lean. Defenders know your first idea \u2014 but you\u2019ve always got a second one.';
+      }
+      base.namePlaceholder='e.g. \u201CThe '+base.flavourName.replace('The ','')+' Special\u201D';
+      base.saveLabel=this.state.saved?'\u2713 Saved to your locker':'Save this move';
+    } else { base.scoutNote=''; base.namePlaceholder=''; base.saveLabel='Save this move'; }
+
+    return base;
+  }
+  _optColor(o){ const k=Object.keys(o.w).sort((a,b)=>o.w[b]-o.w[a])[0]; return this.ARCH[k].color; }
+}
+</script>
+</body>
+</html>

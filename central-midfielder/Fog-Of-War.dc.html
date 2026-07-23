@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:#04060c;}
+  a{color:var(--accent,#22D3EE);text-decoration:none;} a:hover{opacity:.92;}
+  @keyframes fa-blink{0%,100%{opacity:1;}50%{opacity:.25;}}
+  @keyframes fa-rise{0%{transform:translateY(16px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-rise-sm{0%{transform:translateY(10px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-bar{from{transform:scaleX(0);}to{transform:scaleX(1);}}
+  @keyframes fa-look{0%{transform:scale(.4);opacity:.9;}100%{transform:scale(1);opacity:0;}}
+  @keyframes fa-incoming{from{width:100%;}to{width:0%;}}
+  @keyframes fa-ballpulse{0%,100%{box-shadow:0 0 8px rgba(255,255,255,.6);}50%{box-shadow:0 0 16px rgba(255,255,255,.95);}}
+  .fa-in{opacity:0;animation:fa-rise .7s cubic-bezier(.2,.7,.2,1) forwards;}
+  .fa-in-sm{opacity:0;animation:fa-rise-sm .5s cubic-bezier(.2,.7,.2,1) forwards;}
+  @media (prefers-reduced-motion:reduce){*{animation-duration:.001s!important;}.fa-in,.fa-in-sm{opacity:1!important;transform:none!important;}}
+</style>
+</helmet>
+<div data-screen-label="Fog of War Scan" style="position:relative;display:flex;flex-direction:column;min-height:100dvh;width:100%;overflow:hidden;background:radial-gradient(120% 90% at 50% 6%,#0e1a2d 0%,#080e1a 44%,#04060c 100%);color:#EAF2FB;font-family:'Archivo',system-ui,sans-serif;--accent:{{ accent }};">
+
+  <div style="position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.4;background:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0px,rgba(255,255,255,.02) 1px,transparent 1px,transparent 4px);"></div>
+  <div style="position:absolute;top:20px;left:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;top:20px;right:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;left:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;right:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+
+  <sc-if value="{{ showChrome }}" hint-placeholder-val="{{ true }}">
+    <header style="position:relative;z-index:6;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px clamp(26px,3.4vw,58px);">
+      <div style="min-width:120px;display:flex;">
+        <a href="Assessment.dc.html" style="display:inline-flex;align-items:center;gap:8px;color:#8EA1B8;font:600 12.5px 'Archivo';" style-hover="color:#EAF2FB;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M15 5l-7 7 7 7"/></svg>Back to the scan</a>
+      </div>
+      <div style="display:flex;align-items:center;gap:11px;">
+        <svg width="22" height="22" viewBox="0 0 32 32" fill="none"><path d="M16 2 28 9v14L16 30 4 23V9z" style="stroke:var(--accent,#22D3EE);stroke-width:1.5;fill:color-mix(in srgb,var(--accent,#22D3EE) 12%,transparent);"/><circle cx="16" cy="16" r="4.5" style="stroke:var(--accent,#22D3EE);stroke-width:1.5;fill:none;"/><path d="M16 6.5V10M16 22v3.5M6.5 16H10M22 16h3.5" style="stroke:var(--accent,#22D3EE);stroke-width:1.4;stroke-linecap:round;"/></svg>
+        <span style="font:800 13px 'Archivo';letter-spacing:.05em;">FOG OF <span style="color:var(--accent,#22D3EE);">WAR</span></span>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;min-width:120px;justify-content:flex-end;">
+        <button onClick="{{ toggleSound }}" title="{{ soundTitle }}" style="display:grid;place-items:center;width:28px;height:28px;border-radius:8px;border:1px solid rgba(120,140,166,.24);background:rgba(10,16,28,.5);cursor:pointer;color:{{ soundColor }};" style-hover="border-color:color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);">
+          <sc-if value="{{ soundOn }}" hint-placeholder-val="{{ true }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg></sc-if>
+          <sc-if value="{{ soundOff }}" hint-placeholder-val="{{ false }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M22 9l-6 6M16 9l6 6"/></svg></sc-if>
+        </button>
+        <div style="width:88px;height:4px;border-radius:99px;background:rgba(120,140,166,.18);overflow:hidden;"><div style="height:100%;border-radius:99px;background:var(--accent,#22D3EE);box-shadow:0 0 10px var(--accent,#22D3EE);width:{{ progPct }};transition:width .4s cubic-bezier(.3,.8,.3,1);"></div></div>
+        <span style="font:600 10px 'IBM Plex Mono';letter-spacing:.14em;color:color-mix(in srgb,var(--accent,#22D3EE) 80%,#fff);white-space:nowrap;">{{ progLabel }}</span>
+      </div>
+    </header>
+  </sc-if>
+
+  <!-- INTRO -->
+  <sc-if value="{{ isIntro }}" hint-placeholder-val="{{ true }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;text-align:center;padding:20px clamp(26px,4vw,58px) 60px;">
+      <div class="fa-in" style="display:inline-flex;align-items:center;gap:10px;margin-bottom:20px;font:600 12px 'IBM Plex Mono';letter-spacing:.4em;color:var(--accent,#22D3EE);"><span style="width:6px;height:6px;border-radius:50%;background:var(--accent,#22D3EE);box-shadow:0 0 8px var(--accent,#22D3EE);animation:fa-blink 1.6s ease-in-out infinite;"></span>COGNITIVE BATTERY · SCANNING</div>
+      <h1 class="fa-in" style="margin:0 0 16px;font:800 clamp(36px,5.4vw,72px)/0.98 'Archivo';letter-spacing:-0.03em;text-wrap:balance;max-width:820px;animation-delay:.06s;">The best midfielders have already looked.</h1>
+      <p class="fa-in" style="margin:0 0 30px;max-width:600px;font:400 clamp(15px,1.3vw,18px)/1.6 'Archivo';color:#9FB0C5;text-wrap:pretty;animation-delay:.12s;">The pitch is fogged. The ball is three seconds away. Tap to take a look &mdash; each glance clears a patch for a heartbeat, then the fog returns. When it arrives, play the pass. What you <em>choose to look at</em> is the whole point.</p>
+      <div class="fa-in" style="margin-bottom:26px;animation-delay:.16s;">
+        <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:#61748c;margin-bottom:11px;">HOW MANY LOOKS?</div>
+        <div style="display:flex;gap:9px;flex-wrap:wrap;justify-content:center;">
+          <sc-for list="{{ diffs }}" as="d" hint-placeholder-count="3">
+            <button onClick="{{ d.onPick }}" style="padding:11px 20px;border-radius:11px;border:1px solid {{ d.border }};background:{{ d.bg }};color:{{ d.color }};font:700 13.5px 'Archivo';cursor:pointer;display:flex;flex-direction:column;gap:2px;align-items:center;" style-hover="border-color:color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);"><span>{{ d.label }}</span><span style="font:500 9.5px 'IBM Plex Mono';letter-spacing:.06em;color:{{ d.subColor }};">{{ d.sub }}</span></button>
+          </sc-for>
+        </div>
+      </div>
+      <button onClick="{{ begin }}" class="fa-in" style="display:inline-flex;align-items:center;gap:12px;padding:18px 44px;border-radius:13px;border:0;background:var(--accent,#22D3EE);color:#0b1108;font:700 16px 'Archivo';cursor:pointer;box-shadow:0 14px 46px color-mix(in srgb,var(--accent,#22D3EE) 42%,transparent);animation-delay:.2s;" style-hover="transform:translateY(-2px);">Kick off<svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12h13M12 6l6 6-6 6"/></svg></button>
+      <div class="fa-in" style="margin-top:20px;font:500 10px 'IBM Plex Mono';letter-spacing:.14em;color:#4f627a;animation-delay:.3s;">8 RECEPTIONS · SKILL SCORE + SCAN PROFILE</div>
+    </main>
+  </sc-if>
+
+  <!-- PLAY -->
+  <sc-if value="{{ isPlay }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:6px clamp(18px,3vw,50px) 40px;gap:14px;">
+      <div style="width:100%;max-width:1120px;display:flex;flex-direction:column;gap:12px;flex:1;min-height:0;justify-content:center;">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <span style="font:600 10px 'IBM Plex Mono';letter-spacing:.2em;color:var(--accent,#22D3EE);">RECEPTION {{ callNum }} / 8</span>
+          <span style="flex:1;height:1px;background:rgba(120,140,166,.18);"></span>
+          <span style="font:600 10px 'IBM Plex Mono';letter-spacing:.14em;color:#9FB0C5;">{{ scanStatus }}</span>
+        </div>
+
+        <!-- looks pips -->
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span style="font:600 9px 'IBM Plex Mono';letter-spacing:.2em;color:#61748c;">LOOKS</span>
+          <div style="display:flex;gap:5px;">
+            <sc-for list="{{ lookPips }}" as="p" hint-placeholder-count="5"><div style="width:16px;height:8px;border-radius:3px;background:{{ p.bg }};border:1px solid {{ p.border }};"></div></sc-for>
+          </div>
+          <span style="flex:1;"></span>
+          <sc-if value="{{ isScan }}" hint-placeholder-val="{{ true }}">
+            <div style="width:120px;height:5px;border-radius:99px;background:rgba(120,140,166,.16);overflow:hidden;"><div key="{{ trialKey }}" style="height:100%;background:linear-gradient(90deg,#FF5A6E,var(--accent,#22D3EE));animation:fa-incoming {{ incomingDur }} linear forwards;"></div></div>
+            <span style="font:600 9px 'IBM Plex Mono';letter-spacing:.12em;color:#FF8A98;">BALL INCOMING</span>
+          </sc-if>
+        </div>
+
+        <!-- pitch -->
+        <div onClick="{{ onPitchTap }}" style="position:relative;height:min(60vh,560px);aspect-ratio:16/10;max-width:100%;margin:0 auto;align-self:center;border-radius:16px;overflow:hidden;border:1px solid rgba(120,140,166,.2);background:radial-gradient(130% 100% at 50% 0%,#0d1c2e,#091324 60%,#050c17);cursor:{{ pitchCursor }};touch-action:manipulation;">
+          <svg viewBox="0 0 160 100" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;" fill="none" stroke="rgba(120,180,210,.13)" stroke-width="0.5"><rect x="3" y="3" width="154" height="94"></rect><line x1="3" y1="50" x2="157" y2="50"></line><circle cx="80" cy="50" r="13"></circle><rect x="52" y="3" width="56" height="16"></rect><rect x="52" y="81" width="56" height="16"></rect></svg>
+
+          <!-- tokens (revealed only when lit) -->
+          <sc-for list="{{ tokens }}" as="tk" hint-placeholder-count="0">
+            <div style="position:absolute;left:{{ tk.left }};top:{{ tk.top }};width:{{ tk.size }};height:{{ tk.size }};margin-left:calc({{ tk.size }} / -2);margin-top:calc({{ tk.size }} / -2);opacity:{{ tk.opacity }};transition:opacity .18s ease;{{ tk.style }}"></div>
+          </sc-for>
+          <!-- free-man label when revealed -->
+
+          <!-- you -->
+          <div style="position:absolute;left:{{ you.left }};top:{{ you.top }};width:20px;height:20px;margin:-10px 0 0 -10px;border-radius:50%;background:radial-gradient(125% 125% at 34% 24%,color-mix(in srgb,{{ accent }} 82%,#fff),color-mix(in srgb,{{ accent }} 48%,#000));border:2px solid #fff;display:grid;place-items:center;font:800 8px 'IBM Plex Mono';color:#0b1108;box-shadow:0 0 14px color-mix(in srgb,{{ accent }} 60%,transparent);z-index:4;">YOU</div>
+          <div style="position:absolute;left:{{ ball.left }};top:{{ ball.top }};width:9px;height:9px;margin:-4.5px 0 0 -4.5px;border-radius:50%;background:#fff;animation:fa-ballpulse 1s ease-in-out infinite;z-index:4;"></div>
+
+          <!-- fog overlay -->
+          <sc-if value="{{ isScan }}" hint-placeholder-val="{{ true }}">
+            <div style="position:absolute;inset:0;background:repeating-linear-gradient(45deg,rgba(6,10,18,.86),rgba(6,10,18,.86) 6px,rgba(10,16,28,.9) 6px,rgba(10,16,28,.9) 12px);pointer-events:none;z-index:2;"></div>
+          </sc-if>
+          <!-- look pulses -->
+          <sc-for list="{{ lights }}" as="lt" hint-placeholder-count="0">
+            <div style="position:absolute;left:{{ lt.left }};top:{{ lt.top }};width:{{ lt.d }};height:{{ lt.d }};margin-left:calc({{ lt.d }} / -2);margin-top:calc({{ lt.d }} / -2);border-radius:50%;border:2px solid color-mix(in srgb,{{ accent }} 70%,transparent);background:radial-gradient(closest-side,color-mix(in srgb,{{ accent }} 22%,transparent),transparent);z-index:3;pointer-events:none;animation:fa-look {{ lookDur }} ease-out forwards;"></div>
+          </sc-for>
+          <!-- hint -->
+          <sc-if value="{{ isScan }}" hint-placeholder-val="{{ true }}">
+            <div style="position:absolute;bottom:8px;left:50%;transform:translateX(-50%);z-index:5;font:600 9px 'IBM Plex Mono';letter-spacing:.2em;color:#9FB0C5;background:rgba(4,6,12,.55);padding:5px 12px;border-radius:99px;pointer-events:none;">TAP TO LOOK</div>
+          </sc-if>
+          <sc-if value="{{ isFeedback }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;top:8px;left:50%;transform:translateX(-50%);z-index:6;font:700 10px 'IBM Plex Mono';letter-spacing:.16em;color:{{ fbColor }};background:rgba(4,6,12,.7);padding:6px 14px;border-radius:99px;border:1px solid color-mix(in srgb,{{ fbColor }} 40%,transparent);pointer-events:none;">{{ fbText }}</div>
+          </sc-if>
+        </div>
+
+        <sc-if value="{{ isScan }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;justify-content:center;">
+            <button onClick="{{ receiveNow }}" style="padding:12px 26px;border-radius:11px;border:1px solid color-mix(in srgb,var(--accent,#22D3EE) 45%,transparent);background:color-mix(in srgb,var(--accent,#22D3EE) 10%,transparent);color:#EAF2FB;font:700 13px 'Archivo';cursor:pointer;" style-hover="transform:translateY(-2px);">Receive it now &rarr;</button>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isChoose }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;gap:9px;">
+            <div style="text-align:center;font:700 15px 'Archivo';color:#EAF2FB;">It&rsquo;s at your feet. Where&rsquo;s the pass?</div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:9px;">
+              <sc-for list="{{ options }}" as="opt" hint-placeholder-count="4">
+                <button onClick="{{ opt.onPick }}" class="fa-in-sm" style="display:flex;align-items:center;gap:11px;width:100%;text-align:left;padding:14px 15px;border-radius:12px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);color:#EAF2FB;font:600 13.5px/1.3 'Archivo';cursor:pointer;transition:border-color .14s,background .14s,transform .14s;animation-delay:{{ opt.delay }};" style-hover="border-color:color-mix(in srgb,var(--accent,#22D3EE) 58%,transparent);background:rgba(16,20,37,.82);transform:translateY(-2px);"><span style="flex:0 0 auto;width:26px;height:26px;border-radius:7px;display:grid;place-items:center;border:1px solid rgba(120,140,166,.28);font:700 11px 'IBM Plex Mono';color:#9FB0C5;">{{ opt.letter }}</span><span style="flex:1;">{{ opt.text }}</span></button>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+      </div>
+    </main>
+  </sc-if>
+
+  <!-- RESULT -->
+  <sc-if value="{{ isResult }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:14px clamp(20px,4vw,58px) 66px;">
+      <div style="width:100%;max-width:640px;">
+        <div class="fa-in" style="text-align:center;font:600 11px 'IBM Plex Mono';letter-spacing:.4em;color:#7688a0;margin-bottom:10px;">SCAN PROFILE</div>
+        <h1 class="fa-in" style="margin:0 0 6px;text-align:center;font:800 clamp(28px,4.4vw,50px)/1.0 'Archivo';letter-spacing:-0.02em;animation-delay:.05s;">{{ resHeadline }}</h1>
+        <p class="fa-in" style="margin:0 auto 24px;max-width:520px;text-align:center;font:400 14.5px/1.55 'Archivo';color:#B4C2D4;animation-delay:.1s;">{{ resSub }}</p>
+
+        <div class="fa-in" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px;animation-delay:.14s;">
+          <div style="grid-column:1 / -1;padding:18px 20px;border-radius:15px;border:1px solid color-mix(in srgb,#22D3EE 30%,transparent);background:color-mix(in srgb,#22D3EE 8%,transparent);">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;"><span style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:#22D3EE;">GAME-READING · SKILL</span><span style="font:800 20px 'IBM Plex Mono';color:#22D3EE;">{{ readingScore }}</span></div>
+            <p style="margin:0;font:400 13px/1.5 'Archivo';color:#C6D3E2;">You found the free man on {{ foundLabel }}. This is a skill that improves with reps &mdash; it never changes your archetype.</p>
+          </div>
+          <div style="padding:16px 18px;border-radius:14px;border:1px solid rgba(120,140,166,.18);background:rgba(10,16,28,.4);"><div style="font:600 9px 'IBM Plex Mono';letter-spacing:.2em;color:#61748c;margin-bottom:8px;">LOOKS / RECEPTION</div><div style="font:800 22px 'Archivo';color:#EAF2FB;">{{ looksAvg }}</div></div>
+          <div style="padding:16px 18px;border-radius:14px;border:1px solid rgba(120,140,166,.18);background:rgba(10,16,28,.4);"><div style="font:600 9px 'IBM Plex Mono';letter-spacing:.2em;color:#61748c;margin-bottom:8px;">CHECKED BEHIND</div><div style="font:800 22px 'Archivo';color:#EAF2FB;">{{ behindPct }}</div></div>
+        </div>
+
+        <div class="fa-in" style="width:100%;padding:20px 22px;border-radius:16px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);margin-bottom:18px;animation-delay:.2s;">
+          <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:#61748c;margin-bottom:14px;">WHERE YOU LOOKED FIRST</div>
+          <div style="display:flex;flex-direction:column;gap:11px;">
+            <sc-for list="{{ zoneBars }}" as="z" hint-placeholder-count="3">
+              <div style="display:flex;flex-direction:column;gap:5px;"><div style="display:flex;justify-content:space-between;"><span style="font:600 12px 'Archivo';color:#C6D3E2;">{{ z.label }}</span><span style="font:700 11px 'IBM Plex Mono';color:#9FB0C5;">{{ z.pct }}</span></div><div style="height:8px;border-radius:99px;background:rgba(120,140,166,.14);overflow:hidden;"><div class="fa-bar" style="height:100%;border-radius:99px;transform-origin:left;animation:fa-bar .8s cubic-bezier(.3,.8,.3,1) both;width:{{ z.barW }};background:linear-gradient(90deg,var(--accent,#22D3EE),color-mix(in srgb,var(--accent,#22D3EE) 45%,transparent));"></div></div></div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div class="fa-in" style="padding:16px 18px;border-radius:14px;border:1px solid color-mix(in srgb,var(--accent,#22D3EE) 26%,transparent);background:color-mix(in srgb,var(--accent,#22D3EE) 7%,transparent);margin-bottom:24px;animation-delay:.24s;">
+          <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:var(--accent,#22D3EE);margin-bottom:8px;">A SOFT READ &mdash; NOT A VERDICT</div>
+          <p style="margin:0;font:400 13.5px/1.6 'Archivo';color:#C6D3E2;text-wrap:pretty;">{{ softRead }}</p>
+        </div>
+
+        <div class="fa-in" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:13px;animation-delay:.3s;">
+          <button onClick="{{ again }}" style="display:inline-flex;align-items:center;gap:10px;padding:16px 30px;border-radius:12px;border:0;background:var(--accent,#22D3EE);color:#0b1108;font:700 15px 'Archivo';cursor:pointer;box-shadow:0 12px 38px color-mix(in srgb,var(--accent,#22D3EE) 40%,transparent);" style-hover="transform:translateY(-2px);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:#0b1108;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>Play again</button>
+          <sc-if value="{{ showChrome }}" hint-placeholder-val="{{ true }}"><a href="Assessment.dc.html" style="display:inline-flex;align-items:center;gap:9px;padding:16px 24px;border-radius:12px;border:1px solid rgba(157,176,198,.28);background:rgba(12,18,30,.4);color:#C6D3E2;font:600 14px 'Archivo';" style-hover="border-color:color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);color:#EAF2FB;">Back to the scan</a></sc-if>
+          <sc-if value="{{ isEmbedded }}" hint-placeholder-val="{{ false }}"><button onClick="{{ doneEmbedded }}" style="display:inline-flex;align-items:center;gap:9px;padding:16px 28px;border-radius:12px;border:1px solid color-mix(in srgb,var(--accent,#22D3EE) 45%,transparent);background:color-mix(in srgb,var(--accent,#22D3EE) 12%,transparent);color:#EAF2FB;font:700 14px 'Archivo';cursor:pointer;" style-hover="transform:translateY(-2px);">Continue the scan &rarr;</button></sc-if>
+        </div>
+        <div class="fa-in" style="margin-top:22px;text-align:center;font:500 10px 'IBM Plex Mono';letter-spacing:.14em;color:#4f627a;animation-delay:.36s;">{{ dataLine }}</div>
+      </div>
+    </main>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:960,&quot;height&quot;:720},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#22D3EE&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#22D3EE&quot;,&quot;#A78BFA&quot;,&quot;#C6FF3A&quot;,&quot;#FF7A45&quot;,&quot;#FF4D8D&quot;]},&quot;embedded&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;onDone&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;(reading:object, meta:object)=&gt;void&quot;}}">
+class Component extends DCLogic {
+  DIFF = { academy:{ label:'Academy', sub:'6 looks · 500ms', looks:6, reveal:500 }, pro:{ label:'Pro', sub:'5 looks · 400ms', looks:5, reveal:400 }, elite:{ label:'Elite', sub:'4 looks · 300ms', looks:4, reveal:300 } };
+  R = 20; // reveal radius in % units
+  INCOMING = 3200;
+
+  // 8 receptions. you central-ish; one free man in a lane; covered mates + foes. lanes: forward / wideL / wideR / back
+  TRIALS = [
+    { you:[50,66], free:[50,22,'forward'], mates:[[26,50,'cov'],[76,52,'cov'],[38,80,'cov']], foes:[[48,40],[58,34],[40,30],[62,52]] },
+    { you:[46,60], free:[82,54,'wideR'], mates:[[50,30,'cov'],[24,44,'cov'],[40,82,'cov']], foes:[[52,44],[44,34],[64,40],[36,56]] },
+    { you:[54,58], free:[18,50,'wideL'], mates:[[52,28,'cov'],[78,48,'cov'],[60,80,'cov']], foes:[[50,42],[60,34],[42,38],[70,58]] },
+    { you:[50,64], free:[50,86,'back'], mates:[[30,44,'cov'],[72,44,'cov'],[50,30,'cov']], foes:[[46,50],[56,46],[40,36],[62,36]] },
+    { you:[44,62], free:[70,26,'forward'], mates:[[24,52,'cov'],[80,58,'cov'],[36,82,'cov']], foes:[[48,44],[40,34],[58,40],[30,58]] },
+    { you:[56,60], free:[20,58,'wideL'], mates:[[54,26,'cov'],[80,44,'cov'],[64,82,'cov']], foes:[[52,44],[62,36],[44,40],[72,56]] },
+    { you:[50,60], free:[84,44,'wideR'], mates:[[46,28,'cov'],[24,50,'cov'],[42,82,'cov']], foes:[[50,42],[42,34],[60,38],[34,54]] },
+    { you:[50,64], free:[46,24,'forward'], mates:[[28,48,'cov'],[74,50,'cov'],[52,84,'cov']], foes:[[48,42],[58,36],[40,34],[64,50]] },
+  ];
+  LANE = { forward:{label:'Thread it forward through the middle'}, wideL:{label:'Open it left to the flank'}, wideR:{label:'Open it right to the flank'}, back:{label:'Set it back and keep it'} };
+  ORDER4 = ['forward','wideL','wideR','back'];
+
+  state = { view:'intro', diff:'pro', trialIdx:0, phase:'scan', looksLeft:5, lights:[], lit:[], taps:[], results:[], trialKey:0 };
+
+  componentDidMount(){
+    try { this._soundOn=localStorage.getItem('fa_sound')!=='0'; } catch(e){ this._soundOn=true; }
+    if(this.props.embedded) this._start(); else this.forceUpdate();
+  }
+  componentWillUnmount(){ this._clear(); }
+  _clear(){ (this._timers||[]).forEach(t=>clearTimeout(t)); this._timers=[]; }
+  _later(fn,ms){ (this._timers=this._timers||[]).push(setTimeout(fn,ms)); }
+
+  _audio(){ if(this._actx===undefined){ try{ this._actx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ this._actx=null; } } if(this._actx&&this._actx.state==='suspended') this._actx.resume(); return this._actx; }
+  _tone(f,d,t,g){ const c=this._audio(); if(!c||this._soundOn===false) return; const o=c.createOscillator(),a=c.createGain(); o.type=t||'sine'; o.frequency.value=f; o.connect(a); a.connect(c.destination); const n=c.currentTime; a.gain.setValueAtTime(0,n); a.gain.linearRampToValueAtTime(g||0.05,n+0.01); a.gain.exponentialRampToValueAtTime(0.0001,n+d); o.start(n); o.stop(n+d); }
+  _sfx(k){ if(this._soundOn===false) return; if(k==='look') this._tone(680,0.08,'sine',0.035); else if(k==='select'){ this._tone(560,0.1,'triangle',0.05); this._later(()=>this._tone(780,0.1,'triangle',0.045),50);} else if(k==='whistle') this._tone(900,0.16,'sine',0.05); else if(k==='complete'){ this._tone(520,0.14,'triangle',0.05); this._later(()=>this._tone(760,0.2,'triangle',0.05),120);} }
+  _toggleSound(){ const on=this._soundOn===false; this._soundOn=on; try{ localStorage.setItem('fa_sound', on?'1':'0'); }catch(e){} if(on){ this._audio(); this._tone(560,0.1,'triangle',0.05);} this.forceUpdate(); }
+
+  _setDiff(d){ this._sfx('select'); this.setState({ diff:d }); }
+  _start(){ this._sfx('whistle'); this.setState({ view:'play', trialIdx:0, results:[] }, ()=>this._runTrial()); }
+
+  _runTrial(){
+    this._clear();
+    const looks=this.DIFF[this.state.diff].looks;
+    this.setState({ phase:'scan', looksLeft:looks, lights:[], lit:[], taps:[], trialKey:this.state.trialKey+1 });
+    this._later(()=>{ if(this.state.phase==='scan') this._toChoose(); }, this.INCOMING);
+  }
+
+  _tap(e){
+    if(this.state.phase!=='scan' || this.state.looksLeft<=0) return;
+    const r=e.currentTarget.getBoundingClientRect();
+    const x=((e.clientX-r.left)/r.width)*100, y=((e.clientY-r.top)/r.height)*100;
+    this._sfx('look');
+    const tr=this.TRIALS[this.state.trialIdx];
+    // which tokens fall within reveal radius
+    const all=[{p:tr.free,id:'free'}].concat(tr.mates.map((m,i)=>({p:m,id:'m'+i}))).concat(tr.foes.map((f,i)=>({p:f,id:'f'+i})));
+    const near=all.filter(t=>Math.hypot(t.p[0]-x,t.p[1]-y)<=this.R).map(t=>t.id);
+    const id='L'+Date.now()+Math.random();
+    const lights=this.state.lights.concat([{ id, x, y }]);
+    const lit=this.state.lit.concat(near.map(n=>({ id:n, exp:Date.now()+this.DIFF[this.state.diff].reveal })));
+    const taps=this.state.taps.concat([{ x, y }]);
+    this.setState({ lights, lit, taps, looksLeft:this.state.looksLeft-1 });
+    const rev=this.DIFF[this.state.diff].reveal;
+    this._later(()=>{ this.setState(s=>({ lights:s.lights.filter(l=>l.id!==id), lit:s.lit.filter(o=>o.exp>Date.now()) })); }, rev);
+  }
+
+  _toChoose(){ this._clear(); this.setState({ phase:'choose', lights:[], lit:[] }); }
+  _receiveNow(){ if(this.state.phase==='scan') this._toChoose(); }
+
+  _choose(lane){
+    if(this.state.phase!=='choose') return;
+    this._sfx('select');
+    const tr=this.TRIALS[this.state.trialIdx];
+    const taps=this.state.taps;
+    const found=lane===tr.free[2];
+    // first look zone relative to you
+    let firstZone=null;
+    if(taps.length){ const t0=taps[0], dy=t0.y-tr.you[1]; firstZone = dy<-8?'forward':(dy>8?'behind':'lateral'); }
+    const behind=taps.some(t=>t.y-tr.you[1]>8);
+    const rec={ looks:taps.length, found, firstZone, behind };
+    const results=this.state.results.concat([rec]);
+    const next=this.state.trialIdx+1;
+    this.setState({ results, phase:'feedback', lastFound:found });
+    this._later(()=>{ if(next>=this.TRIALS.length) this._finish(results); else this.setState({ trialIdx:next }, ()=>this._runTrial()); }, 950);
+  }
+
+  _finish(results){
+    this._sfx('complete');
+    const n=results.length||1;
+    const found=results.filter(r=>r.found).length;
+    const looksAvg=results.reduce((s,r)=>s+r.looks,0)/n;
+    const behind=results.filter(r=>r.behind).length/n;
+    const zc={forward:0,lateral:0,behind:0};
+    results.forEach(r=>{ if(r.firstZone) zc[r.firstZone]++; });
+    this._res={ found, n, looksAvg, behind, zc };
+    const out={ version:'cm-fow-1.0', task:'fog_of_war', completedAt:new Date().toISOString(),
+      difficulty:this.state.diff, foundFreeMan:found/n, looksAvg, behindCheckRate:behind, firstLookZones:zc };
+    try{ localStorage.setItem('fa_cm_fow', JSON.stringify(out)); }catch(e){}
+    if(this.props.embedded && typeof this.props.onDone==='function'){ try{ this.props.onDone({ gameReading:Math.round(found/n*100) }, out); }catch(e){} }
+    this.setState({ view:'result' });
+  }
+
+  _again(){ this.setState({ view:this.props.embedded?'play':'intro' }, ()=>{ if(this.props.embedded) this._start(); }); }
+  _doneEmbedded(){ if(typeof this.props.onDone==='function'){ try{ this.props.onDone(null,{done:true}); }catch(e){} } }
+
+  renderVals(){
+    const accent=this.props.accent ?? '#22D3EE';
+    const V=this.state.view; const embedded=!!this.props.embedded;
+    const soundOn=this._soundOn!==false;
+    const now=Date.now();
+    const base={
+      accent, isEmbedded:embedded, showChrome:!embedded,
+      isIntro:V==='intro', isPlay:V==='play', isResult:V==='result',
+      soundOn, soundOff:!soundOn, soundColor:soundOn?accent:'#61748c', soundTitle:soundOn?'Sound on':'Sound off',
+      toggleSound:()=>this._toggleSound(), begin:()=>this._start(), again:()=>this._again(), doneEmbedded:()=>this._doneEmbedded(),
+      onPitchTap:(e)=>this._tap(e), receiveNow:()=>this._receiveNow(),
+      progPct: V==='result'?'100%':(V==='play'?Math.round(this.state.trialIdx/8*100)+'%':'0%'),
+      progLabel: V==='play'?('R '+(this.state.trialIdx+1)+'/8'):(V==='result'?'DONE':'READY'),
+      lookDur:(this.DIFF[this.state.diff].reveal)+'ms',
+      incomingDur:this.INCOMING+'ms', trialKey:'t'+this.state.trialKey,
+    };
+    base.diffs=['academy','pro','elite'].map(k=>{ const d=this.DIFF[k]; const sel=this.state.diff===k; return { label:d.label, sub:d.sub, onPick:()=>this._setDiff(k), border:sel?'color-mix(in srgb,'+accent+' 70%,transparent)':'rgba(120,140,166,.22)', bg:sel?'color-mix(in srgb,'+accent+' 16%,transparent)':'rgba(10,16,28,.5)', color:sel?'#F2F8FE':'#B4C2D4', subColor:sel?accent:'#61748c' }; });
+
+    // play
+    if(V==='play'){
+      const tr=this.TRIALS[this.state.trialIdx];
+      const scan=this.state.phase==='scan';
+      base.isScan=scan; base.isChoose=this.state.phase==='choose';
+      base.isFeedback=this.state.phase==='feedback';
+      base.fbText=this.state.lastFound?'Found the free man':'The free man was elsewhere';
+      base.fbColor=this.state.lastFound?'#7CFFB0':'#FF8A98';
+      base.callNum=this.state.trialIdx+1;
+      base.scanStatus= scan?(this.state.looksLeft+' looks left'):'BALL RECEIVED';
+      base.pitchCursor= scan && this.state.looksLeft>0 ? 'crosshair':'default';
+      const looksMax=this.DIFF[this.state.diff].looks;
+      base.lookPips=Array.from({length:looksMax}).map((_,i)=>{ const used=i>=this.state.looksLeft; return { bg:used?'rgba(120,140,166,.12)':accent, border:used?'rgba(120,140,166,.22)':'color-mix(in srgb,'+accent+' 60%,transparent)' }; });
+      base.you={ left:tr.you[0]+'%', top:tr.you[1]+'%' };
+      base.ball={ left:tr.you[0]+'%', top:(tr.you[1]-1)+'%' };
+      const litIds=new Set(this.state.lit.filter(o=>o.exp>now).map(o=>o.id));
+      const fb=this.state.phase==='feedback';
+      const mk=(p,id,kind)=>{
+        const revealed = litIds.has(id) || (fb && kind==='free');
+        let style;
+        if(kind==='free') style='border-radius:50%;background:linear-gradient(180deg,#7CFFB0,#1FB588);border:2px solid #eafff4;box-shadow:0 0 14px rgba(124,255,176,.7);';
+        else if(kind==='mate') style='border-radius:50%;background:rgba(120,180,230,.55);border:1.5px solid rgba(160,210,255,.85);';
+        else style='background:radial-gradient(125% 125% at 40% 22%,#ff9a9a,#c0322f);clip-path:polygon(50% 0,100% 100%,0 100%);';
+        return { left:p[0]+'%', top:p[1]+'%', size:kind==='free'?'16px':(kind==='foe'?'15px':'13px'), opacity:revealed?'1':'0', style };
+      };
+      const toks=[ mk(tr.free,'free','free') ].concat(tr.mates.map((m,i)=>mk(m,'m'+i,'mate'))).concat(tr.foes.map((f,i)=>mk(f,'f'+i,'foe')));
+      base.tokens=toks;
+      base.lights=this.state.lights.map(l=>({ left:l.x+'%', top:l.y+'%', d:(this.R*2)+'%' }));
+      // options
+      base.options=this.ORDER4.map((lane,i)=>({ letter:'ABCD'[i], text:this.LANE[lane].label, delay:(0.04+i*0.05).toFixed(2)+'s', onPick:()=>this._choose(lane) }));
+    } else {
+      base.isScan=false; base.isChoose=false; base.isFeedback=false; base.fbText=''; base.fbColor='#7CFFB0'; base.callNum=1; base.scanStatus=''; base.pitchCursor='default'; base.lookPips=[]; base.you={left:'50%',top:'64%'}; base.ball={left:'50%',top:'63%'}; base.tokens=[]; base.lights=[]; base.options=[];
+    }
+
+    // result
+    Object.assign(base,{ resHeadline:'', resSub:'', readingScore:'', foundLabel:'', looksAvg:'', behindPct:'', zoneBars:[], softRead:'', dataLine:'' });
+    const r=this._res;
+    if(V==='result' && r){
+      const fPct=Math.round(r.found/r.n*100);
+      base.readingScore=fPct+'%';
+      base.foundLabel=r.found+' of '+r.n;
+      base.looksAvg=(Math.round(r.looksAvg*10)/10);
+      base.behindPct=Math.round(r.behind*100)+'%';
+      base.resHeadline = r.looksAvg>=4?'You build the whole picture.':(r.looksAvg<=2?'You commit on instinct.':'You take a measured look.');
+      base.resSub = 'Two separate things came out of that: how well you read it (a skill) and what you looked at first (a tendency).';
+      const zt=(r.zc.forward+r.zc.lateral+r.zc.behind)||1;
+      base.zoneBars=[['forward','Forward first'],['lateral','Sideways first'],['behind','Behind first']].map(([k,lab])=>({ label:lab, pct:Math.round(r.zc[k]/zt*100)+'%', barW:Math.round(r.zc[k]/zt*100)+'%' }));
+      const many=r.looksAvg>=4, checksBehind=r.behind>=0.4, fwdFirst=r.zc.forward>=r.zc.lateral && r.zc.forward>=r.zc.behind;
+      base.softRead = (many&&checksBehind) ? 'Lots of looks, and you check behind before you receive \u2014 that\u2019s how a Conductor builds a full picture before the ball even arrives.'
+        : (!many&&fwdFirst) ? 'Few looks, forward first, quick to commit \u2014 that reads like a Carrier or Destroyer who backs the first picture and goes.'
+        : 'You looked toward the far, riskier options \u2014 the kind of scan a Maestro makes, hunting the pass nobody else has seen. Remember: this is a hint, not a label. Your scan and your archetype are logged separately.';
+      base.dataLine='SILENT INSTRUMENT · SKILL LOGGED SEPARATELY · CM FOW v1.0';
+    }
+    return base;
+  }
+}
+</script>
+</body>
+</html>

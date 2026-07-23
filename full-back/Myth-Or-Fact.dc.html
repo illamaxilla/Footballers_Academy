@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:#04060c;}
+  a{color:var(--accent,#FF6B1A);text-decoration:none;}
+  a:hover{opacity:.92;}
+  @keyframes fa-blink{0%,100%{opacity:1;}50%{opacity:.25;}}
+  @keyframes fa-rise{0%{transform:translateY(16px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-rise-sm{0%{transform:translateY(10px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-bar{from{transform:scaleX(0);}to{transform:scaleX(1);}}
+  .fa-in{opacity:0;animation:fa-rise .6s cubic-bezier(.2,.7,.2,1) forwards;}
+  .fa-in-sm{opacity:0;animation:fa-rise-sm .5s cubic-bezier(.2,.7,.2,1) forwards;}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;}.fa-in,.fa-in-sm{opacity:1!important;transform:none!important;}}
+</style>
+</helmet>
+<div data-screen-label="Myth or Fact" style="position:relative;display:flex;flex-direction:column;min-height:100dvh;width:100%;overflow:hidden;background:radial-gradient(120% 90% at 50% 6%,#0e1a2d 0%,#080e1a 44%,#04060c 100%);color:#EAF2FB;font-family:'Archivo',system-ui,sans-serif;--accent:{{ accent }};">
+
+  <div style="position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.4;background:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0px,rgba(255,255,255,.02) 1px,transparent 1px,transparent 4px);"></div>
+  <div style="position:absolute;top:20px;left:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#FF6B1A) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#FF6B1A) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;top:20px;right:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#FF6B1A) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#FF6B1A) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;left:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#FF6B1A) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#FF6B1A) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;right:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#FF6B1A) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#FF6B1A) 50%,transparent);z-index:4;pointer-events:none;"></div>
+
+  <header style="position:relative;z-index:6;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px clamp(24px,3.4vw,54px);">
+    <div style="min-width:110px;display:flex;"><a href="Assessment.dc.html" style="display:inline-flex;align-items:center;gap:8px;color:#8EA1B8;font:600 12.5px 'Archivo';"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M15 5l-7 7 7 7"/></svg>Back to the scan</a></div>
+    <div style="display:flex;align-items:center;gap:11px;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" style="stroke:var(--accent,#FF6B1A);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 0 1 4.5 1.5c0 1.7-2.5 2-2.5 3.5"/><path d="M12 17h.01"/></svg><span style="font:800 13px 'Archivo';letter-spacing:.05em;">MYTH OR <span style="color:var(--accent,#FF6B1A);">FACT</span></span></div>
+    <div style="display:flex;align-items:center;gap:12px;min-width:110px;justify-content:flex-end;">
+      <button onClick="{{ toggleSound }}" title="{{ soundTitle }}" style="display:grid;place-items:center;width:28px;height:28px;border-radius:8px;border:1px solid rgba(120,140,166,.24);background:rgba(10,16,28,.5);cursor:pointer;color:{{ soundColor }};">
+        <sc-if value="{{ soundOn }}" hint-placeholder-val="{{ true }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></sc-if>
+        <sc-if value="{{ soundOff }}" hint-placeholder-val="{{ false }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M22 9l-6 6M16 9l6 6"/></svg></sc-if>
+      </button>
+    </div>
+  </header>
+
+  <!-- INTRO -->
+  <sc-if value="{{ isIntro }}" hint-placeholder-val="{{ true }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;text-align:center;padding:14px clamp(24px,4vw,54px) 54px;">
+      <div class="fa-in" style="display:inline-flex;align-items:center;gap:10px;margin-bottom:18px;font:600 12px 'IBM Plex Mono';letter-spacing:.4em;color:var(--accent,#FF6B1A);"><span style="width:6px;height:6px;border-radius:50%;background:var(--accent,#FF6B1A);box-shadow:0 0 8px var(--accent,#FF6B1A);animation:fa-blink 1.6s ease-in-out infinite;"></span>KNOW YOUR POSITION</div>
+      <h1 class="fa-in" style="margin:0 0 14px;font:800 clamp(34px,5.2vw,68px)/0.98 'Archivo';letter-spacing:-0.03em;text-wrap:balance;max-width:760px;animation-delay:.05s;">Myth, or fact?</h1>
+      <p class="fa-in" style="margin:0 0 26px;max-width:560px;font:400 clamp(14px,1.25vw,17px)/1.6 'Archivo';color:#9FB0C5;text-wrap:pretty;animation-delay:.1s;">Ten claims about full-backs and wing-backs. Some are true, some are things everyone believes but the data disagrees with. Call each one &mdash; then find out why. Real numbers, from real tournaments.</p>
+      <button onClick="{{ start }}" class="fa-in" style="display:inline-flex;align-items:center;gap:12px;padding:17px 42px;border-radius:13px;border:0;background:var(--accent,#FF6B1A);color:#04121a;font:700 16px 'Archivo';cursor:pointer;box-shadow:0 14px 44px color-mix(in srgb,var(--accent,#FF6B1A) 42%,transparent);transition:transform .16s ease;animation-delay:.22s;" style-hover="transform:translateY(-2px);">Start the round<svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12h13M12 6l6 6-6 6"/></svg></button>
+      <div class="fa-in" style="margin-top:16px;font:500 10px 'IBM Plex Mono';letter-spacing:.14em;color:#61748C;animation-delay:.3s;">{{ bestLine }}</div>
+    </main>
+  </sc-if>
+
+  <!-- PLAY -->
+  <sc-if value="{{ isPlay }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:6px clamp(18px,3.5vw,54px) 40px;">
+      <div style="width:100%;max-width:600px;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+          <span style="font:600 9.5px 'IBM Plex Mono';letter-spacing:.2em;color:var(--accent,#FF6B1A);">CLAIM {{ claimLabel }}</span>
+          <span style="flex:1;height:1px;background:rgba(120,140,166,.16);"></span>
+          <span style="font:600 9.5px 'IBM Plex Mono';letter-spacing:.14em;color:#7688A0;">{{ streakLabel }}</span>
+        </div>
+
+        <div class="fa-in-sm" style="padding:26px 22px;border-radius:16px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.55);margin-bottom:18px;min-height:130px;display:flex;align-items:center;">
+          <p style="margin:0;font:700 clamp(19px,2.6vw,27px)/1.28 'Archivo';color:#EAF2FB;text-wrap:pretty;">&ldquo;{{ claimText }}&rdquo;</p>
+        </div>
+
+        <sc-if value="{{ notAnswered }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;gap:12px;">
+            <button onClick="{{ pickFact }}" style="flex:1;padding:20px;border-radius:14px;border:1px solid rgba(34,199,118,.4);background:rgba(34,199,118,.1);color:#7DE8AE;font:800 17px 'Archivo';letter-spacing:.03em;cursor:pointer;transition:transform .12s ease,background .15s ease;" style-hover="background:rgba(34,199,118,.18);transform:translateY(-2px);">FACT</button>
+            <button onClick="{{ pickMyth }}" style="flex:1;padding:20px;border-radius:14px;border:1px solid rgba(255,90,110,.4);background:rgba(255,90,110,.1);color:#FF9AA8;font:800 17px 'Archivo';letter-spacing:.03em;cursor:pointer;transition:transform .12s ease,background .15s ease;" style-hover="background:rgba(255,90,110,.18);transform:translateY(-2px);">MYTH</button>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ answered }}" hint-placeholder-val="{{ false }}">
+          <div class="fa-in-sm" style="padding:18px 20px;border-radius:15px;border:1px solid {{ fbBorder }};background:{{ fbBg }};">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:9px;">
+              <span style="font:800 15px 'Archivo';color:{{ fbColor }};">{{ fbHead }}</span>
+              <span style="font:600 10px 'IBM Plex Mono';letter-spacing:.14em;color:#9FB0C5;">IT&rsquo;S {{ truthLabel }}</span>
+            </div>
+            <p style="margin:0;font:400 14.5px/1.55 'Archivo';color:#C9D6E2;text-wrap:pretty;">{{ explainText }}</p>
+          </div>
+          <button onClick="{{ next }}" class="fa-in-sm" style="width:100%;margin-top:14px;padding:16px;border-radius:13px;border:0;background:var(--accent,#FF6B1A);color:#04121a;font:700 15px 'Archivo';cursor:pointer;box-shadow:0 12px 34px color-mix(in srgb,var(--accent,#FF6B1A) 38%,transparent);transition:transform .16s ease;animation-delay:.1s;" style-hover="transform:translateY(-2px);">{{ nextLabel }}</button>
+        </sc-if>
+      </div>
+    </main>
+  </sc-if>
+
+  <!-- RESULT -->
+  <sc-if value="{{ isResult }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:10px clamp(20px,4vw,54px) 64px;">
+      <div style="width:100%;max-width:560px;text-align:center;">
+        <div class="fa-in" style="font:600 11px 'IBM Plex Mono';letter-spacing:.4em;color:#7E90A8;margin-bottom:12px;">ROUND OVER</div>
+        <div class="fa-in" style="font:900 clamp(64px,14vw,120px)/0.9 'Archivo';letter-spacing:-0.03em;color:var(--accent,#FF6B1A);text-shadow:0 0 48px color-mix(in srgb,var(--accent,#FF6B1A) 45%,transparent);animation-delay:.04s;">{{ scoreBig }}</div>
+        <div class="fa-in" style="margin-top:6px;font:600 clamp(15px,1.7vw,20px) 'Archivo';color:#C9D6E2;animation-delay:.08s;">{{ resultHeadline }}</div>
+        <div class="fa-in" style="margin-top:8px;font:500 13px 'IBM Plex Mono';letter-spacing:.1em;color:#7688A0;animation-delay:.12s;">BEST STREAK &middot; {{ bestStreak }} IN A ROW</div>
+
+        <div class="fa-in" style="margin:26px 0;padding:18px 20px;border-radius:15px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);text-align:left;animation-delay:.16s;">
+          <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:var(--accent,#FF6B1A);margin-bottom:8px;">THE TAKEAWAY</div>
+          <p style="margin:0;font:500 14.5px/1.55 'Archivo';color:#C9D6E2;text-wrap:pretty;">{{ takeaway }}</p>
+        </div>
+
+        <div class="fa-in" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:12px;animation-delay:.22s;">
+          <button onClick="{{ again }}" style="display:inline-flex;align-items:center;gap:10px;padding:15px 30px;border-radius:12px;border:0;background:var(--accent,#FF6B1A);color:#04121a;font:700 15px 'Archivo';cursor:pointer;box-shadow:0 12px 36px color-mix(in srgb,var(--accent,#FF6B1A) 40%,transparent);transition:transform .16s ease;" style-hover="transform:translateY(-2px);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:#04121a;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>New round</button>
+          <a href="Assessment.dc.html" style="display:inline-flex;align-items:center;gap:9px;padding:15px 24px;border-radius:12px;border:1px solid rgba(157,176,198,.28);background:rgba(12,18,30,.4);color:#C6D3E2;font:600 14px 'Archivo';" style-hover="border-color:color-mix(in srgb,var(--accent,#FF6B1A) 55%,transparent);color:#EAF2FB;">Back to the scan</a>
+        </div>
+      </div>
+    </main>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:940,&quot;height&quot;:720},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#FF6B1A&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#FF6B1A&quot;,&quot;#E5197F&quot;,&quot;#5B9BD5&quot;,&quot;#22D3EE&quot;]}}">
+class Component extends DCLogic {
+  ROUND=10;
+  CLAIMS=[
+    { t:'Full-backs cover more ground than any other position.', fact:false, ex:'A myth. Central and defensive midfielders run the most \u2014 around 11.4\u201311.9 km at Euro 2024. Full-backs instead lead high-intensity running, sprint distance and top speed. The most intense runner, not the biggest.' },
+    { t:'Six of the ten fastest sprints at Euro 2024 came from full-backs and wing-backs.', fact:true, ex:'Fact. Wide defenders hit 34.8\u201335.7 km/h and produced six of the tournament\u2019s ten quickest sprints \u2014 this is a genuinely explosive position, not just an endurance one.' },
+    { t:'A wing-back in a back three does more high-intensity running than a full-back in a back four.', fact:true, ex:'Fact. Peak one-minute high-intensity running was 74.4 m for wing-backs versus 69.0 m for full-backs. A back three asks even more of the wide players.' },
+    { t:'Full-backs pass more accurately than wing-backs.', fact:true, ex:'Fact. Full-backs completed 86.8% of passes versus 78.5% for wing-backs \u2014 the wing-back role is more direct and higher-risk, with less possession.' },
+    { t:'Most of the mechanical cost of playing full-back is accelerating.', fact:false, ex:'A myth. The peak mechanical window is roughly 65% decelerating and only 35% accelerating. Braking \u2014 stopping and changing direction \u2014 is most of the load, which is why deceleration work matters so much.' },
+    { t:'Full-backs and wing-backs kept their sprint output up in the second half.', fact:true, ex:'Fact. While most positions declined after half-time, full-backs and wing-backs maintained or even increased their sprinting \u2014 real evidence for the position\u2019s endurance reputation.' },
+    { t:'One match reliably tells you how good a full-back\u2019s tackling is.', fact:false, ex:'A myth. Tackle and sprint counts vary enormously game to game \u2014 the standard deviation is as big as the average. You need four-plus matches before a single number means anything.' },
+    { t:'Centre-backs cover the least total distance of the outfield players.', fact:true, ex:'Fact. Centre-backs sit lowest at roughly 9.7\u201310.1 km, while midfielders lead. Total distance is a poor way to judge how hard a position works.' },
+    { t:'Wing-backs touch the ball more often than full-backs.', fact:false, ex:'A myth. Full-backs averaged 106.5 touches versus 85.5 for wing-backs. The full-back is more involved in build-up; the wing-back is more of a runner.' },
+    { t:'A full-back\u2019s output is actually more consistent match-to-match than most positions.', fact:true, ex:'Fact. Wide defenders showed less variation in high-intensity and sprint distance than centre-backs and defensive midfielders \u2014 a reliable, repeatable engine.' },
+    { t:'The peak one-minute demand is a better training reference than the match total.', fact:true, ex:'Fact. Modern sports science trains for the most demanding passage of play, not the average \u2014 match totals systematically under-prepare a player for the hardest minute of the game.' },
+    { t:'Body-fat percentage targets are a useful thing to show a 15-year-old full-back.', fact:false, ex:'A myth \u2014 and an important one. Body-composition targets have no place in a youth product; the harm potential in adolescent athletes is real. This app never collects or shows them.' },
+    { t:'Full-backs are the team\u2019s biggest overall runners.', fact:false, ex:'A myth. They\u2019re the most intense runners, not the biggest \u2014 midfielders cover more ground. \u201cMost intense\u201d is the stronger, more accurate claim anyway.' },
+    { t:'Wing-backs sit in the high-volume, high-intensity bracket more often than full-backs.', fact:true, ex:'Fact. Plotting volume against intensity, wing-backs land in the demanding top-right quadrant 71.4% of the time versus 47.3% for full-backs.' },
+  ];
+
+  state={ view:'intro', idx:0, correct:0, streak:0, bestStreak:0, answered:false, wasRight:false, picked:null };
+
+  componentDidMount(){ try{ this._soundOn=localStorage.getItem('fa_sound')!=='0'; }catch(e){ this._soundOn=true; } try{ const b=JSON.parse(localStorage.getItem('fa_fb_myth')||'null'); this._best=b&&typeof b.bestScore==='number'?b.bestScore:null; }catch(e){ this._best=null; } this.forceUpdate(); }
+
+  _audio(){ if(this._actx===undefined){ try{ this._actx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ this._actx=null; } } if(this._actx&&this._actx.state==='suspended') this._actx.resume(); return this._actx; }
+  _tone(f,d,t,g){ const c=this._audio(); if(!c||this._soundOn===false) return; const o=c.createOscillator(),a=c.createGain(); o.type=t||'sine'; o.frequency.value=f; o.connect(a); a.connect(c.destination); const n=c.currentTime; a.gain.setValueAtTime(0,n); a.gain.linearRampToValueAtTime(g||0.05,n+0.01); a.gain.exponentialRampToValueAtTime(0.0001,n+d); o.start(n); o.stop(n+d); }
+  _sfx(k){ if(this._soundOn===false) return; if(k==='right'){ this._tone(560,0.1,'triangle',0.05); setTimeout(()=>this._tone(820,0.12,'triangle',0.045),55);} else if(k==='wrong') this._tone(200,0.22,'sawtooth',0.05); else if(k==='whistle') this._tone(900,0.16,'sine',0.05); else if(k==='end'){ this._tone(520,0.14,'triangle',0.05); setTimeout(()=>this._tone(720,0.14,'triangle',0.05),120); setTimeout(()=>this._tone(940,0.26,'triangle',0.05),240);} else this._tone(430,0.08,'sine',0.04); }
+  _toggleSound(){ const on=this._soundOn===false; this._soundOn=on; try{ localStorage.setItem('fa_sound', on?'1':'0'); }catch(e){} if(on){ this._audio(); this._sfx('click'); } this.forceUpdate(); }
+
+  _begin(){ this._sfx('whistle'); const d=this.CLAIMS.map((c,i)=>({...c,i})); for(let i=d.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [d[i],d[j]]=[d[j],d[i]]; } this._deck=d.slice(0,this.ROUND); this.setState({ view:'play', idx:0, correct:0, streak:0, bestStreak:0, answered:false, wasRight:false, picked:null }); }
+
+  _answer(saidFact){
+    if(this.state.answered) return;
+    const c=this._deck[this.state.idx];
+    const right = saidFact===c.fact;
+    const streak = right? this.state.streak+1 : 0;
+    if(right) this._sfx('right'); else this._sfx('wrong');
+    this.setState({ answered:true, wasRight:right, picked:saidFact,
+      correct:this.state.correct+(right?1:0), streak, bestStreak:Math.max(this.state.bestStreak,streak) });
+  }
+  _next(){
+    const nx=this.state.idx+1;
+    if(nx>=this._deck.length){ this._end(); return; }
+    this._sfx('click');
+    this.setState({ idx:nx, answered:false, wasRight:false, picked:null });
+  }
+  _end(){
+    this._sfx('end');
+    const best=Math.max(this._best||0,this.state.correct);
+    try{ localStorage.setItem('fa_fb_myth', JSON.stringify({ bestScore:best, lastScore:this.state.correct, bestStreak:this.state.bestStreak, at:new Date().toISOString(), weight:0 })); }catch(e){}
+    this._best=best;
+    this.setState({ view:'result' });
+  }
+  _again(){ this._begin(); }
+
+  renderVals(){
+    const accent=this.props.accent ?? '#FF6B1A';
+    const V=this.state.view; const soundOn=this._soundOn!==false;
+    const base={ accent, isIntro:V==='intro', isPlay:V==='play', isResult:V==='result',
+      soundOn, soundOff:!soundOn, soundColor:soundOn?accent:'#7688A0', soundTitle:soundOn?'Sound on':'Sound off',
+      toggleSound:()=>this._toggleSound(), start:()=>this._begin(), again:()=>this._again(),
+      pickFact:()=>this._answer(true), pickMyth:()=>this._answer(false), next:()=>this._next(),
+      bestLine: this._best!=null? ('YOUR BEST \u00b7 '+this._best+' / '+this.ROUND) : '10 CLAIMS \u00b7 REAL DATA' };
+
+    const c=(this._deck&&this._deck[this.state.idx])||this.CLAIMS[0];
+    base.claimLabel=(this.state.idx+1)+' / '+this.ROUND;
+    base.streakLabel= this.state.streak>=2? ('\uD83D\uDD25 '+this.state.streak+' STREAK') : ('SCORE '+this.state.correct);
+    base.claimText=c.t;
+    base.notAnswered=!this.state.answered; base.answered=this.state.answered;
+    if(this.state.answered){
+      base.fbHead=this.state.wasRight?'Correct':'Not quite';
+      base.fbColor=this.state.wasRight?'#22C776':'#FF5A6E';
+      base.fbBg=this.state.wasRight?'rgba(34,199,118,.1)':'rgba(255,90,110,.1)';
+      base.fbBorder=this.state.wasRight?'rgba(34,199,118,.3)':'rgba(255,90,110,.3)';
+      base.truthLabel=c.fact?'FACT':'A MYTH';
+      base.explainText=c.ex;
+      base.nextLabel=(this.state.idx+1>=this.ROUND)?'See your score':'Next claim';
+    } else { base.fbHead=''; base.fbColor=accent; base.fbBg='transparent'; base.fbBorder='transparent'; base.truthLabel=''; base.explainText=''; base.nextLabel='Next'; }
+
+    // result
+    base.scoreBig=this.state.correct+'/'+this.ROUND;
+    base.bestStreak=this.state.bestStreak;
+    const sc=this.state.correct;
+    base.resultHeadline= sc>=9?'You know this position cold.': sc>=7?'Sharp \u2014 you know your stuff.': sc>=5?'Some myths still got you.':'The myths are winning \u2014 for now.';
+    base.takeaway= sc>=7? 'You can tell the received wisdom from the evidence \u2014 that\u2019s rarer than it sounds. Most people still think full-backs are the biggest runners on the pitch.' : 'The big one to remember: full-backs are the most INTENSE runners, not the biggest \u2014 and most of their physical cost is braking, not sprinting. Come back and beat your score.';
+    return base;
+  }
+}
+</script>
+</body>
+</html>

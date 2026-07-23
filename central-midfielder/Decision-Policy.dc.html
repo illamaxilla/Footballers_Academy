@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:#04060c;}
+  a{color:var(--accent,#22D3EE);text-decoration:none;}
+  a:hover{opacity:.92;}
+  @keyframes fa-blink{0%,100%{opacity:1;}50%{opacity:.25;}}
+  @keyframes fa-rise{0%{transform:translateY(16px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-rise-sm{0%{transform:translateY(10px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-bar{from{transform:scaleX(0);}to{transform:scaleX(1);}}
+  @keyframes fa-ring{from{stroke-dashoffset:0;}to{stroke-dashoffset:132;}}
+  @keyframes fa-ballpulse{0%,100%{box-shadow:0 0 8px rgba(255,255,255,.6);}50%{box-shadow:0 0 16px rgba(255,255,255,.95);}}
+  @keyframes fa-freeze{0%{opacity:0;}100%{opacity:1;}}
+  .fa-in{opacity:0;animation:fa-rise .7s cubic-bezier(.2,.7,.2,1) forwards;}
+  .fa-in-sm{opacity:0;animation:fa-rise-sm .5s cubic-bezier(.2,.7,.2,1) forwards;}
+  @media (prefers-reduced-motion:reduce){*{animation-duration:.001s!important;}.fa-in,.fa-in-sm{opacity:1!important;transform:none!important;}}
+</style>
+</helmet>
+<div data-screen-label="Decision Policy Under Pressure" style="position:relative;display:flex;flex-direction:column;min-height:100dvh;width:100%;overflow:hidden;background:radial-gradient(120% 90% at 50% 6%,#0e1a2d 0%,#080e1a 44%,#04060c 100%);color:#EAF2FB;font-family:'Archivo',system-ui,sans-serif;--accent:{{ accent }};">
+
+  <div style="position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.4;background:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0px,rgba(255,255,255,.02) 1px,transparent 1px,transparent 4px);"></div>
+  <div style="position:absolute;top:20px;left:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;top:20px;right:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;left:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;right:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+
+  <!-- ============ TOP BAR ============ -->
+  <sc-if value="{{ showChrome }}" hint-placeholder-val="{{ true }}">
+    <header style="position:relative;z-index:6;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px clamp(26px,3.4vw,58px);">
+      <div style="min-width:120px;display:flex;">
+        <a href="Assessment.dc.html" style="display:inline-flex;align-items:center;gap:8px;color:#8EA1B8;font:600 12.5px 'Archivo';" style-hover="color:#EAF2FB;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M15 5l-7 7 7 7"/></svg>Back to the scan
+        </a>
+      </div>
+      <div style="display:flex;align-items:center;gap:11px;">
+        <svg width="22" height="22" viewBox="0 0 32 32" fill="none"><path d="M16 2 28 9v14L16 30 4 23V9z" style="stroke:var(--accent,#22D3EE);stroke-width:1.5;fill:color-mix(in srgb,var(--accent,#22D3EE) 12%,transparent);"/><circle cx="16" cy="16" r="5" style="stroke:var(--accent,#22D3EE);stroke-width:1.5;fill:none;"/><circle cx="16" cy="16" r="1.6" style="fill:var(--accent,#22D3EE);"/></svg>
+        <span style="font:800 13px 'Archivo';letter-spacing:.05em;">DECISION <span style="color:var(--accent,#22D3EE);">POLICY</span></span>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;min-width:120px;justify-content:flex-end;">
+        <button onClick="{{ toggleSound }}" title="{{ soundTitle }}" style="display:grid;place-items:center;width:28px;height:28px;border-radius:8px;border:1px solid rgba(120,140,166,.24);background:rgba(10,16,28,.5);cursor:pointer;color:{{ soundColor }};" style-hover="border-color:color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);">
+          <sc-if value="{{ soundOn }}" hint-placeholder-val="{{ true }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg></sc-if>
+          <sc-if value="{{ soundOff }}" hint-placeholder-val="{{ false }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M22 9l-6 6M16 9l6 6"/></svg></sc-if>
+        </button>
+        <div style="width:88px;height:4px;border-radius:99px;background:rgba(120,140,166,.18);overflow:hidden;">
+          <div style="height:100%;border-radius:99px;background:var(--accent,#22D3EE);box-shadow:0 0 10px var(--accent,#22D3EE);width:{{ progPct }};transition:width .4s cubic-bezier(.3,.8,.3,1);"></div>
+        </div>
+        <span style="font:600 10px 'IBM Plex Mono';letter-spacing:.14em;color:color-mix(in srgb,var(--accent,#22D3EE) 80%,#fff);white-space:nowrap;">{{ progLabel }}</span>
+      </div>
+    </header>
+  </sc-if>
+
+  <!-- ============ INTRO ============ -->
+  <sc-if value="{{ isIntro }}" hint-placeholder-val="{{ true }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;text-align:center;padding:20px clamp(26px,4vw,58px) 60px;">
+      <div class="fa-in" style="display:inline-flex;align-items:center;gap:10px;margin-bottom:20px;font:600 12px 'IBM Plex Mono';letter-spacing:.4em;color:var(--accent,#22D3EE);">
+        <span style="width:6px;height:6px;border-radius:50%;background:var(--accent,#22D3EE);box-shadow:0 0 8px var(--accent,#22D3EE);animation:fa-blink 1.6s ease-in-out infinite;"></span>COGNITIVE BATTERY · TASK 1
+      </div>
+      <h1 class="fa-in" style="margin:0 0 16px;font:800 clamp(36px,5.4vw,72px)/0.98 'Archivo';letter-spacing:-0.03em;text-wrap:balance;max-width:820px;animation-delay:.06s;">Who are you when the clock&rsquo;s on your throat?</h1>
+      <p class="fa-in" style="margin:0 0 30px;max-width:600px;font:400 clamp(15px,1.3vw,18px)/1.6 'Archivo';color:#9FB0C5;text-wrap:pretty;animation-delay:.12s;">Twenty match moments. Each one freezes on your decision. Four actions &mdash; all defensible, no right answer. Half the calls run free; half run under a shrinking clock. What changes when it does is the whole point.</p>
+      <div class="fa-in" style="margin-bottom:26px;animation-delay:.16s;">
+        <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:#61748c;margin-bottom:11px;">CHOOSE YOUR CLOCK</div>
+        <div style="display:flex;gap:9px;flex-wrap:wrap;justify-content:center;">
+          <sc-for list="{{ diffs }}" as="d" hint-placeholder-count="3">
+            <button onClick="{{ d.onPick }}" style="padding:11px 20px;border-radius:11px;border:1px solid {{ d.border }};background:{{ d.bg }};color:{{ d.color }};font:700 13.5px 'Archivo';cursor:pointer;display:flex;flex-direction:column;gap:2px;align-items:center;" style-hover="border-color:color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);">
+              <span>{{ d.label }}</span>
+              <span style="font:500 9.5px 'IBM Plex Mono';letter-spacing:.06em;color:{{ d.subColor }};">{{ d.sub }}</span>
+            </button>
+          </sc-for>
+        </div>
+      </div>
+      <button onClick="{{ begin }}" class="fa-in" style="display:inline-flex;align-items:center;gap:12px;padding:18px 44px;border-radius:13px;border:0;background:var(--accent,#22D3EE);color:#0b1108;font:700 16px 'Archivo';cursor:pointer;box-shadow:0 14px 46px color-mix(in srgb,var(--accent,#22D3EE) 42%,transparent);animation-delay:.2s;" style-hover="transform:translateY(-2px);">
+        Kick off
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12h13M12 6l6 6-6 6"/></svg>
+      </button>
+      <div class="fa-in" style="margin-top:20px;font:500 10px 'IBM Plex Mono';letter-spacing:.14em;color:#4f627a;animation-delay:.3s;">20 CALLS · ~4 MINUTES · NO WRONG ANSWERS</div>
+    </main>
+  </sc-if>
+
+  <!-- ============ PLAY ============ -->
+  <sc-if value="{{ isPlay }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:6px clamp(18px,3vw,46px) 24px;gap:12px;">
+      <div style="width:100%;max-width:1120px;display:flex;flex-direction:column;gap:12px;flex:1;min-height:0;justify-content:center;">
+
+        <div style="display:flex;align-items:center;gap:12px;">
+          <span style="font:600 10px 'IBM Plex Mono';letter-spacing:.2em;color:var(--accent,#22D3EE);">CALL {{ callNum }} / 20</span>
+          <span style="flex:1;height:1px;background:rgba(120,140,166,.18);"></span>
+          <span style="display:inline-flex;align-items:center;gap:7px;font:600 10px 'IBM Plex Mono';letter-spacing:.14em;color:{{ condColor }};"><span style="width:6px;height:6px;border-radius:50%;background:{{ condColor }};box-shadow:0 0 8px {{ condColor }};"></span>{{ condLabel }}</span>
+        </div>
+
+        <!-- pitch (east–west: goals left/right) -->
+        <div style="position:relative;height:min(60vh,560px);aspect-ratio:3/2;max-width:100%;margin:0 auto;align-self:center;border-radius:16px;overflow:hidden;border:1px solid rgba(120,140,166,.2);background:radial-gradient(130% 100% at 50% 0%,#0d1c2e,#091324 60%,#050c17);">
+          <svg viewBox="0 0 160 100" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;" fill="none" stroke="rgba(120,180,210,.16)" stroke-width="0.5">
+            <rect x="3" y="3" width="154" height="94"></rect>
+            <line x1="80" y1="3" x2="80" y2="97"></line>
+            <circle cx="80" cy="50" r="13"></circle>
+            <rect x="3" y="27" width="26" height="46"></rect>
+            <rect x="131" y="27" width="26" height="46"></rect>
+            <rect x="3" y="38" width="10" height="24"></rect>
+            <rect x="147" y="38" width="10" height="24"></rect>
+          </svg>
+          <!-- tokens -->
+          <sc-for list="{{ foes }}" as="f" hint-placeholder-count="4">
+            <div style="position:absolute;left:{{ f.left }};top:{{ f.top }};width:19px;height:19px;margin:-9.5px 0 0 -9.5px;transition:left .42s ease,top .42s ease;filter:drop-shadow(0 2px 3px rgba(0,0,0,.55)) drop-shadow(0 0 5px rgba(255,90,110,.5));">
+              <div style="width:100%;height:100%;background:linear-gradient(135deg,#ff9a9a,#c0322f);clip-path:polygon(0 50%,100% 8%,100% 92%);"></div>
+            </div>
+          </sc-for>
+          <sc-for list="{{ mates }}" as="m" hint-placeholder-count="3">
+            <div style="position:absolute;left:{{ m.left }};top:{{ m.top }};width:19px;height:19px;margin:-9.5px 0 0 -9.5px;border-radius:50%;background:radial-gradient(125% 125% at 34% 24%,#8fdcec,#2b8ba6);border:1.5px solid rgba(232,246,255,.9);box-shadow:0 2px 4px rgba(0,0,0,.5),0 0 8px rgba(58,168,196,.5);transition:left .42s ease,top .42s ease;"></div>
+          </sc-for>
+          <div style="position:absolute;left:{{ you.left }};top:{{ you.top }};width:26px;height:26px;margin:-13px 0 0 -13px;border-radius:50%;background:radial-gradient(125% 125% at 34% 24%,color-mix(in srgb,{{ accent }} 80%,#fff),color-mix(in srgb,{{ accent }} 52%,#000));border:2px solid #fff;display:grid;place-items:center;font:800 8.5px 'IBM Plex Mono';color:#06140b;box-shadow:0 2px 5px rgba(0,0,0,.55),0 0 16px color-mix(in srgb,{{ accent }} 65%,transparent);z-index:2;">YOU</div>
+          <div style="position:absolute;left:{{ ball.left }};top:{{ ball.top }};width:9px;height:9px;margin:-4.5px 0 0 -4.5px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,#dfe8f0);box-shadow:0 0 6px 1px rgba(255,255,255,.85),0 1px 2px rgba(0,0,0,.45);transition:left {{ ballDur }},top {{ ballDur }};animation:fa-ballpulse 1s ease-in-out infinite;z-index:3;"></div>
+          <!-- freeze flash -->
+          <sc-if value="{{ frozen }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;top:10px;left:50%;transform:translateX(-50%);animation:fa-freeze .3s ease both;font:700 9px 'IBM Plex Mono';letter-spacing:.3em;color:#EAF2FB;background:rgba(4,6,12,.6);padding:5px 12px;border-radius:99px;border:1px solid rgba(120,140,166,.3);">FROZEN — YOUR CALL</div>
+          </sc-if>
+        </div>
+
+        <!-- prompt + ring -->
+        <div style="display:flex;align-items:flex-start;gap:14px;">
+          <sc-if value="{{ isPressure }}" hint-placeholder-val="{{ false }}">
+            <div style="flex:0 0 auto;position:relative;width:46px;height:46px;">
+              <svg width="46" height="46" viewBox="0 0 46 46" style="transform:rotate(-90deg);">
+                <circle cx="23" cy="23" r="21" fill="none" stroke="rgba(120,140,166,.2)" stroke-width="3"></circle>
+                <circle key="{{ ringKey }}" cx="23" cy="23" r="21" fill="none" stroke="{{ condColor }}" stroke-width="3" stroke-linecap="round" stroke-dasharray="132" style="stroke-dashoffset:0;animation:fa-ring {{ ringDur }} linear forwards;"></circle>
+              </svg>
+            </div>
+          </sc-if>
+          <h2 class="fa-in-sm" key="{{ callNum }}" style="margin:0;font:700 clamp(17px,2.3vw,24px)/1.32 'Archivo';letter-spacing:-0.01em;text-wrap:pretty;flex:1;">{{ prompt }}</h2>
+        </div>
+
+        <!-- options -->
+        <div style="display:flex;flex-wrap:wrap;gap:10px;">
+          <sc-for list="{{ options }}" as="opt" hint-placeholder-count="4">
+            <button onClick="{{ opt.onPick }}" class="fa-in-sm" style="display:flex;align-items:center;gap:12px;flex:1 1 240px;min-width:220px;text-align:left;padding:13px 15px;border-radius:13px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);color:#EAF2FB;font:600 14px/1.35 'Archivo';cursor:pointer;transition:border-color .14s,background .14s,transform .14s;animation-delay:{{ opt.delay }};" style-hover="border-color:color-mix(in srgb,var(--accent,#22D3EE) 58%,transparent);background:rgba(16,20,37,.82);transform:translateY(-2px);">
+              <span style="flex:0 0 auto;width:28px;height:28px;border-radius:8px;display:grid;place-items:center;border:1px solid rgba(120,140,166,.28);font:700 12px 'IBM Plex Mono';color:#9FB0C5;">{{ opt.letter }}</span>
+              <span style="flex:1;">{{ opt.text }}</span>
+            </button>
+          </sc-for>
+        </div>
+      </div>
+    </main>
+  </sc-if>
+
+  <!-- ============ RESULT ============ -->
+  <sc-if value="{{ isResult }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:14px clamp(20px,4vw,58px) 72px;">
+      <div style="width:100%;max-width:720px;">
+        <div class="fa-in" style="text-align:center;margin-bottom:6px;font:600 11px 'IBM Plex Mono';letter-spacing:.42em;color:#7688a0;">{{ resKicker }}</div>
+        <h1 class="fa-in" style="margin:0 0 6px;text-align:center;font:900 clamp(30px,5vw,58px)/0.98 'Archivo';letter-spacing:-0.03em;color:{{ shiftColor }};text-shadow:0 0 44px color-mix(in srgb,{{ shiftColor }} 40%,transparent);animation-delay:.05s;">{{ resHeadline }}</h1>
+        <p class="fa-in" style="margin:0 auto 26px;max-width:540px;text-align:center;font:400 clamp(14px,1.3vw,17px)/1.6 'Archivo';color:#B4C2D4;text-wrap:pretty;animation-delay:.1s;">{{ resSub }}</p>
+
+        <!-- free vs pressure -->
+        <div class="fa-in" style="width:100%;padding:22px 22px 20px;border-radius:18px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.55);margin-bottom:20px;animation-delay:.14s;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+            <span style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:#61748c;">FREE CLOCK &nbsp;→&nbsp; UNDER PRESSURE</span>
+            <span style="font:600 9px 'IBM Plex Mono';letter-spacing:.14em;color:#61748c;">YOUR POLICY</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:14px;">
+            <sc-for list="{{ shiftBars }}" as="s" hint-placeholder-count="5">
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <div style="display:flex;align-items:baseline;justify-content:space-between;">
+                  <span style="font:700 12.5px 'Archivo';color:{{ s.labelColor }};">{{ s.emoji }} {{ s.label }}</span>
+                  <span style="font:700 11px 'IBM Plex Mono';color:{{ s.deltaColor }};">{{ s.delta }}</span>
+                </div>
+                <div style="position:relative;height:10px;border-radius:99px;background:rgba(120,140,166,.14);overflow:hidden;">
+                  <div style="position:absolute;left:0;top:0;height:100%;border-radius:99px;width:{{ s.freeW }};background:rgba(140,160,186,.32);"></div>
+                  <div class="fa-bar" style="position:absolute;left:0;top:0;height:100%;border-radius:99px;transform-origin:left;animation:fa-bar .8s cubic-bezier(.3,.8,.3,1) both;width:{{ s.presW }};background:linear-gradient(90deg,{{ s.col }},color-mix(in srgb,{{ s.col }} 45%,transparent));box-shadow:0 0 10px color-mix(in srgb,{{ s.col }} 45%,transparent);"></div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="margin-top:14px;display:flex;gap:16px;align-items:center;font:500 10px 'IBM Plex Mono';letter-spacing:.06em;color:#7688a0;">
+            <span style="display:inline-flex;align-items:center;gap:6px;"><span style="width:14px;height:8px;border-radius:3px;background:rgba(140,160,186,.32);"></span>Free</span>
+            <span style="display:inline-flex;align-items:center;gap:6px;"><span style="width:14px;height:8px;border-radius:3px;background:{{ shiftColor }};"></span>Under pressure</span>
+          </div>
+        </div>
+
+        <!-- composure + freeze -->
+        <div class="fa-in" style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px;animation-delay:.2s;">
+          <div style="padding:18px 20px;border-radius:15px;border:1px solid rgba(120,140,166,.18);background:rgba(10,16,28,.4);">
+            <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:#61748c;margin-bottom:10px;">COMPOSURE</div>
+            <div style="font:800 22px 'Archivo';color:{{ composureColor }};margin-bottom:4px;">{{ composureLabel }}</div>
+            <p style="margin:0;font:400 13px/1.5 'Archivo';color:#9FB0C5;">{{ composureNote }}</p>
+          </div>
+          <div style="padding:18px 20px;border-radius:15px;border:1px solid rgba(120,140,166,.18);background:rgba(10,16,28,.4);">
+            <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:#61748c;margin-bottom:10px;">FROZE ON THE CLOCK</div>
+            <div style="font:800 22px 'Archivo';color:#EAF2FB;margin-bottom:4px;">{{ freezeLabel }}</div>
+            <p style="margin:0;font:400 13px/1.5 'Archivo';color:#9FB0C5;">{{ freezeNote }}</p>
+          </div>
+        </div>
+
+        <div class="fa-in" style="padding:16px 18px;border-radius:14px;border:1px solid color-mix(in srgb,{{ shiftColor }} 26%,transparent);background:color-mix(in srgb,{{ shiftColor }} 7%,transparent);margin-bottom:26px;animation-delay:.24s;">
+          <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:{{ shiftColor }};margin-bottom:8px;">WHAT THIS IS &mdash; AND ISN&rsquo;T</div>
+          <p style="margin:0;font:400 13.5px/1.6 'Archivo';color:#C6D3E2;text-wrap:pretty;">This is an <em>observation</em> of how your choices move under a clock, not a verdict. It joins your scan as another read &mdash; the more you play it, the sharper the picture. No stopwatch score is kept; only which way you lean.</p>
+        </div>
+
+        <div class="fa-in" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:13px;animation-delay:.3s;">
+          <button onClick="{{ again }}" style="display:inline-flex;align-items:center;gap:10px;padding:16px 30px;border-radius:12px;border:0;background:var(--accent,#22D3EE);color:#0b1108;font:700 15px 'Archivo';cursor:pointer;box-shadow:0 12px 38px color-mix(in srgb,var(--accent,#22D3EE) 40%,transparent);" style-hover="transform:translateY(-2px);">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:#0b1108;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
+            Play again
+          </button>
+          <sc-if value="{{ showChrome }}" hint-placeholder-val="{{ true }}">
+            <a href="Assessment.dc.html" style="display:inline-flex;align-items:center;gap:9px;padding:16px 24px;border-radius:12px;border:1px solid rgba(157,176,198,.28);background:rgba(12,18,30,.4);color:#C6D3E2;font:600 14px 'Archivo';" style-hover="border-color:color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);color:#EAF2FB;">Back to the scan</a>
+          </sc-if>
+          <sc-if value="{{ isEmbedded }}" hint-placeholder-val="{{ false }}">
+            <button onClick="{{ doneEmbedded }}" style="display:inline-flex;align-items:center;gap:9px;padding:16px 28px;border-radius:12px;border:1px solid color-mix(in srgb,var(--accent,#22D3EE) 45%,transparent);background:color-mix(in srgb,var(--accent,#22D3EE) 12%,transparent);color:#EAF2FB;font:700 14px 'Archivo';cursor:pointer;" style-hover="transform:translateY(-2px);">Continue the scan →</button>
+          </sc-if>
+        </div>
+        <div class="fa-in" style="margin-top:22px;text-align:center;font:500 10px 'IBM Plex Mono';letter-spacing:.14em;color:#4f627a;animation-delay:.36s;">{{ dataLine }}</div>
+      </div>
+    </main>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:960,&quot;height&quot;:720},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#22D3EE&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#22D3EE&quot;,&quot;#A78BFA&quot;,&quot;#C6FF3A&quot;,&quot;#FF7A45&quot;,&quot;#FF4D8D&quot;]},&quot;motion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;embedded&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;onDone&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;(pressureSpread:Record&lt;string,number&gt;, meta:object)=&gt;void&quot;}}">
+class Component extends DCLogic {
+  ORDER = ['conductor','maestro','carrier','engine','destroyer'];
+  ARCH = {
+    conductor:{ short:'Conductor', emoji:'\uD83C\uDFBC', color:'#D9A521' },
+    maestro:{ short:'Maestro', emoji:'\uD83C\uDFAF', color:'#7C5CE0' },
+    carrier:{ short:'Carrier', emoji:'\uD83C\uDFC3', color:'#2E9BE8' },
+    engine:{ short:'Engine', emoji:'\u2699\uFE0F', color:'#1FB588' },
+    destroyer:{ short:'Destroyer', emoji:'\uD83D\uDEE1\uFE0F', color:'#E0413C' },
+  };
+
+  // pitch layout templates (x,y in 0..100; attack toward top). last ball point = at YOU.
+  LAY = {
+    back:{ you:[50,58], mates:[[26,40],[74,40],[50,26]], foes:[[42,48],[60,44],[50,32],[58,62]], ball:[[50,86],[50,58]] },
+    left:{ you:[50,56], mates:[[76,40],[58,26],[30,66]], foes:[[44,48],[62,44],[52,32],[40,58]], ball:[[14,64],[34,58],[50,56]] },
+    right:{ you:[50,56], mates:[[24,40],[42,26],[70,66]], foes:[[56,48],[38,44],[48,32],[60,58]], ball:[[86,64],[66,58],[50,56]] },
+    loose:{ you:[50,52], mates:[[30,36],[70,40],[52,22]], foes:[[46,42],[58,50],[42,60],[54,34]], ball:[[60,72],[50,52]] },
+    press:{ you:[52,42], mates:[[30,58],[72,56],[50,68]], foes:[[50,32],[64,28],[38,30],[56,46]], ball:[[50,32],[52,42]] },
+  };
+
+  // 10 pairs. each pair omits one archetype; a & b are matched variants offering the same 4.
+  PAIRS = [
+    { omit:'destroyer', a:{ lay:'back', prompt:'You receive on the half-turn. Their midfield is stepping, your winger\u2019s run is tight to the line, your centre-back is free behind.', opts:{ conductor:'Take a touch, play it back, reset the shape.', maestro:'Clip it first-time in behind for the winger.', carrier:'Drive at the man stepping and go past him.', engine:'Lay it off and sprint past for the return.' } },
+      b:{ lay:'left', prompt:'Ball rolls into the pocket, their back three settled, a runner peeling off your shoulder, space to turn.', opts:{ conductor:'Set it back and start again at my pace.', maestro:'First-time through-ball to the runner.', carrier:'Turn and carry straight through the gap.', engine:'One-two and burst beyond into the box.' } } },
+    { omit:'destroyer', a:{ lay:'back', prompt:'Deep build-up, keeper rolls it to you, they press with one, options square and long.', opts:{ conductor:'Circulate \u2014 keep it, make them chase.', maestro:'Ping the diagonal to switch the play.', carrier:'Step past the presser and drive out.', engine:'Bounce it and overlap up the line.' } },
+      b:{ lay:'back', prompt:'You drop between the centre-backs to collect, one striker closing, midfield ahead of you.', opts:{ conductor:'Two touches, side to side, settle the tempo.', maestro:'Break the line with a vertical pass into feet.', carrier:'Carry out through the striker\u2019s shadow.', engine:'Give-and-go, chase into the space ahead.' } } },
+    { omit:'engine', a:{ lay:'loose', prompt:'A 50/50 drops to you in central midfield, just won, the game stretched both ways.', opts:{ conductor:'Calm it \u2014 shield, keep, slow it down.', maestro:'First-time it forward before they set.', carrier:'Drive into the space they\u2019ve left.', destroyer:'Get across the runner and kill the counter.' } },
+      b:{ lay:'loose', prompt:'Transition \u2014 you\u2019ve half-collected in the middle third, bodies still scrambling.', opts:{ conductor:'Take a touch, keep it, reorganise.', maestro:'Release the forward with one pass.', carrier:'Burst forward with it at your feet.', destroyer:'Step in and win the second ball hard.' } } },
+    { omit:'engine', a:{ lay:'press', prompt:'Their 10 receives in front of you. You\u2019ve stepped out, the cover behind is thin.', opts:{ conductor:'Screen the space, show him backwards.', maestro:'Bait the pass and intercept to spring us.', carrier:'Nick it and carry through the gap.', destroyer:'Get tight and take the ball off him.' } },
+      b:{ lay:'press', prompt:'An opponent turns in the middle, driving at your line. You\u2019re the last screen.', opts:{ conductor:'Hold shape, delay, force him wide.', maestro:'Jump the pass, turn defence into attack.', carrier:'Rob it and drive the other way.', destroyer:'Commit to the tackle and stop it dead.' } } },
+    { omit:'conductor', a:{ lay:'press', prompt:'They build out under your press \u2014 their pivot takes a heavy touch right near you.', opts:{ maestro:'Read the panic pass and pick it off.', carrier:'Nick it and drive at the exposed line.', engine:'Trigger the press, force them long.', destroyer:'Pounce \u2014 win it clean off the pivot.' } },
+      b:{ lay:'loose', prompt:'Loose ball in the final third, 50/50 at the edge of their box.', opts:{ maestro:'Anticipate the drop and slide a mate in.', carrier:'Take it out of the scrap and drive.', engine:'Chase it down, don\u2019t let them clear.', destroyer:'Bully in and win the duel.' } } },
+    { omit:'conductor', a:{ lay:'press', prompt:'Counter-press: you\u2019ve just lost it high, the ball\u2019s five yards away, seconds to react.', opts:{ maestro:'Show for it and spring the re-attack.', carrier:'Recover it and carry straight back in.', engine:'Sprint to cut the outlet and hound it.', destroyer:'Slam the counter-press, win it back now.' } },
+      b:{ lay:'loose', prompt:'A second ball drops on the edge of their box after a corner.', opts:{ maestro:'Cushion it and pick the killer ball.', carrier:'Take it down and drive back at them.', engine:'First to it, keep the pressure on.', destroyer:'Attack it, win the header or tackle.' } } },
+    { omit:'maestro', a:{ lay:'right', prompt:'You\u2019re pressed hard the instant you receive, back to goal, tight to the touchline.', opts:{ conductor:'One touch, out to the free man early.', carrier:'Half-turn and carry out of the pressure.', engine:'Battle out, then sprint to support ahead.', destroyer:'Shield it, take contact, win the foul.' } },
+      b:{ lay:'press', prompt:'Their winger drives infield at you. You\u2019re covering the half-space.', opts:{ conductor:'Delay, jockey, show him where you want him.', carrier:'Rob it and carry out the other side.', engine:'Track him all the way, don\u2019t let him breathe.', destroyer:'Step in and put the tackle in.' } } },
+    { omit:'maestro', a:{ lay:'back', prompt:'1\u20130 up, 85th minute, they\u2019re camped. The ball comes to you under pressure in your third.', opts:{ conductor:'Keep it, waste time, control the tempo.', carrier:'Carry it out to relieve the pressure.', engine:'Win it and run the channel for a breather.', destroyer:'Win the duel, head it clear, safety first.' } },
+      b:{ lay:'press', prompt:'Their sub runs at your back line. You\u2019ve dropped to cover, cross incoming.', opts:{ conductor:'Organise, hold the line, mark the pocket.', carrier:'Intercept and drive us up the pitch.', engine:'Get across and race him to the ball.', destroyer:'Attack the cross and clear it hard.' } } },
+    { omit:'carrier', a:{ lay:'back', prompt:'Tight game. You get it deep with a man on your shoulder, no space to run into.', opts:{ conductor:'Set the tempo \u2014 recycle, wait for the gap.', maestro:'Clip an early ball over the top.', engine:'Lay it and spin into a pressing run.', destroyer:'Back into him, win the foul, reset.' } },
+      b:{ lay:'back', prompt:'Restart in your half, they\u2019re set in a mid-block, no lane to carry through.', opts:{ conductor:'Circulate patiently, move them side to side.', maestro:'Break the block with a disguised pass.', engine:'Trigger a run to drag a marker, press after.', destroyer:'Invite the press, win the duel, play through.' } } },
+    { omit:'carrier', a:{ lay:'left', prompt:'Throw-in to you near halfway, marked, a crowd of bodies, no room to drive.', opts:{ conductor:'Bounce it, get it back, keep the rhythm.', maestro:'One-touch round the corner to release a runner.', engine:'Lay and go \u2014 make the third-man run.', destroyer:'Hold it up, take contact, win the throw back.' } },
+      b:{ lay:'right', prompt:'Scrappy midfield battle, the ball pinging, you\u2019re hemmed in on the touchline.', opts:{ conductor:'Calm it, protect it, find the simple pass.', maestro:'Whip a first-time switch to the far side.', engine:'Scrap, win it, chase the knock-down.', destroyer:'Win the physical battle, force the throw.' } } },
+  ];
+
+  DIFF = { academy:{ label:'Academy', sub:'2.2s clock', ms:2200 }, pro:{ label:'Pro', sub:'1.5s clock', ms:1500 }, elite:{ label:'Elite', sub:'1.0s clock', ms:1000 } };
+
+  state = { view:'intro', diff:'pro', trialIdx:0, phase:'buildup', ballStep:0, frozen:false, ringKey:0, choices:[] };
+
+  componentDidMount(){
+    try { this._soundOn=localStorage.getItem('fa_sound')!=='0'; } catch(e){ this._soundOn=true; }
+    if(this.props.embedded){ this._start(); }
+    else this.forceUpdate();
+  }
+  componentWillUnmount(){ this._clear(); }
+  _clear(){ (this._timers||[]).forEach(t=>clearTimeout(t)); this._timers=[]; }
+  _later(fn,ms){ (this._timers=this._timers||[]).push(setTimeout(fn,ms)); }
+
+  // ---------- sound ----------
+  _audio(){ if(this._actx===undefined){ try{ this._actx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ this._actx=null; } } if(this._actx&&this._actx.state==='suspended') this._actx.resume(); return this._actx; }
+  _tone(f,d,t,g){ const c=this._audio(); if(!c||this._soundOn===false) return; const o=c.createOscillator(),a=c.createGain(); o.type=t||'sine'; o.frequency.value=f; o.connect(a); a.connect(c.destination); const n=c.currentTime; a.gain.setValueAtTime(0,n); a.gain.linearRampToValueAtTime(g||0.05,n+0.01); a.gain.exponentialRampToValueAtTime(0.0001,n+d); o.start(n); o.stop(n+d); }
+  _sfx(k){ if(this._soundOn===false) return; if(k==='whistle') this._tone(900,0.16,'sine',0.05); else if(k==='freeze'){ this._tone(300,0.16,'sawtooth',0.04); } else if(k==='select'){ this._tone(560,0.1,'triangle',0.05); this._later(()=>this._tone(780,0.1,'triangle',0.045),50); } else if(k==='timeout'){ this._tone(220,0.3,'sawtooth',0.05); } else if(k==='complete'){ this._tone(520,0.14,'triangle',0.05); this._later(()=>this._tone(700,0.14,'triangle',0.05),110); this._later(()=>this._tone(940,0.26,'triangle',0.05),230); } }
+  _toggleSound(){ const on=this._soundOn===false; this._soundOn=on; try{ localStorage.setItem('fa_sound', on?'1':'0'); }catch(e){} if(on){ this._audio(); this._sfx('select'); } this.forceUpdate(); }
+
+  // ---------- build trials ----------
+  _buildTrials(){
+    const t=[];
+    this.PAIRS.forEach((p,i)=>{
+      const pressFirst=Math.random()<0.5; // counterbalance which variant runs under pressure
+      const av={ pairIdx:i, variant:'a', omit:p.omit, condition: pressFirst?'pressure':'free', sc:p.a };
+      const bv={ pairIdx:i, variant:'b', omit:p.omit, condition: pressFirst?'free':'pressure', sc:p.b };
+      t.push(av,bv);
+    });
+    for(let i=t.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [t[i],t[j]]=[t[j],t[i]]; }
+    return t;
+  }
+
+  _start(){
+    this._sfx('whistle');
+    this._trials=this._buildTrials();
+    this.setState({ view:'play', trialIdx:0, choices:[] }, ()=>this._runTrial());
+  }
+  _setDiff(d){ this._sfx('select'); this.setState({ diff:d }); }
+
+  _runTrial(){
+    this._clear();
+    const tr=this._trials[this.state.trialIdx];
+    const lay=this.LAY[tr.sc.lay];
+    this._path=lay.ball;
+    this.setState({ phase:'buildup', ballStep:0, frozen:false });
+    const motion=this.props.motion??true;
+    const hop=motion?460:80;
+    // step ball along path
+    for(let s=1;s<this._path.length;s++){ this._later(()=>this.setState({ ballStep:s }), hop*s); }
+    const settle=hop*this._path.length + (motion?260:60);
+    this._later(()=>this._decide(), settle);
+  }
+
+  _decide(){
+    this._sfx('freeze');
+    const tr=this._trials[this.state.trialIdx];
+    this._decideStart=Date.now();
+    this.setState({ phase:'decide', frozen:true, ringKey:this.state.ringKey+1 });
+    if(tr.condition==='pressure'){
+      const ms=this.DIFF[this.state.diff].ms;
+      this._later(()=>this._timeout(), ms);
+    }
+  }
+
+  _choose(arch){
+    if(this.state.phase!=='decide') return;
+    this._clear();
+    this._sfx('select');
+    const tr=this._trials[this.state.trialIdx];
+    const rec={ pairIdx:tr.pairIdx, arch, condition:tr.condition, rt:Date.now()-this._decideStart, noResp:false };
+    this._advance(rec);
+  }
+  _timeout(){
+    if(this.state.phase!=='decide') return;
+    this._sfx('timeout');
+    const tr=this._trials[this.state.trialIdx];
+    this._advance({ pairIdx:tr.pairIdx, arch:null, condition:tr.condition, rt:null, noResp:true });
+  }
+
+  _advance(rec){
+    const choices=this.state.choices.concat([rec]);
+    const next=this.state.trialIdx+1;
+    this.setState({ phase:'flash', frozen:false, choices });
+    const motion=this.props.motion??true;
+    this._later(()=>{
+      if(next>=this._trials.length){ this._finish(choices); }
+      else { this.setState({ trialIdx:next }, ()=>this._runTrial()); }
+    }, motion?300:60);
+  }
+
+  // ---------- scoring ----------
+  _spread(choices, condition){
+    // offered: each archetype appears in 8 of 10 pairs; one trial per condition per pair
+    const offered={}, picked={};
+    this.ORDER.forEach(a=>{ offered[a]=0; picked[a]=0; });
+    this.PAIRS.forEach(p=>{ this.ORDER.forEach(a=>{ if(a!==p.omit) offered[a]+=1; }); });
+    choices.filter(c=>c.condition===condition && !c.noResp).forEach(c=>{ picked[c.arch]+=1; });
+    const aff={}; this.ORDER.forEach(a=> aff[a]= offered[a]===0?0:picked[a]/offered[a]);
+    const tot=Object.values(aff).reduce((s,v)=>s+v,0);
+    const sp={}; this.ORDER.forEach(a=> sp[a]= tot===0?0:Math.round(aff[a]/tot*100));
+    return sp;
+  }
+
+  _finish(choices){
+    this._sfx('complete');
+    const free=this._spread(choices,'free');
+    const pressure=this._spread(choices,'pressure');
+    const shift={}; this.ORDER.forEach(a=> shift[a]=pressure[a]-free[a]);
+    const freezes=choices.filter(c=>c.condition==='pressure'&&c.noResp).length;
+    const ranked=[...this.ORDER].sort((a,b)=>shift[b]-shift[a]);
+    const up=ranked[0], down=ranked[ranked.length-1];
+    const maxAbs=Math.max(...this.ORDER.map(a=>Math.abs(shift[a])));
+    this._res={ free, pressure, shift, freezes, up, down, maxAbs };
+    const out={ version:'cm-dpp-1.0', task:'decision_policy', completedAt:new Date().toISOString(),
+      difficulty:this.state.diff, policyFree:free, policyPressure:pressure, pressureShift:shift, freezeRate:freezes };
+    try{ localStorage.setItem('fa_cm_dpp', JSON.stringify(out)); }catch(e){}
+    if(this.props.embedded && typeof this.props.onDone==='function'){
+      try{ this.props.onDone(pressure, { policyFree:free, pressureShift:shift, freezeRate:freezes, up, down }); }catch(e){}
+    }
+    this.setState({ view:'result' });
+  }
+
+  _again(){ this.setState({ view: this.props.embedded?'play':'intro' }, ()=>{ if(this.props.embedded) this._start(); }); }
+  _doneEmbedded(){ if(typeof this.props.onDone==='function'){ try{ this.props.onDone(this._res?this._res.pressure:null, { done:true }); }catch(e){} } }
+
+  pct(a,b){ return b===0?'0%':Math.round(a/b*100)+'%'; }
+
+  renderVals(){
+    const accent=this.props.accent ?? '#22D3EE';
+    const V=this.state.view;
+    const embedded=!!this.props.embedded;
+    const soundOn=this._soundOn!==false;
+    const base={
+      accent, isEmbedded:embedded, showChrome:!embedded,
+      isIntro:V==='intro', isPlay:V==='play', isResult:V==='result',
+      soundOn, soundOff:!soundOn, soundColor:soundOn?accent:'#61748c', soundTitle:soundOn?'Sound on':'Sound off',
+      toggleSound:()=>this._toggleSound(),
+      begin:()=>this._start(), again:()=>this._again(), doneEmbedded:()=>this._doneEmbedded(),
+      progPct: V==='result'?'100%':(V==='play'?Math.round(this.state.trialIdx/20*100)+'%':'0%'),
+      progLabel: V==='play'?('CALL '+(this.state.trialIdx+1)+'/20'):(V==='result'?'DONE':'READY'),
+    };
+
+    // intro difficulty chips
+    base.diffs=['academy','pro','elite'].map(k=>{
+      const d=this.DIFF[k]; const sel=this.state.diff===k;
+      return { label:d.label, sub:d.sub, onPick:()=>this._setDiff(k),
+        border:sel?'color-mix(in srgb,'+accent+' 70%,transparent)':'rgba(120,140,166,.22)',
+        bg:sel?'color-mix(in srgb,'+accent+' 16%,transparent)':'rgba(10,16,28,.5)',
+        color:sel?'#F2F8FE':'#B4C2D4', subColor:sel?accent:'#61748c' };
+    });
+
+    // play
+    if(V==='play' && this._trials){
+      const tr=this._trials[this.state.trialIdx];
+      const lay=this.LAY[tr.sc.lay];
+      const pressure=tr.condition==='pressure';
+      const pos=(p)=>({ left:p[1]+'%', top:p[0]+'%' });
+      base.callNum=this.state.trialIdx+1;
+      base.isPressure=pressure;
+      base.condLabel = pressure?'ON THE CLOCK':'NO CLOCK';
+      base.condColor = pressure?'#FF5A6E':'#1FB588';
+      base.mates=lay.mates.map(pos);
+      base.foes=lay.foes.map(pos);
+      base.you=pos(lay.you);
+      const bs=Math.min(this.state.ballStep, this._path.length-1);
+      base.ball=pos(this._path[bs]);
+      const motion=this.props.motion??true;
+      base.ballDur = (motion?0.42:0.08)+'s';
+      base.frozen=this.state.frozen && this.state.phase==='decide';
+      base.prompt=tr.sc.prompt;
+      base.ringKey='r'+this.state.ringKey;
+      base.ringDur=this.DIFF[this.state.diff].ms+'ms';
+      const decide=this.state.phase==='decide';
+      const archs=this.ORDER.filter(a=>a!==tr.omit);
+      // shuffle option order deterministically per trial
+      const order=archs.map((a,i)=>({a,r:((this.state.trialIdx+1)*(i+7))%97})).sort((x,y)=>x.r-y.r).map(o=>o.a);
+      base.options=order.map((a,di)=>({
+        letter:'ABCD'[di], text:tr.sc.opts[a], delay:(0.04+di*0.04).toFixed(2)+'s',
+        onPick:()=> decide?this._choose(a):null,
+      }));
+    } else {
+      base.callNum=1; base.isPressure=false; base.condLabel='NO CLOCK'; base.condColor='#1FB588';
+      base.mates=[]; base.foes=[]; base.you={left:'58%',top:'50%'}; base.ball={left:'58%',top:'50%'};
+      base.ballDur='0.42s'; base.frozen=false; base.prompt=''; base.ringKey='r0'; base.ringDur='1500ms'; base.options=[];
+    }
+
+    // result
+    Object.assign(base,{ resKicker:'DECISION POLICY', resHeadline:'', shiftColor:accent, resSub:'', shiftBars:[],
+      composureColor:accent, composureLabel:'', composureNote:'', freezeLabel:'', freezeNote:'', dataLine:'' });
+    const r=this._res;
+    if(V==='result' && r){
+      const upA=this.ARCH[r.up], downA=this.ARCH[r.down];
+      const bigShift=r.maxAbs>=10;
+      base.shiftColor = upA.color;
+      base.resKicker='DECISION POLICY · UNDER PRESSURE';
+      base.resHeadline = bigShift ? ('You lean '+upA.short) : 'Your policy holds';
+      base.resSub = bigShift
+        ? ('When the clock came on, your choices shifted toward the '+upA.short+' option'+(r.shift[r.down]<0?(' and away from the '+downA.short):'')+'. That\u2019s the version of you that shows up under stress.')
+        : 'When the clock came on, your choices barely moved. You are who you are whether or not there\u2019s time \u2014 that steadiness is itself a signature.';
+      const maxBar=Math.max(...this.ORDER.map(a=>Math.max(r.free[a],r.pressure[a])),1);
+      base.shiftBars=[...this.ORDER].sort((a,b)=>r.pressure[b]-r.pressure[a]).map(a=>{
+        const d=r.shift[a];
+        return { emoji:this.ARCH[a].emoji, label:this.ARCH[a].short, col:this.ARCH[a].color,
+          labelColor:'#E4EDF7',
+          delta:(d>0?'+':'')+d+' pp',
+          deltaColor: d>4?'#7CFFB0':(d<-4?'#FF8A98':'#7688a0'),
+          freeW:Math.round(r.free[a]/maxBar*100)+'%',
+          presW:Math.round(r.pressure[a]/maxBar*100)+'%' };
+      });
+      base.composureLabel = bigShift?'Shifts':'Steady';
+      base.composureColor = bigShift?'#FFB020':'#1FB588';
+      base.composureNote = bigShift?'The clock changes what you choose.':'The clock doesn\u2019t change what you choose.';
+      base.freezeLabel = r.freezes+' of 10';
+      base.freezeNote = r.freezes===0?'You always got a call away in time.':(r.freezes>=4?'Beating the clock is trainable \u2014 keep playing.':'A few calls beat you to it.');
+      base.dataLine='OBSERVED · 20 CALLS · WITHIN-SESSION · CM DPP v1.0';
+    }
+
+    return base;
+  }
+}
+</script>
+</body>
+</html>

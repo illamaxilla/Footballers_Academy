@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:#04060c;}
+  a{color:var(--accent,#C8102E);text-decoration:none;}
+  a:hover{opacity:.92;}
+  @keyframes fa-blink{0%,100%{opacity:1;}50%{opacity:.25;}}
+  @keyframes fa-rise{0%{transform:translateY(16px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-rise-sm{0%{transform:translateY(10px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-spin{to{transform:rotate(360deg);}}
+  @keyframes fa-spin-r{to{transform:rotate(-360deg);}}
+  @keyframes fa-pulse{0%,100%{transform:scale(1);opacity:.5;}50%{transform:scale(1.14);opacity:1;}}
+  @keyframes fa-indet{0%{left:-42%;}100%{left:100%;}}
+  @keyframes fa-bar{from{transform:scaleX(0);}to{transform:scaleX(1);}}
+  .fa-in{opacity:0;animation:fa-rise .7s cubic-bezier(.2,.7,.2,1) forwards;}
+  .fa-in-sm{opacity:0;animation:fa-rise-sm .55s cubic-bezier(.2,.7,.2,1) forwards;}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;}.fa-in,.fa-in-sm{opacity:1!important;transform:none!important;}}
+</style>
+</helmet>
+<div data-screen-label="CB Assessment" style="position:relative;display:flex;flex-direction:column;min-height:100dvh;width:100%;overflow:hidden;background:radial-gradient(120% 90% at 50% 6%,#0e1a2d 0%,#080e1a 44%,#04060c 100%);color:#EAF2FB;font-family:'Archivo',system-ui,sans-serif;--accent:{{ accent }};">
+
+  <div style="position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.4;background:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0px,rgba(255,255,255,.02) 1px,transparent 1px,transparent 4px);"></div>
+  <div style="position:absolute;top:20px;left:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#C8102E) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#C8102E) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;top:20px;right:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#C8102E) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#C8102E) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;left:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#C8102E) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#C8102E) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;right:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#C8102E) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#C8102E) 50%,transparent);z-index:4;pointer-events:none;"></div>
+
+  <!-- ============ TOP BAR ============ -->
+  <header style="position:relative;z-index:6;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px clamp(26px,3.4vw,58px);">
+    <div style="min-width:120px;display:flex;">
+      <sc-if value="{{ showBack }}" hint-placeholder-val="{{ false }}">
+        <button onClick="{{ back }}" style="display:inline-flex;align-items:center;gap:8px;background:none;border:0;cursor:pointer;color:#8EA1B8;font:600 12.5px 'Archivo';padding:0;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M15 5l-7 7 7 7"/></svg>Back
+        </button>
+      </sc-if>
+    </div>
+    <div style="display:flex;align-items:center;gap:11px;">
+      <svg width="22" height="24" viewBox="0 0 28 32" fill="none"><path d="M14 2 25 6v10c0 8-5.4 12.4-11 14C8.4 28.4 3 24 3 16V6z" style="stroke:var(--accent,#C8102E);stroke-width:1.6;fill:color-mix(in srgb,var(--accent,#C8102E) 12%,transparent);"/><path d="M14 4.2v23" style="stroke:var(--accent,#C8102E);stroke-width:1.2;opacity:.45;"/><path d="M4.5 12h19" style="stroke:var(--accent,#C8102E);stroke-width:1.2;opacity:.35;"/></svg>
+      <span style="font:800 13px 'Archivo';letter-spacing:.05em;">CENTER BACK <span style="color:var(--accent,#C8102E);">SCAN</span></span>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;min-width:120px;justify-content:flex-end;">
+      <button onClick="{{ toggleSound }}" title="{{ soundTitle }}" style="display:grid;place-items:center;width:28px;height:28px;border-radius:8px;border:1px solid rgba(120,140,166,.24);background:rgba(10,16,28,.5);cursor:pointer;color:{{ soundColor }};transition:color .16s ease,border-color .16s ease;" style-hover="border-color:color-mix(in srgb,var(--accent,#C8102E) 55%,transparent);">
+        <sc-if value="{{ soundOn }}" hint-placeholder-val="{{ true }}">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>
+        </sc-if>
+        <sc-if value="{{ soundOff }}" hint-placeholder-val="{{ false }}">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M22 9l-6 6M16 9l6 6"/></svg>
+        </sc-if>
+      </button>
+      <div style="width:88px;height:4px;border-radius:99px;background:rgba(120,140,166,.18);overflow:hidden;">
+        <div style="height:100%;border-radius:99px;background:var(--accent,#C8102E);box-shadow:0 0 10px var(--accent,#C8102E);width:{{ scanPct }};transition:width .5s cubic-bezier(.3,.8,.3,1);"></div>
+      </div>
+      <span style="font:600 10px 'IBM Plex Mono';letter-spacing:.14em;color:color-mix(in srgb,var(--accent,#C8102E) 80%,#fff);white-space:nowrap;">{{ scanPct }}</span>
+    </div>
+  </header>
+
+  <!-- ============ INTRO ============ -->
+  <sc-if value="{{ isIntro }}" hint-placeholder-val="{{ true }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;text-align:center;padding:20px clamp(26px,4vw,58px) 60px;">
+      <div class="fa-in" style="display:inline-flex;align-items:center;gap:10px;margin-bottom:20px;font:600 12px 'IBM Plex Mono';letter-spacing:.4em;color:var(--accent,#C8102E);">
+        <span style="width:6px;height:6px;border-radius:50%;background:var(--accent,#C8102E);box-shadow:0 0 8px var(--accent,#C8102E);animation:fa-blink 1.6s ease-in-out infinite;"></span>THE CENTRE BACK SCAN
+      </div>
+      <h1 class="fa-in" style="margin:0 0 16px;font:800 clamp(38px,5.6vw,76px)/0.98 'Archivo';letter-spacing:-0.03em;text-wrap:balance;max-width:840px;animation-delay:.06s;">What kind of defender are you?</h1>
+      <p class="fa-in" style="margin:0 0 38px;max-width:580px;font:400 clamp(15px,1.3vw,18px)/1.6 'Archivo';color:#9FB0C5;text-wrap:pretty;animation-delay:.12s;">Twelve questions. No right answers &mdash; only the honest one. We map your instincts and match the shape to your archetype: the Colossus, the Architect, the Sentinel, or the Libero.</p>
+      <button onClick="{{ begin }}" class="fa-in" style="display:inline-flex;align-items:center;gap:12px;padding:18px 44px;border-radius:13px;border:0;background:var(--accent,#C8102E);color:#fff;font:700 16px 'Archivo';cursor:pointer;box-shadow:0 14px 46px color-mix(in srgb,var(--accent,#C8102E) 42%,transparent);transition:transform .16s ease,box-shadow .16s ease;animation-delay:.18s;" style-hover="transform:translateY(-2px);">
+        Begin the scan
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12h13M12 6l6 6-6 6"/></svg>
+      </button>
+      <div class="fa-in" style="margin-top:20px;font:500 10px 'IBM Plex Mono';letter-spacing:.14em;color:#4f627a;animation-delay:.3s;">~4 MINUTES · 12 QUESTIONS · 3 CHAPTERS</div>
+    </main>
+  </sc-if>
+
+  <!-- ============ CHAPTER DIVIDER ============ -->
+  <sc-if value="{{ isChapter }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;text-align:center;padding:20px clamp(26px,4vw,58px) 60px;">
+      <div class="fa-in" style="font:800 clamp(90px,16vw,180px)/0.9 'Archivo';letter-spacing:-0.04em;color:color-mix(in srgb,var(--accent,#C8102E) 16%,transparent);text-shadow:0 0 60px color-mix(in srgb,var(--accent,#C8102E) 18%,transparent);">{{ chNum }}</div>
+      <div class="fa-in" style="margin-top:6px;font:600 11px 'IBM Plex Mono';letter-spacing:.42em;color:var(--accent,#C8102E);animation-delay:.06s;">CHAPTER {{ chNum }}</div>
+      <h1 class="fa-in" style="margin:10px 0 14px;font:800 clamp(32px,4.6vw,58px)/1.0 'Archivo';letter-spacing:-0.02em;text-wrap:balance;animation-delay:.1s;">{{ chTitle }}</h1>
+      <p class="fa-in" style="margin:0 0 36px;max-width:490px;font:400 clamp(14px,1.2vw,17px)/1.6 'Archivo';color:#9FB0C5;text-wrap:pretty;animation-delay:.16s;">{{ chSub }}</p>
+      <button onClick="{{ chapterGo }}" class="fa-in" style="display:inline-flex;align-items:center;gap:11px;padding:16px 36px;border-radius:12px;border:0;background:var(--accent,#C8102E);color:#fff;font:700 15px 'Archivo';cursor:pointer;box-shadow:0 14px 40px color-mix(in srgb,var(--accent,#C8102E) 40%,transparent);transition:transform .16s ease;animation-delay:.22s;" style-hover="transform:translateY(-2px);">
+        {{ chapterCta }}
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" style="stroke:#fff;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12h13M12 6l6 6-6 6"/></svg>
+      </button>
+    </main>
+  </sc-if>
+
+  <!-- ============ QUESTION ============ -->
+  <sc-if value="{{ isQuestion }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:12px clamp(26px,4vw,58px) 54px;">
+      <div style="width:100%;max-width:680px;">
+        <div class="fa-in-sm" style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+          <span style="font:600 10px 'IBM Plex Mono';letter-spacing:.24em;color:var(--accent,#C8102E);">{{ chapterKicker }}</span>
+          <span style="flex:1;height:1px;background:rgba(120,140,166,.18);"></span>
+          <span style="font:600 10px 'IBM Plex Mono';letter-spacing:.16em;color:#61748c;">{{ qNumLabel }}</span>
+        </div>
+        <h1 class="fa-in-sm" style="margin:0 0 26px;font:800 clamp(23px,3vw,37px)/1.16 'Archivo';letter-spacing:-0.02em;text-wrap:pretty;animation-delay:.05s;">{{ qPrompt }}</h1>
+        <div style="display:flex;flex-direction:column;gap:11px;">
+          <sc-for list="{{ options }}" as="opt" hint-placeholder-count="4">
+            <button onClick="{{ opt.onPick }}" class="fa-in-sm" style="display:flex;align-items:center;gap:15px;width:100%;text-align:left;padding:17px 19px;border-radius:14px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);color:#EAF2FB;font:600 15px/1.4 'Archivo';cursor:pointer;transition:border-color .16s ease,background .16s ease,transform .16s ease;animation-delay:{{ opt.delay }};" style-hover="border-color:color-mix(in srgb,var(--accent,#C8102E) 58%,transparent);background:rgba(16,20,37,.8);transform:translateY(-2px);">
+              <span style="flex:0 0 auto;width:30px;height:30px;border-radius:8px;display:grid;place-items:center;border:1px solid rgba(120,140,166,.28);font:700 12px 'IBM Plex Mono';color:#9FB0C5;">{{ opt.letter }}</span>
+              <span style="flex:1;">{{ opt.text }}</span>
+            </button>
+          </sc-for>
+        </div>
+      </div>
+    </main>
+  </sc-if>
+
+  <!-- ============ ANALYSING ============ -->
+  <sc-if value="{{ isAnalysing }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;text-align:center;padding:20px clamp(26px,4vw,58px) 70px;">
+      <div style="position:relative;width:168px;height:168px;margin-bottom:40px;">
+        <div style="position:absolute;inset:0;border-radius:50%;border:1.5px dashed color-mix(in srgb,var(--accent,#C8102E) 55%,transparent);animation:fa-spin 9s linear infinite;"></div>
+        <div style="position:absolute;inset:22px;border-radius:50%;border:1px solid color-mix(in srgb,var(--accent,#C8102E) 30%,transparent);animation:fa-spin-r 14s linear infinite;"></div>
+        <div style="position:absolute;inset:46px;border-radius:50%;border:1.5px solid color-mix(in srgb,var(--accent,#C8102E) 50%,transparent);background:color-mix(in srgb,var(--accent,#C8102E) 8%,transparent);animation:fa-pulse 1.5s ease-in-out infinite;"></div>
+        <div style="position:absolute;top:50%;left:50%;width:14px;height:14px;transform:translate(-50%,-50%);border-radius:50%;background:var(--accent,#C8102E);box-shadow:0 0 24px var(--accent,#C8102E);animation:fa-pulse 1.5s ease-in-out infinite;"></div>
+      </div>
+      <div style="font:600 11px 'IBM Plex Mono';letter-spacing:.42em;color:#7688a0;margin-bottom:16px;">FOUR ARCHETYPES · ONE SHAPE</div>
+      <h2 style="margin:0;font:800 clamp(26px,3.6vw,44px)/1.1 'Archivo';letter-spacing:-0.02em;color:#F2F8FE;">{{ antLabel }}<span style="color:var(--accent,#C8102E);">&hellip;</span></h2>
+      <div style="position:relative;margin-top:34px;width:min(320px,74vw);height:3px;border-radius:99px;background:rgba(120,140,166,.16);overflow:hidden;">
+        <div style="position:absolute;top:0;width:42%;height:100%;border-radius:99px;background:linear-gradient(90deg,transparent,var(--accent,#C8102E),transparent);animation:fa-indet 1.1s cubic-bezier(.4,0,.6,1) infinite;"></div>
+      </div>
+    </main>
+  </sc-if>
+
+  <!-- ============ REVEAL ============ -->
+  <sc-if value="{{ isReveal }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:14px clamp(20px,4vw,58px) 72px;">
+      <div style="width:100%;max-width:720px;">
+
+        <!-- hero -->
+        <div class="fa-in" style="text-align:center;margin-bottom:8px;">
+          <div style="font:600 11px 'IBM Plex Mono';letter-spacing:.42em;color:#7688a0;margin-bottom:14px;">{{ revKicker }}</div>
+          <div style="font-size:clamp(52px,9vw,88px);line-height:1;margin-bottom:6px;filter:drop-shadow(0 6px 30px {{ archGlow }});">{{ archEmoji }}</div>
+          <h1 style="margin:0;font:900 clamp(40px,6.4vw,84px)/0.95 'Archivo';letter-spacing:-0.035em;color:{{ archColor }};text-shadow:0 0 48px {{ archGlow }};">{{ archName }}</h1>
+          <div style="margin-top:8px;font:600 clamp(14px,1.5vw,19px) 'Archivo';letter-spacing:.02em;color:#C6D3E2;">{{ archIdentity }}</div>
+        </div>
+
+        <div class="fa-in" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px;margin:16px 0 24px;animation-delay:.08s;">
+          <span style="display:inline-flex;align-items:center;gap:7px;padding:7px 14px;border-radius:999px;border:1px solid color-mix(in srgb,{{ archColor }} 34%,transparent);background:color-mix(in srgb,{{ archColor }} 10%,transparent);font:600 10px 'IBM Plex Mono';letter-spacing:.14em;color:{{ archColor }};"><span style="width:6px;height:6px;border-radius:50%;background:{{ archColor }};box-shadow:0 0 8px {{ archColor }};"></span>{{ bandLabel }}</span>
+        </div>
+
+        <!-- hybrid shade -->
+        <sc-if value="{{ isHybrid }}" hint-placeholder-val="{{ false }}">
+          <div class="fa-in" style="margin:0 auto 24px;max-width:600px;padding:14px 18px;border-radius:14px;border:1px solid color-mix(in srgb,{{ secondaryColor }} 34%,transparent);background:color-mix(in srgb,{{ secondaryColor }} 8%,transparent);animation-delay:.1s;">
+            <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:{{ secondaryColor }};margin-bottom:7px;">HYBRID · A TOUCH OF {{ shadeHeadline }}</div>
+            <p style="margin:0;font:500 14.5px/1.5 'Archivo';color:#D6DFEA;text-wrap:pretty;">{{ shadeLine }}</p>
+          </div>
+        </sc-if>
+
+        <!-- spread -->
+        <div class="fa-in" style="width:100%;padding:22px 24px;border-radius:18px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.55);margin-bottom:24px;animation-delay:.14s;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+            <span style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:#61748c;">YOUR SHAPE · 4 ARCHETYPES</span>
+            <span style="font:600 9px 'IBM Plex Mono';letter-spacing:.14em;color:#61748c;">{{ spreadNote }}</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <sc-for list="{{ spreadBars }}" as="s" hint-placeholder-count="4">
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <div style="display:flex;align-items:baseline;justify-content:space-between;">
+                  <span style="font:700 12.5px 'Archivo';color:{{ s.labelColor }};">{{ s.emoji }} {{ s.label }}</span>
+                  <span style="font:800 13px 'IBM Plex Mono';color:{{ s.numColor }};">{{ s.pct }}</span>
+                </div>
+                <div style="height:9px;border-radius:99px;background:rgba(120,140,166,.14);overflow:hidden;"><div style="height:100%;border-radius:99px;transform-origin:left;animation:fa-bar .8s cubic-bezier(.3,.8,.3,1) both;width:{{ s.barW }};{{ s.barLook }}"></div></div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <!-- reflect-back -->
+        <div class="fa-in" style="margin-bottom:24px;padding-left:18px;border-left:3px solid {{ archColor }};animation-delay:.2s;">
+          <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:#61748c;margin-bottom:8px;">THE MIRROR</div>
+          <p style="margin:0;font:500 clamp(17px,2vw,22px)/1.45 'Archivo';color:#EAF2FB;text-wrap:pretty;">&ldquo;{{ archReflect }}&rdquo;</p>
+        </div>
+
+        <!-- full sections -->
+        <div class="fa-in" style="animation-delay:.24s;">
+          <p style="margin:0 0 24px;font:400 clamp(15px,1.4vw,17px)/1.66 'Archivo';color:#B4C2D4;text-wrap:pretty;">{{ archIsYou }}</p>
+
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-bottom:24px;">
+            <div style="padding:18px 20px;border-radius:15px;border:1px solid rgba(120,140,166,.18);background:rgba(10,16,28,.4);">
+              <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:#61748c;margin-bottom:12px;">SIGNATURE STRENGTHS</div>
+              <div style="display:flex;flex-wrap:wrap;gap:8px;">
+                <sc-for list="{{ strengths }}" as="st" hint-placeholder-count="3">
+                  <span style="padding:7px 12px;border-radius:9px;border:1px solid color-mix(in srgb,{{ archColor }} 24%,transparent);background:color-mix(in srgb,{{ archColor }} 8%,transparent);font:600 12px 'Archivo';color:#E4EDF7;">{{ st.text }}</span>
+                </sc-for>
+              </div>
+            </div>
+            <div style="padding:18px 20px;border-radius:15px;border:1px solid rgba(120,140,166,.18);background:rgba(10,16,28,.4);">
+              <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:#61748c;margin-bottom:12px;">YOU PLAY LIKE</div>
+              <div style="font:600 14px/1.7 'Archivo';color:#E4EDF7;">{{ archPlayLike }}</div>
+            </div>
+          </div>
+
+          <div style="padding:20px 22px;border-radius:15px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.4);margin-bottom:16px;">
+            <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:{{ archColor }};margin-bottom:10px;">YOUR EDGE &mdash; THE HONEST ONE</div>
+            <p style="margin:0;font:400 14.5px/1.62 'Archivo';color:#C6D3E2;text-wrap:pretty;">{{ archEdge }}</p>
+          </div>
+        </div>
+
+        <!-- first step -->
+        <div class="fa-in" style="padding:20px 22px;border-radius:15px;border:1px solid color-mix(in srgb,{{ archColor }} 30%,transparent);background:color-mix(in srgb,{{ archColor }} 9%,transparent);margin-bottom:26px;animation-delay:.3s;">
+          <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:{{ archColor }};margin-bottom:10px;">FIRST STEP THIS WEEK</div>
+          <p style="margin:0;font:500 15px/1.6 'Archivo';color:#EAF2FB;text-wrap:pretty;">{{ archFirstStep }}</p>
+        </div>
+
+        <!-- share + actions -->
+        <div class="fa-in" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:13px;animation-delay:.36s;">
+          <button onClick="{{ copyShare }}" style="display:inline-flex;align-items:center;gap:11px;padding:16px 30px;border-radius:12px;border:0;background:{{ archColor }};color:#04060c;font:700 15px 'Archivo';cursor:pointer;box-shadow:0 12px 38px {{ archGlow }};transition:transform .16s ease;" style-hover="transform:translateY(-2px);">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:#04060c;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>
+            {{ shareLabel }}
+          </button>
+          <button onClick="{{ retake }}" style="display:inline-flex;align-items:center;gap:9px;padding:16px 24px;border-radius:12px;border:1px solid rgba(157,176,198,.28);background:rgba(12,18,30,.4);color:#C6D3E2;font:600 14px 'Archivo';cursor:pointer;transition:border-color .16s ease,color .16s ease;" style-hover="border-color:color-mix(in srgb,var(--accent,#C8102E) 55%,transparent);color:#EAF2FB;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
+            Retake
+          </button>
+        </div>
+        <div class="fa-in" style="margin-top:22px;text-align:center;font:500 10px 'IBM Plex Mono';letter-spacing:.14em;color:#4f627a;animation-delay:.42s;">{{ dataLine }}</div>
+        <p class="fa-in" style="margin:14px auto 0;max-width:520px;text-align:center;font:400 11.5px/1.55 'Archivo';color:#5c6e85;animation-delay:.46s;">This is how you <em>say</em> you defend. Log your matches later and we&rsquo;ll check it against what your game actually <em>shows</em>.</p>
+
+      </div>
+    </main>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1200,&quot;height&quot;:840},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#C8102E&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#C8102E&quot;,&quot;#00E5FF&quot;,&quot;#E8B33A&quot;,&quot;#8B5CF6&quot;]},&quot;motion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  // ---------- model ----------
+  ORDER = ['colossus','architect','sentinel','libero'];
+  ARCH = {
+    colossus:{ name:'The Colossus', tagline:'The Physical Dominator', emoji:'\uD83C\uDFF0', color:'#C8102E',
+      reflect:"You want to win every duel and dominate the striker physically \u2014 nothing gets past you.",
+      isYou:"The immovable object. You dominate the air, win the physical battles, and thrive in the chaos strikers hate. When it's a fight, you win it \u2014 and the strikers who beat you once don't fancy the rematch.",
+      strengths:['Aerial dominance','Physical strength','Set-piece defending'],
+      playLike:'Virgil van Dijk \u00b7 Rapha\u00ebl Varane \u00b7 Kalidou Koulibaly',
+      edge:"Ball-playing. In the modern build-from-the-back game, a defender who can only clear is a defender the press can pin. Growing your comfort on the ball is what keeps your dominance from becoming a limitation.",
+      firstStep:"Win your aerial and physical duels first \u2014 that's non-negotiable. Then challenge yourself to play one composed pass out instead of clearing it, every game. Count how many stick.",
+      share:'I\u2019m The Colossus \uD83D\uDEE1\uFE0F \u2014 nothing gets past me. Which defender are you?' },
+    architect:{ name:'The Architect', tagline:'The Ball-Playing Defender', emoji:'\uD83E\uDDED', color:'#00E5FF',
+      reflect:"You want the ball at your feet and attacks starting from you \u2014 a defender who builds.",
+      isYou:"The one who turns defending into attacking. Composed under pressure, you break lines with your passing and start moves from deep. Defending is only half your game \u2014 the other half is what you do the moment you've won it back.",
+      strengths:['Progressive passing','Composure on the ball','Reading passing lanes'],
+      playLike:'Mats Hummels \u00b7 Leonardo Bonucci \u00b7 John Stones',
+      edge:"The defensive fundamentals \u2014 duels and aerials. A ball-player who can be bullied is a ball-player who ends up on the bench. Make the defending so solid that your passing is never a liability under pressure.",
+      firstStep:"Look to play one line-breaking pass every time you receive \u2014 but never at the cost of your defensive position. If the pass isn't on, the position always wins.",
+      share:'I\u2019m The Architect \uD83D\uDEE1\uFE0F \u2014 I start the attack from the back. Which defender are you?' },
+    sentinel:{ name:'The Sentinel', tagline:'The Reading Master', emoji:'\uD83D\uDCE1', color:'#E8B33A',
+      reflect:"You read the danger before it happens and cut it out \u2014 you rarely need to dive into tackles.",
+      isYou:"The chess-player. You anticipate, position perfectly, and snuff out danger before it becomes a chance. You defend with your brain, not your body \u2014 and the best games are the ones where nobody notices you had to do anything at all.",
+      strengths:['Anticipation & interceptions','Positioning','Game reading'],
+      playLike:'Thiago Silva \u00b7 Marquinhos \u00b7 J\u00e9r\u00f4me Boateng',
+      edge:"Physical presence and duels. Reading gets you there first almost every time \u2014 but for the times it doesn't, you need to be able to win it the hard way, so you can dominate when reading alone isn't enough.",
+      firstStep:"Before each attack, predict where the ball's going and step to intercept. Count how many you cut out before a shot ever happens \u2014 that number is your real game.",
+      share:'I\u2019m The Sentinel \uD83D\uDEE1\uFE0F \u2014 I read danger before it happens. Which defender are you?' },
+    libero:{ name:'The Libero', tagline:'The Modern Sweeper', emoji:'\uD83E\uDE90', color:'#8B5CF6',
+      reflect:"You want to cover every gap and free the players around you \u2014 the safety net behind the line.",
+      isYou:"The coverer. Fast, versatile, tactically sharp, you sweep up everything behind the defence and give your teammates the freedom to push. You clean up what others miss \u2014 and the whole back line plays higher because you're behind it.",
+      strengths:['Coverage & recovery pace','Versatility','Tactical flexibility'],
+      playLike:'David Alaba \u00b7 Alessandro Bastoni \u00b7 Manuel Akanji',
+      edge:"Aerial and duel strength. Covering space is your gift, but the complete defender wins it in the box as well as in the open. Add the physical side and there's no situation you can't handle.",
+      firstStep:"Focus on your covering position \u2014 always be ready to sweep the ball in behind. Notice how much higher your back line can push because you're there. That's the value nobody counts.",
+      share:'I\u2019m The Libero \uD83D\uDEE1\uFE0F \u2014 I cover everything behind the line. Which defender are you?' },
+  };
+
+  // 12 ordered hybrid pairs (Handoff v2 \u00a78)
+  HYBRIDS = {
+    'colossus>architect':{ title:'The Colossus, who can play', line:"You win the fight first \u2014 but you don't just clear it. There's a footballer inside the wall." },
+    'colossus>sentinel':{ title:'The Colossus, who reads it first', line:"You'd win the duel anyway. You just prefer to make sure there isn't one." },
+    'colossus>libero':{ title:'The Colossus, who covers ground', line:"Big, and quick with it. Strikers who beat you physically still don't get away from you." },
+    'architect>colossus':{ title:'The Architect, who wins the fight', line:"You want the ball \u2014 and you've earned the right to have it. Nobody bullies you off it." },
+    'architect>sentinel':{ title:'The Architect, who sees it early', line:"You're not just comfortable in possession. You knew the pass before you got the ball." },
+    'architect>libero':{ title:'The Architect, who carries it out', line:"When the pass isn't on, you don't panic \u2014 you take it forward yourself." },
+    'sentinel>colossus':{ title:'The Sentinel, who can dominate', line:"You read it first. And when reading isn't enough, you're more than happy to win it the hard way." },
+    'sentinel>architect':{ title:'The Sentinel, who starts the attack', line:"You cut it out before it happens \u2014 and the moment you have it, you're already building." },
+    'sentinel>libero':{ title:'The Sentinel, who sweeps behind', line:"You see it coming and you're already moving. Very little gets in behind your line." },
+    'libero>colossus':{ title:'The Libero, who wins his duels', line:"You cover everything \u2014 and you're not soft when you get there." },
+    'libero>architect':{ title:'The Libero, who builds from deep', line:"You clean up behind, then step out and start it again. The whole team plays higher because of you." },
+    'libero>sentinel':{ title:'The Libero, who reads it early', line:"You cover the space before you need to. Half the danger never arrives." },
+  };
+
+  CHAPTERS = [
+    { num:'01', title:'Your Defending',      sub:"The ball's in your half and the danger's real. Four moments \u2014 what's your first instinct?", cta:'Start Chapter 01', weight:1.0 },
+    { num:'02', title:'Your Ball, Your Line', sub:"You've won it back, or you're building from the back. What do you do with it?",               cta:'Continue',          weight:1.0 },
+    { num:'03', title:'Your Presence',        sub:'Four honest questions about who you are. No safe answers \u2014 only the true one.',              cta:'Continue',          weight:1.5 },
+  ];
+
+  // 12 questions x 4 options (each archetype offered exactly once). {t, a}
+  Q = [
+    { ch:0, prompt:'A big striker holds the ball up, back to goal. You\u2026', opts:[
+      { t:'Get tight and bully him off it \u2014 I win the physical battle.', a:'colossus' },
+      { t:'Hold my distance, read the lay-off, and intercept.', a:'sentinel' },
+      { t:'Drop a step to cover the runner in behind.', a:'libero' },
+      { t:'Nick it off him clean and get us going forward straight away.', a:'architect' } ] },
+    { ch:0, prompt:'A ball is played over the top into the channel. You\u2026', opts:[
+      { t:'Use my pace to sweep across and clear it.', a:'libero' },
+      { t:'I read it early \u2014 already turned and favourite for it.', a:'sentinel' },
+      { t:'Muscle the striker off and win the physical race.', a:'colossus' },
+      { t:'Get there and calmly play out rather than hoof it.', a:'architect' } ] },
+    { ch:0, prompt:'A cross comes into a crowded box. Your instinct\u2026', opts:[
+      { t:'Attack it and clear it with authority.', a:'colossus' },
+      { t:'Position early so I\u2019m first to the danger spot.', a:'sentinel' },
+      { t:'Track the late runner nobody else has picked up.', a:'libero' },
+      { t:'Win it and set it into a teammate to start the counter.', a:'architect' } ] },
+    { ch:0, prompt:'Your team\u2019s in a messy scramble on the edge of the box. You\u2026', opts:[
+      { t:'Throw my body in \u2014 block, clear, whatever it takes.', a:'colossus' },
+      { t:'Stay calm, read where it\u2019s spilling, and step to it.', a:'sentinel' },
+      { t:'Cover the space behind the chaos in case it breaks.', a:'libero' },
+      { t:'Win it and immediately pass out of trouble.', a:'architect' } ] },
+
+    { ch:1, prompt:'You\u2019ve got the ball at the back with time. What\u2019s going through your head?', opts:[
+      { t:'Where\u2019s the pass that breaks their line \u2014 I\u2019m looking to hurt them from here.', a:'architect' },
+      { t:'Nothing fancy. My job\u2019s the next defensive action, not this pass.', a:'colossus' },
+      { t:'There\u2019s space in front of me \u2014 I\u2019ll carry it and make someone come to me.', a:'libero' },
+      { t:'I\u2019ve already picked it. The pass that leaves us organised for what comes next.', a:'sentinel' } ] },
+    { ch:1, prompt:'The opposition presses you hard as you receive. You\u2026', opts:[
+      { t:'Take a touch, stay composed, and pass through the press.', a:'architect' },
+      { t:'Go long and safe \u2014 no risks near my own goal.', a:'colossus' },
+      { t:'Drive out of the pressure with the ball at my feet.', a:'libero' },
+      { t:'Move it first-time to the free man I\u2019ve already spotted.', a:'sentinel' } ] },
+    { ch:1, prompt:'Your centre-back partner gets dragged out of position and a gap opens. You\u2026', opts:[
+      { t:'Slide across and cover it \u2014 I\u2019ll hold the line together myself.', a:'libero' },
+      { t:'Get across and win the duel before it becomes a chance.', a:'colossus' },
+      { t:'Organise it out loud \u2014 reset the line before the ball\u2019s even played.', a:'sentinel' },
+      { t:'Drop into the gap, take the ball, and calm it down from the back.', a:'architect' } ] },
+    { ch:1, prompt:'In training you enjoy most\u2026', opts:[
+      { t:'Playing out and passing patterns from the back.', a:'architect' },
+      { t:'Aerial duels and defending crosses.', a:'colossus' },
+      { t:'Recovery runs, covering, and 1v1 in space.', a:'libero' },
+      { t:'Positioning, angles, and reading attacks.', a:'sentinel' } ] },
+
+    { ch:2, prompt:'Teammates describe you as\u2026', opts:[
+      { t:'A rock \u2014 nothing gets past me physically.', a:'colossus' },
+      { t:'The calm reader who\u2019s always in the right spot.', a:'sentinel' },
+      { t:'The one who starts our attacks from the back.', a:'architect' },
+      { t:'The sweeper who cleans up everything behind us.', a:'libero' } ] },
+    { ch:2, prompt:'The compliment that means the most\u2026', opts:[
+      { t:'\u201CYou dominated their striker all game.\u201D', a:'colossus' },
+      { t:'\u201CYou read the whole game \u2014 barely had to tackle.\u201D', a:'sentinel' },
+      { t:'\u201CHalf our attacks started with your pass.\u201D', a:'architect' },
+      { t:'\u201CYou covered every gap \u2014 we were never exposed.\u201D', a:'libero' } ] },
+    { ch:2, prompt:'Which defender do you most want to play like?', opts:[
+      { t:'A commanding, unbeatable physical presence.', a:'colossus' },
+      { t:'A calm reader who intercepts everything.', a:'sentinel' },
+      { t:'A ball-playing defender who builds attacks.', a:'architect' },
+      { t:'A versatile sweeper who covers the whole back line.', a:'libero' } ] },
+    { ch:2, prompt:'What frustrates you most in a match?', opts:[
+      { t:'A striker getting the better of me in a duel.', a:'colossus' },
+      { t:'Getting dragged out of position and having to scramble.', a:'sentinel' },
+      { t:'Being told to just clear it instead of playing.', a:'architect' },
+      { t:'A gap opening behind us I couldn\u2019t cover in time.', a:'libero' } ] },
+  ];
+
+  ANT = ['WEIGHING YOUR CHOICES','SCORING EACH ARCHETYPE','NORMALISING THE SPREAD','FINDING YOUR SHAPE'];
+
+  RARITY = ['libero','architect','colossus','sentinel'];
+  PURE_THRESHOLD = 12;
+
+  state = { view:'intro', chIndex:0, qIndex:0, ans:new Array(12).fill(null), antPhrase:0, copied:false };
+
+  componentDidMount(){
+    const shuf=(arr)=>{ const a=arr.map((o,i)=>({...o,origIdx:i})); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; };
+    this._qopts=this.Q.map(q=>shuf(q.opts));
+    this._checkBalance();
+    try { this._soundOn=localStorage.getItem('fa_sound')!=='0'; } catch(e){ this._soundOn=true; }
+    this._qStart=Date.now();
+    this.forceUpdate();
+  }
+  componentWillUnmount(){ clearTimeout(this._to); clearInterval(this._antTimer); }
+
+  _countOffers(){ const o={}; this.ORDER.forEach(a=>o[a]=0); for(const q of this.Q) for(const opt of q.opts) o[opt.a]+=1; return o; }
+  _checkBalance(){ const o=this._countOffers(); const c=Object.values(o); if(Math.min(...c)!==Math.max(...c)) console.warn('CB question set unbalanced:',o); }
+
+  // ---------- sound ----------
+  _audio(){ if(this._actx===undefined){ try{ this._actx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ this._actx=null; } } if(this._actx&&this._actx.state==='suspended') this._actx.resume(); return this._actx; }
+  _tone(f,d,t,g){ const c=this._audio(); if(!c||this._soundOn===false) return; const o=c.createOscillator(),a=c.createGain(); o.type=t||'sine'; o.frequency.value=f; o.connect(a); a.connect(c.destination); const n=c.currentTime; a.gain.setValueAtTime(0,n); a.gain.linearRampToValueAtTime(g||0.05,n+0.01); a.gain.exponentialRampToValueAtTime(0.0001,n+d); o.start(n); o.stop(n+d); }
+  _sfx(k){ if(this._soundOn===false) return; if(k==='click') this._tone(430,0.09,'sine',0.04); else if(k==='select'){ this._tone(520,0.1,'triangle',0.05); setTimeout(()=>this._tone(720,0.12,'triangle',0.045),55); } else if(k==='whistle'){ this._tone(880,0.16,'sine',0.05); } else if(k==='complete'){ this._tone(500,0.14,'triangle',0.05); setTimeout(()=>this._tone(680,0.14,'triangle',0.05),110); setTimeout(()=>this._tone(920,0.26,'triangle',0.05),230); } }
+  _toggleSound(){ const on=this._soundOn===false; this._soundOn=on; try{ localStorage.setItem('fa_sound', on?'1':'0'); }catch(e){} if(on){ this._audio(); this._sfx('click'); } this.forceUpdate(); }
+
+  // ---------- scoring (weighted + largest-remainder + deterministic tiebreak, Handoff v2 \u00a76) ----------
+  _largestRemainder(raw,total){
+    const arr=Object.keys(raw).map(id=>{ const v= total===0?0:raw[id]/total*100; const f=Math.floor(v); return { id, f, r:v-f }; });
+    let assigned=arr.reduce((s,e)=>s+e.f,0);
+    let rem=Math.round(100-assigned);
+    arr.sort((a,b)=>b.r-a.r);
+    for(let i=0;i<rem;i++) arr[i%arr.length].f+=1;
+    const out={}; arr.forEach(e=>out[e.id]=e.f); return out;
+  }
+  _score(answers){
+    const raw={}; const c3={}; this.ORDER.forEach(a=>{ raw[a]=0; c3[a]=0; });
+    let q11=null,q9=null;
+    for(const a of answers){ if(!a) continue; const w=this.CHAPTERS[a.ch].weight; raw[a.arch]+=w; if(a.ch===2) c3[a.arch]+=w; if(a.q==='Q11') q11=a.arch; if(a.q==='Q9') q9=a.arch; }
+    const total=Object.values(raw).reduce((s,v)=>s+v,0); // 14 when complete
+    const spread=this._largestRemainder(raw,total);
+    const pref=(chosen)=>(a,b)=> a===chosen?-1 : b===chosen?1 : 0;
+    const ranked=[...this.ORDER].sort((a,b)=>
+      (raw[b]-raw[a]) ||
+      (c3[b]-c3[a]) ||
+      pref(q11)(a,b) ||
+      pref(q9)(a,b) ||
+      (this.RARITY.indexOf(a)-this.RARITY.indexOf(b))
+    );
+    const primary=ranked[0], secondary=ranked[1];
+    const dominance=spread[primary]-spread[secondary];
+    return { raw, spread, ranked, primary, secondary, dominance,
+      isPure:dominance>=this.PURE_THRESHOLD, hybridKey:primary+'>'+secondary };
+  }
+
+  // ---------- flow ----------
+  _begin(){ this._sfx('whistle'); this.setState({ view:'chapter', chIndex:0 }); }
+  _chapterGo(){ this._sfx('click'); const first=this.state.chIndex*4; this._qStart=Date.now(); this.setState({ view:'question', qIndex:first }); }
+
+  _answer(opt){
+    this._sfx('select');
+    const qi=this.state.qIndex, q=this.Q[qi];
+    const ans=this.state.ans.slice();
+    ans[qi]={ q:'Q'+(qi+1), ch:q.ch, arch:opt.a, optionIndex:opt.origIdx, latencyMs:Date.now()-this._qStart };
+    const next=qi+1;
+    if(next>11){ this.setState({ ans }, ()=>this._commit()); return; }
+    if(next%4===0){ this.setState({ ans, view:'chapter', chIndex:next/4 }); return; }
+    this._qStart=Date.now();
+    this.setState({ ans, qIndex:next });
+  }
+
+  _commit(){
+    const flat=this.state.ans.filter(Boolean);
+    const r=this._score(flat);
+    const result={
+      assessmentVersion:'cb-2.0', position:'cb', completedAt:new Date().toISOString(),
+      answers:flat.map(a=>({ q:a.q, ch:a.ch, archetypeId:a.arch, optionIndex:a.optionIndex, latencyMs:a.latencyMs })),
+      raw:r.raw, spread:r.spread, dominance:r.dominance,
+      primary:r.primary, secondary:r.secondary,
+      primaryName:this.ARCH[r.primary].name, secondaryName:this.ARCH[r.secondary].name,
+      isPure:r.isPure, hybridKey:r.isPure?null:r.hybridKey,
+    };
+    try{ localStorage.setItem('fa_cb_result', JSON.stringify(result)); }catch(e){}
+    this._result=result;
+    this.setState({ view:'analysing', antPhrase:0, copied:false });
+    clearInterval(this._antTimer);
+    const motion=this.props.motion??true;
+    this._antTimer=setInterval(()=>this.setState(s=>({ antPhrase:Math.min(s.antPhrase+1,this.ANT.length-1) })), motion?460:120);
+    clearTimeout(this._to);
+    this._to=setTimeout(()=>{ clearInterval(this._antTimer); this._sfx('complete'); this.setState({ view:'reveal' }); }, motion?2100:350);
+  }
+
+  _copyShare(){
+    const r=this._result; if(!r) return;
+    const txt = r.isPure ? this.ARCH[r.primary].share
+      : 'I\u2019m '+(this.HYBRIDS[r.hybridKey]?this.HYBRIDS[r.hybridKey].title:this.ARCH[r.primary].name)+' \uD83D\uDEE1\uFE0F \u2014 which defender are you?';
+    try{ if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(txt); }catch(e){}
+    this._sfx('click');
+    this.setState({ copied:true });
+    clearTimeout(this._copyTo); this._copyTo=setTimeout(()=>this.setState({ copied:false }), 1900);
+  }
+  _retake(){
+    try{ localStorage.removeItem('fa_cb_result'); }catch(e){}
+    clearTimeout(this._to); clearInterval(this._antTimer);
+    this._result=null; this._qStart=Date.now();
+    this.setState({ view:'intro', chIndex:0, qIndex:0, ans:new Array(12).fill(null), antPhrase:0, copied:false });
+  }
+  _back(){
+    this._sfx('click');
+    const { view, qIndex, chIndex }=this.state;
+    if(view==='chapter'){ if(chIndex===0){ this.setState({ view:'intro' }); } else { this._qStart=Date.now(); this.setState({ view:'question', qIndex:chIndex*4-1 }); } }
+    else if(view==='question'){ if(qIndex%4===0){ this.setState({ view:'chapter', chIndex:qIndex/4 }); } else { this._qStart=Date.now(); this.setState({ qIndex:qIndex-1 }); } }
+  }
+
+  // ---------- render ----------
+  renderVals(){
+    const accent=this.props.accent ?? '#C8102E';
+    const V=this.state.view;
+    const answered=this.state.ans.filter(Boolean).length;
+    const scanPct=Math.round((answered/12)*100)+'%';
+    const soundOn=this._soundOn!==false;
+
+    const base={
+      accent,
+      isIntro:V==='intro', isChapter:V==='chapter', isQuestion:V==='question',
+      isAnalysing:V==='analysing', isReveal:V==='reveal',
+      showBack: V==='chapter'||V==='question',
+      scanPct,
+      soundOn, soundOff:!soundOn, soundColor:soundOn?accent:'#61748c', soundTitle:soundOn?'Sound on':'Sound off',
+      toggleSound:()=>this._toggleSound(), back:()=>this._back(), retake:()=>this._retake(),
+      begin:()=>this._begin(), chapterGo:()=>this._chapterGo(), copyShare:()=>this._copyShare(),
+      antLabel:this.ANT[Math.min(this.state.antPhrase,this.ANT.length-1)],
+    };
+
+    // chapter
+    const ch=this.CHAPTERS[this.state.chIndex]||this.CHAPTERS[0];
+    base.chNum=ch.num; base.chTitle=ch.title; base.chSub=ch.sub; base.chapterCta=ch.cta;
+
+    // question
+    const qi=this.state.qIndex, q=this.Q[qi]||this.Q[0];
+    base.chapterKicker='CH '+this.CHAPTERS[q.ch].num+' \u00b7 '+this.CHAPTERS[q.ch].title.toUpperCase();
+    base.qNumLabel='Q'+(qi+1)+' / 12';
+    base.qPrompt=q.prompt;
+    const optSrc=(this._qopts&&this._qopts[qi])||q.opts.map((o,i)=>({...o,origIdx:i}));
+    base.options=optSrc.map((o,di)=>({ letter:'ABCD'[di], text:o.t, delay:(0.06+di*0.05).toFixed(2)+'s', onPick:()=>this._answer(o) }));
+
+    // reveal defaults (placeholder-safe)
+    Object.assign(base,{
+      revKicker:'YOUR CENTRE BACK ARCHETYPE', archEmoji:'', archColor:accent, archGlow:'transparent',
+      archName:'', archIdentity:'', bandLabel:'', isHybrid:false, secondaryColor:accent, shadeHeadline:'', shadeLine:'',
+      spreadNote:'', spreadBars:[], archReflect:'', archIsYou:'', strengths:[], archPlayLike:'',
+      archEdge:'', archFirstStep:'', shareLabel:'Share result', dataLine:'',
+    });
+
+    const r=this._result;
+    if(r){
+      const A=this.ARCH[r.primary];
+      const archColor=A.color;
+      const archGlow='color-mix(in srgb,'+archColor+' 45%,transparent)';
+      const short=(id)=>this.ARCH[id].name.replace('The ','');
+      const hyb=this.HYBRIDS[r.hybridKey];
+      const isHybrid=!r.isPure && !!hyb;
+      base.archEmoji=A.emoji; base.archColor=archColor; base.archGlow=archGlow;
+      base.archName=A.name;
+      base.archIdentity= isHybrid ? hyb.title : A.tagline;
+      base.bandLabel= r.isPure ? 'PURE READ' : 'HYBRID READ';
+      base.isHybrid=isHybrid;
+      base.secondaryColor=this.ARCH[r.secondary].color;
+      base.shadeHeadline=short(r.secondary).toUpperCase();
+      base.shadeLine=isHybrid?hyb.line:'';
+      base.spreadNote='SELF-REPORT';
+      const entries=this.ORDER.map(k=>[k,r.spread[k]]).sort((a,b)=>b[1]-a[1]);
+      const maxV=Math.max(...entries.map(e=>e[1]),1);
+      base.spreadBars=entries.map(([id,v])=>{
+        const isP=id===r.primary; const col=this.ARCH[id].color;
+        return { emoji:this.ARCH[id].emoji, label:short(id),
+          labelColor:isP?'#F2F8FE':'#9FB0C5', numColor:isP?col:'#9FB0C5',
+          pct:v+'%', barW:Math.round((v/maxV)*100)+'%',
+          barLook:isP?('background:linear-gradient(90deg,'+col+',color-mix(in srgb,'+col+' 45%,transparent));box-shadow:0 0 12px color-mix(in srgb,'+col+' 55%,transparent);'):'background:rgba(140,160,186,.4);' };
+      });
+      base.archReflect=A.reflect;
+      base.archIsYou=A.isYou; base.archPlayLike=A.playLike; base.archEdge=A.edge;
+      base.strengths=A.strengths.map(s=>({ text:s }));
+      base.archFirstStep=A.firstStep;
+      base.shareLabel=this.state.copied?'Copied to clipboard':'Share result';
+      base.dataLine='SELF-REPORTED · 12 CALLS · CENTER BACK v2.0';
+    }
+
+    return base;
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:#04060c;}
+  a{color:var(--accent,#1FB588);text-decoration:none;}
+  a:hover{opacity:.92;}
+  @keyframes fa-blink{0%,100%{opacity:1;}50%{opacity:.25;}}
+  @keyframes fa-rise{0%{transform:translateY(16px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-rise-sm{0%{transform:translateY(10px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-bar{from{transform:scaleX(0);}to{transform:scaleX(1);}}
+  @keyframes fa-ring{from{stroke-dashoffset:0;}to{stroke-dashoffset:132;}}
+  @keyframes fa-ballpulse{0%,100%{box-shadow:0 0 8px rgba(255,255,255,.6);}50%{box-shadow:0 0 16px rgba(255,255,255,.95);}}
+  @keyframes fa-freeze{0%{opacity:0;}100%{opacity:1;}}
+  @keyframes fa-heartbeat{0%,100%{opacity:.5;}50%{opacity:1;}}
+  .fa-in{opacity:0;animation:fa-rise .7s cubic-bezier(.2,.7,.2,1) forwards;}
+  .fa-in-sm{opacity:0;animation:fa-rise-sm .5s cubic-bezier(.2,.7,.2,1) forwards;}
+  @media (prefers-reduced-motion:reduce){*{animation-duration:.001s!important;}.fa-in,.fa-in-sm{opacity:1!important;transform:none!important;}}
+</style>
+</helmet>
+<div data-screen-label="The Engine Room" style="position:relative;display:flex;flex-direction:column;min-height:100dvh;width:100%;overflow:hidden;background:radial-gradient(120% 90% at 50% 6%,#0e1a2d 0%,#080e1a 44%,#04060c 100%);color:#EAF2FB;font-family:'Archivo',system-ui,sans-serif;--accent:{{ accent }};">
+
+  <div style="position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.4;background:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0px,rgba(255,255,255,.02) 1px,transparent 1px,transparent 4px);"></div>
+  <div style="position:absolute;top:20px;left:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#1FB588) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#1FB588) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;top:20px;right:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#1FB588) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#1FB588) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;left:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#1FB588) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#1FB588) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;right:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#1FB588) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#1FB588) 50%,transparent);z-index:4;pointer-events:none;"></div>
+
+  <!-- ============ TOP BAR ============ -->
+  <sc-if value="{{ showChrome }}" hint-placeholder-val="{{ true }}">
+    <header style="position:relative;z-index:6;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px clamp(26px,3.4vw,58px);">
+      <div style="min-width:120px;display:flex;">
+        <a href="Assessment.dc.html" style="display:inline-flex;align-items:center;gap:8px;color:#8EA1B8;font:600 12.5px 'Archivo';" style-hover="color:#EAF2FB;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M15 5l-7 7 7 7"/></svg>Back to the scan
+        </a>
+      </div>
+      <div style="display:flex;align-items:center;gap:11px;">
+        <svg width="22" height="22" viewBox="0 0 32 32" fill="none"><path d="M16 2 28 9v14L16 30 4 23V9z" style="stroke:var(--accent,#1FB588);stroke-width:1.5;fill:color-mix(in srgb,var(--accent,#1FB588) 12%,transparent);"/><circle cx="16" cy="16" r="5" style="stroke:var(--accent,#1FB588);stroke-width:1.5;fill:none;"/><circle cx="16" cy="16" r="1.6" style="fill:var(--accent,#1FB588);"/></svg>
+        <span style="font:800 13px 'Archivo';letter-spacing:.05em;">THE ENGINE <span style="color:var(--accent,#1FB588);">ROOM</span></span>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;min-width:120px;justify-content:flex-end;">
+        <button onClick="{{ toggleSound }}" title="{{ soundTitle }}" style="display:grid;place-items:center;width:28px;height:28px;border-radius:8px;border:1px solid rgba(120,140,166,.24);background:rgba(10,16,28,.5);cursor:pointer;color:{{ soundColor }};" style-hover="border-color:color-mix(in srgb,var(--accent,#1FB588) 55%,transparent);">
+          <sc-if value="{{ soundOn }}" hint-placeholder-val="{{ true }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg></sc-if>
+          <sc-if value="{{ soundOff }}" hint-placeholder-val="{{ false }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M22 9l-6 6M16 9l6 6"/></svg></sc-if>
+        </button>
+        <div style="width:88px;height:4px;border-radius:99px;background:rgba(120,140,166,.18);overflow:hidden;">
+          <div style="height:100%;border-radius:99px;background:var(--accent,#1FB588);box-shadow:0 0 10px var(--accent,#1FB588);width:{{ progPct }};transition:width .4s cubic-bezier(.3,.8,.3,1);"></div>
+        </div>
+        <span style="font:600 10px 'IBM Plex Mono';letter-spacing:.14em;color:color-mix(in srgb,var(--accent,#1FB588) 80%,#fff);white-space:nowrap;">{{ progLabel }}</span>
+      </div>
+    </header>
+  </sc-if>
+
+  <!-- ============ INTRO ============ -->
+  <sc-if value="{{ isIntro }}" hint-placeholder-val="{{ true }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;text-align:center;padding:20px clamp(26px,4vw,58px) 60px;">
+      <div class="fa-in" style="display:inline-flex;align-items:center;gap:10px;margin-bottom:20px;font:600 12px 'IBM Plex Mono';letter-spacing:.4em;color:var(--accent,#1FB588);">
+        <span style="width:6px;height:6px;border-radius:50%;background:var(--accent,#1FB588);box-shadow:0 0 8px var(--accent,#1FB588);animation:fa-blink 1.6s ease-in-out infinite;"></span>DECISIONS UNDER FATIGUE
+      </div>
+      <h1 class="fa-in" style="margin:0 0 16px;font:800 clamp(36px,5.4vw,72px)/0.98 'Archivo';letter-spacing:-0.03em;text-wrap:balance;max-width:840px;animation-delay:.06s;">Can you keep making the hard call when your legs are gone?</h1>
+      <p class="fa-in" style="margin:0 0 30px;max-width:610px;font:400 clamp(15px,1.3vw,18px)/1.6 'Archivo';color:#9FB0C5;text-wrap:pretty;animation-delay:.12s;">Kick-off at the 60th minute, legs full. Every call drains you &mdash; the hard, high-effort action costs more, and as you tire the clock on each decision gets shorter. Empty the tank and you&rsquo;re subbed. The prize isn&rsquo;t how far you get &mdash; it&rsquo;s what your choices do once the legs go.</p>
+      <div class="fa-in" style="margin-bottom:26px;animation-delay:.16s;">
+        <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:#61748c;margin-bottom:11px;">CHOOSE YOUR TEMPO</div>
+        <div style="display:flex;gap:9px;flex-wrap:wrap;justify-content:center;">
+          <sc-for list="{{ diffs }}" as="d" hint-placeholder-count="3">
+            <button onClick="{{ d.onPick }}" style="padding:11px 20px;border-radius:11px;border:1px solid {{ d.border }};background:{{ d.bg }};color:{{ d.color }};font:700 13.5px 'Archivo';cursor:pointer;display:flex;flex-direction:column;gap:2px;align-items:center;" style-hover="border-color:color-mix(in srgb,var(--accent,#1FB588) 55%,transparent);">
+              <span>{{ d.label }}</span>
+              <span style="font:500 9.5px 'IBM Plex Mono';letter-spacing:.06em;color:{{ d.subColor }};">{{ d.sub }}</span>
+            </button>
+          </sc-for>
+        </div>
+      </div>
+      <button onClick="{{ begin }}" class="fa-in" style="display:inline-flex;align-items:center;gap:12px;padding:18px 44px;border-radius:13px;border:0;background:var(--accent,#1FB588);color:#04140e;font:700 16px 'Archivo';cursor:pointer;box-shadow:0 14px 46px color-mix(in srgb,var(--accent,#1FB588) 42%,transparent);animation-delay:.2s;" style-hover="transform:translateY(-2px);">
+        Come on for the last half hour
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12h13M12 6l6 6-6 6"/></svg>
+      </button>
+      <div class="fa-in" style="margin-top:20px;font:500 10px 'IBM Plex Mono';letter-spacing:.14em;color:#4f627a;animation-delay:.3s;">60&rsquo; &rarr; FULL TIME · LAST TILL 90 OR EMPTY THE TANK · NO WRONG ANSWERS</div>
+    </main>
+  </sc-if>
+
+  <!-- ============ PLAY ============ -->
+  <sc-if value="{{ isPlay }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:6px clamp(18px,3vw,50px) 40px;gap:14px;">
+      <div style="width:100%;max-width:1120px;display:flex;flex-direction:column;gap:13px;flex:1;min-height:0;justify-content:center;">
+
+        <!-- clock + legs -->
+        <div style="display:flex;align-items:center;gap:14px;">
+          <span style="display:inline-flex;align-items:baseline;gap:4px;font:800 20px 'Archivo';letter-spacing:-.02em;color:#EAF2FB;">{{ minuteLabel }}<span style="font:600 10px 'IBM Plex Mono';color:#61748c;">MIN</span></span>
+          <div style="flex:1;display:flex;flex-direction:column;gap:4px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;">
+              <span style="font:600 9px 'IBM Plex Mono';letter-spacing:.2em;color:#61748c;">LEGS</span>
+              <span style="font:700 10px 'IBM Plex Mono';letter-spacing:.08em;color:{{ legsColor }};">{{ legsLabel }}</span>
+            </div>
+            <div style="position:relative;height:9px;border-radius:99px;background:rgba(120,140,166,.16);overflow:hidden;">
+              <div style="position:absolute;left:0;top:0;height:100%;border-radius:99px;width:{{ legsPct }};background:linear-gradient(90deg,{{ legsColor }},color-mix(in srgb,{{ legsColor }} 55%,transparent));box-shadow:0 0 10px color-mix(in srgb,{{ legsColor }} 55%,transparent);transition:width .5s cubic-bezier(.3,.8,.3,1),background .5s;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- pitch -->
+        <div style="position:relative;height:min(60vh,560px);aspect-ratio:16/9;max-width:100%;margin:0 auto;align-self:center;border-radius:16px;overflow:hidden;border:1px solid rgba(120,140,166,.2);background:radial-gradient(130% 100% at 50% 0%,#0d1c2e,#091324 60%,#050c17);">
+          <svg viewBox="0 0 160 90" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;" fill="none" stroke="rgba(120,180,210,.16)" stroke-width="0.5">
+            <rect x="3" y="3" width="154" height="84"></rect>
+            <line x1="80" y1="3" x2="80" y2="87"></line>
+            <circle cx="80" cy="45" r="13"></circle>
+            <rect x="3" y="22" width="22" height="46"></rect>
+            <rect x="135" y="22" width="22" height="46"></rect>
+            <rect x="3" y="33" width="8" height="24"></rect>
+            <rect x="149" y="33" width="8" height="24"></rect>
+          </svg>
+          <sc-for list="{{ foes }}" as="f" hint-placeholder-count="4">
+            <div style="position:absolute;left:{{ f.left }};top:{{ f.top }};width:18px;height:18px;margin:-9px 0 0 -9px;transition:left .42s ease,top .42s ease;">
+              <div style="width:100%;height:100%;background:linear-gradient(135deg,#ff9a9a,#c0322f);clip-path:polygon(0 50%,100% 8%,100% 92%);filter:drop-shadow(0 1.5px 2px rgba(0,0,0,.55)) drop-shadow(0 0 4px rgba(255,90,110,.5));"></div>
+            </div>
+          </sc-for>
+          <sc-for list="{{ mates }}" as="m" hint-placeholder-count="3">
+            <div style="position:absolute;left:{{ m.left }};top:{{ m.top }};width:16px;height:16px;margin:-8px 0 0 -8px;border-radius:50%;background:radial-gradient(125% 125% at 34% 24%,#8fdcec,#2b8ba6);border:1.5px solid rgba(232,246,255,.9);box-shadow:0 2px 4px rgba(0,0,0,.5),0 0 8px rgba(58,168,196,.5);transition:left .42s ease,top .42s ease;"></div>
+          </sc-for>
+          <div style="position:absolute;left:{{ you.left }};top:{{ you.top }};width:24px;height:24px;margin:-12px 0 0 -12px;border-radius:50%;background:radial-gradient(125% 125% at 34% 24%,color-mix(in srgb,{{ accent }} 80%,#fff),color-mix(in srgb,{{ accent }} 52%,#000));border:2px solid #fff;display:grid;place-items:center;font:800 8px 'IBM Plex Mono';color:#04140e;box-shadow:0 0 14px color-mix(in srgb,{{ accent }} 60%,transparent);">YOU</div>
+          <div style="position:absolute;left:{{ ball.left }};top:{{ ball.top }};width:9px;height:9px;margin:-4.5px 0 0 -4.5px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,#dfe8f0);box-shadow:0 0 6px 1px rgba(255,255,255,.85),0 1px 2px rgba(0,0,0,.45);transition:left {{ ballDur }},top {{ ballDur }};animation:fa-ballpulse 1s ease-in-out infinite;z-index:3;"></div>
+          <!-- fatigue fog -->
+          <div style="position:absolute;inset:0;pointer-events:none;background:radial-gradient(120% 120% at 50% 50%,transparent 40%,rgba(4,6,12,.85) 100%);opacity:{{ fatigueFog }};transition:opacity .5s;"></div>
+          <sc-if value="{{ frozen }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;top:10px;left:50%;transform:translateX(-50%);animation:fa-freeze .3s ease both;font:700 9px 'IBM Plex Mono';letter-spacing:.3em;color:#EAF2FB;background:rgba(4,6,12,.6);padding:5px 12px;border-radius:99px;border:1px solid rgba(120,140,166,.3);">YOUR CALL</div>
+          </sc-if>
+        </div>
+
+        <!-- prompt + ring -->
+        <div style="display:flex;align-items:flex-start;gap:14px;">
+          <div style="flex:0 0 auto;position:relative;width:46px;height:46px;">
+            <svg width="46" height="46" viewBox="0 0 46 46" style="transform:rotate(-90deg);">
+              <circle cx="23" cy="23" r="21" fill="none" stroke="rgba(120,140,166,.2)" stroke-width="3"></circle>
+              <circle key="{{ ringKey }}" cx="23" cy="23" r="21" fill="none" stroke="{{ legsColor }}" stroke-width="3" stroke-linecap="round" stroke-dasharray="132" style="stroke-dashoffset:0;animation:fa-ring {{ ringDur }} linear forwards;"></circle>
+            </svg>
+          </div>
+          <h2 class="fa-in-sm" key="{{ idx }}" style="margin:0;font:700 clamp(17px,2.3vw,24px)/1.32 'Archivo';letter-spacing:-0.01em;text-wrap:pretty;flex:1;">{{ prompt }}</h2>
+        </div>
+
+        <!-- options (5) -->
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:9px;">
+          <sc-for list="{{ options }}" as="opt" hint-placeholder-count="5">
+            <button onClick="{{ opt.onPick }}" class="fa-in-sm" style="display:flex;align-items:center;gap:13px;width:100%;text-align:left;padding:14px 16px;border-radius:13px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);color:#EAF2FB;font:600 14.5px/1.3 'Archivo';cursor:pointer;transition:border-color .14s,background .14s,transform .14s;animation-delay:{{ opt.delay }};" style-hover="border-color:color-mix(in srgb,var(--accent,#1FB588) 58%,transparent);background:rgba(16,20,37,.82);transform:translateX(3px);">
+              <span style="flex:0 0 auto;width:26px;height:26px;border-radius:8px;display:grid;place-items:center;border:1px solid rgba(120,140,166,.28);font:700 12px 'IBM Plex Mono';color:#9FB0C5;">{{ opt.letter }}</span>
+              <span style="flex:1;">{{ opt.text }}</span>
+              <span style="flex:0 0 auto;display:flex;align-items:center;gap:5px;">
+                <span style="font:600 8px 'IBM Plex Mono';letter-spacing:.12em;color:#4f627a;margin-right:2px;">EFFORT</span>
+                <sc-for list="{{ opt.dots }}" as="dot" hint-placeholder-count="3">
+                  <span style="width:8px;height:8px;border-radius:50%;background:{{ dot.color }};box-shadow:{{ dot.glow }};"></span>
+                </sc-for>
+              </span>
+            </button>
+          </sc-for>
+        </div>
+      </div>
+    </main>
+  </sc-if>
+
+  <!-- ============ RESULT ============ -->
+  <sc-if value="{{ isResult }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:14px clamp(20px,4vw,58px) 72px;">
+      <div style="width:100%;max-width:720px;">
+        <div class="fa-in" style="text-align:center;margin-bottom:6px;font:600 11px 'IBM Plex Mono';letter-spacing:.42em;color:#7688a0;">{{ resKicker }}</div>
+        <h1 class="fa-in" style="margin:0 0 6px;text-align:center;font:900 clamp(30px,5vw,58px)/0.98 'Archivo';letter-spacing:-0.03em;color:{{ headColor }};text-shadow:0 0 44px color-mix(in srgb,{{ headColor }} 40%,transparent);animation-delay:.05s;">{{ resHeadline }}</h1>
+        <p class="fa-in" style="margin:0 auto 26px;max-width:560px;text-align:center;font:400 clamp(14px,1.3vw,17px)/1.6 'Archivo';color:#B4C2D4;text-wrap:pretty;animation-delay:.1s;">{{ resSub }}</p>
+
+        <!-- fatigue shift -->
+        <div class="fa-in" style="width:100%;padding:22px 22px 20px;border-radius:18px;border:1px solid color-mix(in srgb,{{ headColor }} 26%,transparent);background:color-mix(in srgb,{{ headColor }} 7%,transparent);margin-bottom:20px;animation-delay:.14s;">
+          <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:{{ headColor }};margin-bottom:14px;">FRESH LEGS &nbsp;&rarr;&nbsp; GASSED &mdash; DID YOUR EFFORT HOLD?</div>
+          <div style="display:flex;align-items:flex-end;gap:18px;margin-bottom:14px;">
+            <div style="flex:1;">
+              <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.16em;color:#8fd8c8;margin-bottom:7px;">FRESH</div>
+              <div style="position:relative;height:12px;border-radius:99px;background:rgba(120,140,166,.14);overflow:hidden;">
+                <div class="fa-bar" style="position:absolute;left:0;top:0;height:100%;border-radius:99px;transform-origin:left;animation:fa-bar .8s cubic-bezier(.3,.8,.3,1) both;width:{{ effFreshW }};background:linear-gradient(90deg,#1FB588,color-mix(in srgb,#1FB588 45%,transparent));"></div>
+              </div>
+              <div style="margin-top:5px;font:700 11px 'IBM Plex Mono';color:#8fd8c8;">{{ effFreshLabel }}</div>
+            </div>
+            <div style="flex:1;">
+              <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.16em;color:{{ tiredTextColor }};margin-bottom:7px;">GASSED</div>
+              <div style="position:relative;height:12px;border-radius:99px;background:rgba(120,140,166,.14);overflow:hidden;">
+                <div class="fa-bar" style="position:absolute;left:0;top:0;height:100%;border-radius:99px;transform-origin:left;animation:fa-bar .8s cubic-bezier(.3,.8,.3,1) both;animation-delay:.15s;width:{{ effTiredW }};background:linear-gradient(90deg,{{ tiredBarColor }},color-mix(in srgb,{{ tiredBarColor }} 45%,transparent));"></div>
+              </div>
+              <div style="margin-top:5px;font:700 11px 'IBM Plex Mono';color:{{ tiredTextColor }};">{{ effTiredLabel }}</div>
+            </div>
+          </div>
+          <p style="margin:0;font:400 13.5px/1.6 'Archivo';color:#C6D3E2;text-wrap:pretty;">{{ shiftNote }}</p>
+        </div>
+
+        <!-- choice fingerprint -->
+        <div class="fa-in" style="width:100%;padding:22px 22px 20px;border-radius:18px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.55);margin-bottom:20px;animation-delay:.2s;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+            <span style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:#61748c;">HOW YOU PLAYED IT</span>
+            <span style="font:600 9px 'IBM Plex Mono';letter-spacing:.14em;color:#61748c;">CHOICE FINGERPRINT</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:13px;">
+            <sc-for list="{{ fingerprint }}" as="s" hint-placeholder-count="5">
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <div style="display:flex;align-items:baseline;justify-content:space-between;">
+                  <span style="font:700 12.5px 'Archivo';color:#E4EDF7;">{{ s.emoji }} {{ s.label }}</span>
+                  <span style="font:700 11px 'IBM Plex Mono';color:{{ s.col }};">{{ s.pctLabel }}</span>
+                </div>
+                <div style="position:relative;height:9px;border-radius:99px;background:rgba(120,140,166,.14);overflow:hidden;">
+                  <div class="fa-bar" style="position:absolute;left:0;top:0;height:100%;border-radius:99px;transform-origin:left;animation:fa-bar .8s cubic-bezier(.3,.8,.3,1) both;width:{{ s.w }};background:linear-gradient(90deg,{{ s.col }},color-mix(in srgb,{{ s.col }} 45%,transparent));box-shadow:0 0 10px color-mix(in srgb,{{ s.col }} 45%,transparent);"></div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <!-- stat cards -->
+        <div class="fa-in" style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px;animation-delay:.24s;">
+          <div style="padding:18px 20px;border-radius:15px;border:1px solid rgba(120,140,166,.18);background:rgba(10,16,28,.4);">
+            <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:#61748c;margin-bottom:10px;">LASTED TO</div>
+            <div style="font:800 22px 'Archivo';color:#EAF2FB;margin-bottom:4px;">{{ minuteReached }}</div>
+            <p style="margin:0;font:400 13px/1.5 'Archivo';color:#9FB0C5;">{{ minuteNote }}</p>
+          </div>
+          <div style="padding:18px 20px;border-radius:15px;border:1px solid rgba(120,140,166,.18);background:rgba(10,16,28,.4);">
+            <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:#61748c;margin-bottom:10px;">DEEP IN THE GAME</div>
+            <div style="font:800 22px 'Archivo';color:{{ composureColor }};margin-bottom:4px;">{{ composureLabel }}</div>
+            <p style="margin:0;font:400 13px/1.5 'Archivo';color:#9FB0C5;">{{ composureNote }}</p>
+          </div>
+        </div>
+
+        <div class="fa-in" style="padding:16px 18px;border-radius:14px;border:1px solid rgba(120,140,166,.18);background:rgba(10,16,28,.4);margin-bottom:26px;animation-delay:.28s;">
+          <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:#7688a0;margin-bottom:8px;">WHAT THIS IS &mdash; AND ISN&rsquo;T</div>
+          <p style="margin:0;font:400 13.5px/1.6 'Archivo';color:#C6D3E2;text-wrap:pretty;">A game can&rsquo;t measure your real running &mdash; but it <em>can</em> watch what your choices do once you&rsquo;re tired. This is an <em>observation</em> of that, never an archetype verdict. It joins your scan as one more read; the more you play it, the sharper the picture.</p>
+        </div>
+
+        <div class="fa-in" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:13px;animation-delay:.32s;">
+          <button onClick="{{ again }}" style="display:inline-flex;align-items:center;gap:10px;padding:16px 30px;border-radius:12px;border:0;background:var(--accent,#1FB588);color:#04140e;font:700 15px 'Archivo';cursor:pointer;box-shadow:0 12px 38px color-mix(in srgb,var(--accent,#1FB588) 40%,transparent);" style-hover="transform:translateY(-2px);">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:#04140e;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
+            Play again
+          </button>
+          <sc-if value="{{ showChrome }}" hint-placeholder-val="{{ true }}">
+            <a href="Assessment.dc.html" style="display:inline-flex;align-items:center;gap:9px;padding:16px 24px;border-radius:12px;border:1px solid rgba(157,176,198,.28);background:rgba(12,18,30,.4);color:#C6D3E2;font:600 14px 'Archivo';" style-hover="border-color:color-mix(in srgb,var(--accent,#1FB588) 55%,transparent);color:#EAF2FB;">Back to the scan</a>
+          </sc-if>
+          <sc-if value="{{ isEmbedded }}" hint-placeholder-val="{{ false }}">
+            <button onClick="{{ doneEmbedded }}" style="display:inline-flex;align-items:center;gap:9px;padding:16px 28px;border-radius:12px;border:1px solid color-mix(in srgb,var(--accent,#1FB588) 45%,transparent);background:color-mix(in srgb,var(--accent,#1FB588) 12%,transparent);color:#EAF2FB;font:700 14px 'Archivo';cursor:pointer;" style-hover="transform:translateY(-2px);">Continue the scan &rarr;</button>
+          </sc-if>
+        </div>
+        <div class="fa-in" style="margin-top:22px;text-align:center;font:500 10px 'IBM Plex Mono';letter-spacing:.14em;color:#4f627a;animation-delay:.36s;">{{ dataLine }}</div>
+      </div>
+    </main>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:960,&quot;height&quot;:720},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#1FB588&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#1FB588&quot;,&quot;#D9A521&quot;,&quot;#7C5CE0&quot;,&quot;#2E9BE8&quot;,&quot;#E0413C&quot;]},&quot;motion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;embedded&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;onDone&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;(fingerprint:Record&lt;string,number&gt;, meta:object)=&gt;void&quot;}}">
+class Component extends DCLogic {
+  ORDER = ['conductor','maestro','carrier','engine','destroyer'];
+  ARCH = {
+    conductor:{ short:'Conductor', emoji:'\uD83C\uDFBC', color:'#D9A521' },
+    maestro:{ short:'Maestro', emoji:'\uD83C\uDFAF', color:'#7C5CE0' },
+    carrier:{ short:'Carrier', emoji:'\uD83C\uDFC3', color:'#2E9BE8' },
+    engine:{ short:'Engine', emoji:'\u2699\uFE0F', color:'#1FB588' },
+    destroyer:{ short:'Destroyer', emoji:'\uD83D\uDEE1\uFE0F', color:'#E0413C' },
+  };
+
+  LAY = {
+    back:{ you:[50,58], mates:[[26,40],[74,40],[50,26]], foes:[[42,48],[60,44],[50,32],[58,62]], ball:[[50,86],[50,58]] },
+    left:{ you:[50,56], mates:[[76,40],[58,26],[30,66]], foes:[[44,48],[62,44],[52,32],[40,58]], ball:[[14,64],[34,58],[50,56]] },
+    right:{ you:[50,56], mates:[[24,40],[42,26],[70,66]], foes:[[56,48],[38,44],[48,32],[60,58]], ball:[[86,64],[66,58],[50,56]] },
+    loose:{ you:[50,52], mates:[[30,36],[70,40],[52,22]], foes:[[46,42],[58,50],[42,60],[54,34]], ball:[[60,72],[50,52]] },
+    press:{ you:[52,42], mates:[[30,58],[72,56],[50,68]], foes:[[50,32],[64,28],[38,30],[56,46]], ball:[[50,32],[52,42]] },
+  };
+
+  // 8 looping scenarios. every scenario offers all 5 archetypes; effort 1..3 drains the legs.
+  SCN = [
+    { lay:'back', prompt:'You drop deep to collect. They press with one, options square and long, the game stretched.', opts:{
+      conductor:{ t:'Recycle it \u2014 calm the tempo, make them chase.', e:1 },
+      maestro:{ t:'Ping the diagonal to switch the play.', e:1 },
+      carrier:{ t:'Step past the presser and drive out.', e:3 },
+      engine:{ t:'Bounce it and overlap up the line.', e:3 },
+      destroyer:{ t:'Shield it, invite the tackle, win the foul.', e:2 } } },
+    { lay:'press', prompt:'Their 10 turns and drives at your line. You\u2019re the last screen and the cover\u2019s thin.', opts:{
+      conductor:{ t:'Hold shape, delay, force him wide.', e:1 },
+      maestro:{ t:'Bait the pass and jump the lane.', e:2 },
+      carrier:{ t:'Nick it and carry the other way.', e:3 },
+      engine:{ t:'Track him step for step, don\u2019t let him breathe.', e:3 },
+      destroyer:{ t:'Commit \u2014 put the tackle in and stop it dead.', e:2 } } },
+    { lay:'loose', prompt:'A 50/50 drops to you in central midfield, just won, bodies still scrambling.', opts:{
+      conductor:{ t:'Take a touch, keep it, reorganise.', e:1 },
+      maestro:{ t:'First-time it forward before they set.', e:2 },
+      carrier:{ t:'Burst forward with it at your feet.', e:3 },
+      engine:{ t:'Chase the knock-down, keep the pressure on.', e:3 },
+      destroyer:{ t:'Win the second ball hard.', e:2 } } },
+    { lay:'left', prompt:'Transition \u2014 you\u2019ve half-collected wide, a runner peeling off your shoulder.', opts:{
+      conductor:{ t:'Set it back, start again at your pace.', e:1 },
+      maestro:{ t:'Slide the runner in first-time.', e:2 },
+      carrier:{ t:'Turn and carry through the gap.', e:3 },
+      engine:{ t:'One-two and sprint beyond into the box.', e:3 },
+      destroyer:{ t:'Back into your marker, hold it up.', e:2 } } },
+    { lay:'right', prompt:'Pressed the instant you receive, back to goal, tight to the touchline.', opts:{
+      conductor:{ t:'One touch, out to the free man early.', e:1 },
+      maestro:{ t:'Half-turn and thread it inside.', e:2 },
+      carrier:{ t:'Half-turn and carry out of trouble.', e:3 },
+      engine:{ t:'Battle out, then sprint to support ahead.', e:3 },
+      destroyer:{ t:'Shield it, take contact, win the free-kick.', e:2 } } },
+    { lay:'press', prompt:'Counter-press: you\u2019ve just lost it high, the ball\u2019s five yards away, seconds to react.', opts:{
+      conductor:{ t:'Drop off and screen the outlet.', e:1 },
+      maestro:{ t:'Read the panic pass and pick it off.', e:2 },
+      carrier:{ t:'Recover it and carry straight back in.', e:3 },
+      engine:{ t:'Sprint to hound it, cut the outlet.', e:3 },
+      destroyer:{ t:'Slam the counter-press, win it back now.', e:3 } } },
+    { lay:'back', prompt:'1\u20130 up, late on, they\u2019re camped. The ball comes to you under pressure in your third.', opts:{
+      conductor:{ t:'Keep it, waste time, control the tempo.', e:1 },
+      maestro:{ t:'Clip an early ball to spring the counter.', e:2 },
+      carrier:{ t:'Carry it out to relieve the pressure.', e:3 },
+      engine:{ t:'Win it and run the channel for a breather.', e:3 },
+      destroyer:{ t:'Win the duel, head it clear, safety first.', e:2 } } },
+    { lay:'loose', prompt:'A second ball drops on the edge of their box after a corner.', opts:{
+      conductor:{ t:'Cushion it and pick the safe reset.', e:1 },
+      maestro:{ t:'Pick the killer ball first-time.', e:2 },
+      carrier:{ t:'Take it down and drive back at them.', e:3 },
+      engine:{ t:'First to it, keep the siege on.', e:3 },
+      destroyer:{ t:'Attack it, win the header or tackle.', e:3 } } },
+  ];
+
+  // effort -> extra legs cost on top of passive drain
+  ECOST = { 1:2, 2:7, 3:12 };
+  PASSIVE = 2;
+  FROZE_COST = 13;
+
+  DIFF = { academy:{ label:'Academy', sub:'roomy clock', base:3000 }, pro:{ label:'Pro', sub:'tight clock', base:2300 }, elite:{ label:'Elite', sub:'brutal clock', base:1700 } };
+
+  state = { view:'intro', diff:'pro', idx:0, minute:60, legs:100, phase:'buildup', ballStep:0, frozen:false, ringKey:0, choices:[], subbedOff:false };
+
+  componentDidMount(){
+    try { this._soundOn=localStorage.getItem('fa_sound')!=='0'; } catch(e){ this._soundOn=true; }
+    if(this.props.embedded){ this._start(); }
+    else this.forceUpdate();
+  }
+  componentWillUnmount(){ this._clear(); }
+  _clear(){ (this._timers||[]).forEach(t=>clearTimeout(t)); this._timers=[]; }
+  _later(fn,ms){ (this._timers=this._timers||[]).push(setTimeout(fn,ms)); }
+
+  _audio(){ if(this._actx===undefined){ try{ this._actx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ this._actx=null; } } if(this._actx&&this._actx.state==='suspended') this._actx.resume(); return this._actx; }
+  _tone(f,d,t,g){ const c=this._audio(); if(!c||this._soundOn===false) return; const o=c.createOscillator(),a=c.createGain(); o.type=t||'sine'; o.frequency.value=f; o.connect(a); a.connect(c.destination); const n=c.currentTime; a.gain.setValueAtTime(0,n); a.gain.linearRampToValueAtTime(g||0.05,n+0.01); a.gain.exponentialRampToValueAtTime(0.0001,n+d); o.start(n); o.stop(n+d); }
+  _sfx(k){ if(this._soundOn===false) return;
+    if(k==='whistle') this._tone(900,0.16,'sine',0.05);
+    else if(k==='freeze'){ this._tone(300,0.16,'sawtooth',0.04); }
+    else if(k==='select'){ this._tone(560,0.1,'triangle',0.05); this._later(()=>this._tone(780,0.1,'triangle',0.045),50); }
+    else if(k==='heavy'){ this._tone(420,0.12,'sawtooth',0.05); this._later(()=>this._tone(300,0.14,'sawtooth',0.04),60); }
+    else if(k==='timeout'){ this._tone(220,0.3,'sawtooth',0.05); }
+    else if(k==='sub'){ this._tone(320,0.2,'sawtooth',0.05); this._later(()=>this._tone(240,0.3,'sawtooth',0.05),140); }
+    else if(k==='complete'){ this._tone(520,0.14,'triangle',0.05); this._later(()=>this._tone(700,0.14,'triangle',0.05),110); this._later(()=>this._tone(940,0.26,'triangle',0.05),230); }
+  }
+  _toggleSound(){ const on=this._soundOn===false; this._soundOn=on; try{ localStorage.setItem('fa_sound', on?'1':'0'); }catch(e){} if(on){ this._audio(); this._sfx('select'); } this.forceUpdate(); }
+
+  _shuffledDeck(){ const d=this.SCN.map((_,i)=>i); for(let i=d.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [d[i],d[j]]=[d[j],d[i]]; } return d; }
+  _nextScene(){ if(!this._deck||this._deck.length===0) this._deck=this._shuffledDeck(); return this._deck.shift(); }
+
+  _start(){
+    this._sfx('whistle');
+    this._deck=this._shuffledDeck();
+    this.setState({ view:'play', idx:0, minute:60, legs:100, choices:[], subbedOff:false }, ()=>this._runTrial());
+  }
+  _setDiff(d){ this._sfx('select'); this.setState({ diff:d }); }
+
+  _runTrial(){
+    this._clear();
+    this._sceneIdx=this._nextScene();
+    const sc=this.SCN[this._sceneIdx];
+    const lay=this.LAY[sc.lay];
+    this._path=lay.ball;
+    this.setState({ phase:'buildup', ballStep:0, frozen:false });
+    const motion=this.props.motion??true;
+    const hop=motion?440:80;
+    for(let s=1;s<this._path.length;s++){ this._later(()=>this.setState({ ballStep:s }), hop*s); }
+    const settle=hop*this._path.length + (motion?240:60);
+    this._later(()=>this._decide(), settle);
+  }
+
+  _window(){ const base=this.DIFF[this.state.diff].base; return Math.round(base*(0.55+0.45*this.state.legs/100)); }
+
+  _decide(){
+    this._sfx('freeze');
+    this._decideStart=Date.now();
+    this._winMs=this._window();
+    this.setState({ phase:'decide', frozen:true, ringKey:this.state.ringKey+1 });
+    this._later(()=>this._timeout(), this._winMs);
+  }
+
+  _choose(arch){
+    if(this.state.phase!=='decide') return;
+    this._clear();
+    const sc=this.SCN[this._sceneIdx];
+    const eff=sc.opts[arch].e;
+    this._sfx(eff>=3?'heavy':'select');
+    const cost=this.PASSIVE+this.ECOST[eff];
+    this._advance({ arch, minute:this.state.minute, legsAt:this.state.legs, effort:eff, froze:false }, cost);
+  }
+  _timeout(){
+    if(this.state.phase!=='decide') return;
+    this._sfx('timeout');
+    this._advance({ arch:null, minute:this.state.minute, legsAt:this.state.legs, effort:3, froze:true }, this.PASSIVE+this.FROZE_COST);
+  }
+
+  _advance(rec, cost){
+    const choices=this.state.choices.concat([rec]);
+    const legs=Math.max(0, this.state.legs-cost);
+    const minute=this.state.minute + (2+Math.round(Math.random()));
+    this.setState({ phase:'flash', frozen:false, choices, legs, minute });
+    const motion=this.props.motion??true;
+    this._later(()=>{
+      if(legs<=0){ this._sfx('sub'); this._finish(choices, minute, true); }
+      else if(minute>=95){ this._finish(choices, 95, false); }
+      else { this._runTrial(); }
+    }, motion?320:60);
+  }
+
+  _mean(arr){ return arr.length? arr.reduce((s,v)=>s+v,0)/arr.length : 0; }
+
+  _finish(choices, minute, subbedOff){
+    this._sfx('complete');
+    const picks=choices.filter(c=>!c.froze);
+    // fingerprint spread
+    const cnt={}; this.ORDER.forEach(a=>cnt[a]=0);
+    picks.forEach(c=>cnt[c.arch]++);
+    const tot=picks.length||1;
+    const spread={}; this.ORDER.forEach(a=> spread[a]=Math.round(cnt[a]/tot*100));
+    // fresh vs tired by legs at decision
+    const fresh=picks.filter(c=>c.legsAt>=55), tired=picks.filter(c=>c.legsAt<55);
+    const effFresh=this._mean(fresh.map(c=>c.effort));
+    const effTired=this._mean(tired.map(c=>c.effort));
+    const effortDrop=(fresh.length&&tired.length)? effFresh-effTired : null;
+    const freezes=choices.filter(c=>c.froze).length;
+    const topArch=[...this.ORDER].sort((a,b)=>spread[b]-spread[a])[0];
+    this._res={ minute, subbedOff, spread, effFresh, effTired, effortDrop, freezes, freshN:fresh.length, tiredN:tired.length, topArch };
+    const out={ version:'cm-engineroom-1.0', task:'engine_room', completedAt:new Date().toISOString(),
+      difficulty:this.state.diff, bestMinute:minute, subbedOff, fingerprint:spread, effFresh:Math.round(effFresh*100)/100, effTired:Math.round(effTired*100)/100, effortDrop, freezes };
+    try{ localStorage.setItem('fa_cm_engineroom', JSON.stringify(out)); }catch(e){}
+    if(this.props.embedded && typeof this.props.onDone==='function'){
+      try{ this.props.onDone(spread, { bestMinute:minute, subbedOff, effortDrop, topArch, weight:0 }); }catch(e){}
+    }
+    this.setState({ view:'result' });
+  }
+
+  _again(){ this.setState({ view: this.props.embedded?'play':'intro' }, ()=>{ if(this.props.embedded) this._start(); }); }
+  _doneEmbedded(){ if(typeof this.props.onDone==='function'){ try{ this.props.onDone(this._res?this._res.spread:null, { done:true }); }catch(e){} } }
+
+  _legsColor(l){ return l>60?'#1FB588':(l>=30?'#FFB020':'#FF5A6E'); }
+
+  renderVals(){
+    const accent=this.props.accent ?? '#1FB588';
+    const V=this.state.view;
+    const embedded=!!this.props.embedded;
+    const soundOn=this._soundOn!==false;
+    const base={
+      accent, isEmbedded:embedded, showChrome:!embedded,
+      isIntro:V==='intro', isPlay:V==='play', isResult:V==='result',
+      soundOn, soundOff:!soundOn, soundColor:soundOn?accent:'#61748c', soundTitle:soundOn?'Sound on':'Sound off',
+      toggleSound:()=>this._toggleSound(),
+      begin:()=>this._start(), again:()=>this._again(), doneEmbedded:()=>this._doneEmbedded(),
+      progPct: V==='result'?'100%':(V==='play'?Math.round((this.state.minute-60)/35*100)+'%':'0%'),
+      progLabel: V==='play'?(this.state.minute+"'"):(V==='result'?'FT':'60\u2032'),
+    };
+
+    base.diffs=['academy','pro','elite'].map(k=>{
+      const d=this.DIFF[k]; const sel=this.state.diff===k;
+      return { label:d.label, sub:d.sub, onPick:()=>this._setDiff(k),
+        border:sel?'color-mix(in srgb,'+accent+' 70%,transparent)':'rgba(120,140,166,.22)',
+        bg:sel?'color-mix(in srgb,'+accent+' 16%,transparent)':'rgba(10,16,28,.5)',
+        color:sel?'#F2F8FE':'#B4C2D4', subColor:sel?accent:'#61748c' };
+    });
+
+    // play
+    const lc=this._legsColor(this.state.legs);
+    if(V==='play' && this._sceneIdx!=null){
+      const sc=this.SCN[this._sceneIdx];
+      const lay=this.LAY[sc.lay];
+      const pos=(p)=>({ left:p[1]+'%', top:p[0]+'%' });
+      base.minuteLabel=this.state.minute+"'";
+      base.legsPct=this.state.legs+'%';
+      base.legsColor=lc;
+      base.legsLabel=this.state.legs>60?'FRESH':(this.state.legs>=30?'TIRING':'GASSED');
+      base.mates=lay.mates.map(pos);
+      base.foes=lay.foes.map(pos);
+      base.you=pos(lay.you);
+      const bs=Math.min(this.state.ballStep, this._path.length-1);
+      base.ball=pos(this._path[bs]);
+      const motion=this.props.motion??true;
+      base.ballDur=(motion?0.42:0.08)+'s';
+      base.fatigueFog=(motion? Math.min(0.42,(100-this.state.legs)/100*0.5) : 0).toFixed(2);
+      base.frozen=this.state.frozen && this.state.phase==='decide';
+      base.prompt=sc.prompt;
+      base.ringKey='r'+this.state.ringKey;
+      base.ringDur=(this._winMs||this.DIFF[this.state.diff].base)+'ms';
+      const decide=this.state.phase==='decide';
+      // shuffle option order deterministically per decision
+      const order=this.ORDER.map((a,i)=>({a,r:((this.state.idx+this.state.choices.length+1)*(i+7))%97})).sort((x,y)=>x.r-y.r).map(o=>o.a);
+      const dotCol={1:'#1FB588',2:'#FFB020',3:'#FF7A45'};
+      base.options=order.map((a,di)=>{
+        const eff=sc.opts[a].e;
+        const dots=[0,1,2].map(i=>({ color: i<eff?dotCol[eff]:'rgba(120,140,166,.22)', glow: i<eff?('0 0 6px '+dotCol[eff]):'none' }));
+        return { letter:'ABCDE'[di], text:sc.opts[a].t, delay:(0.04+di*0.035).toFixed(2)+'s', dots,
+          onPick:()=> decide?this._choose(a):null };
+      });
+    } else {
+      base.minuteLabel="60'"; base.legsPct='100%'; base.legsColor='#1FB588'; base.legsLabel='FRESH';
+      base.mates=[]; base.foes=[]; base.you={left:'50%',top:'58%'}; base.ball={left:'50%',top:'58%'};
+      base.ballDur='0.42s'; base.fatigueFog='0'; base.frozen=false; base.prompt=''; base.ringKey='r0'; base.ringDur='2300ms'; base.options=[];
+    }
+
+    // result
+    Object.assign(base,{ resKicker:'THE ENGINE ROOM', resHeadline:'', headColor:accent, resSub:'',
+      effFreshW:'0%', effTiredW:'0%', effFreshLabel:'', effTiredLabel:'', tiredBarColor:'#1FB588', tiredTextColor:'#8fd8c8', shiftNote:'',
+      fingerprint:[], minuteReached:'', minuteNote:'', composureColor:accent, composureLabel:'', composureNote:'', dataLine:'' });
+    const r=this._res;
+    if(V==='result' && r){
+      base.resKicker='THE ENGINE ROOM · '+this.DIFF[this.state.diff].label.toUpperCase();
+      base.minuteReached=r.minute+"'";
+      base.minuteNote = r.subbedOff ? 'Tank empty \u2014 you came off cramping.' : 'You saw out the full ninety.';
+      // effort bars scaled 1..3 -> 0..100
+      const effScale=(v)=>Math.round(Math.max(0,(v-1)/2)*100)+'%';
+      base.effFreshW=effScale(r.effFresh);
+      base.effFreshLabel=r.freshN? r.effFresh.toFixed(1)+' / 3.0 effort' : 'no reads';
+      const sparse = (r.freshN + r.tiredN) < 4;
+      // "paced" = never emptied the tank AND saw the game out. If they were subbed off, the tank DID empty.
+      const paced = !sparse && r.effortDrop==null && !r.subbedOff;
+      const held = !sparse && !paced && ((r.effortDrop!=null && r.effortDrop < 0.45) || (r.effortDrop==null && r.subbedOff));
+      if(r.tiredN){
+        base.effTiredW=effScale(r.effTired);
+        base.effTiredLabel=r.effTired.toFixed(1)+' / 3.0 effort';
+        base.tiredBarColor = held?'#1FB588':'#D9A521';
+        base.tiredTextColor = held?'#8fd8c8':'#E6C463';
+      } else {
+        base.effTiredW='0%'; base.effTiredLabel='never gassed'; base.tiredBarColor='#61748c'; base.tiredTextColor='#7688a0';
+      }
+      // headline + read
+      const engineA=this.ARCH.engine;
+      if(sparse){
+        base.headColor=accent;
+        base.resHeadline = r.subbedOff ? 'Blew up early' : 'Keep at it';
+        base.resSub='Not enough clean calls this time to read your fatigue shift \u2014 play a full shift and the picture sharpens.';
+        base.shiftNote='You didn\u2019t get many decisions away before the game ended, so there\u2019s no reliable fresh-vs-gassed read yet. Beat the clock more often next time and we\u2019ll see how your choices hold up.';
+        base.composureColor=accent; base.composureLabel='Warming up'; base.composureNote='Too few calls to read.';
+      } else if(paced){
+        base.headColor='#D9A521';
+        base.resHeadline='You paced it';
+        base.resSub='You managed your effort all game and never emptied the tank \u2014 that game-management is a read in itself.';
+        base.shiftNote='You stayed inside yourself the whole way \u2014 the tank never ran dry, so there\u2019s no fresh-vs-gassed gap to read yet. Push harder next time and we\u2019ll see what happens when the legs actually go.';
+        base.composureColor='#D9A521'; base.composureLabel='Paced'; base.composureNote='Kept something in reserve.';
+      } else if(held){
+        base.headColor=engineA.color;
+        base.resHeadline='You held';
+        base.resSub='Your legs emptied and your choices barely changed \u2014 you were still making the hard, high-effort call deep into the game.';
+        base.shiftNote='When you were gassed you kept picking the high-effort action \u2014 the extra run, the recovery sprint, the duel. That refusal to hide when it hurts is the Engine\u2019s signature, the one thing a screen usually can\u2019t see.';
+        base.composureColor=engineA.color; base.composureLabel='Relentless'; base.composureNote='Effort held when it hurt.';
+      } else {
+        base.headColor='#7C5CE0';
+        base.resHeadline='You managed it';
+        base.resSub='As the legs went, you started managing the game \u2014 the clever ball and the calm reset over the hard run.';
+        base.shiftNote='When you tired, your choices shifted off the high-effort actions toward keeping the ball and picking the smart pass. That\u2019s not hiding \u2014 it\u2019s a Conductor\u2019s / Maestro\u2019s instinct to protect the team by controlling the game instead of chasing it.';
+        base.composureColor='#7C5CE0'; base.composureLabel='Adapted'; base.composureNote='Traded legs for game-sense.';
+      }
+      const maxSp=Math.max(...this.ORDER.map(a=>r.spread[a]),1);
+      base.fingerprint=[...this.ORDER].sort((a,b)=>r.spread[b]-r.spread[a]).map(a=>({
+        emoji:this.ARCH[a].emoji, label:this.ARCH[a].short, col:this.ARCH[a].color,
+        pctLabel:r.spread[a]+'%', w:Math.round(r.spread[a]/maxSp*100)+'%' }));
+      base.dataLine='OBSERVED · WEIGHT 0 · WITHIN-SESSION · CM ENGINE ROOM v1.0';
+    }
+
+    return base;
+  }
+}
+</script>
+</body>
+</html>
