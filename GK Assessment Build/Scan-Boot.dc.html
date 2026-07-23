@@ -50,9 +50,9 @@
     <div class="core" style="position:absolute;left:50%;top:50%;width:41%;aspect-ratio:1/1;transform:translate(-50%,-50%);z-index:1;">
       <div style="position:absolute;inset:-18%;border-radius:50%;background:radial-gradient(circle, color-mix(in srgb,var(--accent,#22D3EE) 26%,transparent) 0%, transparent 60%);animation:sb-orb 3.6s ease-in-out infinite;"></div>
       <sc-if value="{{ hasCore }}" hint-placeholder-val="{{ false }}">
-        <div style="position:absolute;inset:0;">
-          <img src="assets/img/scan-core.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;mix-blend-mode:screen;filter:drop-shadow(0 0 26px color-mix(in srgb,var(--accent,#22D3EE) 45%,transparent));animation:sb-spin 60s linear infinite;"/>
-          <img src="assets/img/scan-core.png" alt="" style="position:absolute;inset:6%;width:88%;height:88%;object-fit:contain;mix-blend-mode:screen;opacity:.5;animation:sb-spin-r 42s linear infinite;"/>
+        <div style="position:absolute;inset:-6%;-webkit-mask-image:radial-gradient(circle at 50% 50%,#000 56%,transparent 74%);mask-image:radial-gradient(circle at 50% 50%,#000 56%,transparent 74%);{{ animCore }}">
+          <img src="assets/img/scan-core.jpg" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 48%;mix-blend-mode:screen;{{ animCoreA }}"/>
+          <img src="assets/img/scan-core.jpg" alt="" style="position:absolute;inset:8%;width:84%;height:84%;object-fit:cover;object-position:50% 48%;mix-blend-mode:screen;opacity:.4;{{ animCoreB }}"/>
         </div>
       </sc-if>
     </div>
@@ -63,6 +63,7 @@
         <linearGradient id="sbBand" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="{{ accent }}" stop-opacity="0"/><stop offset="0.5" stop-color="#EAFDFF"/><stop offset="1" stop-color="{{ accent }}" stop-opacity="0"/></linearGradient>
         <linearGradient id="sbWedge" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="{{ accent }}" stop-opacity="0.55"/><stop offset="1" stop-color="{{ accent }}" stop-opacity="0"/></linearGradient>
         <linearGradient id="sbArc" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#EAFDFF"/><stop offset="1" stop-color="{{ accent }}" stop-opacity="0"/></linearGradient>
+        <linearGradient id="sbFill" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="{{ accent }}" stop-opacity="0.5"/><stop offset="1" stop-color="#EAFDFF"/></linearGradient>
       </defs>
 
       <!-- frame border -->
@@ -174,12 +175,19 @@
         <text x="1314" y="446" text-anchor="end" fill="#61748c" font-size="9" letter-spacing="1">VECTOR ID</text>
       </g>
 
-      <!-- ============ BOTTOM-LEFT : telemetry ============ -->
-      <g class="wg" style="animation-delay:3.0s;">
-        <path d="M62 556 h150 M62 556 v-10 M212 556 v-10" stroke="color-mix(in srgb, {{ accent }} 40%,transparent)" stroke-width="1.2" fill="none"/>
-        <text x="62" y="548" fill="color-mix(in srgb, {{ accent }} 82%,#fff)" font-size="9.5" letter-spacing="2">TELEMETRY</text>
-        <g fill="color-mix(in srgb, {{ accent }} 34%, transparent)"><rect x="62" y="572" width="120" height="4" rx="2"/><rect x="62" y="582" width="150" height="4" rx="2" fill="rgba(120,140,166,.26)"/><rect x="62" y="592" width="96" height="4" rx="2" fill="rgba(120,140,166,.26)"/></g>
-        <g transform="translate(62 664)" fill="{{ accent }}"><rect x="0" width="9" height="34" rx="1.5" opacity=".55" style="{{ animBar2 }}transform-box:fill-box;transform-origin:bottom;"/><rect x="16" width="9" height="34" rx="1.5" opacity=".85" style="{{ animBar3 }}transform-box:fill-box;transform-origin:bottom;"/><rect x="32" width="9" height="34" rx="1.5" style="{{ animBar1 }}transform-box:fill-box;transform-origin:bottom;"/><rect x="48" width="9" height="34" rx="1.5" opacity=".7" style="{{ animBar2 }}transform-box:fill-box;transform-origin:bottom;"/><rect x="64" width="9" height="34" rx="1.5" opacity=".5" style="{{ animBar3 }}transform-box:fill-box;transform-origin:bottom;"/><rect x="80" width="9" height="34" rx="1.5" opacity=".85" style="{{ animBar1 }}transform-box:fill-box;transform-origin:bottom;"/><rect x="96" width="9" height="34" rx="1.5" opacity=".65" style="{{ animBar2 }}transform-box:fill-box;transform-origin:bottom;"/><rect x="112" width="9" height="34" rx="1.5" opacity=".8" style="{{ animBar3 }}transform-box:fill-box;transform-origin:bottom;"/></g>
+      <!-- ============ BOTTOM-LEFT : scan progress ============ -->
+      <g class="core">
+        <path d="M62 622 h150 M62 622 v-10 M212 622 v-10" stroke="color-mix(in srgb, {{ accent }} 40%,transparent)" stroke-width="1.2" fill="none"/>
+        <text x="62" y="614" fill="color-mix(in srgb, {{ accent }} 82%,#fff)" font-size="9.5" letter-spacing="2">SCAN PROGRESS</text>
+        <text ref="{{ pctRef }}" x="212" y="615" text-anchor="end" fill="#EAF2FB" font-family="Archivo" font-weight="800" font-size="14">0%</text>
+        <!-- track -->
+        <rect x="62" y="648" width="150" height="9" rx="2" fill="rgba(120,140,166,.14)"/>
+        <!-- fill -->
+        <rect class="barfill" x="62" y="648" width="150" height="9" rx="2" fill="url(#sbFill)" filter="url(#sbGlow)" style="transform-box:fill-box;transform-origin:left center;{{ animBarFill }}"/>
+        <!-- segment dividers -->
+        <g fill="#050b16"><rect x="76.5" y="648" width="1.6" height="9"/><rect x="91.5" y="648" width="1.6" height="9"/><rect x="106.5" y="648" width="1.6" height="9"/><rect x="121.5" y="648" width="1.6" height="9"/><rect x="136.5" y="648" width="1.6" height="9"/><rect x="151.5" y="648" width="1.6" height="9"/><rect x="166.5" y="648" width="1.6" height="9"/><rect x="181.5" y="648" width="1.6" height="9"/><rect x="196.5" y="648" width="1.6" height="9"/></g>
+        <!-- end caps -->
+        <path d="M57 644 v17 M217 644 v17" stroke="color-mix(in srgb, {{ accent }} 60%,transparent)" stroke-width="1.6" stroke-linecap="round"/>
       </g>
 
       <!-- ============ BOTTOM-RIGHT : radar scope ============ -->
@@ -194,22 +202,10 @@
         <circle cx="1244" cy="650" r="5" fill="#DFFBFF" filter="url(#sbGlow)" style="{{ animDot }}transform-box:fill-box;transform-origin:center;"/>
       </g>
 
-      <!-- ============ BOTTOM-CENTER : counter + progress ============ -->
-      <g class="core">
-        <g transform="translate(556 710)">
-          <circle r="30" fill="none" stroke="rgba(120,140,166,.18)" stroke-width="3.5"/>
-          <circle ref="{{ ringRef }}" class="ringfill" r="30" fill="none" stroke="{{ accent }}" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="188.5" stroke-dashoffset="188.5" transform="rotate(-90)" filter="url(#sbGlow)"/>
-        </g>
-        <rect x="612" y="704" width="480" height="9" rx="4.5" fill="rgba(120,140,166,.16)"/>
-        <rect class="barfill" x="612" y="704" width="480" height="9" rx="4.5" fill="url(#sbBand)" filter="url(#sbGlow)" style="transform-box:fill-box;transform-origin:left center;{{ animBarFill }}"/>
-        <rect class="barfill" x="612" y="704" width="480" height="9" rx="4.5" fill="{{ accent }}" opacity="0.5" style="transform-box:fill-box;transform-origin:left center;{{ animBarFill }}"/>
-        <text x="1092" y="696" text-anchor="end" fill="#61748c" font-size="9.5" letter-spacing="2">SYSTEM BOOT</text>
-      </g>
     </svg>
 
-    <!-- HTML overlays -->
-    <div ref="{{ pctRef }}" style="position:absolute;left:40.4%;top:92.4%;transform:translate(-50%,-50%);font-family:'Archivo';font-weight:800;font-size:2.9cqh;color:#EAF2FB;z-index:3;">0</div>
-    <div style="position:absolute;left:44.5%;top:89.5%;font-family:'IBM Plex Mono';font-size:1.3cqh;letter-spacing:.24em;color:color-mix(in srgb, {{ accent }} 88%,#fff);height:2cqh;z-index:3;">
+    <!-- HTML overlays: cycling stage label under the bottom-left progress bar -->
+    <div style="position:absolute;left:4.5%;top:88.5%;font-family:'IBM Plex Mono';font-size:1.15cqh;letter-spacing:.2em;color:color-mix(in srgb, {{ accent }} 85%,#fff);height:2cqh;z-index:3;">
       <span class="lbl" style="position:absolute;white-space:nowrap;opacity:0;animation:sb-lbl .78s linear 0.1s both;">INITIALISING POSITION-DNA CORE</span>
       <span class="lbl" style="position:absolute;white-space:nowrap;opacity:0;animation:sb-lbl .78s linear 0.88s both;">CALIBRATING NEURAL SENSORS</span>
       <span class="lbl" style="position:absolute;white-space:nowrap;opacity:0;animation:sb-lbl .78s linear 1.66s both;">LOADING ARCHETYPE MODEL</span>
@@ -247,8 +243,7 @@ class Component extends DCLogic {
     let reduced = false;
     try { reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch(e){}
     if (reduced) {
-      if (this._pctNode) this._pctNode.textContent = '100';
-      if (this._ringNode) this._ringNode.style.strokeDashoffset = '0';
+      if (this._pctNode) this._pctNode.textContent = '100%';
       this._nt = setTimeout(() => this._nav(), 700);
       return;
     }
@@ -256,8 +251,7 @@ class Component extends DCLogic {
     const tick = () => {
       const now = (typeof performance!=='undefined'&&performance.now)?performance.now():Date.now();
       const pr = Math.min(1, (now - t0) / this.DUR);
-      if (this._pctNode) this._pctNode.textContent = Math.round(pr * 100);
-      if (this._ringNode) this._ringNode.style.strokeDashoffset = (this.RING * (1 - pr)).toFixed(1);
+      if (this._pctNode) this._pctNode.textContent = Math.round(pr * 100) + '%';
       if (pr < 1) this._raf = requestAnimationFrame(tick);
     };
     this._raf = requestAnimationFrame(tick);
@@ -278,10 +272,11 @@ class Component extends DCLogic {
     const a = (s) => motion ? s : '';
     return {
       accent, motion,
-      hasCore: false, noCore: true,
+      hasCore: true, noCore: false,
       pctRef: (el) => { this._pctNode = el; },
-      ringRef: (el) => { this._ringNode = el; },
-      animCore: a('animation:sb-orb 2.6s ease-in-out infinite;'),
+      animCore: a('animation:sb-orb 4.4s ease-in-out infinite;'),
+      animCoreA: a('animation:sb-spin 78s linear infinite;'),
+      animCoreB: a('animation:sb-spin-r 54s linear infinite;'),
       animRing: a('animation:sb-spin 48s linear infinite;'),
       animArc: a('animation:sb-spin 6s linear infinite;'),
       animRadar: a('animation:sb-spin 3.4s linear infinite;'),
