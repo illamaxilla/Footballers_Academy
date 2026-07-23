@@ -65,7 +65,7 @@
         <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:10px;">
           <sc-for list="{{ cards }}" as="c" hint-placeholder-count="8">
             <button onClick="{{ c.onPick }}" class="fa-in-sm" style="position:relative;display:flex;flex-direction:column;gap:8px;text-align:left;padding:14px;border-radius:14px;border:1.5px solid {{ c.border }};background:{{ c.bg }};color:#EAF2FB;cursor:pointer;transition:transform .1s,border-color .15s;animation-delay:{{ c.delay }};" style-active="transform:scale(.97);" style-hover="border-color:{{ c.hover }};">
-              <div style="display:flex;align-items:center;justify-content:space-between;"><span style="font-size:20px;">{{ c.emoji }}</span><sc-if value="{{ c.selected }}" hint-placeholder-val="{{ false }}"><span style="display:grid;place-items:center;width:20px;height:20px;border-radius:50%;background:{{ c.col }};font:800 12px 'Archivo';color:#04060c;">&#10003;</span></sc-if></div>
+              <div style="display:flex;align-items:center;justify-content:space-between;"><span style="width:24px;height:24px;border-radius:50%;border:2px solid {{ c.col }};background:color-mix(in srgb,{{ c.col }} 18%,transparent);display:grid;place-items:center;font:700 8.5px 'IBM Plex Mono';letter-spacing:.04em;color:{{ c.col }};">{{ c.mono }}</span><sc-if value="{{ c.selected }}" hint-placeholder-val="{{ false }}"><span style="display:grid;place-items:center;width:20px;height:20px;border-radius:50%;background:{{ c.col }};color:#04060c;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 13l4 4L19 7"/></svg></span></sc-if></div>
               <div><div style="font:800 14px 'Archivo';line-height:1.1;">{{ c.name }}</div><div style="font:600 9px 'IBM Plex Mono';letter-spacing:.1em;color:{{ c.col }};margin-top:3px;">{{ c.arch }}</div></div>
               <div style="font:400 11px/1.35 'Archivo';color:#9FB0C5;">{{ c.trait }}</div>
             </button>
@@ -89,7 +89,7 @@
 
         <!-- your line -->
         <div class="fa-in" style="display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:18px;animation-delay:.1s;">
-          <sc-for list="{{ lineChips }}" as="l" hint-placeholder-count="4"><div style="display:flex;align-items:center;gap:6px;padding:7px 12px;border-radius:99px;border:1px solid color-mix(in srgb,{{ l.col }} 40%,transparent);background:color-mix(in srgb,{{ l.col }} 9%,transparent);font:700 12px 'Archivo';color:#EAF2FB;">{{ l.emoji }} {{ l.name }}</div></sc-for>
+          <sc-for list="{{ lineChips }}" as="l" hint-placeholder-count="4"><div style="display:flex;align-items:center;gap:6px;padding:7px 12px;border-radius:99px;border:1px solid color-mix(in srgb,{{ l.col }} 40%,transparent);background:color-mix(in srgb,{{ l.col }} 9%,transparent);font:700 12px 'Archivo';color:#EAF2FB;"><span style="width:9px;height:9px;border-radius:3px;background:{{ l.col }};"></span>{{ l.name }}</div></sc-for>
         </div>
 
         <!-- stat cards -->
@@ -136,7 +136,7 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1000,&quot;height&quot;:820},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#C8102E&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#C8102E&quot;,&quot;#00E5FF&quot;,&quot;#E8B33A&quot;,&quot;#8B5CF6&quot;]},&quot;embedded&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;}}">
 class Component extends DCLogic {
-  ARCH={ colossus:{name:'COLOSSUS',emoji:'\uD83C\uDFF0',color:'#C8102E'}, architect:{name:'ARCHITECT',emoji:'\uD83E\uDDED',color:'#00E5FF'}, sentinel:{name:'SENTINEL',emoji:'\uD83D\uDCE1',color:'#E8B33A'}, libero:{name:'LIBERO',emoji:'\uD83E\uDE90',color:'#8B5CF6'} };
+  ARCH={ colossus:{name:'COLOSSUS',mono:'CO',color:'#C8102E'}, architect:{name:'ARCHITECT',mono:'AR',color:'#00E5FF'}, sentinel:{name:'SENTINEL',mono:'SE',color:'#E8B33A'}, libero:{name:'LIBERO',mono:'LI',color:'#8B5CF6'} };
   POOL=[
     { name:'Mabuza', arch:'colossus', trait:'Wins everything in the air. Nobody bullies him.' },
     { name:'Okafor', arch:'colossus', trait:'A wall in the box. Loves a last-ditch block.' },
@@ -236,7 +236,7 @@ class Component extends DCLogic {
     base.need=this.state.formation; base.needLabel=this.state.formation===4?'back four':'back three';
     base.pickedCount=this.state.picked.length+'';
     base.cards=this.state.hand.map((i,di)=>{ const c=this.POOL[i]; const A=this.ARCH[c.arch]; const sel=this.state.picked.indexOf(i)>=0;
-      return { name:c.name, arch:A.name, emoji:A.emoji, col:A.color, trait:c.trait, selected:sel, delay:(0.03+di*0.03).toFixed(2)+'s',
+      return { name:c.name, arch:A.name, mono:A.mono, col:A.color, trait:c.trait, selected:sel, delay:(0.03+di*0.03).toFixed(2)+'s',
         onPick:()=>this._toggle(i),
         border:sel?A.color:'rgba(120,140,166,.2)', hover:'color-mix(in srgb,'+A.color+' 55%,transparent)',
         bg:sel?('color-mix(in srgb,'+A.color+' 12%,transparent)'):'rgba(10,16,28,.5)' }; });
@@ -255,7 +255,7 @@ class Component extends DCLogic {
       base.gradeColor = r.grade==='A'?'#8CFFC4':r.grade==='B'?'#E8B33A':r.grade==='C'?'#FFB020':'#FF8A98';
       base.gradeTitle = r.grade==='A'?'A defence that fits':r.grade==='B'?'Solid, with a seam':r.grade==='C'?'It works, just':'It got exposed';
       base.scoreline = r.counters<=1?'Clean sheet':(r.counters<=2?'Won 2\u20131':'Lost 3\u20132');
-      base.lineChips=r.ids.map(i=>{ const c=this.POOL[i]; const A=this.ARCH[c.arch]; return { name:c.name, emoji:A.emoji, col:A.color }; });
+      base.lineChips=r.ids.map(i=>{ const c=this.POOL[i]; const A=this.ARCH[c.arch]; return { name:c.name, mono:A.mono, col:A.color }; });
       base.stats=[
         { label:'AERIALS WON', val:r.aerials+'', color:'#EAF2FB', note:r.hasAir?'you owned the air':'nobody dominant in the box' },
         { label:'COUNTERS CONCEDED', val:r.counters+'', color:r.counters<=1?'#8CFFC4':'#FF8A98', note:r.hasCover?'covered in behind':'space in behind, unguarded' },

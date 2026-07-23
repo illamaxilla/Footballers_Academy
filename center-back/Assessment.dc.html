@@ -133,7 +133,7 @@
         <!-- hero -->
         <div class="fa-in" style="text-align:center;margin-bottom:8px;">
           <div style="font:600 11px 'IBM Plex Mono';letter-spacing:.42em;color:#7688a0;margin-bottom:14px;">{{ revKicker }}</div>
-          <div style="font-size:clamp(52px,9vw,88px);line-height:1;margin-bottom:6px;filter:drop-shadow(0 6px 30px {{ archGlow }});">{{ archEmoji }}</div>
+          <div style="width:clamp(76px,13vw,108px);height:clamp(76px,13vw,108px);margin:0 auto 6px;border-radius:50%;border:2.5px solid {{ archColor }};background:color-mix(in srgb,{{ archColor }} 18%,transparent);display:grid;place-items:center;font:700 clamp(27px,4.6vw,38px) 'IBM Plex Mono';letter-spacing:.04em;color:{{ archColor }};filter:drop-shadow(0 6px 30px {{ archGlow }});">{{ archMono }}</div>
           <h1 style="margin:0;font:900 clamp(40px,6.4vw,84px)/0.95 'Archivo';letter-spacing:-0.035em;color:{{ archColor }};text-shadow:0 0 48px {{ archGlow }};">{{ archName }}</h1>
           <div style="margin-top:8px;font:600 clamp(14px,1.5vw,19px) 'Archivo';letter-spacing:.02em;color:#C6D3E2;">{{ archIdentity }}</div>
         </div>
@@ -160,7 +160,7 @@
             <sc-for list="{{ spreadBars }}" as="s" hint-placeholder-count="4">
               <div style="display:flex;flex-direction:column;gap:6px;">
                 <div style="display:flex;align-items:baseline;justify-content:space-between;">
-                  <span style="font:700 12.5px 'Archivo';color:{{ s.labelColor }};">{{ s.emoji }} {{ s.label }}</span>
+                  <span style="display:inline-flex;align-items:center;gap:8px;font:700 12.5px 'Archivo';color:{{ s.labelColor }};"><span style="width:9px;height:9px;border-radius:3px;background:{{ s.dot }};"></span>{{ s.label }}</span>
                   <span style="font:800 13px 'IBM Plex Mono';color:{{ s.numColor }};">{{ s.pct }}</span>
                 </div>
                 <div style="height:9px;border-radius:99px;background:rgba(120,140,166,.14);overflow:hidden;"><div style="height:100%;border-radius:99px;transform-origin:left;animation:fa-bar .8s cubic-bezier(.3,.8,.3,1) both;width:{{ s.barW }};{{ s.barLook }}"></div></div>
@@ -231,38 +231,38 @@ class Component extends DCLogic {
   // ---------- model ----------
   ORDER = ['colossus','architect','sentinel','libero'];
   ARCH = {
-    colossus:{ name:'The Colossus', tagline:'The Physical Dominator', emoji:'\uD83C\uDFF0', color:'#C8102E',
+    colossus:{ name:'The Colossus', tagline:'The Physical Dominator', mono:'CO', color:'#C8102E',
       reflect:"You want to win every duel and dominate the striker physically \u2014 nothing gets past you.",
       isYou:"The immovable object. You dominate the air, win the physical battles, and thrive in the chaos strikers hate. When it's a fight, you win it \u2014 and the strikers who beat you once don't fancy the rematch.",
       strengths:['Aerial dominance','Physical strength','Set-piece defending'],
       playLike:'Virgil van Dijk \u00b7 Rapha\u00ebl Varane \u00b7 Kalidou Koulibaly',
       edge:"Ball-playing. In the modern build-from-the-back game, a defender who can only clear is a defender the press can pin. Growing your comfort on the ball is what keeps your dominance from becoming a limitation.",
       firstStep:"Win your aerial and physical duels first \u2014 that's non-negotiable. Then challenge yourself to play one composed pass out instead of clearing it, every game. Count how many stick.",
-      share:'I\u2019m The Colossus \uD83D\uDEE1\uFE0F \u2014 nothing gets past me. Which defender are you?' },
-    architect:{ name:'The Architect', tagline:'The Ball-Playing Defender', emoji:'\uD83E\uDDED', color:'#00E5FF',
+      share:'I\u2019m The Colossus \u2014 nothing gets past me. Which defender are you?' },
+    architect:{ name:'The Architect', tagline:'The Ball-Playing Defender', mono:'AR', color:'#00E5FF',
       reflect:"You want the ball at your feet and attacks starting from you \u2014 a defender who builds.",
       isYou:"The one who turns defending into attacking. Composed under pressure, you break lines with your passing and start moves from deep. Defending is only half your game \u2014 the other half is what you do the moment you've won it back.",
       strengths:['Progressive passing','Composure on the ball','Reading passing lanes'],
       playLike:'Mats Hummels \u00b7 Leonardo Bonucci \u00b7 John Stones',
       edge:"The defensive fundamentals \u2014 duels and aerials. A ball-player who can be bullied is a ball-player who ends up on the bench. Make the defending so solid that your passing is never a liability under pressure.",
       firstStep:"Look to play one line-breaking pass every time you receive \u2014 but never at the cost of your defensive position. If the pass isn't on, the position always wins.",
-      share:'I\u2019m The Architect \uD83D\uDEE1\uFE0F \u2014 I start the attack from the back. Which defender are you?' },
-    sentinel:{ name:'The Sentinel', tagline:'The Reading Master', emoji:'\uD83D\uDCE1', color:'#E8B33A',
+      share:'I\u2019m The Architect \u2014 I start the attack from the back. Which defender are you?' },
+    sentinel:{ name:'The Sentinel', tagline:'The Reading Master', mono:'SE', color:'#E8B33A',
       reflect:"You read the danger before it happens and cut it out \u2014 you rarely need to dive into tackles.",
       isYou:"The chess-player. You anticipate, position perfectly, and snuff out danger before it becomes a chance. You defend with your brain, not your body \u2014 and the best games are the ones where nobody notices you had to do anything at all.",
       strengths:['Anticipation & interceptions','Positioning','Game reading'],
       playLike:'Thiago Silva \u00b7 Marquinhos \u00b7 J\u00e9r\u00f4me Boateng',
       edge:"Physical presence and duels. Reading gets you there first almost every time \u2014 but for the times it doesn't, you need to be able to win it the hard way, so you can dominate when reading alone isn't enough.",
       firstStep:"Before each attack, predict where the ball's going and step to intercept. Count how many you cut out before a shot ever happens \u2014 that number is your real game.",
-      share:'I\u2019m The Sentinel \uD83D\uDEE1\uFE0F \u2014 I read danger before it happens. Which defender are you?' },
-    libero:{ name:'The Libero', tagline:'The Modern Sweeper', emoji:'\uD83E\uDE90', color:'#8B5CF6',
+      share:'I\u2019m The Sentinel \u2014 I read danger before it happens. Which defender are you?' },
+    libero:{ name:'The Libero', tagline:'The Modern Sweeper', mono:'LI', color:'#8B5CF6',
       reflect:"You want to cover every gap and free the players around you \u2014 the safety net behind the line.",
       isYou:"The coverer. Fast, versatile, tactically sharp, you sweep up everything behind the defence and give your teammates the freedom to push. You clean up what others miss \u2014 and the whole back line plays higher because you're behind it.",
       strengths:['Coverage & recovery pace','Versatility','Tactical flexibility'],
       playLike:'David Alaba \u00b7 Alessandro Bastoni \u00b7 Manuel Akanji',
       edge:"Aerial and duel strength. Covering space is your gift, but the complete defender wins it in the box as well as in the open. Add the physical side and there's no situation you can't handle.",
       firstStep:"Focus on your covering position \u2014 always be ready to sweep the ball in behind. Notice how much higher your back line can push because you're there. That's the value nobody counts.",
-      share:'I\u2019m The Libero \uD83D\uDEE1\uFE0F \u2014 I cover everything behind the line. Which defender are you?' },
+      share:'I\u2019m The Libero \u2014 I cover everything behind the line. Which defender are you?' },
   };
 
   // 12 ordered hybrid pairs (Handoff v2 \u00a78)
@@ -448,7 +448,7 @@ class Component extends DCLogic {
   _copyShare(){
     const r=this._result; if(!r) return;
     const txt = r.isPure ? this.ARCH[r.primary].share
-      : 'I\u2019m '+(this.HYBRIDS[r.hybridKey]?this.HYBRIDS[r.hybridKey].title:this.ARCH[r.primary].name)+' \uD83D\uDEE1\uFE0F \u2014 which defender are you?';
+      : 'I\u2019m '+(this.HYBRIDS[r.hybridKey]?this.HYBRIDS[r.hybridKey].title:this.ARCH[r.primary].name)+' \u2014 which defender are you?';
     try{ if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(txt); }catch(e){}
     this._sfx('click');
     this.setState({ copied:true });
@@ -501,7 +501,7 @@ class Component extends DCLogic {
 
     // reveal defaults (placeholder-safe)
     Object.assign(base,{
-      revKicker:'YOUR CENTRE BACK ARCHETYPE', archEmoji:'', archColor:accent, archGlow:'transparent',
+      revKicker:'YOUR CENTRE BACK ARCHETYPE', archMono:'', archColor:accent, archGlow:'transparent',
       archName:'', archIdentity:'', bandLabel:'', isHybrid:false, secondaryColor:accent, shadeHeadline:'', shadeLine:'',
       spreadNote:'', spreadBars:[], archReflect:'', archIsYou:'', strengths:[], archPlayLike:'',
       archEdge:'', archFirstStep:'', shareLabel:'Share result', dataLine:'',
@@ -515,7 +515,7 @@ class Component extends DCLogic {
       const short=(id)=>this.ARCH[id].name.replace('The ','');
       const hyb=this.HYBRIDS[r.hybridKey];
       const isHybrid=!r.isPure && !!hyb;
-      base.archEmoji=A.emoji; base.archColor=archColor; base.archGlow=archGlow;
+      base.archMono=A.mono; base.archColor=archColor; base.archGlow=archGlow;
       base.archName=A.name;
       base.archIdentity= isHybrid ? hyb.title : A.tagline;
       base.bandLabel= r.isPure ? 'PURE READ' : 'HYBRID READ';
@@ -528,7 +528,7 @@ class Component extends DCLogic {
       const maxV=Math.max(...entries.map(e=>e[1]),1);
       base.spreadBars=entries.map(([id,v])=>{
         const isP=id===r.primary; const col=this.ARCH[id].color;
-        return { emoji:this.ARCH[id].emoji, label:short(id),
+        return { dot:col, label:short(id),
           labelColor:isP?'#F2F8FE':'#9FB0C5', numColor:isP?col:'#9FB0C5',
           pct:v+'%', barW:Math.round((v/maxV)*100)+'%',
           barLook:isP?('background:linear-gradient(90deg,'+col+',color-mix(in srgb,'+col+' 45%,transparent));box-shadow:0 0 12px color-mix(in srgb,'+col+' 55%,transparent);'):'background:rgba(140,160,186,.4);' };

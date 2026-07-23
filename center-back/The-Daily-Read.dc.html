@@ -94,7 +94,7 @@
           <div style="display:flex;flex-direction:column;gap:11px;">
             <sc-for list="{{ houses }}" as="h" hint-placeholder-count="4">
               <div style="display:flex;flex-direction:column;gap:5px;">
-                <div style="display:flex;align-items:baseline;justify-content:space-between;"><span style="font:700 12.5px 'Archivo';color:{{ h.labelColor }};">{{ h.emoji }} {{ h.name }}{{ h.youTag }}</span><span style="font:800 12px 'IBM Plex Mono';color:{{ h.numColor }};">{{ h.pct }}</span></div>
+                <div style="display:flex;align-items:baseline;justify-content:space-between;"><span style="display:inline-flex;align-items:center;gap:8px;font:700 12.5px 'Archivo';color:{{ h.labelColor }};"><span style="width:9px;height:9px;border-radius:3px;background:{{ h.dot }};"></span>{{ h.name }}{{ h.youTag }}</span><span style="font:800 12px 'IBM Plex Mono';color:{{ h.numColor }};">{{ h.pct }}</span></div>
                 <div style="height:9px;border-radius:99px;background:rgba(120,140,166,.14);overflow:hidden;"><div style="height:100%;border-radius:99px;width:{{ h.barW }};background:{{ h.barColor }};transition:width .8s cubic-bezier(.3,.8,.3,1);"></div></div>
               </div>
             </sc-for>
@@ -122,7 +122,7 @@
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1000,&quot;height&quot;:820},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#C8102E&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#C8102E&quot;,&quot;#00E5FF&quot;,&quot;#E8B33A&quot;,&quot;#8B5CF6&quot;]},&quot;demoNextDay&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Preview&quot;},&quot;embedded&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;}}">
 class Component extends DCLogic {
   ORDER=['colossus','architect','sentinel','libero'];
-  ARCH={ colossus:{name:'Colossi',emoji:'\uD83C\uDFF0',color:'#C8102E'}, architect:{name:'Architects',emoji:'\uD83E\uDDED',color:'#00E5FF'}, sentinel:{name:'Sentinels',emoji:'\uD83D\uDCE1',color:'#E8B33A'}, libero:{name:'Liberos',emoji:'\uD83E\uDE90',color:'#8B5CF6'} };
+  ARCH={ colossus:{name:'Colossi',mono:'CO',color:'#C8102E'}, architect:{name:'Architects',mono:'AR',color:'#00E5FF'}, sentinel:{name:'Sentinels',mono:'SE',color:'#E8B33A'}, libero:{name:'Liberos',mono:'LI',color:'#8B5CF6'} };
   OPTS=[ {id:'runner',key:'A',label:'Pass to the runner'}, {id:'through',key:'B',label:'Through ball in behind'}, {id:'shot',key:'C',label:'Shot'}, {id:'turnback',key:'D',label:'Turn back & recycle'} ];
   ANSLABEL={ runner:'the pass to the runner', through:'the through ball', shot:'the shot', turnback:'the turn back' };
   // one shared scenario per day. lens = the House that tends to read it best.
@@ -193,7 +193,7 @@ class Component extends DCLogic {
   _share(){
     const h=this._houseData(); const sc=this._sc();
     const lines=h.map(x=>x.name+' '+x.pct).join('  ');
-    const txt='The Daily Read #'+this._puzzleNo()+' \uD83D\uDEE1\uFE0F\n'+lines+'\nStreak: '+(this._streak||this._store._streak||1)+'. Which defender are you?';
+    const txt='The Daily Read #'+this._puzzleNo()+'\n'+lines+'\nStreak: '+(this._streak||this._store._streak||1)+'. Which defender are you?';
     try{ if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(txt); }catch(e){}
     this._sfx('click'); this.setState({ copied:true });
     clearTimeout(this._ct); this._ct=setTimeout(()=>this.setState({ copied:false }),1900);
@@ -204,7 +204,7 @@ class Component extends DCLogic {
     // each house a % who read it; lens house boosted
     const base=this.ORDER.map(id=>{ let v=50+Math.floor(rng()*16); if(id===sc.lens) v+=10+Math.floor(rng()*6); return {id,v:Math.min(v,86)}; });
     base.sort((a,b)=>b.v-a.v);
-    return base.map(x=>({ id:x.id, name:this.ARCH[x.id].name, emoji:this.ARCH[x.id].emoji, color:this.ARCH[x.id].color, pct:x.v+'%', v:x.v }));
+    return base.map(x=>({ id:x.id, name:this.ARCH[x.id].name, color:this.ARCH[x.id].color, pct:x.v+'%', v:x.v }));
   }
 
   renderVals(){
@@ -238,7 +238,7 @@ class Component extends DCLogic {
       base.coaching = sc.coach;
       const h=this._houseData();
       const maxV=Math.max(...h.map(x=>x.v),1);
-      base.houses=h.map(x=>({ name:x.name, emoji:x.emoji, pct:x.pct, barW:Math.round(x.v/maxV*100)+'%',
+      base.houses=h.map(x=>({ name:x.name, dot:x.color, pct:x.pct, barW:Math.round(x.v/maxV*100)+'%',
         barColor:x.color, labelColor:(x.id===this._myArch)?'#F2F8FE':'#9FB0C5', numColor:x.color,
         youTag:(x.id===this._myArch)?'  \u00b7 YOU':'' }));
       const top=h[0];
