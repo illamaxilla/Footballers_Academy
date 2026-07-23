@@ -49,7 +49,7 @@
     <div style="display:flex;align-items:center;gap:12px;min-width:120px;justify-content:flex-end;">
       <sc-if value="{{ inPlay }}" hint-placeholder-val="{{ false }}">
         <span style="display:inline-flex;align-items:center;gap:6px;font:700 12px 'IBM Plex Mono';color:{{ streakColor }};">
-          <sc-if value="{{ onFire }}" hint-placeholder-val="{{ false }}"><span style="font-size:15px;display:inline-block;animation:fa-flame .7s ease-in-out infinite;">&#128293;</span></sc-if>
+          <sc-if value="{{ onFire }}" hint-placeholder-val="{{ false }}"><span style="font-size:15px;display:inline-block;animation:fa-flame .7s ease-in-out infinite;"><svg width="13" height="15" viewBox="0 0 24 24" fill="#FFB020" style="vertical-align:middle;"><path d="M12 2s6 4 6 10a6 6 0 0 1-12 0c0-2 1-3 1-3s2 2 3 1c1.5-1.5-1-4 2-8z"/></svg></span></sc-if>
           {{ streakLabel }}
         </span>
       </sc-if>
@@ -143,7 +143,7 @@
             <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.18em;color:#61748c;margin-top:5px;">READ LIKE THE PRO</div>
           </div>
           <div style="padding:18px 16px;border-radius:15px;border:1px solid rgba(120,140,166,.18);background:rgba(10,16,28,.4);text-align:center;">
-            <div style="font:800 30px 'IBM Plex Mono';color:#FFB020;">&#128293; {{ bestStreak }}</div>
+            <div style="font:800 30px 'IBM Plex Mono';color:#FFB020;">{{ bestStreak }}</div>
             <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.18em;color:#61748c;margin-top:5px;">BEST STREAK</div>
           </div>
         </div>

@@ -71,7 +71,7 @@
 
   <sc-if value="{{ isRaterIntro }}" hint-placeholder-val="{{ false }}">
     <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;text-align:center;padding:20px clamp(26px,4vw,58px) 60px;">
-      <div class="fa-in" style="font-size:44px;margin-bottom:12px;">&#128101;</div>
+      <div class="fa-in" style="margin-bottom:12px;line-height:0;"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" style="stroke:var(--accent,#7688A0);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;"><circle cx="9" cy="8" r="3.2"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 5.4a3.2 3.2 0 0 1 0 5.2M17 14.2c2 .8 3.5 2.8 3.5 5.3"/></svg></div>
       <h1 class="fa-in" style="margin:0 0 14px;font:800 clamp(30px,4.4vw,54px)/1.02 'Archivo';letter-spacing:-0.025em;max-width:700px;text-wrap:balance;animation-delay:.06s;">You&rsquo;re rating this player.</h1>
       <p class="fa-in" style="margin:0 0 30px;max-width:560px;font:400 15px/1.6 'Archivo';color:#AEBED2;text-wrap:pretty;animation-delay:.12s;">Six quick questions about the full-back who handed you this. Answer for the player you actually watch &mdash; not the one they wish they were. Honest is more useful than kind.</p>
       <button onClick="{{ raterStart }}" class="fa-in" style="display:inline-flex;align-items:center;gap:11px;padding:16px 36px;border-radius:12px;border:0;background:var(--accent,#FF6B1A);color:#04060c;font:700 15px 'Archivo';cursor:pointer;box-shadow:0 14px 40px color-mix(in srgb,var(--accent,#FF6B1A) 40%,transparent);transition:transform .16s ease;animation-delay:.18s;" style-hover="transform:translateY(-2px);">
