@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:#04060c;}
+  a{color:var(--accent,#FF6B1A);text-decoration:none;}
+  a:hover{opacity:.92;}
+  @keyframes fa-blink{0%,100%{opacity:1;}50%{opacity:.25;}}
+  @keyframes fa-rise{0%{transform:translateY(16px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-rise-sm{0%{transform:translateY(10px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-bar{from{transform:scaleX(0);}to{transform:scaleX(1);}}
+  @keyframes fa-freeze{0%{opacity:0;transform:scale(.6);}100%{opacity:1;transform:scale(1);}}
+  .fa-in{opacity:0;animation:fa-rise .6s cubic-bezier(.2,.7,.2,1) forwards;}
+  .fa-in-sm{opacity:0;animation:fa-rise-sm .5s cubic-bezier(.2,.7,.2,1) forwards;}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;}.fa-in,.fa-in-sm{opacity:1!important;transform:none!important;}}
+</style>
+</helmet>
+<div data-screen-label="The Fork" style="position:relative;display:flex;flex-direction:column;min-height:100dvh;width:100%;overflow:hidden;background:radial-gradient(120% 90% at 50% 6%,#0e1a2d 0%,#080e1a 44%,#04060c 100%);color:#EAF2FB;font-family:'Archivo',system-ui,sans-serif;--accent:{{ accent }};">
+
+  <div style="position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.4;background:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0px,rgba(255,255,255,.02) 1px,transparent 1px,transparent 4px);"></div>
+  <div style="position:absolute;top:20px;left:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#FF6B1A) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#FF6B1A) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;top:20px;right:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#FF6B1A) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#FF6B1A) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;left:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#FF6B1A) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#FF6B1A) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;right:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#FF6B1A) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#FF6B1A) 50%,transparent);z-index:4;pointer-events:none;"></div>
+
+  <sc-if value="{{ showChrome }}" hint-placeholder-val="{{ true }}">
+    <header style="position:relative;z-index:6;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px clamp(24px,3.4vw,54px);">
+      <div style="min-width:110px;display:flex;"><a href="Assessment.dc.html" style="display:inline-flex;align-items:center;gap:8px;color:#8EA1B8;font:600 12.5px 'Archivo';"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M15 5l-7 7 7 7"/></svg>Back to the scan</a></div>
+      <div style="display:flex;align-items:center;gap:11px;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" style="stroke:var(--accent,#FF6B1A);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M6 3v7a3 3 0 0 0 3 3h6a3 3 0 0 0 3-3V3"/><path d="M12 13v8"/></svg><span style="font:800 13px 'Archivo';letter-spacing:.05em;">THE <span style="color:var(--accent,#FF6B1A);">FORK</span></span></div>
+      <div style="display:flex;align-items:center;gap:12px;min-width:110px;justify-content:flex-end;">
+        <button onClick="{{ toggleSound }}" title="{{ soundTitle }}" style="display:grid;place-items:center;width:28px;height:28px;border-radius:8px;border:1px solid rgba(120,140,166,.24);background:rgba(10,16,28,.5);cursor:pointer;color:{{ soundColor }};">
+          <sc-if value="{{ soundOn }}" hint-placeholder-val="{{ true }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></sc-if>
+          <sc-if value="{{ soundOff }}" hint-placeholder-val="{{ false }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M22 9l-6 6M16 9l6 6"/></svg></sc-if>
+        </button>
+      </div>
+    </header>
+  </sc-if>
+
+  <!-- INTRO -->
+  <sc-if value="{{ isIntro }}" hint-placeholder-val="{{ true }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;text-align:center;padding:14px clamp(24px,4vw,54px) 54px;">
+      <div class="fa-in" style="display:inline-flex;align-items:center;gap:10px;margin-bottom:18px;font:600 12px 'IBM Plex Mono';letter-spacing:.4em;color:var(--accent,#FF6B1A);"><span style="width:6px;height:6px;border-radius:50%;background:var(--accent,#FF6B1A);box-shadow:0 0 8px var(--accent,#FF6B1A);animation:fa-blink 1.6s ease-in-out infinite;"></span>DECISION UNDER PRESSURE</div>
+      <h1 class="fa-in" style="margin:0 0 14px;font:800 clamp(34px,5.2vw,68px)/0.98 'Archivo';letter-spacing:-0.03em;text-wrap:balance;max-width:760px;animation-delay:.05s;">The move freezes. You&rsquo;ve got a second.</h1>
+      <p class="fa-in" style="margin:0 0 26px;max-width:560px;font:400 clamp(14px,1.25vw,17px)/1.6 'Archivo';color:#9FB0C5;text-wrap:pretty;animation-delay:.1s;">The ball comes to you and the play stops dead at the decision moment. Four options, a shrinking clock. Pick fast &mdash; the first thing you reach for tells us how you see the game. There&rsquo;s no wrong answer, only your instinct.</p>
+      <div class="fa-in" style="width:100%;max-width:440px;margin-bottom:24px;animation-delay:.16s;">
+        <div style="font:600 10px 'IBM Plex Mono';letter-spacing:.24em;color:#7688A0;margin-bottom:12px;text-align:left;">CHOOSE YOUR LEVEL</div>
+        <div style="display:flex;gap:10px;">
+          <sc-for list="{{ levels }}" as="lv" hint-placeholder-count="3">
+            <button onClick="{{ lv.onPick }}" style="flex:1;padding:16px 10px;border-radius:13px;cursor:pointer;font:700 14px 'Archivo';transition:all .16s ease;border:1px solid {{ lv.border }};background:{{ lv.bg }};color:{{ lv.fg }};">{{ lv.label }}<div style="font:500 9.5px 'IBM Plex Mono';letter-spacing:.08em;margin-top:5px;color:{{ lv.subColor }};">{{ lv.sub }}</div></button>
+          </sc-for>
+        </div>
+      </div>
+      <button onClick="{{ start }}" class="fa-in" style="display:inline-flex;align-items:center;gap:12px;padding:17px 42px;border-radius:13px;border:0;background:var(--accent,#FF6B1A);color:#04121a;font:700 16px 'Archivo';cursor:pointer;box-shadow:0 14px 44px color-mix(in srgb,var(--accent,#FF6B1A) 42%,transparent);transition:transform .16s ease;animation-delay:.22s;" style-hover="transform:translateY(-2px);">Get on the ball<svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12h13M12 6l6 6-6 6"/></svg></button>
+      <div class="fa-in" style="margin-top:16px;font:500 10px 'IBM Plex Mono';letter-spacing:.14em;color:#61748C;animation-delay:.3s;">8 DECISIONS &middot; JUST FOR FUN</div>
+    </main>
+  </sc-if>
+
+  <!-- PLAY -->
+  <sc-if value="{{ isPlay }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:6px clamp(18px,3.5vw,54px) 34px;">
+      <div style="width:100%;max-width:1000px;margin:0 auto;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+          <span style="font:600 9.5px 'IBM Plex Mono';letter-spacing:.2em;color:var(--accent,#FF6B1A);">FORK {{ forkLabel }}</span>
+          <span style="flex:1;height:1px;background:rgba(120,140,166,.16);"></span>
+          <span style="font:600 9.5px 'IBM Plex Mono';letter-spacing:.14em;color:#7688A0;">{{ phaseLabel }}</span>
+        </div>
+
+        <!-- top-down flank -->
+        <div style="position:relative;height:min(54vh,460px);aspect-ratio:16/11;max-width:100%;margin:0 auto 14px;border-radius:16px;overflow:hidden;border:1px solid rgba(120,140,166,.18);background:linear-gradient(180deg,#0d1c2e80,#091324);">
+          <div style="position:absolute;left:0;right:0;top:0;height:34%;background:repeating-linear-gradient(90deg,rgba(255,255,255,.015) 0 26px,transparent 26px 52px);"></div>
+          <div style="position:absolute;left:8%;right:8%;top:6%;height:1px;background:rgba(90,150,190,.16);"></div>
+          <div style="position:absolute;left:34%;right:34%;top:0;height:12%;border:1px solid rgba(90,150,190,.18);border-top:0;"></div>
+          <div style="position:absolute;left:8%;top:0;bottom:0;width:1px;background:rgba(90,150,190,.1);"></div>
+          <div style="position:absolute;right:8%;top:0;bottom:0;width:1px;background:rgba(90,150,190,.1);"></div>
+
+          <!-- teammates -->
+          <sc-for list="{{ mates }}" as="m" hint-placeholder-count="2">
+            <div style="position:absolute;left:{{ m.x }};top:{{ m.y }};transform:translate(-50%,-50%);width:15px;height:15px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#8fd3ff,#3f7fb0);box-shadow:0 0 8px rgba(90,160,220,.5);"></div>
+          </sc-for>
+          <!-- opponents -->
+          <sc-for list="{{ opps }}" as="o" hint-placeholder-count="2">
+            <div style="position:absolute;left:{{ o.x }};top:{{ o.y }};transform:translate(-50%,-50%);width:15px;height:15px;border-radius:3px;background:radial-gradient(125% 125% at 38% 24%,#ff9a9a,#c22b2b);box-shadow:0 0 8px rgba(224,65,60,.5);"></div>
+          </sc-for>
+          <!-- you -->
+          <div style="position:absolute;left:{{ youX }};top:{{ youY }};transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:2px;z-index:3;">
+            <div style="width:18px;height:18px;border-radius:5px;background:linear-gradient(180deg,#EAF2FB,{{ accent }});box-shadow:0 0 12px color-mix(in srgb,{{ accent }} 60%,transparent);"></div>
+            <span style="font:700 7px 'IBM Plex Mono';color:#EAF2FB;">YOU</span>
+          </div>
+          <!-- ball -->
+          <div style="position:absolute;left:{{ ballX }};top:{{ ballY }};transform:translate(-50%,-50%);width:11px;height:11px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,#c9d6e2);box-shadow:0 0 10px rgba(255,255,255,.85);transition:left {{ ballDur }} cubic-bezier(.3,.6,.4,1),top {{ ballDur }} cubic-bezier(.3,.6,.4,1);z-index:4;"></div>
+          <!-- freeze badge -->
+          <sc-if value="{{ frozen }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;top:9px;left:50%;transform:translateX(-50%);font:700 9px 'IBM Plex Mono';letter-spacing:.22em;color:var(--accent,#FF6B1A);background:rgba(4,7,12,.6);padding:4px 10px;border-radius:99px;border:1px solid color-mix(in srgb,var(--accent,#FF6B1A) 40%,transparent);animation:fa-freeze .3s ease;">FROZEN — DECIDE</div>
+          </sc-if>
+        </div>
+
+        <!-- timer -->
+        <sc-if value="{{ deciding }}" hint-placeholder-val="{{ false }}">
+          <div style="height:5px;border-radius:99px;background:rgba(120,140,166,.16);overflow:hidden;margin-bottom:14px;"><div style="height:100%;border-radius:99px;background:var(--accent,#FF6B1A);width:{{ timerW }};transition:width {{ timerDur }} linear;"></div></div>
+        </sc-if>
+
+        <div style="text-align:center;font:600 13.5px 'Archivo';color:#9FB0C5;margin-bottom:12px;min-height:19px;">{{ scenarioDesc }}</div>
+
+        <sc-if value="{{ deciding }}" hint-placeholder-val="{{ false }}">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px;">
+            <sc-for list="{{ options }}" as="opt" hint-placeholder-count="4">
+              <button onClick="{{ opt.onPick }}" style="text-align:left;padding:14px 15px;border-radius:13px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.55);color:#EAF2FB;font:600 13.5px/1.3 'Archivo';cursor:pointer;transition:border-color .14s ease,background .14s ease,transform .14s ease;" style-hover="border-color:color-mix(in srgb,var(--accent,#FF6B1A) 55%,transparent);background:rgba(14,22,36,.85);transform:translateY(-2px);">{{ opt.text }}</button>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ showFb }}" hint-placeholder-val="{{ false }}">
+          <div class="fa-in-sm" style="padding:15px 17px;border-radius:13px;border:1px solid {{ fbBorder }};background:{{ fbBg }};">
+            <div style="font:700 13px 'Archivo';color:{{ fbColor }};margin-bottom:5px;">{{ fbHead }}</div>
+            <div style="font:400 13px/1.45 'Archivo';color:#C6D3E2;">{{ fbNote }}</div>
+          </div>
+        </sc-if>
+      </div>
+    </main>
+  </sc-if>
+
+  <!-- RESULT -->
+  <sc-if value="{{ isResult }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:10px clamp(20px,4vw,54px) 64px;">
+      <div style="width:100%;max-width:620px;">
+        <div class="fa-in" style="text-align:center;margin-bottom:22px;">
+          <div style="font:600 11px 'IBM Plex Mono';letter-spacing:.4em;color:#7E90A8;margin-bottom:12px;">YOUR INSTINCT</div>
+          <div style="font:900 clamp(38px,7vw,72px)/0.95 'Archivo';letter-spacing:-0.02em;color:var(--accent,#FF6B1A);text-shadow:0 0 42px color-mix(in srgb,var(--accent,#FF6B1A) 45%,transparent);">{{ leanBig }}</div>
+          <div style="margin-top:8px;font:600 clamp(14px,1.6vw,18px) 'Archivo';color:#C9D6E2;">{{ resultHeadline }}</div>
+        </div>
+
+        <div class="fa-in" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:22px;animation-delay:.06s;">
+          <div style="padding:15px 8px;border-radius:13px;border:1px solid rgba(120,140,166,.18);background:rgba(10,16,28,.45);text-align:center;"><div style="font:800 20px 'Archivo';color:#22C776;">{{ statAttack }}</div><div style="font:600 8px 'IBM Plex Mono';letter-spacing:.1em;color:#7688A0;margin-top:4px;">WENT FORWARD</div></div>
+          <div style="padding:15px 8px;border-radius:13px;border:1px solid rgba(120,140,166,.18);background:rgba(10,16,28,.45);text-align:center;"><div style="font:800 20px 'Archivo';color:#5B9BD5;">{{ statHold }}</div><div style="font:600 8px 'IBM Plex Mono';letter-spacing:.1em;color:#7688A0;margin-top:4px;">STAYED SAFE</div></div>
+          <div style="padding:15px 8px;border-radius:13px;border:1px solid rgba(120,140,166,.18);background:rgba(10,16,28,.45);text-align:center;"><div style="font:800 20px 'Archivo';color:#FFB020;">{{ statFroze }}</div><div style="font:600 8px 'IBM Plex Mono';letter-spacing:.1em;color:#7688A0;margin-top:4px;">FROZE</div></div>
+        </div>
+
+        <div class="fa-in" style="width:100%;padding:20px 22px;border-radius:16px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);margin-bottom:22px;animation-delay:.1s;">
+          <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:#7688A0;margin-bottom:14px;">YOUR CHOICE FINGERPRINT</div>
+          <div style="display:flex;flex-direction:column;gap:11px;">
+            <sc-for list="{{ fpBars }}" as="s" hint-placeholder-count="4">
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <div style="display:flex;align-items:baseline;justify-content:space-between;">
+                  <span style="font:700 12.5px 'Archivo';color:{{ s.labelColor }};">{{ s.emoji }} {{ s.label }}</span>
+                  <span style="font:800 12px 'IBM Plex Mono';color:{{ s.numColor }};">{{ s.pct }}</span>
+                </div>
+                <div style="height:8px;border-radius:99px;background:rgba(120,140,166,.14);overflow:hidden;"><div style="height:100%;border-radius:99px;transform-origin:left;animation:fa-bar .8s cubic-bezier(.3,.8,.3,1) both;width:{{ s.barW }};{{ s.barLook }}"></div></div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div class="fa-in" style="padding-left:16px;border-left:3px solid var(--accent,#FF6B1A);margin-bottom:24px;animation-delay:.16s;">
+          <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:#7688A0;margin-bottom:7px;">A SOFT READ</div>
+          <p style="margin:0;font:500 clamp(15px,1.7vw,18px)/1.5 'Archivo';color:#EAF2FB;text-wrap:pretty;">{{ softRead }}</p>
+        </div>
+
+        <div class="fa-in" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:12px;animation-delay:.22s;">
+          <button onClick="{{ again }}" style="display:inline-flex;align-items:center;gap:10px;padding:15px 30px;border-radius:12px;border:0;background:var(--accent,#FF6B1A);color:#04121a;font:700 15px 'Archivo';cursor:pointer;box-shadow:0 12px 36px color-mix(in srgb,var(--accent,#FF6B1A) 40%,transparent);transition:transform .16s ease;" style-hover="transform:translateY(-2px);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:#04121a;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>Go again</button>
+          <a href="Assessment.dc.html" style="display:inline-flex;align-items:center;gap:9px;padding:15px 24px;border-radius:12px;border:1px solid rgba(157,176,198,.28);background:rgba(12,18,30,.4);color:#C6D3E2;font:600 14px 'Archivo';" style-hover="border-color:color-mix(in srgb,var(--accent,#FF6B1A) 55%,transparent);color:#EAF2FB;">Back to the scan</a>
+        </div>
+      </div>
+    </main>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:960,&quot;height&quot;:820},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#FF6B1A&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#FF6B1A&quot;,&quot;#E5197F&quot;,&quot;#5B9BD5&quot;,&quot;#22D3EE&quot;]},&quot;motion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;embedded&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;level&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;pro&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;academy&quot;,&quot;pro&quot;,&quot;elite&quot;]}}">
+class Component extends DCLogic {
+  LEVELS={ academy:{ label:'Academy', sub:'4.0s', window:4000 }, pro:{ label:'Pro', sub:'2.8s', window:2800 }, elite:{ label:'Elite', sub:'1.8s', window:1800 } };
+  ORDER=['warrior','winger','sentinel','architect'];
+  ARCH={ warrior:{name:'Warrior',emoji:'\u2699\uFE0F',color:'#FF6B1A'}, winger:{name:'Winger',emoji:'\uD83C\uDFAF',color:'#E5197F'}, sentinel:{name:'Sentinel',emoji:'\uD83D\uDEE1\uFE0F',color:'#5B9BD5'}, architect:{name:'Architect',emoji:'\uD83E\uDDED',color:'#22D3EE'} };
+
+  // top-down flank, attacking UP (y small = their goal). ball starts elsewhere, arrives at you.
+  SC=[
+    { desc:'You overlap into space on the wing.', you:{x:'20%',y:'46%'}, ballFrom:{x:'50%',y:'70%'}, mates:[{x:'55%',y:'28%'},{x:'70%',y:'40%'}], opps:[{x:'30%',y:'30%'},{x:'62%',y:'55%'}],
+      opts:[{t:'Whip an early cross to the far post.',a:'winger',k:'atk',note:'The Winger\u2019s first thought \u2014 get the ball into the danger zone before they set.'},
+            {t:'Drive to the byline, then decide.',a:'warrior',k:'atk',note:'Read it on the run \u2014 the two-way instinct that keeps options open.'},
+            {t:'Cut inside and combine with midfield.',a:'architect',k:'poss',note:'Keep the move alive centrally \u2014 the Architect refuses to force it.'},
+            {t:'Check back \u2014 don\u2019t get isolated.',a:'sentinel',k:'hold',note:'Security first \u2014 the Sentinel won\u2019t gamble the flank.'}] },
+    { desc:'Ball played back to you, their winger closing.', you:{x:'22%',y:'60%'}, ballFrom:{x:'45%',y:'40%'}, mates:[{x:'50%',y:'70%'},{x:'35%',y:'80%'}], opps:[{x:'30%',y:'52%'},{x:'55%',y:'48%'}],
+      opts:[{t:'Beat him and burst up the line.',a:'winger',k:'atk',note:'Back yourself 1v1 \u2014 pure Winger.'},
+            {t:'Play round him and support the attack.',a:'warrior',k:'atk',note:'Progress it and follow \u2014 balanced and busy.'},
+            {t:'Tuck inside and switch the play.',a:'architect',k:'poss',note:'Change the angle \u2014 the Architect sees the whole pitch.'},
+            {t:'Simple pass, hold your shape.',a:'sentinel',k:'hold',note:'Keep it safe \u2014 the disciplined choice.'}] },
+    { desc:'You reach the byline, cutback on.', you:{x:'18%',y:'20%'}, ballFrom:{x:'40%',y:'35%'}, mates:[{x:'52%',y:'26%'},{x:'60%',y:'34%'}], opps:[{x:'44%',y:'18%'},{x:'58%',y:'22%'}],
+      opts:[{t:'First-time cross into the six-yard box.',a:'winger',k:'atk',note:'Trust your delivery \u2014 Winger to the core.'},
+            {t:'Cut it back to the edge of the box.',a:'warrior',k:'atk',note:'The higher-percentage ball \u2014 smart and two-footed.'},
+            {t:'Roll it back, recycle for a better ball.',a:'architect',k:'poss',note:'Patience over the first idea \u2014 the Architect resets.'},
+            {t:'Win the corner and get back into shape.',a:'sentinel',k:'hold',note:'Take the safe outcome and reset defensively.'}] },
+    { desc:'Turnover \u2014 you win it in your own half.', you:{x:'24%',y:'78%'}, ballFrom:{x:'40%',y:'88%'}, mates:[{x:'55%',y:'60%'},{x:'40%',y:'50%'}], opps:[{x:'50%',y:'70%'},{x:'30%',y:'40%'}],
+      opts:[{t:'Carry it 40 yards and commit them.',a:'winger',k:'atk',note:'Break at speed \u2014 the fearless Winger surge.'},
+            {t:'Drive forward, then release and support.',a:'warrior',k:'atk',note:'Start the break and join it \u2014 the engine.'},
+            {t:'Keep possession, build it patiently.',a:'architect',k:'poss',note:'Control the tempo \u2014 no rush, no risk.'},
+            {t:'Take no risk \u2014 secure it first.',a:'sentinel',k:'hold',note:'Safety in your own third \u2014 the Sentinel\u2019s rule.'}] },
+    { desc:'Their winger is high; you have the ball wide.', you:{x:'20%',y:'52%'}, ballFrom:{x:'48%',y:'44%'}, mates:[{x:'58%',y:'34%'},{x:'44%',y:'26%'}], opps:[{x:'30%',y:'64%'},{x:'56%',y:'50%'}],
+      opts:[{t:'Push right up \u2014 my cover has it.',a:'winger',k:'atk',note:'Attack is your job \u2014 you trust the cover behind.'},
+            {t:'Advance but track his position.',a:'warrior',k:'atk',note:'One eye forward, one eye back \u2014 total full-back.'},
+            {t:'Come inside to shield the counter.',a:'architect',k:'poss',note:'Protect centrally \u2014 the positional brain.'},
+            {t:'Sit \u2014 he\u2019s too dangerous to leave.',a:'sentinel',k:'hold',note:'Deny the counter first \u2014 pure Sentinel.'}] },
+    { desc:'Space opens ahead, teammate overlapping.', you:{x:'26%',y:'44%'}, ballFrom:{x:'50%',y:'56%'}, mates:[{x:'14%',y:'32%'},{x:'62%',y:'40%'}], opps:[{x:'40%',y:'36%'},{x:'54%',y:'50%'}],
+      opts:[{t:'Ignore him \u2014 take the defender on myself.',a:'winger',k:'atk',note:'Your moment, your take-on \u2014 Winger instinct.'},
+            {t:'Play him in and continue the run.',a:'warrior',k:'atk',note:'Use the overlap and keep going \u2014 relentless.'},
+            {t:'Underlap inside him into the pocket.',a:'architect',k:'poss',note:'Find the half-space \u2014 the Architect\u2019s home.'},
+            {t:'Give it and hold \u2014 stay balanced.',a:'sentinel',k:'hold',note:'Do the simple thing and keep shape.'}] },
+    { desc:'Late in the game, 1-0 up, ball wide.', you:{x:'20%',y:'40%'}, ballFrom:{x:'46%',y:'52%'}, mates:[{x:'56%',y:'30%'},{x:'40%',y:'62%'}], opps:[{x:'34%',y:'34%'},{x:'58%',y:'46%'}],
+      opts:[{t:'Go again \u2014 a second goal kills it.',a:'winger',k:'atk',note:'Still hunting \u2014 the Winger never parks.'},
+            {t:'Take it to the corner and hold it.',a:'warrior',k:'atk',note:'Game-management with the ball \u2014 streetwise.'},
+            {t:'Keep it, slow the tempo right down.',a:'architect',k:'poss',note:'Control the clock with possession \u2014 the Architect.'},
+            {t:'Recycle deep and see the game out.',a:'sentinel',k:'hold',note:'Protect the lead \u2014 the Sentinel\u2019s priority.'}] },
+    { desc:'Half-space opens as you receive inside.', you:{x:'34%',y:'48%'}, ballFrom:{x:'52%',y:'60%'}, mates:[{x:'60%',y:'32%'},{x:'24%',y:'36%'}], opps:[{x:'44%',y:'42%'},{x:'50%',y:'56%'}],
+      opts:[{t:'Slide it wide and overlap outside.',a:'winger',k:'atk',note:'Create the width yourself \u2014 Winger energy.'},
+            {t:'Drive through the line at the defence.',a:'warrior',k:'atk',note:'Carry it and commit them \u2014 front-foot.'},
+            {t:'Play the through-ball between the lines.',a:'architect',k:'poss',note:'The killer pass \u2014 the Architect\u2019s weapon.'},
+            {t:'Recycle and reset the attack.',a:'sentinel',k:'hold',note:'No forcing it \u2014 keep it safe.'}] },
+  ];
+
+  state={ view:'intro', level:'pro', idx:0, phase:'build', frozen:false, deciding:false, showFb:false,
+    ball:{x:'50%',y:'70%'}, ballDur:'0s', timerW:'100%', timerDur:'0s',
+    fbHead:'', fbNote:'', fbColor:'#22C776', fbBg:'rgba(34,199,118,.1)', fbBorder:'rgba(34,199,118,.3)',
+    picks:[], froze:0 };
+
+  componentDidMount(){ try{ this._soundOn=localStorage.getItem('fa_sound')!=='0'; }catch(e){ this._soundOn=true; } this._level=this.props.level||'pro'; this._embedded=this.props.embedded===true; if(this._embedded) this._begin(); else this.forceUpdate(); }
+  componentWillUnmount(){ [this._t1,this._t2,this._win,this._t3].forEach(t=>clearTimeout(t)); }
+
+  _audio(){ if(this._actx===undefined){ try{ this._actx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ this._actx=null; } } if(this._actx&&this._actx.state==='suspended') this._actx.resume(); return this._actx; }
+  _tone(f,d,t,g){ const c=this._audio(); if(!c||this._soundOn===false) return; const o=c.createOscillator(),a=c.createGain(); o.type=t||'sine'; o.frequency.value=f; o.connect(a); a.connect(c.destination); const n=c.currentTime; a.gain.setValueAtTime(0,n); a.gain.linearRampToValueAtTime(g||0.05,n+0.01); a.gain.exponentialRampToValueAtTime(0.0001,n+d); o.start(n); o.stop(n+d); }
+  _sfx(k){ if(this._soundOn===false) return; if(k==='freeze') this._tone(680,0.12,'sine',0.05); else if(k==='pick'){ this._tone(520,0.09,'triangle',0.05); setTimeout(()=>this._tone(720,0.1,'triangle',0.04),50);} else if(k==='froze') this._tone(220,0.2,'sawtooth',0.05); else if(k==='whistle') this._tone(900,0.16,'sine',0.05); else if(k==='end'){ this._tone(520,0.14,'triangle',0.05); setTimeout(()=>this._tone(720,0.14,'triangle',0.05),120); setTimeout(()=>this._tone(940,0.26,'triangle',0.05),240);} else this._tone(430,0.08,'sine',0.04); }
+  _toggleSound(){ const on=this._soundOn===false; this._soundOn=on; try{ localStorage.setItem('fa_sound', on?'1':'0'); }catch(e){} if(on){ this._audio(); this._sfx('click'); } this.forceUpdate(); }
+
+  _pickLevel(k){ this._sfx('click'); this._level=k; this.setState({ level:k }); }
+  _begin(){ this._sfx('whistle'); this._order=this.SC.map((s,i)=>i); for(let i=this._order.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [this._order[i],this._order[j]]=[this._order[j],this._order[i]]; } this.setState({ view:'play', idx:0, picks:[], froze:0 },()=>this._runFork()); }
+
+  _cur(){ return this.SC[this._order[this.state.idx]]; }
+
+  _runFork(){
+    [this._t1,this._t2,this._win,this._t3].forEach(t=>clearTimeout(t));
+    const s=this._cur();
+    this.setState({ phase:'build', frozen:false, deciding:false, showFb:false, ball:{...s.ballFrom}, ballDur:'0s', timerW:'100%', timerDur:'0s' },()=>{
+      this._t1=setTimeout(()=>{ this.setState({ ball:{...s.you}, ballDur:'0.7s' }); },60); // ball travels to you
+      this._t2=setTimeout(()=>{ this._sfx('freeze'); this.setState({ frozen:true, deciding:true },()=>{
+        // start timer bar
+        const L=this.LEVELS[this._level];
+        requestAnimationFrame(()=>this.setState({ timerW:'0%', timerDur:(L.window/1000)+'s' }));
+        this._reactStart=Date.now();
+        this._win=setTimeout(()=>this._froze(), L.window);
+      }); }, 900);
+    });
+  }
+
+  _choose(opt){
+    if(!this.state.deciding) return;
+    clearTimeout(this._win);
+    this._sfx('pick');
+    const picks=this.state.picks.concat([{ a:opt.a, k:opt.k, rt:Date.now()-this._reactStart }]);
+    const isAtk=opt.k==='atk';
+    this.setState({ deciding:false, showFb:true, picks,
+      fbHead:'You went: '+this.ARCH[opt.a].name, fbNote:opt.note,
+      fbColor:this.ARCH[opt.a].color, fbBg:'color-mix(in srgb,'+this.ARCH[opt.a].color+' 10%,transparent)', fbBorder:'color-mix(in srgb,'+this.ARCH[opt.a].color+' 34%,transparent)' });
+    this._t3=setTimeout(()=>this._advance(), 1550);
+  }
+  _froze(){
+    if(!this.state.deciding) return;
+    this._sfx('froze');
+    this.setState({ deciding:false, showFb:true, froze:this.state.froze+1,
+      fbHead:'Too slow \u2014 the moment\u2019s gone', fbNote:'Hesitation is a choice too. The gap gets read, the ball gets nicked. On the flank you rarely get a second look.',
+      fbColor:'#FFB020', fbBg:'rgba(255,176,32,.1)', fbBorder:'rgba(255,176,32,.3)' });
+    this._t3=setTimeout(()=>this._advance(), 1700);
+  }
+  _advance(){ const nx=this.state.idx+1; if(nx>=this.SC.length){ this._end(); return; } this.setState({ idx:nx },()=>this._runFork()); }
+
+  _end(){
+    this._sfx('end');
+    const picks=this.state.picks;
+    const counts={}; this.ORDER.forEach(a=>counts[a]=0); picks.forEach(p=>counts[p.a]++);
+    const attack=picks.filter(p=>p.k==='atk').length;
+    const hold=picks.filter(p=>p.k==='hold').length;
+    const poss=picks.filter(p=>p.k==='poss').length;
+    const decided=picks.length||1;
+    const attackRatio=Math.round(attack/decided*100);
+    this._meta={ counts, attack, hold, poss, froze:this.state.froze, attackRatio, decided, level:this._level };
+    if(!this._embedded){ try{ localStorage.setItem('fa_fb_fork', JSON.stringify({ counts, attackRatio, froze:this.state.froze, at:new Date().toISOString(), weight:0 })); }catch(e){} }
+    this.setState({ view:'result' });
+    if(this._embedded && typeof this.props.onDone==='function'){ this.props.onDone(counts, this._meta); }
+  }
+  _again(){ this._begin(); }
+
+  renderVals(){
+    const accent=this.props.accent ?? '#FF6B1A';
+    const V=this.state.view; const soundOn=this._soundOn!==false;
+    const base={ accent, showChrome:!this._embedded && V!=='play',
+      isIntro:V==='intro', isPlay:V==='play', isResult:V==='result',
+      soundOn, soundOff:!soundOn, soundColor:soundOn?accent:'#7688A0', soundTitle:soundOn?'Sound on':'Sound off',
+      toggleSound:()=>this._toggleSound(), start:()=>this._begin(), again:()=>this._again() };
+    base.levels=Object.keys(this.LEVELS).map(k=>{ const L=this.LEVELS[k]; const on=this.state.level===k;
+      return { key:k, label:L.label, sub:L.sub, onPick:()=>this._pickLevel(k),
+        bg:on?'color-mix(in srgb,'+accent+' 16%,transparent)':'rgba(10,16,28,.5)',
+        border:on?'color-mix(in srgb,'+accent+' 60%,transparent)':'rgba(120,140,166,.22)',
+        fg:on?'#F2F8FE':'#C6D3E2', subColor:on?accent:'#7688A0' }; });
+
+    // play
+    const s=(V==='play' && this._order)?this._cur():this.SC[0];
+    base.forkLabel=(this.state.idx+1)+' / '+this.SC.length;
+    base.phaseLabel=this.state.deciding?'DECIDE NOW':this.state.frozen?'\u2014':'WATCH';
+    base.scenarioDesc=s.desc;
+    base.youX=s.you.x; base.youY=s.you.y;
+    base.ballX=this.state.ball.x; base.ballY=this.state.ball.y; base.ballDur=this.state.ballDur;
+    base.mates=(s.mates||[]).map(m=>({x:m.x,y:m.y}));
+    base.opps=(s.opps||[]).map(o=>({x:o.x,y:o.y}));
+    base.frozen=this.state.frozen; base.deciding=this.state.deciding;
+    base.timerW=this.state.timerW; base.timerDur=this.state.timerDur;
+    base.options=this.state.deciding? s.opts.map(o=>({ text:o.t, onPick:()=>this._choose(o) })) : [];
+    base.showFb=this.state.showFb; base.fbHead=this.state.fbHead; base.fbNote=this.state.fbNote;
+    base.fbColor=this.state.fbColor; base.fbBg=this.state.fbBg; base.fbBorder=this.state.fbBorder;
+
+    // result
+    Object.assign(base,{ leanBig:'', resultHeadline:'', statAttack:0, statHold:0, statFroze:0, fpBars:[], softRead:'' });
+    const m=this._meta;
+    if(m){
+      base.leanBig= m.attackRatio>=60?'Go forward':m.attackRatio<=35?'Stay solid':'Balanced';
+      base.resultHeadline= m.attackRatio>=60?'Your first thought is always the attack.':m.attackRatio<=35?'You look after the flank before anything else.':'You weigh it up before you commit.';
+      base.statAttack=m.attack; base.statHold=m.hold; base.statFroze=m.froze;
+      const tot=this.ORDER.reduce((a,k)=>a+m.counts[k],0)||1;
+      const entries=this.ORDER.map(k=>[k,m.counts[k]]).sort((a,b)=>b[1]-a[1]);
+      const maxV=Math.max(...entries.map(e=>e[1]),1);
+      base.fpBars=entries.map(([id,v])=>{ const col=this.ARCH[id].color; const isTop=v===entries[0][1]&&v>0;
+        return { emoji:this.ARCH[id].emoji, label:this.ARCH[id].name, labelColor:isTop?'#F2F8FE':'#9FB0C5', numColor:isTop?col:'#9FB0C5',
+          pct:Math.round(v/tot*100)+'%', barW:Math.round(v/maxV*100)+'%',
+          barLook:isTop?('background:linear-gradient(90deg,'+col+',color-mix(in srgb,'+col+' 45%,transparent));box-shadow:0 0 12px color-mix(in srgb,'+col+' 55%,transparent);'):'background:rgba(130,150,176,.4);' }; });
+      let read;
+      if(m.froze>=3) read="You froze more than a few times \u2014 under a tight clock the picture can overwhelm. That\u2019s trainable, and it\u2019s not your archetype. Try a wider window and trust your first instinct.";
+      else if(m.attackRatio>=60) read="Under pressure you reach for the forward option almost every time \u2014 the attacking instinct of the Winger, or the front-foot Warrior. Fast and positive. A tendency, not a verdict.";
+      else if(m.attackRatio<=35) read="When the clock squeezed you, you protected the flank first \u2014 the Sentinel\u2019s instinct, or the Architect\u2019s refusal to force it. Calm and safe. An observation, not your archetype.";
+      else read="You split evenly between going and holding, and read the situation before committing \u2014 the mark of a balanced full-back. What that becomes is what the scan is for.";
+      base.softRead=read;
+    }
+    return base;
+  }
+}
+</script>
+</body>
+</html>

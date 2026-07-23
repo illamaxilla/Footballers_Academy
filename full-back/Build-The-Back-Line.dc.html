@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:#04060c;}
+  a{color:var(--accent,#FF6B1A);text-decoration:none;}
+  a:hover{opacity:.92;}
+  @keyframes fa-blink{0%,100%{opacity:1;}50%{opacity:.25;}}
+  @keyframes fa-rise{0%{transform:translateY(16px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-rise-sm{0%{transform:translateY(10px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-ring{from{stroke-dashoffset:326;}}
+  .fa-in{opacity:0;animation:fa-rise .6s cubic-bezier(.2,.7,.2,1) forwards;}
+  .fa-in-sm{opacity:0;animation:fa-rise-sm .5s cubic-bezier(.2,.7,.2,1) forwards;}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;}.fa-in,.fa-in-sm{opacity:1!important;transform:none!important;}}
+</style>
+</helmet>
+<div data-screen-label="Build the Back Line" style="position:relative;display:flex;flex-direction:column;min-height:100dvh;width:100%;overflow:hidden;background:radial-gradient(120% 90% at 50% 6%,#0e1a2d 0%,#080e1a 44%,#04060c 100%);color:#EAF2FB;font-family:'Archivo',system-ui,sans-serif;--accent:{{ accent }};">
+
+  <div style="position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.4;background:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0px,rgba(255,255,255,.02) 1px,transparent 1px,transparent 4px);"></div>
+  <div style="position:absolute;top:20px;left:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#FF6B1A) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#FF6B1A) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;top:20px;right:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#FF6B1A) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#FF6B1A) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;left:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#FF6B1A) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#FF6B1A) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;right:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#FF6B1A) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#FF6B1A) 50%,transparent);z-index:4;pointer-events:none;"></div>
+
+  <header style="position:relative;z-index:6;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px clamp(24px,3.4vw,54px);">
+    <div style="min-width:110px;display:flex;"><a href="Assessment.dc.html" style="display:inline-flex;align-items:center;gap:8px;color:#8EA1B8;font:600 12.5px 'Archivo';"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M15 5l-7 7 7 7"/></svg>Back to the scan</a></div>
+    <div style="display:flex;align-items:center;gap:11px;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" style="stroke:var(--accent,#FF6B1A);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M9 5v14M15 5v14"/></svg><span style="font:800 13px 'Archivo';letter-spacing:.05em;">BUILD THE <span style="color:var(--accent,#FF6B1A);">BACK LINE</span></span></div>
+    <div style="min-width:110px;"></div>
+  </header>
+
+  <!-- INTRO -->
+  <sc-if value="{{ isIntro }}" hint-placeholder-val="{{ true }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;text-align:center;padding:14px clamp(24px,4vw,54px) 54px;">
+      <div class="fa-in" style="display:inline-flex;align-items:center;gap:10px;margin-bottom:18px;font:600 12px 'IBM Plex Mono';letter-spacing:.4em;color:var(--accent,#FF6B1A);"><span style="width:6px;height:6px;border-radius:50%;background:var(--accent,#FF6B1A);box-shadow:0 0 8px var(--accent,#FF6B1A);animation:fa-blink 1.6s ease-in-out infinite;"></span>THE PARTNERSHIP PUZZLE</div>
+      <h1 class="fa-in" style="margin:0 0 14px;font:800 clamp(34px,5.2vw,68px)/0.98 'Archivo';letter-spacing:-0.03em;text-wrap:balance;max-width:760px;animation-delay:.05s;">Two full-backs. One system. Do they fit?</h1>
+      <p class="fa-in" style="margin:0 0 26px;max-width:560px;font:400 clamp(14px,1.25vw,17px)/1.6 'Archivo';color:#9FB0C5;text-wrap:pretty;animation-delay:.1s;">Pick a left back, a right back and the way your team plays. We&rsquo;ll grade the pairing and tell you exactly why it works &mdash; or where it breaks. No archetype is better than another; the art is in the combination.</p>
+      <button onClick="{{ start }}" class="fa-in" style="display:inline-flex;align-items:center;gap:12px;padding:17px 42px;border-radius:13px;border:0;background:var(--accent,#FF6B1A);color:#04121a;font:700 16px 'Archivo';cursor:pointer;box-shadow:0 14px 44px color-mix(in srgb,var(--accent,#FF6B1A) 42%,transparent);transition:transform .16s ease;animation-delay:.22s;" style-hover="transform:translateY(-2px);">Build a back line<svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12h13M12 6l6 6-6 6"/></svg></button>
+      <div class="fa-in" style="margin-top:16px;font:500 10px 'IBM Plex Mono';letter-spacing:.14em;color:#61748C;animation-delay:.3s;">{{ buildsLine }}</div>
+    </main>
+  </sc-if>
+
+  <!-- BUILD -->
+  <sc-if value="{{ isBuild }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:6px clamp(18px,3.5vw,54px) 40px;">
+      <div style="width:100%;max-width:640px;">
+
+        <div style="margin-bottom:16px;">
+          <div style="font:600 9.5px 'IBM Plex Mono';letter-spacing:.2em;color:#7688A0;margin-bottom:9px;">1 &middot; HOW DOES YOUR TEAM PLAY?</div>
+          <div style="display:flex;gap:9px;">
+            <sc-for list="{{ systems }}" as="sy" hint-placeholder-count="3">
+              <button onClick="{{ sy.onPick }}" style="flex:1;padding:12px 8px;border-radius:12px;cursor:pointer;font:700 13px 'Archivo';transition:all .16s ease;border:1px solid {{ sy.border }};background:{{ sy.bg }};color:{{ sy.fg }};">{{ sy.label }}</button>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
+          <div>
+            <div style="font:600 9.5px 'IBM Plex Mono';letter-spacing:.2em;color:#7688A0;margin-bottom:9px;">2 &middot; LEFT BACK</div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <sc-for list="{{ leftCards }}" as="c" hint-placeholder-count="4">
+                <button onClick="{{ c.onPick }}" style="display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:11px 12px;border-radius:11px;cursor:pointer;border:1px solid {{ c.border }};background:{{ c.bg }};color:#EAF2FB;transition:all .14s ease;">
+                  <span style="font-size:17px;line-height:1;">{{ c.emoji }}</span>
+                  <span style="font:700 12.5px 'Archivo';color:{{ c.nameColor }};">{{ c.name }}</span>
+                </button>
+              </sc-for>
+            </div>
+          </div>
+          <div>
+            <div style="font:600 9.5px 'IBM Plex Mono';letter-spacing:.2em;color:#7688A0;margin-bottom:9px;">3 &middot; RIGHT BACK</div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <sc-for list="{{ rightCards }}" as="c" hint-placeholder-count="4">
+                <button onClick="{{ c.onPick }}" style="display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:11px 12px;border-radius:11px;cursor:pointer;border:1px solid {{ c.border }};background:{{ c.bg }};color:#EAF2FB;transition:all .14s ease;">
+                  <span style="font-size:17px;line-height:1;">{{ c.emoji }}</span>
+                  <span style="font:700 12.5px 'Archivo';color:{{ c.nameColor }};">{{ c.name }}</span>
+                </button>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+
+        <!-- live preview -->
+        <div style="display:flex;align-items:center;gap:14px;padding:15px 18px;border-radius:14px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);margin-bottom:16px;">
+          <div style="font:800 30px 'IBM Plex Mono';color:{{ liveColor }};min-width:74px;">{{ liveFit }}</div>
+          <div style="flex:1;font:500 13px/1.4 'Archivo';color:#9FB0C5;">{{ liveNote }}</div>
+        </div>
+
+        <button onClick="{{ lock }}" style="width:100%;padding:17px;border-radius:14px;border:0;cursor:{{ lockCursor }};font:700 15px 'Archivo';background:{{ lockBg }};color:{{ lockFg }};box-shadow:{{ lockShadow }};transition:transform .16s ease;" style-hover="transform:translateY(-2px);">{{ lockLabel }}</button>
+      </div>
+    </main>
+  </sc-if>
+
+  <!-- REVEAL -->
+  <sc-if value="{{ isReveal }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:10px clamp(20px,4vw,54px) 64px;">
+      <div style="width:100%;max-width:620px;">
+        <div class="fa-in" style="display:flex;align-items:center;justify-content:center;gap:22px;margin-bottom:22px;flex-wrap:wrap;">
+          <div style="position:relative;width:132px;height:132px;flex:0 0 auto;">
+            <svg width="132" height="132" viewBox="0 0 120 120" style="transform:rotate(-90deg);"><circle cx="60" cy="60" r="52" fill="none" stroke="rgba(120,140,166,.16)" stroke-width="10"/><circle cx="60" cy="60" r="52" fill="none" stroke="{{ fitColor }}" stroke-width="10" stroke-linecap="round" stroke-dasharray="326" stroke-dashoffset="{{ fitDash }}" style="animation:fa-ring 1s cubic-bezier(.3,.8,.3,1);"/></svg>
+            <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;"><span style="font:800 32px 'IBM Plex Mono';color:{{ fitColor }};">{{ fitBig }}</span><span style="font:600 8px 'IBM Plex Mono';letter-spacing:.16em;color:#7688A0;margin-top:2px;">FIT</span></div>
+          </div>
+          <div style="flex:1;min-width:190px;">
+            <div style="font:600 10px 'IBM Plex Mono';letter-spacing:.24em;color:#7E90A8;margin-bottom:8px;">{{ systemLabel }}</div>
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;"><span style="font-size:22px;">{{ leftEmoji }}</span><span style="font:800 17px 'Archivo';color:{{ leftColor }};">{{ leftName }}</span><span style="font:600 10px 'IBM Plex Mono';color:#7688A0;">LB</span></div>
+            <div style="display:flex;align-items:center;gap:10px;"><span style="font-size:22px;">{{ rightEmoji }}</span><span style="font:800 17px 'Archivo';color:{{ rightColor }};">{{ rightName }}</span><span style="font:600 10px 'IBM Plex Mono';color:#7688A0;">RB</span></div>
+            <div style="margin-top:10px;font:700 14px 'Archivo';color:{{ fitColor }};">{{ fitVerdict }}</div>
+          </div>
+        </div>
+
+        <div class="fa-in" style="padding:16px 18px;border-radius:14px;border:1px solid rgba(34,199,118,.28);background:rgba(34,199,118,.08);margin-bottom:12px;animation-delay:.06s;">
+          <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:#22C776;margin-bottom:7px;">WHY IT WORKS</div>
+          <p style="margin:0;font:500 14.5px/1.5 'Archivo';color:#DCE8F5;text-wrap:pretty;">{{ worksLine }}</p>
+        </div>
+        <div class="fa-in" style="padding:16px 18px;border-radius:14px;border:1px solid rgba(255,176,32,.28);background:rgba(255,176,32,.08);margin-bottom:12px;animation-delay:.1s;">
+          <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:#FFB020;margin-bottom:7px;">WHAT TO WATCH</div>
+          <p style="margin:0;font:500 14.5px/1.5 'Archivo';color:#DCE8F5;text-wrap:pretty;">{{ watchLine }}</p>
+        </div>
+        <div class="fa-in" style="padding:16px 18px;border-radius:14px;border:1px solid rgba(120,140,166,.24);background:rgba(10,16,28,.5);margin-bottom:24px;animation-delay:.14s;">
+          <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:var(--accent,#FF6B1A);margin-bottom:7px;">IN THIS SYSTEM</div>
+          <p style="margin:0;font:500 14px/1.5 'Archivo';color:#C6D3E2;text-wrap:pretty;">{{ systemNote }}</p>
+        </div>
+
+        <div class="fa-in" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:12px;animation-delay:.2s;">
+          <button onClick="{{ rebuild }}" style="display:inline-flex;align-items:center;gap:10px;padding:15px 30px;border-radius:12px;border:0;background:var(--accent,#FF6B1A);color:#04121a;font:700 15px 'Archivo';cursor:pointer;box-shadow:0 12px 36px color-mix(in srgb,var(--accent,#FF6B1A) 40%,transparent);transition:transform .16s ease;" style-hover="transform:translateY(-2px);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:#04121a;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>Build another</button>
+          <a href="Assessment.dc.html" style="display:inline-flex;align-items:center;gap:9px;padding:15px 24px;border-radius:12px;border:1px solid rgba(157,176,198,.28);background:rgba(12,18,30,.4);color:#C6D3E2;font:600 14px 'Archivo';" style-hover="border-color:color-mix(in srgb,var(--accent,#FF6B1A) 55%,transparent);color:#EAF2FB;">Back to the scan</a>
+        </div>
+      </div>
+    </main>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:940,&quot;height&quot;:780},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#FF6B1A&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#FF6B1A&quot;,&quot;#E5197F&quot;,&quot;#5B9BD5&quot;,&quot;#22D3EE&quot;]}}">
+class Component extends DCLogic {
+  ORDER=['warrior','winger','sentinel','architect'];
+  ARCH={ warrior:{name:'Warrior',emoji:'\u2699\uFE0F',color:'#FF6B1A'}, winger:{name:'Winger',emoji:'\uD83C\uDFAF',color:'#E5197F'}, sentinel:{name:'Sentinel',emoji:'\uD83D\uDEE1\uFE0F',color:'#5B9BD5'}, architect:{name:'Architect',emoji:'\uD83E\uDDED',color:'#22D3EE'} };
+
+  PAIRS={
+    'warrior|warrior':{ fit:82, works:'Two engines, endless energy on both flanks \u2014 the most common elite pairing. Whatever the game demands, both sides deliver it.', watch:'Neither is a pure specialist, so a truly elite winger can still find joy in an isolated 1v1.' },
+    'warrior|winger':{ fit:78, works:'One flank flies forward and threatens; the other covers the ground behind it. A natural, well-balanced pairing.', watch:'The Winger\u2019s side is the one that gets got at on the counter \u2014 make sure the cover is there.' },
+    'sentinel|warrior':{ fit:76, works:'Attack and cover down one side, lock the other shut. Solid, reliable, hard to beat.', watch:'Your width and creation come almost entirely from one flank \u2014 easy to predict, easy to double.' },
+    'architect|warrior':{ fit:80, works:'Modern asymmetry: an inverted brain building play on one side, a two-way engine bombing on the other.', watch:'Needs a disciplined midfield to screen the space when the Architect steps inside.' },
+    'winger|winger':{ fit:66, works:'Both flanks fly \u2014 relentless width, endless crossing, genuinely thrilling to watch.', watch:'Terrifying defensively: both channels sit open on every single turnover.' },
+    'sentinel|winger':{ fit:79, works:'Classic asymmetry \u2014 attack one side, defend the other. Beautifully stable.', watch:'Predictable: opponents quickly learn which flank to attack and which to fear.' },
+    'architect|winger':{ fit:72, works:'Creative overload \u2014 one dictates from inside, one stretches the touchline to breaking point.', watch:'Who defends? Both vacate space; the midfield has to protect the back line.' },
+    'sentinel|sentinel':{ fit:68, works:'A fortress \u2014 almost nothing gets through either flank. A back line built to keep clean sheets.', watch:'Barely any width or attacking threat from the full-back positions; goals must come from elsewhere.' },
+    'architect|sentinel':{ fit:74, works:'Control and security \u2014 one dictates the tempo, one bolts the flank shut.', watch:'Limited overlapping threat \u2014 your attack won\u2019t get much from the full-backs.' },
+    'architect|architect':{ fit:64, works:'Total control \u2014 both invert to build a permanent numerical edge in midfield.', watch:'Requires wingers who provide ALL the width, or the whole pitch gets narrow and easy to defend.' },
+  };
+  SYS={
+    possession:{ label:'Possession', note:'In a possession side, inversion and ball retention are gold \u2014 controllers thrive, while pure stoppers can get isolated with nothing to defend.', mod:{ warrior:2, winger:-2, sentinel:-6, architect:8 } },
+    press:{ label:'High Press', note:'In a high press, attacking full-backs get exposed in behind \u2014 recovery pace and defensive discipline matter more than delivery.', mod:{ warrior:4, winger:-8, sentinel:4, architect:0 } },
+    counter:{ label:'Counter-Attack', note:'On the counter, raw pace and forward thrust win games \u2014 attacking full-backs thrive, patient controllers less so.', mod:{ warrior:4, winger:6, sentinel:2, architect:-4 } },
+  };
+
+  state={ view:'intro', system:'possession', left:null, right:null };
+
+  componentDidMount(){ try{ this._soundOn=localStorage.getItem('fa_sound')!=='0'; }catch(e){ this._soundOn=true; } try{ const b=JSON.parse(localStorage.getItem('fa_fb_backline')||'null'); this._builds=b&&b.builds?b.builds:0; }catch(e){ this._builds=0; } this.forceUpdate(); }
+
+  _audio(){ if(this._actx===undefined){ try{ this._actx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ this._actx=null; } } if(this._actx&&this._actx.state==='suspended') this._actx.resume(); return this._actx; }
+  _tone(f,d,t,g){ const c=this._audio(); if(!c||this._soundOn===false) return; const o=c.createOscillator(),a=c.createGain(); o.type=t||'sine'; o.frequency.value=f; o.connect(a); a.connect(c.destination); const n=c.currentTime; a.gain.setValueAtTime(0,n); a.gain.linearRampToValueAtTime(g||0.05,n+0.01); a.gain.exponentialRampToValueAtTime(0.0001,n+d); o.start(n); o.stop(n+d); }
+  _sfx(k){ if(this._soundOn===false) return; if(k==='pick') this._tone(500,0.08,'triangle',0.045); else if(k==='lock'){ this._tone(540,0.12,'triangle',0.05); setTimeout(()=>this._tone(760,0.14,'triangle',0.045),90); setTimeout(()=>this._tone(980,0.2,'triangle',0.04),200);} else this._tone(430,0.08,'sine',0.04); }
+
+  _fitFor(left,right,system){
+    if(!left||!right) return null;
+    const key=[left,right].sort().join('|');
+    const base=(this.PAIRS[key]||{fit:70}).fit;
+    const m=this.SYS[system].mod;
+    const fit=Math.max(40,Math.min(99, Math.round(base+(m[left]+m[right])/2)));
+    return { key, base, fit, info:this.PAIRS[key] };
+  }
+
+  _start(){ this._sfx('pick'); this.setState({ view:'build', system:'possession', left:null, right:null }); }
+  _setSystem(k){ this._sfx('pick'); this.setState({ system:k }); }
+  _setLeft(k){ this._sfx('pick'); this.setState({ left:k }); }
+  _setRight(k){ this._sfx('pick'); this.setState({ right:k }); }
+  _lock(){
+    if(!this.state.left||!this.state.right) return;
+    this._sfx('lock');
+    this._builds=(this._builds||0)+1;
+    try{ localStorage.setItem('fa_fb_backline', JSON.stringify({ builds:this._builds, last:{ left:this.state.left, right:this.state.right, system:this.state.system }, at:new Date().toISOString(), weight:0 })); }catch(e){}
+    this.setState({ view:'reveal' });
+  }
+  _rebuild(){ this._sfx('pick'); this.setState({ view:'build' }); }
+
+  renderVals(){
+    const accent=this.props.accent ?? '#FF6B1A';
+    const V=this.state.view;
+    const base={ accent, isIntro:V==='intro', isBuild:V==='build', isReveal:V==='reveal',
+      start:()=>this._start(), lock:()=>this._lock(), rebuild:()=>this._rebuild(),
+      buildsLine: this._builds? ('BACK LINES BUILT \u00b7 '+this._builds) : 'A TEACHING TOY \u00b7 NOT SCORED' };
+
+    // build
+    base.systems=Object.keys(this.SYS).map(k=>{ const on=this.state.system===k;
+      return { key:k, label:this.SYS[k].label, onPick:()=>this._setSystem(k),
+        bg:on?'color-mix(in srgb,'+accent+' 16%,transparent)':'rgba(10,16,28,.5)',
+        border:on?'color-mix(in srgb,'+accent+' 58%,transparent)':'rgba(120,140,166,.22)',
+        fg:on?'#F2F8FE':'#C6D3E2' }; });
+    const mkCards=(sel,setter)=> this.ORDER.map(k=>{ const A=this.ARCH[k]; const on=sel===k;
+      return { key:k, name:A.name, emoji:A.emoji, nameColor:on?A.color:'#EAF2FB', onPick:()=>setter(k),
+        bg:on?('color-mix(in srgb,'+A.color+' 15%,transparent)'):'rgba(10,16,28,.5)',
+        border:on?('color-mix(in srgb,'+A.color+' 60%,transparent)'):'rgba(120,140,166,.2)' }; });
+    base.leftCards=mkCards(this.state.left,(k)=>this._setLeft(k));
+    base.rightCards=mkCards(this.state.right,(k)=>this._setRight(k));
+
+    const live=this._fitFor(this.state.left,this.state.right,this.state.system);
+    if(live){ const col= live.fit>=82?'#22C776':live.fit>=72?accent:live.fit>=62?'#FFB020':'#FF5A6E';
+      base.liveFit=live.fit; base.liveColor=col; base.liveNote=(live.info&&live.info.works)||'A workable pairing.';
+      base.lockLabel='Lock in this back line'; base.lockBg=accent; base.lockFg='#04121a'; base.lockCursor='pointer'; base.lockShadow='0 12px 36px color-mix(in srgb,'+accent+' 40%,transparent)';
+    } else {
+      base.liveFit='\u2013\u2013'; base.liveColor='#7688A0'; base.liveNote='Pick a left back and a right back to see how they fit together.';
+      base.lockLabel='Pick both full-backs'; base.lockBg='rgba(24,26,18,.7)'; base.lockFg='#7688A0'; base.lockCursor='not-allowed'; base.lockShadow='none';
+    }
+
+    // reveal
+    Object.assign(base,{ fitBig:'\u2013\u2013', fitColor:accent, fitDash:326, systemLabel:'', leftName:'', rightName:'', leftEmoji:'', rightEmoji:'', leftColor:accent, rightColor:accent, fitVerdict:'', worksLine:'', watchLine:'', systemNote:'' });
+    const r=this._fitFor(this.state.left,this.state.right,this.state.system);
+    if(r && V==='reveal'){
+      const L=this.ARCH[this.state.left], R=this.ARCH[this.state.right];
+      const col= r.fit>=82?'#22C776':r.fit>=72?accent:r.fit>=62?'#FFB020':'#FF5A6E';
+      base.fitBig=r.fit; base.fitColor=col; base.fitDash=Math.round(326-(326*r.fit/100));
+      base.systemLabel=this.SYS[this.state.system].label.toUpperCase()+' SYSTEM';
+      base.leftName=L.name; base.leftEmoji=L.emoji; base.leftColor=L.color;
+      base.rightName=R.name; base.rightEmoji=R.emoji; base.rightColor=R.color;
+      base.fitVerdict= r.fit>=82?'Elite pairing':r.fit>=72?'Strong pairing':r.fit>=62?'Workable pairing':'Risky pairing';
+      base.worksLine=(r.info&&r.info.works)||'A functional partnership.';
+      base.watchLine=(r.info&&r.info.watch)||'Balance the flanks carefully.';
+      base.systemNote=this.SYS[this.state.system].note;
+    }
+    return base;
+  }
+}
+</script>
+</body>
+</html>

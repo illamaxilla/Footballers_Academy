@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:#04060c;}
+  a{color:var(--accent,#FF6B1A);text-decoration:none;}
+  a:hover{opacity:.92;}
+  @keyframes fa-blink{0%,100%{opacity:1;}50%{opacity:.25;}}
+  @keyframes fa-rise{0%{transform:translateY(16px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-rise-sm{0%{transform:translateY(10px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
+  @keyframes fa-bar{from{transform:scaleX(0);}to{transform:scaleX(1);}}
+  .fa-in{opacity:0;animation:fa-rise .6s cubic-bezier(.2,.7,.2,1) forwards;}
+  .fa-in-sm{opacity:0;animation:fa-rise-sm .5s cubic-bezier(.2,.7,.2,1) forwards;}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;}.fa-in,.fa-in-sm{opacity:1!important;transform:none!important;}}
+</style>
+</helmet>
+<div data-screen-label="Predict the Pro" style="position:relative;display:flex;flex-direction:column;min-height:100dvh;width:100%;overflow:hidden;background:radial-gradient(120% 90% at 50% 6%,#0e1a2d 0%,#080e1a 44%,#04060c 100%);color:#EAF2FB;font-family:'Archivo',system-ui,sans-serif;--accent:{{ accent }};">
+
+  <div style="position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.4;background:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0px,rgba(255,255,255,.02) 1px,transparent 1px,transparent 4px);"></div>
+  <div style="position:absolute;top:20px;left:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#FF6B1A) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#FF6B1A) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;top:20px;right:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#FF6B1A) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#FF6B1A) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;left:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#FF6B1A) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#FF6B1A) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;right:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#FF6B1A) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#FF6B1A) 50%,transparent);z-index:4;pointer-events:none;"></div>
+
+  <sc-if value="{{ showChrome }}" hint-placeholder-val="{{ true }}">
+    <header style="position:relative;z-index:6;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px clamp(24px,3.4vw,54px);">
+      <div style="min-width:110px;display:flex;"><a href="Assessment.dc.html" style="display:inline-flex;align-items:center;gap:8px;color:#8EA1B8;font:600 12.5px 'Archivo';"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M15 5l-7 7 7 7"/></svg>Back to the scan</a></div>
+      <div style="display:flex;align-items:center;gap:11px;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" style="stroke:var(--accent,#FF6B1A);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M12 2l2.5 6.5L21 9l-5 4 1.8 7L12 16l-5.8 4L8 13 3 9l6.5-.5z"/></svg><span style="font:800 13px 'Archivo';letter-spacing:.05em;">PREDICT THE <span style="color:var(--accent,#FF6B1A);">PRO</span></span></div>
+      <div style="display:flex;align-items:center;gap:12px;min-width:110px;justify-content:flex-end;">
+        <button onClick="{{ toggleSound }}" title="{{ soundTitle }}" style="display:grid;place-items:center;width:28px;height:28px;border-radius:8px;border:1px solid rgba(120,140,166,.24);background:rgba(10,16,28,.5);cursor:pointer;color:{{ soundColor }};">
+          <sc-if value="{{ soundOn }}" hint-placeholder-val="{{ true }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></sc-if>
+          <sc-if value="{{ soundOff }}" hint-placeholder-val="{{ false }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M22 9l-6 6M16 9l6 6"/></svg></sc-if>
+        </button>
+      </div>
+    </header>
+  </sc-if>
+
+  <!-- INTRO -->
+  <sc-if value="{{ isIntro }}" hint-placeholder-val="{{ true }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;text-align:center;padding:14px clamp(24px,4vw,54px) 54px;">
+      <div class="fa-in" style="display:inline-flex;align-items:center;gap:10px;margin-bottom:18px;font:600 12px 'IBM Plex Mono';letter-spacing:.4em;color:var(--accent,#FF6B1A);"><span style="width:6px;height:6px;border-radius:50%;background:var(--accent,#FF6B1A);box-shadow:0 0 8px var(--accent,#FF6B1A);animation:fa-blink 1.6s ease-in-out infinite;"></span>THINK LIKE THE BEST</div>
+      <h1 class="fa-in" style="margin:0 0 14px;font:800 clamp(34px,5.2vw,68px)/0.98 'Archivo';letter-spacing:-0.03em;text-wrap:balance;max-width:760px;animation-delay:.05s;">What does the top pro do here?</h1>
+      <p class="fa-in" style="margin:0 0 26px;max-width:560px;font:400 clamp(14px,1.25vw,17px)/1.6 'Archivo';color:#9FB0C5;text-wrap:pretty;animation-delay:.1s;">Ten classic full-back moments, frozen at the decision. Call the highest-value play &mdash; the one an elite full-back actually makes. Get it right and your streak grows. Get it wrong and it resets. How well do you read the game?</p>
+      <button onClick="{{ start }}" class="fa-in" style="display:inline-flex;align-items:center;gap:12px;padding:17px 42px;border-radius:13px;border:0;background:var(--accent,#FF6B1A);color:#04121a;font:700 16px 'Archivo';cursor:pointer;box-shadow:0 14px 44px color-mix(in srgb,var(--accent,#FF6B1A) 42%,transparent);transition:transform .16s ease;animation-delay:.22s;" style-hover="transform:translateY(-2px);">Start the streak<svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12h13M12 6l6 6-6 6"/></svg></button>
+      <div class="fa-in" style="margin-top:16px;font:500 10px 'IBM Plex Mono';letter-spacing:.14em;color:#61748C;animation-delay:.3s;">{{ bestLine }}</div>
+    </main>
+  </sc-if>
+
+  <!-- PLAY -->
+  <sc-if value="{{ isPlay }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:6px clamp(18px,3.5vw,54px) 34px;">
+      <div style="width:100%;max-width:1000px;margin:0 auto;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+          <span style="font:600 9.5px 'IBM Plex Mono';letter-spacing:.2em;color:var(--accent,#FF6B1A);">MOMENT {{ momentLabel }}</span>
+          <span style="flex:1;height:1px;background:rgba(120,140,166,.16);"></span>
+          <span style="font:600 9.5px 'IBM Plex Mono';letter-spacing:.14em;color:{{ streakColor }};">{{ streakLabel }}</span>
+        </div>
+
+        <!-- mini pitch -->
+        <div style="position:relative;height:min(52vh,460px);aspect-ratio:16/10;max-width:100%;margin:0 auto 14px;border-radius:14px;overflow:hidden;border:1px solid rgba(120,140,166,.18);background:linear-gradient(180deg,#0d1c2e80,#091324);">
+          <div style="position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(255,255,255,.012) 0 24px,transparent 24px 48px);pointer-events:none;"></div>
+          <div style="position:absolute;left:8%;right:8%;top:8%;height:1px;background:rgba(90,150,190,.16);"></div>
+          <div style="position:absolute;left:34%;right:34%;top:0;height:20%;border:1px solid rgba(90,150,190,.16);border-top:0;"></div>
+          <div style="position:absolute;left:{{ oppX }};top:{{ oppY }};transform:translate(-50%,-50%);width:14px;height:14px;border-radius:3px;background:radial-gradient(125% 125% at 38% 24%,#ff9a9a,#c22b2b);box-shadow:0 0 7px rgba(224,65,60,.5);"></div>
+          <div style="position:absolute;left:{{ mateX }};top:{{ mateY }};transform:translate(-50%,-50%);width:13px;height:13px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#8fd3ff,#3f7fb0);box-shadow:0 0 7px rgba(90,160,220,.5);"></div>
+          <div style="position:absolute;left:{{ youX }};top:{{ youY }};transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:2px;z-index:3;"><div style="width:17px;height:17px;border-radius:5px;background:linear-gradient(180deg,#EAF2FB,{{ accent }});box-shadow:0 0 11px color-mix(in srgb,{{ accent }} 60%,transparent);"></div><span style="font:700 7px 'IBM Plex Mono';color:#EAF2FB;">YOU</span></div>
+          <div style="position:absolute;left:{{ ballX }};top:{{ ballY }};transform:translate(-50%,-50%);width:10px;height:10px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,#c9d6e2);box-shadow:0 0 9px rgba(255,255,255,.85);z-index:4;"></div>
+        </div>
+
+        <div class="fa-in-sm" style="padding:14px 17px;border-radius:13px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);margin-bottom:14px;">
+          <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.2em;color:var(--accent,#FF6B1A);margin-bottom:6px;">{{ situKicker }}</div>
+          <p style="margin:0;font:700 clamp(16px,2.1vw,21px)/1.3 'Archivo';color:#EAF2FB;text-wrap:pretty;">{{ situDesc }}</p>
+        </div>
+
+        <sc-if value="{{ awaiting }}" hint-placeholder-val="{{ true }}">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px;">
+            <sc-for list="{{ options }}" as="opt" hint-placeholder-count="4">
+              <button onClick="{{ opt.onPick }}" style="text-align:left;padding:14px 15px;border-radius:13px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.55);color:#EAF2FB;font:600 13.5px/1.3 'Archivo';cursor:pointer;transition:border-color .14s ease,background .14s ease,transform .14s ease;" style-hover="border-color:color-mix(in srgb,var(--accent,#FF6B1A) 55%,transparent);background:rgba(14,22,36,.85);transform:translateY(-2px);">{{ opt.text }}</button>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ revealed }}" hint-placeholder-val="{{ false }}">
+          <div class="fa-in-sm" style="padding:15px 17px;border-radius:13px;border:1px solid {{ fbBorder }};background:{{ fbBg }};">
+            <div style="display:flex;align-items:center;gap:9px;margin-bottom:7px;"><span style="font:800 14px 'Archivo';color:{{ fbColor }};">{{ fbHead }}</span></div>
+            <div style="font:600 13px 'Archivo';color:#EAF2FB;margin-bottom:4px;">The pro: {{ proMove }}</div>
+            <div style="font:400 13px/1.45 'Archivo';color:#C6D3E2;">{{ proNote }}</div>
+          </div>
+          <button onClick="{{ next }}" class="fa-in-sm" style="width:100%;margin-top:12px;padding:15px;border-radius:13px;border:0;background:var(--accent,#FF6B1A);color:#04121a;font:700 15px 'Archivo';cursor:pointer;box-shadow:0 12px 34px color-mix(in srgb,var(--accent,#FF6B1A) 38%,transparent);transition:transform .16s ease;animation-delay:.08s;" style-hover="transform:translateY(-2px);">{{ nextLabel }}</button>
+        </sc-if>
+      </div>
+    </main>
+  </sc-if>
+
+  <!-- RESULT -->
+  <sc-if value="{{ isResult }}" hint-placeholder-val="{{ false }}">
+    <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:10px clamp(20px,4vw,54px) 64px;">
+      <div style="width:100%;max-width:600px;">
+        <div class="fa-in" style="text-align:center;margin-bottom:22px;">
+          <div style="font:600 11px 'IBM Plex Mono';letter-spacing:.4em;color:#7E90A8;margin-bottom:12px;">GAME IQ</div>
+          <div style="font:900 clamp(64px,13vw,116px)/0.9 'Archivo';letter-spacing:-0.03em;color:var(--accent,#FF6B1A);text-shadow:0 0 48px color-mix(in srgb,var(--accent,#FF6B1A) 45%,transparent);">{{ scoreBig }}</div>
+          <div style="margin-top:6px;font:600 clamp(15px,1.7vw,20px) 'Archivo';color:#C9D6E2;">{{ resultHeadline }}</div>
+          <div style="margin-top:8px;font:500 13px 'IBM Plex Mono';letter-spacing:.1em;color:#7688A0;">BEST STREAK &middot; {{ bestStreak }} \uD83D\uDD25</div>
+        </div>
+
+        <div class="fa-in" style="width:100%;padding:20px 22px;border-radius:16px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);margin-bottom:22px;animation-delay:.1s;">
+          <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:#7688A0;margin-bottom:14px;">WHAT YOU REACHED FOR</div>
+          <div style="display:flex;flex-direction:column;gap:11px;">
+            <sc-for list="{{ fpBars }}" as="s" hint-placeholder-count="4">
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <div style="display:flex;align-items:baseline;justify-content:space-between;">
+                  <span style="font:700 12.5px 'Archivo';color:{{ s.labelColor }};">{{ s.emoji }} {{ s.label }}</span>
+                  <span style="font:800 12px 'IBM Plex Mono';color:{{ s.numColor }};">{{ s.pct }}</span>
+                </div>
+                <div style="height:8px;border-radius:99px;background:rgba(120,140,166,.14);overflow:hidden;"><div style="height:100%;border-radius:99px;transform-origin:left;animation:fa-bar .8s cubic-bezier(.3,.8,.3,1) both;width:{{ s.barW }};{{ s.barLook }}"></div></div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div class="fa-in" style="padding-left:16px;border-left:3px solid var(--accent,#FF6B1A);margin-bottom:24px;animation-delay:.16s;">
+          <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:#7688A0;margin-bottom:7px;">A SOFT READ</div>
+          <p style="margin:0;font:500 clamp(15px,1.7vw,18px)/1.5 'Archivo';color:#EAF2FB;text-wrap:pretty;">{{ softRead }}</p>
+        </div>
+
+        <div class="fa-in" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:12px;animation-delay:.22s;">
+          <button onClick="{{ again }}" style="display:inline-flex;align-items:center;gap:10px;padding:15px 30px;border-radius:12px;border:0;background:var(--accent,#FF6B1A);color:#04121a;font:700 15px 'Archivo';cursor:pointer;box-shadow:0 12px 36px color-mix(in srgb,var(--accent,#FF6B1A) 40%,transparent);transition:transform .16s ease;" style-hover="transform:translateY(-2px);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:#04121a;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>Go again</button>
+          <a href="Assessment.dc.html" style="display:inline-flex;align-items:center;gap:9px;padding:15px 24px;border-radius:12px;border:1px solid rgba(157,176,198,.28);background:rgba(12,18,30,.4);color:#C6D3E2;font:600 14px 'Archivo';" style-hover="border-color:color-mix(in srgb,var(--accent,#FF6B1A) 55%,transparent);color:#EAF2FB;">Back to the scan</a>
+        </div>
+      </div>
+    </main>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:940,&quot;height&quot;:800},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#FF6B1A&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#FF6B1A&quot;,&quot;#E5197F&quot;,&quot;#5B9BD5&quot;,&quot;#22D3EE&quot;]},&quot;motion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;embedded&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;onDone&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;(counts:any, meta:any)=&gt;void&quot;}}">
+class Component extends DCLogic {
+  ORDER=['warrior','winger','sentinel','architect'];
+  ARCH={ warrior:{name:'Warrior',emoji:'\u2699\uFE0F',color:'#FF6B1A'}, winger:{name:'Winger',emoji:'\uD83C\uDFAF',color:'#E5197F'}, sentinel:{name:'Sentinel',emoji:'\uD83D\uDEE1\uFE0F',color:'#5B9BD5'}, architect:{name:'Architect',emoji:'\uD83E\uDDED',color:'#22D3EE'} };
+  // pitch attacking UP. pro = index of elite move. note explains.
+  SC=[
+    { k:'2-0 UP \u00b7 88TH MINUTE', d:'You win it wide with space to run into. Game almost won.',
+      you:{x:'22%',y:'46%'}, ball:{x:'26%',y:'46%'}, opp:{x:'40%',y:'40%'}, mate:{x:'56%',y:'30%'},
+      opts:[{t:'Whip a cross in for a third.',a:'winger'},{t:'Take it to the corner and waste time.',a:'warrior'},{t:'Recycle and keep the ball.',a:'architect'},{t:'Hammer it clear, take no risk.',a:'sentinel'}], pro:1,
+      note:'2-0 up and late, the elite full-back manages the game \u2014 into the corner, run the clock, no way back for them.' },
+    { k:'AT THE BYLINE', d:'You reach the byline. Keeper is at his near post, a runner arrives at the top of the box.',
+      you:{x:'18%',y:'18%'}, ball:{x:'20%',y:'16%'}, opp:{x:'40%',y:'20%'}, mate:{x:'52%',y:'30%'},
+      opts:[{t:'Blast it near post.',a:'renegade'},{t:'Cut it back to the edge of the box.',a:'winger'},{t:'Roll it back and restart.',a:'architect'},{t:'Win the corner off a defender.',a:'sentinel'}], pro:1,
+      note:'With the keeper committed near, the cut-back to the edge is the highest-value ball \u2014 elite delivery isn\u2019t always the cross, it\u2019s the right cross.' },
+    { k:'0-0 \u00b7 LAST MAN', d:'Their winger runs at you 1v1. You\u2019re the last defender.',
+      you:{x:'24%',y:'54%'}, ball:{x:'40%',y:'44%'}, opp:{x:'40%',y:'46%'}, mate:{x:'60%',y:'62%'},
+      opts:[{t:'Dive in and try to win it.',a:'renegade'},{t:'Show him inside to your cover, stay on your feet.',a:'sentinel'},{t:'Back off all the way to your box.',a:'architect'},{t:'Match his pace and hope.',a:'warrior'}], pro:1,
+      note:'As the last man, the pro never gambles \u2014 shows him onto his weaker side and into cover, stays on his feet, delays. Diving in is how you lose the game.' },
+    { k:'BUILD-UP \u00b7 HIGH PRESS', d:'Your team plays out from the back. Their front line presses aggressively.',
+      you:{x:'22%',y:'70%'}, ball:{x:'40%',y:'80%'}, opp:{x:'34%',y:'58%'}, mate:{x:'50%',y:'60%'},
+      opts:[{t:'Hit it long and safe.',a:'sentinel'},{t:'Stay wide on the touchline.',a:'winger'},{t:'Invert into midfield to make the extra man.',a:'architect'},{t:'Dribble out of it yourself.',a:'renegade'}], pro:2,
+      note:'The modern answer to the press: the full-back steps inside, becomes an extra midfielder, and breaks the press with an overload. Pure Architect.' },
+    { k:'1-0 DOWN \u00b7 80TH', d:'Chasing the game. Your winger has it, you\u2019re steaming up outside him.',
+      you:{x:'16%',y:'40%'}, ball:{x:'30%',y:'34%'}, opp:{x:'34%',y:'30%'}, mate:{x:'32%',y:'34%'},
+      opts:[{t:'Overlap to the byline and deliver.',a:'winger'},{t:'Hold your position, stay safe.',a:'sentinel'},{t:'Tuck inside instead.',a:'architect'},{t:'Call for it and shoot from distance.',a:'renegade'}], pro:0,
+      note:'Down late, the pro gives the winger the overlap, stretches the defence and gets to the byline. This is when the attacking full-back earns his money.' },
+    { k:'YOU LOST IT HIGH', d:'You gave the ball away in their half. They break down your empty flank.',
+      you:{x:'26%',y:'30%'}, ball:{x:'40%',y:'46%'}, opp:{x:'38%',y:'48%'}, mate:{x:'55%',y:'66%'},
+      opts:[{t:'Sprint 60 yards and recover the position.',a:'warrior'},{t:'Trust your cover and jog back.',a:'winger'},{t:'Foul the runner to stop it.',a:'renegade'},{t:'Drift inside instead.',a:'architect'}], pro:0,
+      note:'The elite two-way full-back is the one who sprints the full 60 yards to recover his own mistake. That relentless recovery run is the Warrior\u2019s trademark.' },
+    { k:'CROSS TO THE BACK POST', d:'A cross comes to the back post where you\u2019re marking their winger.',
+      you:{x:'30%',y:'22%'}, ball:{x:'50%',y:'16%'}, opp:{x:'32%',y:'20%'}, mate:{x:'46%',y:'26%'},
+      opts:[{t:'Watch the ball and ball-watch.',a:'renegade'},{t:'Attack the ball and head it clear.',a:'sentinel'},{t:'Let it run to the keeper.',a:'architect'},{t:'Block off your man and leave it.',a:'warrior'}], pro:1,
+      note:'At the back post the defender must attack the ball, not admire it \u2014 first to it, head it clear. Winning your duel is the Sentinel\u2019s whole job.' },
+    { k:'THEY SIT IN A LOW BLOCK', d:'You have all the ball. Their side defends deep and narrow. Nothing\u2019s opening up.',
+      you:{x:'22%',y:'44%'}, ball:{x:'24%',y:'44%'}, opp:{x:'46%',y:'34%'}, mate:{x:'50%',y:'50%'},
+      opts:[{t:'Force a cross into the crowd.',a:'winger'},{t:'Step inside and switch the play quickly.',a:'architect'},{t:'Shoot from range.',a:'renegade'},{t:'Recycle sideways again.',a:'warrior'}], pro:1,
+      note:'Against a low block, the full-back who steps in and switches the point of attack unlocks it \u2014 move them side to side until the gap appears. Architect thinking.' },
+    { k:'COUNTER \u00b7 3v3', d:'They counter 3v3. You\u2019re the spare defender arriving across.',
+      you:{x:'34%',y:'40%'}, ball:{x:'50%',y:'34%'}, opp:{x:'50%',y:'36%'}, mate:{x:'40%',y:'58%'},
+      opts:[{t:'Rush out and commit to the ball.',a:'renegade'},{t:'Delay, drop, force them wide and buy time.',a:'sentinel'},{t:'Mark the furthest runner only.',a:'architect'},{t:'Stay central and hope for support.',a:'warrior'}], pro:1,
+      note:'Outnumbered, the pro delays \u2014 drops, shows them away from goal, buys the seconds for team-mates to recover. Never dive in on a counter.' },
+    { k:'TIGHT ANGLE', d:'Final third, tight angle to goal. A team-mate is arriving centrally, unmarked.',
+      you:{x:'18%',y:'22%'}, ball:{x:'20%',y:'20%'}, opp:{x:'34%',y:'22%'}, mate:{x:'48%',y:'32%'},
+      opts:[{t:'Force the shot at the near post.',a:'renegade'},{t:'Square it to the unmarked team-mate.',a:'winger'},{t:'Back to the edge and recycle.',a:'architect'},{t:'Win the corner.',a:'sentinel'}], pro:1,
+      note:'A tight angle and a free man centrally \u2014 the unselfish square ball is the far higher-value play than forcing it. Great delivery includes the simple pass.' },
+  ];
+
+  state={ view:'intro', idx:0, correct:0, streak:0, bestStreak:0, phase:'await', picked:null, picks:[] };
+
+  componentDidMount(){ try{ this._soundOn=localStorage.getItem('fa_sound')!=='0'; }catch(e){ this._soundOn=true; } try{ const b=JSON.parse(localStorage.getItem('fa_fb_predictpro')||'null'); this._best=b&&typeof b.bestScore==='number'?b.bestScore:null; }catch(e){ this._best=null; } this._embedded=this.props.embedded===true; if(this._embedded) this._begin(); else this.forceUpdate(); }
+
+  _audio(){ if(this._actx===undefined){ try{ this._actx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ this._actx=null; } } if(this._actx&&this._actx.state==='suspended') this._actx.resume(); return this._actx; }
+  _tone(f,d,t,g){ const c=this._audio(); if(!c||this._soundOn===false) return; const o=c.createOscillator(),a=c.createGain(); o.type=t||'sine'; o.frequency.value=f; o.connect(a); a.connect(c.destination); const n=c.currentTime; a.gain.setValueAtTime(0,n); a.gain.linearRampToValueAtTime(g||0.05,n+0.01); a.gain.exponentialRampToValueAtTime(0.0001,n+d); o.start(n); o.stop(n+d); }
+  _sfx(k){ if(this._soundOn===false) return; if(k==='right'){ this._tone(560,0.1,'triangle',0.05); setTimeout(()=>this._tone(820,0.12,'triangle',0.045),55);} else if(k==='wrong') this._tone(200,0.22,'sawtooth',0.05); else if(k==='whistle') this._tone(900,0.16,'sine',0.05); else if(k==='end'){ this._tone(520,0.14,'triangle',0.05); setTimeout(()=>this._tone(720,0.14,'triangle',0.05),120); setTimeout(()=>this._tone(940,0.26,'triangle',0.05),240);} else this._tone(430,0.08,'sine',0.04); }
+  _toggleSound(){ const on=this._soundOn===false; this._soundOn=on; try{ localStorage.setItem('fa_sound', on?'1':'0'); }catch(e){} if(on){ this._audio(); this._sfx('click'); } this.forceUpdate(); }
+
+  _begin(){ this._sfx('whistle'); this._order=this.SC.map((s,i)=>i); for(let i=this._order.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [this._order[i],this._order[j]]=[this._order[j],this._order[i]]; }
+    // shuffle option order per scenario, track pro's new index
+    this._opt=this._order.map(si=>{ const s=this.SC[si]; const arr=s.opts.map((o,i)=>({...o,orig:i})); for(let i=arr.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]]; } return arr; });
+    this.setState({ view:'play', idx:0, correct:0, streak:0, bestStreak:0, phase:'await', picked:null, picks:[] }); }
+
+  _cur(){ return this.SC[this._order[this.state.idx]]; }
+  _curOpts(){ return this._opt[this.state.idx]; }
+
+  _pick(o,displayIdx){
+    if(this.state.phase!=='await') return;
+    const s=this._cur();
+    const right = o.orig===s.pro;
+    const streak = right? this.state.streak+1 : 0;
+    if(right) this._sfx('right'); else this._sfx('wrong');
+    this.setState({ phase:'revealed', picked:o.orig,
+      correct:this.state.correct+(right?1:0), streak, bestStreak:Math.max(this.state.bestStreak,streak),
+      picks:this.state.picks.concat([o.a]), wasRight:right });
+  }
+  _next(){ const nx=this.state.idx+1; if(nx>=this.SC.length){ this._end(); return; } this._sfx('click'); this.setState({ idx:nx, phase:'await', picked:null }); }
+
+  _end(){
+    this._sfx('end');
+    const counts={}; this.ORDER.forEach(a=>counts[a]=0); this.state.picks.forEach(a=>{ if(counts[a]!=null) counts[a]++; });
+    const best=Math.max(this._best||0,this.state.correct);
+    try{ localStorage.setItem('fa_fb_predictpro', JSON.stringify({ bestScore:best, lastScore:this.state.correct, bestStreak:this.state.bestStreak, counts, at:new Date().toISOString(), weight:0 })); }catch(e){}
+    this._best=best; this._meta={ correct:this.state.correct, bestStreak:this.state.bestStreak, counts };
+    this.setState({ view:'result' });
+    if(this._embedded && typeof this.props.onDone==='function'){ this.props.onDone(counts, this._meta); }
+  }
+  _again(){ this._begin(); }
+
+  renderVals(){
+    const accent=this.props.accent ?? '#FF6B1A';
+    const V=this.state.view; const soundOn=this._soundOn!==false;
+    const base={ accent, showChrome:!this._embedded && V!=='play',
+      isIntro:V==='intro', isPlay:V==='play', isResult:V==='result',
+      soundOn, soundOff:!soundOn, soundColor:soundOn?accent:'#7688A0', soundTitle:soundOn?'Sound on':'Sound off',
+      toggleSound:()=>this._toggleSound(), start:()=>this._begin(), again:()=>this._again(), next:()=>this._next(),
+      bestLine: this._best!=null? ('YOUR BEST \u00b7 '+this._best+' / 10') : '10 MOMENTS \u00b7 BUILD A STREAK' };
+
+    const inPlay = V==='play' && this._order;
+    const s=inPlay?this._cur():this.SC[0];
+    base.momentLabel=(this.state.idx+1)+' / '+this.SC.length;
+    base.streakLabel= this.state.streak>=3? ('\uD83D\uDD25 '+this.state.streak+' STREAK') : ('SCORE '+this.state.correct);
+    base.streakColor= this.state.streak>=3? accent : '#7688A0';
+    base.situKicker=s.k; base.situDesc=s.d;
+    base.youX=s.you.x; base.youY=s.you.y; base.ballX=s.ball.x; base.ballY=s.ball.y;
+    base.oppX=s.opp.x; base.oppY=s.opp.y; base.mateX=s.mate.x; base.mateY=s.mate.y;
+    base.awaiting=this.state.phase==='await'; base.revealed=this.state.phase==='revealed';
+    base.options= (inPlay && this.state.phase==='await') ? (this._curOpts()||[]).map((o,i)=>({ text:o.t, onPick:()=>this._pick(o,i) })) : [];
+    if(inPlay && this.state.phase==='revealed'){
+      const right=this.state.wasRight;
+      base.fbHead= right?'Spot on':'Not the pro\u2019s call';
+      base.fbColor= right?'#22C776':'#FF5A6E';
+      base.fbBg= right?'rgba(34,199,118,.1)':'rgba(255,90,110,.1)';
+      base.fbBorder= right?'rgba(34,199,118,.3)':'rgba(255,90,110,.3)';
+      base.proMove= s.opts[s.pro].t; base.proNote=s.note;
+      base.nextLabel=(this.state.idx+1>=this.SC.length)?'See your game IQ':'Next moment';
+    } else { base.fbHead=''; base.fbColor=accent; base.fbBg='transparent'; base.fbBorder='transparent'; base.proMove=''; base.proNote=''; base.nextLabel='Next'; }
+
+    // result
+    Object.assign(base,{ scoreBig:'0/10', resultHeadline:'', bestStreak:0, fpBars:[], softRead:'' });
+    const m=this._meta;
+    if(m){
+      base.scoreBig=m.correct+'/10'; base.bestStreak=m.bestStreak;
+      base.resultHeadline= m.correct>=9?'You think like an elite full-back.': m.correct>=7?'Sharp game reading.': m.correct>=5?'Getting there \u2014 keep watching.':'The pro sees more than you \u2014 for now.';
+      const tot=this.ORDER.reduce((a,k)=>a+m.counts[k],0)||1;
+      const entries=this.ORDER.map(k=>[k,m.counts[k]]).sort((a,b)=>b[1]-a[1]);
+      const maxV=Math.max(...entries.map(e=>e[1]),1);
+      base.fpBars=entries.map(([id,v])=>{ const col=this.ARCH[id].color; const isTop=v===entries[0][1]&&v>0;
+        return { emoji:this.ARCH[id].emoji, label:this.ARCH[id].name, labelColor:isTop?'#F2F8FE':'#9FB0C5', numColor:isTop?col:'#9FB0C5',
+          pct:Math.round(v/tot*100)+'%', barW:Math.round(v/maxV*100)+'%',
+          barLook:isTop?('background:linear-gradient(90deg,'+col+',color-mix(in srgb,'+col+' 45%,transparent));box-shadow:0 0 12px color-mix(in srgb,'+col+' 55%,transparent);'):'background:rgba(130,150,176,.4);' }; });
+      const top=entries[0][0];
+      base.softRead="Reading the pro\u2019s call is a skill \u2014 your score and streak are the headline. But notice which moves you were drawn to: you reached for the "+this.ARCH[top].name+"\u2019s answer most often. That\u2019s a hint about how you see the game, not a verdict. The scan settles your archetype.";
+    }
+    return base;
+  }
+}
+</script>
+</body>
+</html>
