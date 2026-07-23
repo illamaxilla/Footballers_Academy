@@ -133,7 +133,7 @@
             <sc-for list="{{ coachBars }}" as="p" hint-placeholder-count="4">
               <div style="display:flex;flex-direction:column;gap:5px;">
                 <div style="display:flex;align-items:baseline;justify-content:space-between;">
-                  <span style="font:700 12px 'Archivo';color:{{ p.labelColor }};">{{ p.emoji }} {{ p.label }}</span>
+                  <span style="display:inline-flex;align-items:center;gap:8px;font:700 12px 'Archivo';color:{{ p.labelColor }};"><span style="width:9px;height:9px;border-radius:3px;background:{{ p.dot }};"></span>{{ p.label }}</span>
                   <span style="font:800 12px 'IBM Plex Mono';color:{{ p.numColor }};">{{ p.pct }}</span>
                 </div>
                 <div style="height:8px;border-radius:99px;background:rgba(120,140,166,.14);overflow:hidden;"><div style="height:100%;border-radius:99px;width:{{ p.barW }};{{ p.barLook }}"></div></div>
@@ -158,7 +158,7 @@
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:940,&quot;height&quot;:760},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#FF6B1A&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#FF6B1A&quot;,&quot;#E5197F&quot;,&quot;#5B9BD5&quot;,&quot;#22D3EE&quot;]},&quot;motion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;embedded&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;onDone&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;(votes:any, meta:any)=&gt;void&quot;}}">
 class Component extends DCLogic {
   ORDER=['warrior','winger','sentinel','architect'];
-  ARCH={ warrior:{name:'The Warrior',emoji:'\u2699\uFE0F',color:'#FF6B1A'}, winger:{name:'The Winger',emoji:'\uD83C\uDFAF',color:'#E5197F'}, sentinel:{name:'The Sentinel',emoji:'\uD83D\uDEE1\uFE0F',color:'#5B9BD5'}, architect:{name:'The Architect',emoji:'\uD83E\uDDED',color:'#22D3EE'} };
+  ARCH={ warrior:{name:'The Warrior',mono:'WA',color:'#FF6B1A'}, winger:{name:'The Winger',mono:'WG',color:'#E5197F'}, sentinel:{name:'The Sentinel',mono:'SE',color:'#5B9BD5'}, architect:{name:'The Architect',mono:'AR',color:'#22D3EE'} };
 
   Q=[
     { prompt:'On the ball out wide, he most often\u2026', opts:[
@@ -258,7 +258,7 @@ class Component extends DCLogic {
       copyLabel:this.state.copied?'Link copied':'Copy a link' };
 
     const self=this.state.self;
-    base.selfLine = self ? ('Your scan says you\u2019re '+this.ARCH[self].name+' '+this.ARCH[self].emoji+'. Let\u2019s see if they agree.') : 'You haven\u2019t run the scan yet \u2014 you can still get their read, then compare it later.';
+    base.selfLine = self ? ('Your scan says you\u2019re '+this.ARCH[self].name+'. Let\u2019s see if they agree.') : 'You haven\u2019t run the scan yet \u2014 you can still get their read, then compare it later.';
 
     const qi=this.state.qIndex, q=this.Q[qi]||this.Q[0];
     base.qNumLabel='Q'+(qi+1)+' / 6'; base.qPrompt=q.prompt;
@@ -274,7 +274,7 @@ class Component extends DCLogic {
       const hasSelf=!!self; const agree=hasSelf&&self===coach;
       base.coachEmblem=this._emblem(coach,C.color,48); base.coachName=C.name; base.coachColor=C.color; base.coachBorder='color-mix(in srgb,'+C.color+' 45%,transparent)';
       if(hasSelf){ const S=this.ARCH[self]; base.selfEmblem=this._emblem(self,S.color,48); base.selfName=S.name; base.selfColor=S.color; base.selfBorder='color-mix(in srgb,'+S.color+' 45%,transparent)'; }
-      else { base.selfEmblem=React.createElement('div',{style:{fontSize:'38px',lineHeight:1}},'\u2753'); base.selfName='Not scanned'; base.selfColor='#7688A0'; }
+      else { base.selfEmblem=React.createElement('div',{style:{fontSize:'34px',lineHeight:1,fontFamily:"'IBM Plex Mono'",fontWeight:700,color:'#7688A0'}},'?'); base.selfName='Not scanned'; base.selfColor='#7688A0'; }
       base.cmpKicker=hasSelf?(agree?'THEY AGREE':'THE GAP'):'THEIR READ';
       base.cmpTitle = !hasSelf ? ('They see '+C.name+'.') : agree ? ('You both see '+C.name+'.') : 'You two don\u2019t quite agree.';
       base.verdictKicker = agree?'CONFIDENCE UP':(hasSelf?'THE MOST USEFUL LINE IN THE APP':'RUN THE SCAN');
@@ -290,7 +290,7 @@ class Component extends DCLogic {
       const entries=this.ORDER.map(k=>[k,this._votes[k]]).sort((a,b)=>b[1]-a[1]);
       const maxV=Math.max(...entries.map(e=>e[1]),1);
       base.coachBars=entries.map(([id,v])=>{ const isP=id===coach; const col=this.ARCH[id].color;
-        return { emoji:this.ARCH[id].emoji, label:this.ARCH[id].name, labelColor:isP?'#F2F8FE':'#9FB0C5', numColor:isP?col:'#9FB0C5',
+        return { dot:col, label:this.ARCH[id].name, labelColor:isP?'#F2F8FE':'#9FB0C5', numColor:isP?col:'#9FB0C5',
           pct:Math.round((v/total)*100)+'%', barW:Math.round((v/maxV)*100)+'%',
           barLook:isP?('background:linear-gradient(90deg,'+col+',color-mix(in srgb,'+col+' 45%,transparent));box-shadow:0 0 10px color-mix(in srgb,'+col+' 50%,transparent);'):'background:rgba(130,150,176,.4);' }; });
       base.dataLine='EXTERNAL EYE \u00b7 6 ANSWERS \u00b7 '+(agree?'AGREEMENT':hasSelf?'DISAGREEMENT':'NO SELF-SCAN');

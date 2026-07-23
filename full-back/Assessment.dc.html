@@ -203,7 +203,7 @@
             <sc-for list="{{ spreadBars }}" as="s" hint-placeholder-count="4">
               <div style="display:flex;flex-direction:column;gap:6px;">
                 <div style="display:flex;align-items:baseline;justify-content:space-between;">
-                  <span style="font:700 12.5px 'Archivo';color:{{ s.labelColor }};">{{ s.emoji }} {{ s.label }}</span>
+                  <span style="display:inline-flex;align-items:center;gap:8px;font:700 12.5px 'Archivo';color:{{ s.labelColor }};"><span style="width:9px;height:9px;border-radius:3px;background:{{ s.dot }};"></span>{{ s.label }}</span>
                   <span style="font:800 13px 'IBM Plex Mono';color:{{ s.numColor }};">{{ s.pct }}</span>
                 </div>
                 <div style="height:9px;border-radius:99px;background:rgba(120,140,166,.14);overflow:hidden;"><div style="height:100%;border-radius:99px;transform-origin:left;animation:fa-bar .8s cubic-bezier(.3,.8,.3,1) both;width:{{ s.barW }};{{ s.barLook }}"></div></div>
@@ -283,7 +283,7 @@ class Component extends DCLogic {
   DIST = { warrior:32, winger:27, sentinel:22, architect:17 };
 
   ARCH = {
-    warrior:{ name:'The Warrior', tagline:'The Complete Full Back', identity:'You give everything, both ends.', emoji:'\u2699\uFE0F', color:'#FF6B1A',
+    warrior:{ name:'The Warrior', tagline:'The Complete Full Back', identity:'You give everything, both ends.', mono:'WA', color:'#FF6B1A',
       reflect:"You want to give everything at both ends and never stop running \u2014 the complete two-way full-back.",
       isYou:"The engine. You attack and defend in equal measure and cover more ground than anyone. When the game demands everything, you deliver it \u2014 the manager never has to worry about your flank, and that is the rarest currency in football.",
       strengths:['Two-way work rate','Endurance','Reliability in both boxes'],
@@ -291,10 +291,10 @@ class Component extends DCLogic {
       edge:"A standout weapon \u2014 sharpen either your delivery or your 1v1 defending so you\u2019re not just complete, but elite at one thing.",
       firstStep:"Track your up-and-down runs in one session \u2014 support every attack and recover for every defensive moment. Count both. Nobody else in your team will do both.",
       signature:'CHALLENGE \u00b7 BOTH BOXES',
-      share:'I\u2019m The Warrior \u26bd \u2014 I give everything at both ends. Which full-back are you?',
+      share:'I\u2019m The Warrior \u2014 I give everything at both ends. Which full-back are you?',
       clause:'a relentless two-way engine' },
 
-    winger:{ name:'The Winger', tagline:'The Attacking Full Back', identity:'You start at the back and finish in their box.', emoji:'\uD83C\uDFAF', color:'#E5197F',
+    winger:{ name:'The Winger', tagline:'The Attacking Full Back', identity:'You start at the back and finish in their box.', mono:'WG', color:'#E5197F',
       reflect:"You want to get forward, whip in crosses, and create \u2014 an attacker who starts at full-back.",
       isYou:"The wide weapon. Your delivery and overlapping runs are a constant threat, and you\u2019d rather create a goal than just prevent one. Your weapon isn\u2019t your body \u2014 it\u2019s the flight of the ball.",
       strengths:['Crossing & delivery','Attacking runs','Chance creation'],
@@ -302,10 +302,10 @@ class Component extends DCLogic {
       edge:"Defensive positioning and recovery, so your attacking never leaves your flank exposed.",
       firstStep:"Get to the byline and deliver as often as you can \u2014 then be first to recover every time you lose it. That recovery is what separates a Winger who plays from one who gets subbed.",
       signature:'CHALLENGE \u00b7 FIRST BACK',
-      share:'I\u2019m The Winger \u26bd \u2014 my delivery wins games. Which full-back are you?',
+      share:'I\u2019m The Winger \u2014 my delivery wins games. Which full-back are you?',
       clause:'an attacking weapon on the flank' },
 
-    sentinel:{ name:'The Sentinel', tagline:'The Defensive Full Back', identity:'Nothing gets past you on your side.', emoji:'\uD83D\uDEE1\uFE0F', color:'#5B9BD5',
+    sentinel:{ name:'The Sentinel', tagline:'The Defensive Full Back', identity:'Nothing gets past you on your side.', mono:'SE', color:'#5B9BD5',
       reflect:"You want to lock down your flank and shut out their best attacker \u2014 defence first, always.",
       isYou:"The lockdown specialist. You win your 1v1s, hold your position, and make life miserable for wingers. Solid, disciplined, dependable \u2014 the only player on the pitch measured by what didn\u2019t happen.",
       strengths:['1v1 defending','Positioning & discipline','Flank security'],
@@ -313,10 +313,10 @@ class Component extends DCLogic {
       edge:"Attacking output, so you offer a threat going forward as well as security at the back.",
       firstStep:"Win every 1v1 on your flank \u2014 force their winger inside to your cover and never get beaten on the outside. Then look at his stat line, not yours.",
       signature:'CHALLENGE \u00b7 NOTHING PAST ME',
-      share:'I\u2019m The Sentinel \u26bd \u2014 nobody beats me on my flank. Which full-back are you?',
+      share:'I\u2019m The Sentinel \u2014 nobody beats me on my flank. Which full-back are you?',
       clause:'a lockdown defender' },
 
-    architect:{ name:'The Architect', tagline:'The Inverted Full Back', identity:'You tuck in and run the game.', emoji:'\uD83E\uDDED', color:'#22D3EE',
+    architect:{ name:'The Architect', tagline:'The Inverted Full Back', identity:'You tuck in and run the game.', mono:'AR', color:'#22D3EE',
       reflect:"You want to tuck inside, control the tempo, and dictate \u2014 an extra midfielder from full-back.",
       isYou:"The modern inverted full-back. You step into midfield, control possession, and dictate the game from unexpected angles. A defender with a playmaker\u2019s brain \u2014 and by vacating the touchline you turn a flat back four into something far more dangerous.",
       strengths:['On-the-ball control','Positional intelligence','Tempo dictation'],
@@ -324,7 +324,7 @@ class Component extends DCLogic {
       edge:"Wide defending fundamentals, so you\u2019re solid when the game asks you to be an orthodox full-back.",
       firstStep:"When your team has the ball, tuck inside to give a passing option in midfield \u2014 then count how much more you touch the ball. That number is your scorecard.",
       signature:'CHALLENGE \u00b7 INSIDE TEN',
-      share:'I\u2019m The Architect \u26bd \u2014 a full-back who runs the midfield. Which full-back are you?',
+      share:'I\u2019m The Architect \u2014 a full-back who runs the midfield. Which full-back are you?',
       clause:'a controlling inverted brain' },
   };
 
@@ -599,7 +599,7 @@ class Component extends DCLogic {
       const maxV=Math.max(...entries.map(e=>e[1]),1);
       base.spreadBars=entries.map(([id,v])=>{
         const isP=id===r.primary; const col=this.ARCH[id].color;
-        return { emoji:this.ARCH[id].emoji, label:short(id),
+        return { dot:col, label:short(id),
           labelColor:isP?'#F2F8FE':'#9FB0C5', numColor:isP?col:'#9FB0C5',
           pct:v+'%', barW:Math.round((v/maxV)*100)+'%',
           barLook:isP?('background:linear-gradient(90deg,'+col+',color-mix(in srgb,'+col+' 45%,transparent));box-shadow:0 0 12px color-mix(in srgb,'+col+' 55%,transparent);'):'background:rgba(130,150,176,.4);' };

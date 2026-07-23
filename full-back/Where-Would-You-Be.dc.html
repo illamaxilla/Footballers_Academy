@@ -87,7 +87,7 @@
           <!-- anchors (reveal) -->
           <sc-for list="{{ anchors }}" as="an" hint-placeholder-count="0">
             <div style="position:absolute;left:{{ an.x }};top:{{ an.y }};transform:translate(-50%,-50%);pointer-events:none;z-index:4;display:flex;flex-direction:column;align-items:center;gap:2px;">
-              <div style="width:22px;height:22px;border-radius:50%;border:2px solid {{ an.color }};background:color-mix(in srgb,{{ an.color }} 20%,transparent);display:grid;place-items:center;font-size:11px;">{{ an.emoji }}</div>
+              <div style="width:22px;height:22px;border-radius:50%;border:2px solid {{ an.color }};background:color-mix(in srgb,{{ an.color }} 20%,transparent);display:grid;place-items:center;font:700 8px 'IBM Plex Mono';letter-spacing:.04em;color:{{ an.color }};">{{ an.mono }}</div>
               <span style="font:700 7.5px 'IBM Plex Mono';color:{{ an.color }};background:rgba(4,7,12,.55);padding:1px 4px;border-radius:4px;">{{ an.name }}</span>
             </div>
           </sc-for>
@@ -136,7 +136,7 @@
             <sc-for list="{{ fpBars }}" as="s" hint-placeholder-count="4">
               <div style="display:flex;flex-direction:column;gap:6px;">
                 <div style="display:flex;align-items:baseline;justify-content:space-between;">
-                  <span style="font:700 12.5px 'Archivo';color:{{ s.labelColor }};">{{ s.emoji }} {{ s.label }}</span>
+                  <span style="display:inline-flex;align-items:center;gap:8px;font:700 12.5px 'Archivo';color:{{ s.labelColor }};"><span style="width:9px;height:9px;border-radius:3px;background:{{ s.dot }};"></span>{{ s.label }}</span>
                   <span style="font:800 12px 'IBM Plex Mono';color:{{ s.numColor }};">{{ s.pct }}</span>
                 </div>
                 <div style="height:8px;border-radius:99px;background:rgba(120,140,166,.14);overflow:hidden;"><div style="height:100%;border-radius:99px;transform-origin:left;animation:fa-bar .8s cubic-bezier(.3,.8,.3,1) both;width:{{ s.barW }};{{ s.barLook }}"></div></div>
@@ -163,7 +163,7 @@
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:900,&quot;height&quot;:860},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#FF6B1A&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#FF6B1A&quot;,&quot;#E5197F&quot;,&quot;#5B9BD5&quot;,&quot;#22D3EE&quot;]},&quot;motion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;embedded&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;}}">
 class Component extends DCLogic {
   ORDER=['warrior','winger','sentinel','architect'];
-  ARCH={ warrior:{name:'Warrior',emoji:'\u2699\uFE0F',color:'#FF6B1A'}, winger:{name:'Winger',emoji:'\uD83C\uDFAF',color:'#E5197F'}, sentinel:{name:'Sentinel',emoji:'\uD83D\uDEE1\uFE0F',color:'#5B9BD5'}, architect:{name:'Architect',emoji:'\uD83E\uDDED',color:'#22D3EE'} };
+  ARCH={ warrior:{name:'Warrior',mono:'WA',color:'#FF6B1A'}, winger:{name:'Winger',mono:'WG',color:'#E5197F'}, sentinel:{name:'Sentinel',mono:'SE',color:'#5B9BD5'}, architect:{name:'Architect',mono:'AR',color:'#22D3EE'} };
   // LEFT back. x:8(touchline)..92, y: top=their goal (attack up), bottom=own goal.
   NOTE={ winger:'high and wide \u2014 the Winger stays on the touchline, stretching the pitch and ready to attack.',
     warrior:'wide and busy \u2014 the Warrior takes a two-way position, ready to go either direction.',
@@ -246,7 +246,7 @@ class Component extends DCLogic {
     base.awaiting=this.state.phase==='await'; base.revealed=this.state.phase==='revealed';
     base.hasTap=!!this.state.tap;
     base.tapX=this.state.tap?this.state.tap.x+'%':'50%'; base.tapY=this.state.tap?this.state.tap.y+'%':'50%';
-    base.anchors = this.state.phase==='revealed' ? this.ORDER.map(a=>({ x:s.A[a].x+'%', y:s.A[a].y+'%', color:this.ARCH[a].color, emoji:this.ARCH[a].emoji, name:this.ARCH[a].name })) : [];
+    base.anchors = this.state.phase==='revealed' ? this.ORDER.map(a=>({ x:s.A[a].x+'%', y:s.A[a].y+'%', color:this.ARCH[a].color, mono:this.ARCH[a].mono, name:this.ARCH[a].name })) : [];
     if(this.state.chosen){ const c=this.state.chosen;
       base.fbName=this.ARCH[c].name; base.fbColor=this.ARCH[c].color;
       base.fbBg='color-mix(in srgb,'+this.ARCH[c].color+' 10%,transparent)'; base.fbBorder='color-mix(in srgb,'+this.ARCH[c].color+' 34%,transparent)';
@@ -266,7 +266,7 @@ class Component extends DCLogic {
       const tot=this.ORDER.reduce((a,k)=>a+m.counts[k],0)||1;
       const maxV=Math.max(...entries.map(e=>e[1]),1);
       base.fpBars=entries.map(([id,v])=>{ const col=this.ARCH[id].color; const isTop=id===top&&v>0;
-        return { emoji:this.ARCH[id].emoji, label:this.ARCH[id].name, labelColor:isTop?'#F2F8FE':'#9FB0C5', numColor:isTop?col:'#9FB0C5',
+        return { dot:col, label:this.ARCH[id].name, labelColor:isTop?'#F2F8FE':'#9FB0C5', numColor:isTop?col:'#9FB0C5',
           pct:Math.round(v/tot*100)+'%', barW:Math.round(v/maxV*100)+'%',
           barLook:isTop?('background:linear-gradient(90deg,'+col+',color-mix(in srgb,'+col+' 45%,transparent));box-shadow:0 0 12px color-mix(in srgb,'+col+' 55%,transparent);'):'background:rgba(130,150,176,.4);' }; });
       let read;

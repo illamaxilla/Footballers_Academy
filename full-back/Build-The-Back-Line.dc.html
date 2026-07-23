@@ -68,7 +68,7 @@
             <div style="display:flex;flex-direction:column;gap:8px;">
               <sc-for list="{{ leftCards }}" as="c" hint-placeholder-count="4">
                 <button onClick="{{ c.onPick }}" style="display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:11px 12px;border-radius:11px;cursor:pointer;border:1px solid {{ c.border }};background:{{ c.bg }};color:#EAF2FB;transition:all .14s ease;">
-                  <span style="font-size:17px;line-height:1;">{{ c.emoji }}</span>
+                  <span style="width:9px;height:9px;border-radius:3px;background:{{ c.dot }};flex:none;"></span>
                   <span style="font:700 12.5px 'Archivo';color:{{ c.nameColor }};">{{ c.name }}</span>
                 </button>
               </sc-for>
@@ -79,7 +79,7 @@
             <div style="display:flex;flex-direction:column;gap:8px;">
               <sc-for list="{{ rightCards }}" as="c" hint-placeholder-count="4">
                 <button onClick="{{ c.onPick }}" style="display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:11px 12px;border-radius:11px;cursor:pointer;border:1px solid {{ c.border }};background:{{ c.bg }};color:#EAF2FB;transition:all .14s ease;">
-                  <span style="font-size:17px;line-height:1;">{{ c.emoji }}</span>
+                  <span style="width:9px;height:9px;border-radius:3px;background:{{ c.dot }};flex:none;"></span>
                   <span style="font:700 12.5px 'Archivo';color:{{ c.nameColor }};">{{ c.name }}</span>
                 </button>
               </sc-for>
@@ -109,8 +109,8 @@
           </div>
           <div style="flex:1;min-width:190px;">
             <div style="font:600 10px 'IBM Plex Mono';letter-spacing:.24em;color:#7E90A8;margin-bottom:8px;">{{ systemLabel }}</div>
-            <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;"><span style="font-size:22px;">{{ leftEmoji }}</span><span style="font:800 17px 'Archivo';color:{{ leftColor }};">{{ leftName }}</span><span style="font:600 10px 'IBM Plex Mono';color:#7688A0;">LB</span></div>
-            <div style="display:flex;align-items:center;gap:10px;"><span style="font-size:22px;">{{ rightEmoji }}</span><span style="font:800 17px 'Archivo';color:{{ rightColor }};">{{ rightName }}</span><span style="font:600 10px 'IBM Plex Mono';color:#7688A0;">RB</span></div>
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;"><span style="width:22px;height:22px;border-radius:50%;border:2px solid {{ leftColor }};background:color-mix(in srgb,{{ leftColor }} 18%,transparent);display:grid;place-items:center;font:700 8px 'IBM Plex Mono';letter-spacing:.04em;color:{{ leftColor }};flex:none;">{{ leftMono }}</span><span style="font:800 17px 'Archivo';color:{{ leftColor }};">{{ leftName }}</span><span style="font:600 10px 'IBM Plex Mono';color:#7688A0;">LB</span></div>
+            <div style="display:flex;align-items:center;gap:10px;"><span style="width:22px;height:22px;border-radius:50%;border:2px solid {{ rightColor }};background:color-mix(in srgb,{{ rightColor }} 18%,transparent);display:grid;place-items:center;font:700 8px 'IBM Plex Mono';letter-spacing:.04em;color:{{ rightColor }};flex:none;">{{ rightMono }}</span><span style="font:800 17px 'Archivo';color:{{ rightColor }};">{{ rightName }}</span><span style="font:600 10px 'IBM Plex Mono';color:#7688A0;">RB</span></div>
             <div style="margin-top:10px;font:700 14px 'Archivo';color:{{ fitColor }};">{{ fitVerdict }}</div>
           </div>
         </div>
@@ -141,7 +141,7 @@
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:940,&quot;height&quot;:780},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#FF6B1A&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#FF6B1A&quot;,&quot;#E5197F&quot;,&quot;#5B9BD5&quot;,&quot;#22D3EE&quot;]}}">
 class Component extends DCLogic {
   ORDER=['warrior','winger','sentinel','architect'];
-  ARCH={ warrior:{name:'Warrior',emoji:'\u2699\uFE0F',color:'#FF6B1A'}, winger:{name:'Winger',emoji:'\uD83C\uDFAF',color:'#E5197F'}, sentinel:{name:'Sentinel',emoji:'\uD83D\uDEE1\uFE0F',color:'#5B9BD5'}, architect:{name:'Architect',emoji:'\uD83E\uDDED',color:'#22D3EE'} };
+  ARCH={ warrior:{name:'Warrior',mono:'WA',color:'#FF6B1A'}, winger:{name:'Winger',mono:'WG',color:'#E5197F'}, sentinel:{name:'Sentinel',mono:'SE',color:'#5B9BD5'}, architect:{name:'Architect',mono:'AR',color:'#22D3EE'} };
 
   PAIRS={
     'warrior|warrior':{ fit:82, works:'Two engines, endless energy on both flanks \u2014 the most common elite pairing. Whatever the game demands, both sides deliver it.', watch:'Neither is a pure specialist, so a truly elite winger can still find joy in an isolated 1v1.' },
@@ -205,7 +205,7 @@ class Component extends DCLogic {
         border:on?'color-mix(in srgb,'+accent+' 58%,transparent)':'rgba(120,140,166,.22)',
         fg:on?'#F2F8FE':'#C6D3E2' }; });
     const mkCards=(sel,setter)=> this.ORDER.map(k=>{ const A=this.ARCH[k]; const on=sel===k;
-      return { key:k, name:A.name, emoji:A.emoji, nameColor:on?A.color:'#EAF2FB', onPick:()=>setter(k),
+      return { key:k, name:A.name, dot:A.color, nameColor:on?A.color:'#EAF2FB', onPick:()=>setter(k),
         bg:on?('color-mix(in srgb,'+A.color+' 15%,transparent)'):'rgba(10,16,28,.5)',
         border:on?('color-mix(in srgb,'+A.color+' 60%,transparent)'):'rgba(120,140,166,.2)' }; });
     base.leftCards=mkCards(this.state.left,(k)=>this._setLeft(k));
@@ -221,15 +221,15 @@ class Component extends DCLogic {
     }
 
     // reveal
-    Object.assign(base,{ fitBig:'\u2013\u2013', fitColor:accent, fitDash:326, systemLabel:'', leftName:'', rightName:'', leftEmoji:'', rightEmoji:'', leftColor:accent, rightColor:accent, fitVerdict:'', worksLine:'', watchLine:'', systemNote:'' });
+    Object.assign(base,{ fitBig:'\u2013\u2013', fitColor:accent, fitDash:326, systemLabel:'', leftName:'', rightName:'', leftMono:'', rightMono:'', leftColor:accent, rightColor:accent, fitVerdict:'', worksLine:'', watchLine:'', systemNote:'' });
     const r=this._fitFor(this.state.left,this.state.right,this.state.system);
     if(r && V==='reveal'){
       const L=this.ARCH[this.state.left], R=this.ARCH[this.state.right];
       const col= r.fit>=82?'#22C776':r.fit>=72?accent:r.fit>=62?'#FFB020':'#FF5A6E';
       base.fitBig=r.fit; base.fitColor=col; base.fitDash=Math.round(326-(326*r.fit/100));
       base.systemLabel=this.SYS[this.state.system].label.toUpperCase()+' SYSTEM';
-      base.leftName=L.name; base.leftEmoji=L.emoji; base.leftColor=L.color;
-      base.rightName=R.name; base.rightEmoji=R.emoji; base.rightColor=R.color;
+      base.leftName=L.name; base.leftMono=L.mono; base.leftColor=L.color;
+      base.rightName=R.name; base.rightMono=R.mono; base.rightColor=R.color;
       base.fitVerdict= r.fit>=82?'Elite pairing':r.fit>=72?'Strong pairing':r.fit>=62?'Workable pairing':'Risky pairing';
       base.worksLine=(r.info&&r.info.works)||'A functional partnership.';
       base.watchLine=(r.info&&r.info.watch)||'Balance the flanks carefully.';

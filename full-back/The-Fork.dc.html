@@ -146,7 +146,7 @@
             <sc-for list="{{ fpBars }}" as="s" hint-placeholder-count="4">
               <div style="display:flex;flex-direction:column;gap:6px;">
                 <div style="display:flex;align-items:baseline;justify-content:space-between;">
-                  <span style="font:700 12.5px 'Archivo';color:{{ s.labelColor }};">{{ s.emoji }} {{ s.label }}</span>
+                  <span style="display:inline-flex;align-items:center;gap:8px;font:700 12.5px 'Archivo';color:{{ s.labelColor }};"><span style="width:9px;height:9px;border-radius:3px;background:{{ s.dot }};"></span>{{ s.label }}</span>
                   <span style="font:800 12px 'IBM Plex Mono';color:{{ s.numColor }};">{{ s.pct }}</span>
                 </div>
                 <div style="height:8px;border-radius:99px;background:rgba(120,140,166,.14);overflow:hidden;"><div style="height:100%;border-radius:99px;transform-origin:left;animation:fa-bar .8s cubic-bezier(.3,.8,.3,1) both;width:{{ s.barW }};{{ s.barLook }}"></div></div>
@@ -174,7 +174,7 @@
 class Component extends DCLogic {
   LEVELS={ academy:{ label:'Academy', sub:'4.0s', window:4000 }, pro:{ label:'Pro', sub:'2.8s', window:2800 }, elite:{ label:'Elite', sub:'1.8s', window:1800 } };
   ORDER=['warrior','winger','sentinel','architect'];
-  ARCH={ warrior:{name:'Warrior',emoji:'\u2699\uFE0F',color:'#FF6B1A'}, winger:{name:'Winger',emoji:'\uD83C\uDFAF',color:'#E5197F'}, sentinel:{name:'Sentinel',emoji:'\uD83D\uDEE1\uFE0F',color:'#5B9BD5'}, architect:{name:'Architect',emoji:'\uD83E\uDDED',color:'#22D3EE'} };
+  ARCH={ warrior:{name:'Warrior',mono:'WA',color:'#FF6B1A'}, winger:{name:'Winger',mono:'WG',color:'#E5197F'}, sentinel:{name:'Sentinel',mono:'SE',color:'#5B9BD5'}, architect:{name:'Architect',mono:'AR',color:'#22D3EE'} };
 
   // top-down flank, attacking UP (y small = their goal). ball starts elsewhere, arrives at you.
   SC=[
@@ -329,7 +329,7 @@ class Component extends DCLogic {
       const entries=this.ORDER.map(k=>[k,m.counts[k]]).sort((a,b)=>b[1]-a[1]);
       const maxV=Math.max(...entries.map(e=>e[1]),1);
       base.fpBars=entries.map(([id,v])=>{ const col=this.ARCH[id].color; const isTop=v===entries[0][1]&&v>0;
-        return { emoji:this.ARCH[id].emoji, label:this.ARCH[id].name, labelColor:isTop?'#F2F8FE':'#9FB0C5', numColor:isTop?col:'#9FB0C5',
+        return { dot:col, label:this.ARCH[id].name, labelColor:isTop?'#F2F8FE':'#9FB0C5', numColor:isTop?col:'#9FB0C5',
           pct:Math.round(v/tot*100)+'%', barW:Math.round(v/maxV*100)+'%',
           barLook:isTop?('background:linear-gradient(90deg,'+col+',color-mix(in srgb,'+col+' 45%,transparent));box-shadow:0 0 12px color-mix(in srgb,'+col+' 55%,transparent);'):'background:rgba(130,150,176,.4);' }; });
       let read;

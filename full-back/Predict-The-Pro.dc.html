@@ -105,7 +105,7 @@
           <div style="font:600 11px 'IBM Plex Mono';letter-spacing:.4em;color:#7E90A8;margin-bottom:12px;">GAME IQ</div>
           <div style="font:900 clamp(64px,13vw,116px)/0.9 'Archivo';letter-spacing:-0.03em;color:var(--accent,#FF6B1A);text-shadow:0 0 48px color-mix(in srgb,var(--accent,#FF6B1A) 45%,transparent);">{{ scoreBig }}</div>
           <div style="margin-top:6px;font:600 clamp(15px,1.7vw,20px) 'Archivo';color:#C9D6E2;">{{ resultHeadline }}</div>
-          <div style="margin-top:8px;font:500 13px 'IBM Plex Mono';letter-spacing:.1em;color:#7688A0;">BEST STREAK &middot; {{ bestStreak }} \uD83D\uDD25</div>
+          <div style="margin-top:8px;font:500 13px 'IBM Plex Mono';letter-spacing:.1em;color:#7688A0;">BEST STREAK &middot; {{ bestStreak }}</div>
         </div>
 
         <div class="fa-in" style="width:100%;padding:20px 22px;border-radius:16px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);margin-bottom:22px;animation-delay:.1s;">
@@ -114,7 +114,7 @@
             <sc-for list="{{ fpBars }}" as="s" hint-placeholder-count="4">
               <div style="display:flex;flex-direction:column;gap:6px;">
                 <div style="display:flex;align-items:baseline;justify-content:space-between;">
-                  <span style="font:700 12.5px 'Archivo';color:{{ s.labelColor }};">{{ s.emoji }} {{ s.label }}</span>
+                  <span style="display:inline-flex;align-items:center;gap:8px;font:700 12.5px 'Archivo';color:{{ s.labelColor }};"><span style="width:9px;height:9px;border-radius:3px;background:{{ s.dot }};"></span>{{ s.label }}</span>
                   <span style="font:800 12px 'IBM Plex Mono';color:{{ s.numColor }};">{{ s.pct }}</span>
                 </div>
                 <div style="height:8px;border-radius:99px;background:rgba(120,140,166,.14);overflow:hidden;"><div style="height:100%;border-radius:99px;transform-origin:left;animation:fa-bar .8s cubic-bezier(.3,.8,.3,1) both;width:{{ s.barW }};{{ s.barLook }}"></div></div>
@@ -141,7 +141,7 @@
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:940,&quot;height&quot;:800},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#FF6B1A&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#FF6B1A&quot;,&quot;#E5197F&quot;,&quot;#5B9BD5&quot;,&quot;#22D3EE&quot;]},&quot;motion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;embedded&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;onDone&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;(counts:any, meta:any)=&gt;void&quot;}}">
 class Component extends DCLogic {
   ORDER=['warrior','winger','sentinel','architect'];
-  ARCH={ warrior:{name:'Warrior',emoji:'\u2699\uFE0F',color:'#FF6B1A'}, winger:{name:'Winger',emoji:'\uD83C\uDFAF',color:'#E5197F'}, sentinel:{name:'Sentinel',emoji:'\uD83D\uDEE1\uFE0F',color:'#5B9BD5'}, architect:{name:'Architect',emoji:'\uD83E\uDDED',color:'#22D3EE'} };
+  ARCH={ warrior:{name:'Warrior',mono:'WA',color:'#FF6B1A'}, winger:{name:'Winger',mono:'WG',color:'#E5197F'}, sentinel:{name:'Sentinel',mono:'SE',color:'#5B9BD5'}, architect:{name:'Architect',mono:'AR',color:'#22D3EE'} };
   // pitch attacking UP. pro = index of elite move. note explains.
   SC=[
     { k:'2-0 UP \u00b7 88TH MINUTE', d:'You win it wide with space to run into. Game almost won.',
@@ -238,7 +238,7 @@ class Component extends DCLogic {
     const inPlay = V==='play' && this._order;
     const s=inPlay?this._cur():this.SC[0];
     base.momentLabel=(this.state.idx+1)+' / '+this.SC.length;
-    base.streakLabel= this.state.streak>=3? ('\uD83D\uDD25 '+this.state.streak+' STREAK') : ('SCORE '+this.state.correct);
+    base.streakLabel= this.state.streak>=3? (this.state.streak+' STREAK') : ('SCORE '+this.state.correct);
     base.streakColor= this.state.streak>=3? accent : '#7688A0';
     base.situKicker=s.k; base.situDesc=s.d;
     base.youX=s.you.x; base.youY=s.you.y; base.ballX=s.ball.x; base.ballY=s.ball.y;
@@ -265,7 +265,7 @@ class Component extends DCLogic {
       const entries=this.ORDER.map(k=>[k,m.counts[k]]).sort((a,b)=>b[1]-a[1]);
       const maxV=Math.max(...entries.map(e=>e[1]),1);
       base.fpBars=entries.map(([id,v])=>{ const col=this.ARCH[id].color; const isTop=v===entries[0][1]&&v>0;
-        return { emoji:this.ARCH[id].emoji, label:this.ARCH[id].name, labelColor:isTop?'#F2F8FE':'#9FB0C5', numColor:isTop?col:'#9FB0C5',
+        return { dot:col, label:this.ARCH[id].name, labelColor:isTop?'#F2F8FE':'#9FB0C5', numColor:isTop?col:'#9FB0C5',
           pct:Math.round(v/tot*100)+'%', barW:Math.round(v/maxV*100)+'%',
           barLook:isTop?('background:linear-gradient(90deg,'+col+',color-mix(in srgb,'+col+' 45%,transparent));box-shadow:0 0 12px color-mix(in srgb,'+col+' 55%,transparent);'):'background:rgba(130,150,176,.4);' }; });
       const top=entries[0][0];

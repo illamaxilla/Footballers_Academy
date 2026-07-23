@@ -174,7 +174,7 @@ class Component extends DCLogic {
 
     const c=(this._deck&&this._deck[this.state.idx])||this.CLAIMS[0];
     base.claimLabel=(this.state.idx+1)+' / '+this.ROUND;
-    base.streakLabel= this.state.streak>=2? ('\uD83D\uDD25 '+this.state.streak+' STREAK') : ('SCORE '+this.state.correct);
+    base.streakLabel= this.state.streak>=2? (this.state.streak+' STREAK') : ('SCORE '+this.state.correct);
     base.claimText=c.t;
     base.notAnswered=!this.state.answered; base.answered=this.state.answered;
     if(this.state.answered){
