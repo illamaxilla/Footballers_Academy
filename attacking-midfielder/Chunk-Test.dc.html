@@ -8,9 +8,7 @@
 <body>
 <x-dc>
 <helmet>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="assets/vendor/fonts/fonts.css" rel="stylesheet">
 <script src="./scenes.js"></script>
 <style>
   *{box-sizing:border-box;}
@@ -49,10 +47,6 @@
       <span style="font:800 13px 'Archivo';letter-spacing:.05em;">THE <span style="color:var(--accent,#22D3EE);">CHUNK TEST</span></span>
     </div>
     <div style="display:flex;align-items:center;gap:12px;min-width:120px;justify-content:flex-end;">
-      <button onClick="{{ toggleSound }}" title="{{ soundTitle }}" style="display:grid;place-items:center;width:28px;height:28px;border-radius:8px;border:1px solid rgba(120,140,166,.24);background:rgba(10,16,28,.5);cursor:pointer;color:{{ soundColor }};">
-        <sc-if value="{{ soundOn }}" hint-placeholder-val="{{ true }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></sc-if>
-        <sc-if value="{{ soundOff }}" hint-placeholder-val="{{ false }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M22 9l-6 6M16 9l6 6"/></svg></sc-if>
-      </button>
     </div>
   </header>
 
@@ -186,9 +180,9 @@ class Component extends DCLogic {
 
   // ---------- audio ----------
   _audio(){ if(this._actx===undefined){ try{ this._actx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ this._actx=null; } } if(this._actx&&this._actx.state==='suspended') this._actx.resume(); return this._actx; }
-  _tone(f,d,t,g,slide){ const c=this._audio(); if(!c||this._soundOn===false) return; const o=c.createOscillator(),a=c.createGain(); o.type=t||'sine'; o.frequency.setValueAtTime(f,c.currentTime); if(slide) o.frequency.exponentialRampToValueAtTime(Math.max(20,slide),c.currentTime+d); o.connect(a); a.connect(c.destination); const n=c.currentTime; a.gain.setValueAtTime(0.0001,n); a.gain.exponentialRampToValueAtTime(g||0.05,n+0.008); a.gain.exponentialRampToValueAtTime(0.0001,n+d); o.start(n); o.stop(n+d+0.02); }
+  _tone(f,d,t,g,slide){ return;/*snd removed*/ const c=this._audio(); if(!c||this._soundOn===false) return; const o=c.createOscillator(),a=c.createGain(); o.type=t||'sine'; o.frequency.setValueAtTime(f,c.currentTime); if(slide) o.frequency.exponentialRampToValueAtTime(Math.max(20,slide),c.currentTime+d); o.connect(a); a.connect(c.destination); const n=c.currentTime; a.gain.setValueAtTime(0.0001,n); a.gain.exponentialRampToValueAtTime(g||0.05,n+0.008); a.gain.exponentialRampToValueAtTime(0.0001,n+d); o.start(n); o.stop(n+d+0.02); }
   _haptic(ms){ try{ if(navigator.vibrate) navigator.vibrate(ms||8); }catch(e){} }
-  _sfx(k){ if(this._soundOn===false) return;
+  _sfx(k){ return;/*snd removed*/ if(this._soundOn===false) return;
     if(k==='place'){ this._tone(560,0.06,'triangle',0.04); }
     else if(k==='study'){ this._tone(680,0.14,'sine',0.05,980); }
     else if(k==='done'){ this._tone(620,0.09,'triangle',0.05); setTimeout(()=>this._tone(940,0.13,'triangle',0.05),60); }

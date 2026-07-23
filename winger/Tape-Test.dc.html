@@ -8,9 +8,7 @@
 <body>
 <x-dc>
 <helmet>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="assets/vendor/fonts/fonts.css" rel="stylesheet">
 <style>
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;background:#04060c;}
@@ -232,8 +230,8 @@ class Component extends DCLogic {
   }
 
   _audio(){ if(this._actx===undefined){ try{ this._actx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ this._actx=null; } } if(this._actx&&this._actx.state==='suspended') this._actx.resume(); return this._actx; }
-  _tone(f,d,t,g){ const c=this._audio(); if(!c||this._soundOn===false) return; const o=c.createOscillator(),a=c.createGain(); o.type=t||'sine'; o.frequency.value=f; o.connect(a); a.connect(c.destination); const n=c.currentTime; a.gain.setValueAtTime(0,n); a.gain.linearRampToValueAtTime(g||0.05,n+0.01); a.gain.exponentialRampToValueAtTime(0.0001,n+d); o.start(n); o.stop(n+d); }
-  _sfx(k){ if(this._soundOn===false) return; if(k==='tap') this._tone(500,0.08,'triangle',0.045); else if(k==='logged'){ this._tone(560,0.1,'triangle',0.05); setTimeout(()=>this._tone(780,0.12,'triangle',0.045),55); } else if(k==='done'){ this._tone(520,0.14,'triangle',0.05); setTimeout(()=>this._tone(700,0.14,'triangle',0.05),110); setTimeout(()=>this._tone(940,0.26,'triangle',0.05),230); } else if(k==='click'){ this._tone(430,0.08,'sine',0.04); } }
+  _tone(f,d,t,g){ return;/*snd removed*/ const c=this._audio(); if(!c||this._soundOn===false) return; const o=c.createOscillator(),a=c.createGain(); o.type=t||'sine'; o.frequency.value=f; o.connect(a); a.connect(c.destination); const n=c.currentTime; a.gain.setValueAtTime(0,n); a.gain.linearRampToValueAtTime(g||0.05,n+0.01); a.gain.exponentialRampToValueAtTime(0.0001,n+d); o.start(n); o.stop(n+d); }
+  _sfx(k){ return;/*snd removed*/ if(this._soundOn===false) return; if(k==='tap') this._tone(500,0.08,'triangle',0.045); else if(k==='logged'){ this._tone(560,0.1,'triangle',0.05); setTimeout(()=>this._tone(780,0.12,'triangle',0.045),55); } else if(k==='done'){ this._tone(520,0.14,'triangle',0.05); setTimeout(()=>this._tone(700,0.14,'triangle',0.05),110); setTimeout(()=>this._tone(940,0.26,'triangle',0.05),230); } else if(k==='click'){ this._tone(430,0.08,'sine',0.04); } }
 
   _parseUrl(u){
     u=(u||'').trim();

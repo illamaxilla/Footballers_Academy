@@ -8,9 +8,7 @@
 <body>
 <x-dc>
 <helmet>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="assets/vendor/fonts/fonts.css" rel="stylesheet">
 <style>
   *{box-sizing:border-box;} html,body{margin:0;padding:0;background:#04060c;}
   a{color:var(--accent,#C8102E);text-decoration:none;} a:hover{opacity:.92;}
@@ -37,10 +35,6 @@
       <div style="min-width:120px;display:flex;"><a href="Assessment.dc.html" style="display:inline-flex;align-items:center;gap:8px;color:#8EA1B8;font:600 12.5px 'Archivo';" style-hover="color:#EAF2FB;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M15 5l-7 7 7 7"/></svg>Back to the scan</a></div>
       <div style="display:flex;align-items:center;gap:11px;"><svg width="20" height="22" viewBox="0 0 28 32" fill="none"><path d="M14 2 25 6v10c0 8-5.4 12.4-11 14C8.4 28.4 3 24 3 16V6z" style="stroke:var(--accent,#C8102E);stroke-width:1.6;fill:color-mix(in srgb,var(--accent,#C8102E) 12%,transparent);"/><path d="M6 15h16" style="stroke:var(--accent,#C8102E);stroke-width:2;stroke-linecap:round;"/></svg><span style="font:800 13px 'Archivo';letter-spacing:.05em;">HOLD THE <span style="color:var(--accent,#C8102E);">LINE</span></span></div>
       <div style="display:flex;align-items:center;gap:12px;min-width:120px;justify-content:flex-end;">
-        <button onClick="{{ toggleSound }}" title="{{ soundTitle }}" style="display:grid;place-items:center;width:28px;height:28px;border-radius:8px;border:1px solid rgba(120,140,166,.24);background:rgba(10,16,28,.5);cursor:pointer;color:{{ soundColor }};" style-hover="border-color:color-mix(in srgb,var(--accent,#C8102E) 55%,transparent);">
-          <sc-if value="{{ soundOn }}" hint-placeholder-val="{{ true }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg></sc-if>
-          <sc-if value="{{ soundOff }}" hint-placeholder-val="{{ false }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M22 9l-6 6M16 9l6 6"/></svg></sc-if>
-        </button>
         <div style="width:88px;height:4px;border-radius:99px;background:rgba(120,140,166,.18);overflow:hidden;"><div style="height:100%;border-radius:99px;background:var(--accent,#C8102E);box-shadow:0 0 10px var(--accent,#C8102E);width:{{ progPct }};transition:width .4s cubic-bezier(.3,.8,.3,1);"></div></div>
         <span style="font:600 10px 'IBM Plex Mono';letter-spacing:.14em;color:color-mix(in srgb,var(--accent,#C8102E) 80%,#fff);white-space:nowrap;">{{ progLabel }}</span>
       </div>
@@ -147,8 +141,8 @@ class Component extends DCLogic {
   _later(fn,ms){ (this._timers=this._timers||[]).push(setTimeout(fn,ms)); }
 
   _audio(){ if(this._actx===undefined){ try{ this._actx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ this._actx=null; } } if(this._actx&&this._actx.state==='suspended') this._actx.resume(); return this._actx; }
-  _tone(f,d,t,g){ const c=this._audio(); if(!c||this._soundOn===false) return; const o=c.createOscillator(),a=c.createGain(); o.type=t||'sine'; o.frequency.value=f; o.connect(a); a.connect(c.destination); const n=c.currentTime; a.gain.setValueAtTime(0,n); a.gain.linearRampToValueAtTime(g||0.05,n+0.01); a.gain.exponentialRampToValueAtTime(0.0001,n+d); o.start(n); o.stop(n+d); }
-  _sfx(k){ if(this._soundOn===false) return; if(k==='caught'){ this._tone(620,0.09,'triangle',0.05); this._later(()=>this._tone(940,0.12,'triangle',0.05),55);} else if(k==='miss') this._tone(180,0.24,'sawtooth',0.05); else if(k==='whistle') this._tone(820,0.16,'sine',0.05); else if(k==='complete'){ this._tone(520,0.14,'triangle',0.05); this._later(()=>this._tone(760,0.2,'triangle',0.05),120);} }
+  _tone(f,d,t,g){ return;/*snd removed*/ const c=this._audio(); if(!c||this._soundOn===false) return; const o=c.createOscillator(),a=c.createGain(); o.type=t||'sine'; o.frequency.value=f; o.connect(a); a.connect(c.destination); const n=c.currentTime; a.gain.setValueAtTime(0,n); a.gain.linearRampToValueAtTime(g||0.05,n+0.01); a.gain.exponentialRampToValueAtTime(0.0001,n+d); o.start(n); o.stop(n+d); }
+  _sfx(k){ return;/*snd removed*/ if(this._soundOn===false) return; if(k==='caught'){ this._tone(620,0.09,'triangle',0.05); this._later(()=>this._tone(940,0.12,'triangle',0.05),55);} else if(k==='miss') this._tone(180,0.24,'sawtooth',0.05); else if(k==='whistle') this._tone(820,0.16,'sine',0.05); else if(k==='complete'){ this._tone(520,0.14,'triangle',0.05); this._later(()=>this._tone(760,0.2,'triangle',0.05),120);} }
   _toggleSound(){ const on=this._soundOn===false; this._soundOn=on; try{ localStorage.setItem('fa_sound', on?'1':'0'); }catch(e){} if(on){ this._audio(); this._tone(560,0.1,'triangle',0.05);} this.forceUpdate(); }
 
   _win(level){ const d=this.DIFF[this.state.diff]; return Math.max(d.min, Math.round(d.base - level*(d.base-d.min)/(this.N-1))); }

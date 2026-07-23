@@ -8,9 +8,7 @@
 <body>
 <x-dc>
 <helmet>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="assets/vendor/fonts/fonts.css" rel="stylesheet">
 <style>
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;background:#04060c;}
@@ -47,10 +45,6 @@
       <span style="font:600 9px 'IBM Plex Mono';letter-spacing:.16em;color:#5c6e85;border:1px solid rgba(120,140,166,.24);border-radius:6px;padding:3px 6px;">TRAINER</span>
     </div>
     <div style="display:flex;align-items:center;gap:12px;min-width:120px;justify-content:flex-end;">
-      <button onClick="{{ toggleSound }}" title="{{ soundTitle }}" style="display:grid;place-items:center;width:28px;height:28px;border-radius:8px;border:1px solid rgba(120,140,166,.24);background:rgba(10,16,28,.5);cursor:pointer;color:{{ soundColor }};">
-        <sc-if value="{{ soundOn }}" hint-placeholder-val="{{ true }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></sc-if>
-        <sc-if value="{{ soundOff }}" hint-placeholder-val="{{ false }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M22 9l-6 6M16 9l6 6"/></svg></sc-if>
-      </button>
     </div>
   </header>
 
@@ -194,8 +188,8 @@ class Component extends DCLogic {
   componentDidMount(){ try{ this._soundOn=localStorage.getItem('fa_sound')!=='0'; }catch(e){ this._soundOn=true; } this.forceUpdate(); }
 
   _audio(){ if(this._actx===undefined){ try{ this._actx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ this._actx=null; } } if(this._actx&&this._actx.state==='suspended') this._actx.resume(); return this._actx; }
-  _tone(f,d,t,g){ const c=this._audio(); if(!c||this._soundOn===false) return; const o=c.createOscillator(),a=c.createGain(); o.type=t||'sine'; o.frequency.value=f; o.connect(a); a.connect(c.destination); const n=c.currentTime; a.gain.setValueAtTime(0,n); a.gain.linearRampToValueAtTime(g||0.05,n+0.01); a.gain.exponentialRampToValueAtTime(0.0001,n+d); o.start(n); o.stop(n+d); }
-  _sfx(k){ if(this._soundOn===false) return; if(k==='pick'){ this._tone(540,0.08,'triangle',0.045); setTimeout(()=>this._tone(760,0.1,'triangle',0.04),45); } else if(k==='complete'){ this._tone(520,0.12,'triangle',0.05); setTimeout(()=>this._tone(700,0.12,'triangle',0.05),90); setTimeout(()=>this._tone(940,0.2,'triangle',0.05),180); } else if(k==='save'){ this._tone(600,0.14,'triangle',0.05); setTimeout(()=>this._tone(900,0.2,'triangle',0.05),110); } else if(k==='click'){ this._tone(430,0.08,'sine',0.04); } }
+  _tone(f,d,t,g){ return;/*snd removed*/ const c=this._audio(); if(!c||this._soundOn===false) return; const o=c.createOscillator(),a=c.createGain(); o.type=t||'sine'; o.frequency.value=f; o.connect(a); a.connect(c.destination); const n=c.currentTime; a.gain.setValueAtTime(0,n); a.gain.linearRampToValueAtTime(g||0.05,n+0.01); a.gain.exponentialRampToValueAtTime(0.0001,n+d); o.start(n); o.stop(n+d); }
+  _sfx(k){ return;/*snd removed*/ if(this._soundOn===false) return; if(k==='pick'){ this._tone(540,0.08,'triangle',0.045); setTimeout(()=>this._tone(760,0.1,'triangle',0.04),45); } else if(k==='complete'){ this._tone(520,0.12,'triangle',0.05); setTimeout(()=>this._tone(700,0.12,'triangle',0.05),90); setTimeout(()=>this._tone(940,0.2,'triangle',0.05),180); } else if(k==='save'){ this._tone(600,0.14,'triangle',0.05); setTimeout(()=>this._tone(900,0.2,'triangle',0.05),110); } else if(k==='click'){ this._tone(430,0.08,'sine',0.04); } }
   _toggleSound(){ const on=this._soundOn===false; this._soundOn=on; try{ localStorage.setItem('fa_sound', on?'1':'0'); }catch(e){} if(on){ this._audio(); this._sfx('click'); } this.forceUpdate(); }
 
   _start(){ this._sfx('click'); this.setState({ view:'build' }); }
