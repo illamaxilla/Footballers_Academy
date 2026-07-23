@@ -160,7 +160,7 @@
             <sc-for list="{{ profileBars }}" as="p" hint-placeholder-count="5">
               <div style="display:flex;flex-direction:column;gap:6px;">
                 <div style="display:flex;align-items:baseline;justify-content:space-between;">
-                  <span style="font:700 12.5px 'Archivo';color:{{ p.labelColor }};">{{ p.emoji }} {{ p.label }}</span>
+                  <span style="display:inline-flex;align-items:center;gap:8px;font:700 12.5px 'Archivo';color:{{ p.labelColor }};"><span style="width:9px;height:9px;border-radius:3px;background:{{ p.dot }};"></span>{{ p.label }}</span>
                   <span style="font:800 12.5px 'IBM Plex Mono';color:{{ p.numColor }};">{{ p.pct }}</span>
                 </div>
                 <div style="height:9px;border-radius:99px;background:rgba(120,140,166,.14);overflow:hidden;"><div style="height:100%;border-radius:99px;transform-origin:left;animation:fa-bar .8s cubic-bezier(.3,.8,.3,1) both;width:{{ p.barW }};{{ p.barLook }}"></div></div>
@@ -201,11 +201,11 @@
 class Component extends DCLogic {
   ORDER = ['ARTIST','GHOST','SPEEDSTER','PLAYMAKER','HYBRID'];
   ARCH = {
-    ARTIST:   { name:'The Artist',   emoji:'\uD83C\uDFA8', color:'#E0218A' },
-    GHOST:    { name:'The Ghost',    emoji:'\uD83D\uDC7B', color:'#C8CED6' },
-    SPEEDSTER:{ name:'The Speedster',emoji:'\u26A1',       color:'#2F6BFF' },
-    PLAYMAKER:{ name:'The Playmaker',emoji:'\uD83C\uDFAD', color:'#14B8A6' },
-    HYBRID:   { name:'The Hybrid',   emoji:'\uD83D\uDC51', color:'#22D3EE' },
+    ARTIST:   { name:'The Artist',   mono:'AR', color:'#E0218A' },
+    GHOST:    { name:'The Ghost',    mono:'GH', color:'#C8CED6' },
+    SPEEDSTER:{ name:'The Speedster',mono:'SP',       color:'#2F6BFF' },
+    PLAYMAKER:{ name:'The Playmaker',mono:'PL', color:'#14B8A6' },
+    HYBRID:   { name:'The Hybrid',   mono:'HY', color:'#22D3EE' },
   };
   TARGET = 20;
   MIN_SCORE = 6;
@@ -390,7 +390,7 @@ class Component extends DCLogic {
       const maxV=Math.max(...entries.map(e=>e[1]),0.0001);
       base.profileBars=entries.map(([id,v])=>{
         const isP=id===d.lead && d.total>0; const col=this.ARCH[id].color;
-        return { emoji:this.ARCH[id].emoji, label:this.ARCH[id].name, labelColor:isP?'#F2F8FE':'#9FB0C5',
+        return { dot:col, label:this.ARCH[id].name, labelColor:isP?'#F2F8FE':'#9FB0C5',
           numColor:isP?col:'#9FB0C5', pct:Math.round(v*100)+'%', barW:Math.round((v/maxV)*100)+'%',
           barLook:isP?('background:linear-gradient(90deg,'+col+',color-mix(in srgb,'+col+' 45%,transparent));box-shadow:0 0 12px color-mix(in srgb,'+col+' 55%,transparent);'):'background:rgba(140,160,186,.4);' };
       });

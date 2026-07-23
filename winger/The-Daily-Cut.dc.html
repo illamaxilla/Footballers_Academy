@@ -85,7 +85,7 @@
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
           <sc-for list="{{ options }}" as="opt" hint-placeholder-count="4">
             <button onClick="{{ opt.onPick }}" class="fa-in-sm" style="display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:15px 16px;border-radius:13px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);color:#EAF2FB;font:600 14px/1.35 'Archivo';cursor:pointer;transition:border-color .14s,background .14s,transform .14s;animation-delay:{{ opt.delay }};" style-hover="border-color:{{ opt.hover }};background:rgba(16,20,37,.82);transform:translateY(-2px);">
-              <span style="flex:0 0 auto;width:28px;height:28px;border-radius:8px;display:grid;place-items:center;border:1px solid {{ opt.dotBorder }};font:700 13px 'IBM Plex Mono';color:{{ opt.dot }};">{{ opt.emoji }}</span>
+              <span style="flex:0 0 auto;width:28px;height:28px;border-radius:8px;display:grid;place-items:center;border:1px solid {{ opt.dotBorder }};font:700 10px 'IBM Plex Mono';letter-spacing:.04em;color:{{ opt.dot }};">{{ opt.mono }}</span>
               <span style="flex:1;">{{ opt.text }}</span>
             </button>
           </sc-for>
@@ -111,7 +111,7 @@
             <sc-for list="{{ crowdBars }}" as="c" hint-placeholder-count="4">
               <div style="display:flex;flex-direction:column;gap:6px;">
                 <div style="display:flex;align-items:baseline;justify-content:space-between;">
-                  <span style="font:600 13px 'Archivo';color:{{ c.labelColor }};">{{ c.emoji }} {{ c.text }} <sc-if value="{{ c.mine }}" hint-placeholder-val="{{ false }}"><span style="font:700 9px 'IBM Plex Mono';letter-spacing:.1em;color:{{ c.col }};">&middot; YOUR CALL</span></sc-if></span>
+                  <span style="display:inline-flex;align-items:center;gap:8px;font:600 13px 'Archivo';color:{{ c.labelColor }};"><span style="width:9px;height:9px;border-radius:3px;background:{{ c.col }};"></span>{{ c.text }} <sc-if value="{{ c.mine }}" hint-placeholder-val="{{ false }}"><span style="font:700 9px 'IBM Plex Mono';letter-spacing:.1em;color:{{ c.col }};">&middot; YOUR CALL</span></sc-if></span>
                   <span style="font:800 12px 'IBM Plex Mono';color:{{ c.numColor }};">{{ c.pct }}</span>
                 </div>
                 <div style="height:9px;border-radius:99px;background:rgba(120,140,166,.14);overflow:hidden;"><div class="fa-bar" style="height:100%;border-radius:99px;transform-origin:left;animation:fa-bar .8s cubic-bezier(.3,.8,.3,1) both;width:{{ c.barW }};background:{{ c.barBg }};box-shadow:{{ c.glow }};"></div></div>
@@ -154,11 +154,11 @@
 class Component extends DCLogic {
   ORDER = ['artist','ghost','speedster','playmaker','hybrid'];
   ARCH = {
-    artist:   { short:'Artist',    emoji:'\uD83C\uDFA8', color:'#E0218A' },
-    ghost:    { short:'Ghost',     emoji:'\uD83D\uDC7B', color:'#C8CED6' },
-    speedster:{ short:'Speedster', emoji:'\u26A1',       color:'#2F6BFF' },
-    playmaker:{ short:'Playmaker', emoji:'\uD83C\uDFAD', color:'#14B8A6' },
-    hybrid:   { short:'Hybrid',    emoji:'\uD83D\uDC51', color:'#22D3EE' },
+    artist:   { short:'Artist',    mono:'AR', color:'#E0218A' },
+    ghost:    { short:'Ghost',     mono:'GH', color:'#C8CED6' },
+    speedster:{ short:'Speedster', mono:'SP',       color:'#2F6BFF' },
+    playmaker:{ short:'Playmaker', mono:'PL', color:'#14B8A6' },
+    hybrid:   { short:'Hybrid',    mono:'HY', color:'#22D3EE' },
   };
   LAY = {
     isoL:  { you:[14,40], mates:[[52,26],[64,42]], foes:[[24,34],[46,20],[60,20]], ball:[14,40] },
@@ -256,7 +256,7 @@ class Component extends DCLogic {
       isPressure:t.pressure, ringKey:'r'+this.state.ringKey,
       mates:lay.mates.map(pos), foes:lay.foes.map(pos), you:pos(lay.you), ball:pos(lay.ball),
       prompt:sc.prompt,
-      options: archs.map((a,i)=>{ const A=this.ARCH[a]; return { emoji:A.emoji, dot:A.color, dotBorder:'color-mix(in srgb,'+A.color+' 40%,transparent)', hover:'color-mix(in srgb,'+A.color+' 62%,transparent)', text:sc.opts[a], delay:(0.04+i*0.05).toFixed(2)+'s', onPick:()=>this._lock(a) }; }),
+      options: archs.map((a,i)=>{ const A=this.ARCH[a]; return { mono:A.mono, dot:A.color, dotBorder:'color-mix(in srgb,'+A.color+' 40%,transparent)', hover:'color-mix(in srgb,'+A.color+' 62%,transparent)', text:sc.opts[a], delay:(0.04+i*0.05).toFixed(2)+'s', onPick:()=>this._lock(a) }; }),
       showDev: this.props.demoNextDay===true,
       nextDay:()=>this._nextDay(),
     };
@@ -273,7 +273,7 @@ class Component extends DCLogic {
     base.crowdBars=[...archs].sort((a,b)=>(sc.crowd[b]||0)-(sc.crowd[a]||0)).map(a=>{
       const pc=Math.round((sc.crowd[a]||0)/total*100);
       const mine=a===chosen; const col=this.ARCH[a].color;
-      return { emoji:this.ARCH[a].emoji, text:sc.opts[a], mine, col, labelColor:mine?'#F2F8FE':'#9FB0C5', numColor:mine?col:'#9FB0C5',
+      return { text:sc.opts[a], mine, col, labelColor:mine?'#F2F8FE':'#9FB0C5', numColor:mine?col:'#9FB0C5',
         pct:pc+'%', barW:Math.round((sc.crowd[a]||0)/maxc*100)+'%',
         barBg: mine?('linear-gradient(90deg,'+col+',color-mix(in srgb,'+col+' 45%,transparent))'):'rgba(140,160,186,.32)',
         glow: mine?('0 0 10px color-mix(in srgb,'+col+' 50%,transparent)'):'none' };

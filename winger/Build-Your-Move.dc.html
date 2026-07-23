@@ -86,7 +86,7 @@
             <div style="display:flex;flex-wrap:wrap;gap:7px;">
               <sc-for list="{{ s.opts }}" as="o" hint-placeholder-count="4">
                 <button onClick="{{ o.onPick }}" style="display:inline-flex;align-items:center;gap:7px;padding:9px 12px;border-radius:10px;border:1px solid {{ o.border }};background:{{ o.bg }};color:{{ o.color }};font:600 12.5px 'Archivo';cursor:pointer;transition:border-color .14s,background .14s,transform .14s;" style-hover="transform:translateY(-1px);">
-                  <span style="font-size:14px;">{{ o.emoji }}</span>{{ o.text }}
+                  <span style="flex:0 0 auto;width:9px;height:9px;border-radius:3px;background:{{ o.dot }};"></span>{{ o.text }}
                 </button>
               </sc-for>
             </div>
@@ -99,7 +99,7 @@
         <div style="padding:20px 22px;border-radius:18px;border:1px solid {{ readBorder }};background:{{ readBg }};">
           <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:#61748c;margin-bottom:6px;">{{ readKicker }}</div>
           <div style="display:flex;align-items:center;gap:11px;margin-bottom:4px;">
-            <span style="font-size:30px;">{{ flavourEmoji }}</span>
+            <span style="flex:0 0 auto;width:44px;height:44px;border-radius:50%;border:2px solid {{ flavourColor }};background:color-mix(in srgb,{{ flavourColor }} 18%,transparent);display:grid;place-items:center;font:700 15px 'IBM Plex Mono';letter-spacing:.04em;color:{{ flavourColor }};">{{ flavourMono }}</span>
             <h2 style="margin:0;font:800 clamp(20px,2.6vw,28px)/1.05 'Archivo';letter-spacing:-0.02em;color:{{ flavourColor }};">{{ flavourName }}</h2>
           </div>
           <p style="margin:6px 0 0;font:500 13.5px/1.5 'Archivo';color:#C6D3E2;text-wrap:pretty;min-height:40px;">{{ flavourLine }}</p>
@@ -110,7 +110,7 @@
           <div style="display:flex;flex-direction:column;gap:10px;">
             <sc-for list="{{ blendBars }}" as="b" hint-placeholder-count="5">
               <div style="display:flex;align-items:center;gap:10px;">
-                <span style="flex:0 0 88px;font:600 11.5px 'Archivo';color:{{ b.labelColor }};">{{ b.emoji }} {{ b.label }}</span>
+                <span style="flex:0 0 88px;display:inline-flex;align-items:center;gap:8px;font:600 11.5px 'Archivo';color:{{ b.labelColor }};"><span style="width:9px;height:9px;border-radius:3px;background:{{ b.dot }};"></span>{{ b.label }}</span>
                 <div style="flex:1;height:8px;border-radius:99px;background:rgba(120,140,166,.14);overflow:hidden;"><div style="height:100%;border-radius:99px;width:{{ b.barW }};{{ b.barLook }};transition:width .4s cubic-bezier(.3,.8,.3,1);"></div></div>
               </div>
             </sc-for>
@@ -123,7 +123,7 @@
             <p style="margin:0 0 14px;font:500 13px/1.5 'Archivo';color:#EAF2FB;text-wrap:pretty;">{{ scoutNote }}</p>
             <label style="display:block;font:600 9px 'IBM Plex Mono';letter-spacing:.18em;color:#7688a0;margin-bottom:7px;">NAME YOUR MOVE</label>
             <input type="text" placeholder="{{ namePlaceholder }}" onInput="{{ onName }}" style="width:100%;padding:11px 13px;border-radius:10px;border:1px solid rgba(120,140,166,.3);background:rgba(4,8,14,.5);color:#F2F8FE;font:600 14px 'Archivo';outline:none;" />
-            <button onClick="{{ save }}" style="margin-top:11px;width:100%;display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:13px 20px;border-radius:11px;border:0;background:var(--accent,#22D3EE);color:#03121a;font:700 14px 'Archivo';cursor:pointer;transition:transform .16s ease;" style-hover="transform:translateY(-2px);">{{ saveLabel }}</button>
+            <button onClick="{{ save }}" style="margin-top:11px;width:100%;display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:13px 20px;border-radius:11px;border:0;background:var(--accent,#22D3EE);color:#03121a;font:700 14px 'Archivo';cursor:pointer;transition:transform .16s ease;" style-hover="transform:translateY(-2px);"><sc-if value="{{ savedTick }}" hint-placeholder-val="{{ false }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 13l4 4L19 7"/></svg></sc-if>{{ saveLabel }}</button>
           </div>
         </sc-if>
         <sc-if value="{{ notComplete }}" hint-placeholder-val="{{ true }}">
@@ -139,11 +139,11 @@
 class Component extends DCLogic {
   ORDER = ['artist','ghost','speedster','playmaker','hybrid'];
   ARCH = {
-    artist:   { short:'Artist',    emoji:'\uD83C\uDFA8', color:'#E0218A' },
-    ghost:    { short:'Ghost',     emoji:'\uD83D\uDC7B', color:'#C8CED6' },
-    speedster:{ short:'Speedster', emoji:'\u26A1',       color:'#2F6BFF' },
-    playmaker:{ short:'Playmaker', emoji:'\uD83C\uDFAD', color:'#14B8A6' },
-    hybrid:   { short:'Hybrid',    emoji:'\uD83D\uDC51', color:'#22D3EE' },
+    artist:   { short:'Artist',    mono:'AR', color:'#E0218A' },
+    ghost:    { short:'Ghost',     mono:'GH', color:'#C8CED6' },
+    speedster:{ short:'Speedster', mono:'SP',       color:'#2F6BFF' },
+    playmaker:{ short:'Playmaker', mono:'PL', color:'#14B8A6' },
+    hybrid:   { short:'Hybrid',    mono:'HY', color:'#22D3EE' },
   };
   FLAVOUR = {
     artist:{ name:'The Showman', line:'All about beating your man. When it comes off, nobody in the ground can look away.' },
@@ -154,30 +154,30 @@ class Component extends DCLogic {
   };
   SLOTS = [
     { key:'setup', title:'THE SETUP', opts:[
-      { id:'feet',     emoji:'\uD83E\uDDE6', text:'Come short to feet',        w:{playmaker:2,hybrid:1} },
-      { id:'shoulder', emoji:'\uD83C\uDFC3', text:'Stay on the last shoulder', w:{speedster:2,ghost:1} },
-      { id:'between',  emoji:'\uD83D\uDD73\uFE0F', text:'Drop between the lines', w:{ghost:2,playmaker:1} },
-      { id:'wide',     emoji:'\u2194\uFE0F', text:'Isolate the full-back wide', w:{artist:2,speedster:1} },
+      { id:'feet',     text:'Come short to feet',        w:{playmaker:2,hybrid:1} },
+      { id:'shoulder', text:'Stay on the last shoulder', w:{speedster:2,ghost:1} },
+      { id:'between',  text:'Drop between the lines', w:{ghost:2,playmaker:1} },
+      { id:'wide',     text:'Isolate the full-back wide', w:{artist:2,speedster:1} },
     ]},
     { key:'beat', title:'THE BEAT', opts:[
-      { id:'stepover', emoji:'\uD83C\uDFA8', text:'Stepover, go outside',  w:{artist:3} },
-      { id:'knock',    emoji:'\u26A1',       text:'Knock it past and sprint', w:{speedster:3} },
-      { id:'chop',     emoji:'\uD83D\uDD03', text:'Chop inside',           w:{ghost:2,artist:1} },
-      { id:'onetwo',   emoji:'\uD83C\uDFAD', text:'Quick one-two',         w:{playmaker:3} },
-      { id:'feint',    emoji:'\uD83D\uDC51', text:'Feint, wait for the gap', w:{hybrid:2,ghost:1} },
+      { id:'stepover', text:'Stepover, go outside',  w:{artist:3} },
+      { id:'knock',    text:'Knock it past and sprint', w:{speedster:3} },
+      { id:'chop',     text:'Chop inside',           w:{ghost:2,artist:1} },
+      { id:'onetwo',   text:'Quick one-two',         w:{playmaker:3} },
+      { id:'feint',    text:'Feint, wait for the gap', w:{hybrid:2,ghost:1} },
     ]},
     { key:'space', title:'THE SPACE', opts:[
-      { id:'byline',   emoji:'\uD83C\uDFA8', text:'Get to the byline',     w:{artist:2,speedster:1} },
-      { id:'backpost', emoji:'\uD83D\uDC7B', text:'Arrive at the back post', w:{ghost:3} },
-      { id:'halfspace',emoji:'\uD83C\uDFAD', text:'Overload the half-space', w:{playmaker:2,hybrid:1} },
-      { id:'behind',   emoji:'\u26A1',       text:'Break in behind',       w:{speedster:3} },
+      { id:'byline',   text:'Get to the byline',     w:{artist:2,speedster:1} },
+      { id:'backpost', text:'Arrive at the back post', w:{ghost:3} },
+      { id:'halfspace',text:'Overload the half-space', w:{playmaker:2,hybrid:1} },
+      { id:'behind',   text:'Break in behind',       w:{speedster:3} },
     ]},
     { key:'finish', title:'THE END PRODUCT', opts:[
-      { id:'earlycross',emoji:'\uD83C\uDFA8', text:'Whip the early cross', w:{artist:2,playmaker:1} },
-      { id:'cutback',  emoji:'\uD83C\uDFAD', text:'Cut it back',           w:{playmaker:3} },
-      { id:'farcorner',emoji:'\uD83D\uDC7B', text:'Bend it far corner',    w:{ghost:3} },
-      { id:'square',   emoji:'\u26A1',       text:'Square for the tap-in', w:{speedster:1,playmaker:2} },
-      { id:'keepalive',emoji:'\uD83D\uDC51', text:'Take a touch, keep it alive', w:{hybrid:3} },
+      { id:'earlycross',text:'Whip the early cross', w:{artist:2,playmaker:1} },
+      { id:'cutback',  text:'Cut it back',           w:{playmaker:3} },
+      { id:'farcorner',text:'Bend it far corner',    w:{ghost:3} },
+      { id:'square',   text:'Square for the tap-in', w:{speedster:1,playmaker:2} },
+      { id:'keepalive',text:'Take a touch, keep it alive', w:{hybrid:3} },
     ]},
   ];
   PRESETS = { setup:'wide', beat:'stepover', space:'byline', finish:'earlycross' };
@@ -248,7 +248,7 @@ class Component extends DCLogic {
         opts:s.opts.map(o=>{
           const sel=picked===o.id;
           const col=this._optColor(o);
-          return { emoji:o.emoji, text:o.text,
+          return { dot:col, text:o.text,
             border: sel?col:'rgba(120,140,166,.22)',
             bg: sel?('color-mix(in srgb,'+col+' 16%,transparent)'):'rgba(10,16,28,.5)',
             color: sel?'#F2F8FE':'#B4C2D4',
@@ -269,7 +269,7 @@ class Component extends DCLogic {
 
     base.blendBars=this.ORDER.map(id=>({ id, val:v[id] })).sort((a,b)=>b.val-a.val).map(({id,val})=>{
       const isP=any&&id===lead&&val>0; const col=this.ARCH[id].color;
-      return { emoji:this.ARCH[id].emoji, label:this.ARCH[id].short, labelColor:isP?'#F2F8FE':'#9FB0C5',
+      return { dot:col, label:this.ARCH[id].short, labelColor:isP?'#F2F8FE':'#9FB0C5',
         barW:(any?Math.round((val/max)*100):0)+'%',
         barLook:isP?('background:linear-gradient(90deg,'+col+',color-mix(in srgb,'+col+' 45%,transparent));box-shadow:0 0 10px color-mix(in srgb,'+col+' 50%,transparent)'):'background:rgba(140,160,186,.4)' };
     });
@@ -278,7 +278,7 @@ class Component extends DCLogic {
     if(any){
       const F=this.FLAVOUR[lead]; const col=this.ARCH[lead].color;
       base.readKicker= complete?'YOUR SIGNATURE':'FORMING\u2026';
-      base.flavourEmoji=this.ARCH[lead].emoji; base.flavourColor=col;
+      base.flavourMono=this.ARCH[lead].mono; base.flavourColor=col;
       base.readBorder='color-mix(in srgb,'+col+' 30%,transparent)'; base.readBg='color-mix(in srgb,'+col+' 6%,transparent)';
       const ratio = v[lead]>0 ? v[second]/v[lead] : 0;
       const blended = ratio>=0.7 && lead!=='hybrid' && second;
@@ -289,7 +289,7 @@ class Component extends DCLogic {
         base.flavourName=F.name; base.flavourLine=F.line;
       }
     } else {
-      base.readKicker='START PICKING'; base.flavourEmoji='\u2753'; base.flavourColor='#7688a0';
+      base.readKicker='START PICKING'; base.flavourMono='?'; base.flavourColor='#7688a0';
       base.flavourName='Undefined'; base.flavourLine='Pick a step to see your signature start to form.';
       base.readBorder='rgba(120,140,166,.2)'; base.readBg='rgba(10,16,28,.5)';
     }
@@ -308,8 +308,8 @@ class Component extends DCLogic {
         base.scoutNote='A balanced threat with a clear lean. Defenders know your first idea \u2014 but you\u2019ve always got a second one.';
       }
       base.namePlaceholder='e.g. \u201CThe '+base.flavourName.replace('The ','')+' Special\u201D';
-      base.saveLabel=this.state.saved?'\u2713 Saved to your locker':'Save this move';
-    } else { base.scoutNote=''; base.namePlaceholder=''; base.saveLabel='Save this move'; }
+      base.saveLabel=this.state.saved?'Saved to your locker':'Save this move'; base.savedTick=this.state.saved;
+    } else { base.scoutNote=''; base.namePlaceholder=''; base.saveLabel='Save this move'; base.savedTick=false; }
 
     return base;
   }
