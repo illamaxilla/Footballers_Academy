@@ -49,7 +49,7 @@
     <div style="display:flex;align-items:center;gap:12px;min-width:120px;justify-content:flex-end;">
       <sc-if value="{{ inPlay }}" hint-placeholder-val="{{ false }}">
         <span style="display:inline-flex;align-items:center;gap:6px;font:700 12px 'IBM Plex Mono';color:{{ streakColor }};">
-          <sc-if value="{{ onFire }}" hint-placeholder-val="{{ false }}"><span style="font-size:15px;display:inline-block;animation:fa-flame .7s ease-in-out infinite;">&#128293;</span></sc-if>
+          <sc-if value="{{ onFire }}" hint-placeholder-val="{{ false }}"><span style="width:7px;height:7px;border-radius:50%;background:{{ streakColor }};box-shadow:0 0 8px {{ streakColor }};display:inline-block;animation:fa-flame .7s ease-in-out infinite;"></span></sc-if>
           {{ streakLabel }}
         </span>
       </sc-if>
@@ -143,7 +143,7 @@
             <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.18em;color:#61748c;margin-top:5px;">READ LIKE THE PRO</div>
           </div>
           <div style="padding:18px 16px;border-radius:15px;border:1px solid rgba(120,140,166,.18);background:rgba(10,16,28,.4);text-align:center;">
-            <div style="font:800 30px 'IBM Plex Mono';color:#FFB020;">&#128293; {{ bestStreak }}</div>
+            <div style="font:800 30px 'IBM Plex Mono';color:#FFB020;">{{ bestStreak }}</div>
             <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.18em;color:#61748c;margin-top:5px;">BEST STREAK</div>
           </div>
         </div>
@@ -157,7 +157,7 @@
             <sc-for list="{{ fingerprint }}" as="s" hint-placeholder-count="5">
               <div style="display:flex;flex-direction:column;gap:6px;">
                 <div style="display:flex;align-items:baseline;justify-content:space-between;">
-                  <span style="font:700 12.5px 'Archivo';color:#E4EDF7;">{{ s.emoji }} {{ s.label }}</span>
+                  <span style="display:inline-flex;align-items:center;gap:8px;font:700 12.5px 'Archivo';color:#E4EDF7;"><span style="width:9px;height:9px;border-radius:3px;background:{{ s.col }};"></span>{{ s.label }}</span>
                   <span style="font:700 11px 'IBM Plex Mono';color:{{ s.col }};">{{ s.pctLabel }}</span>
                 </div>
                 <div style="position:relative;height:9px;border-radius:99px;background:rgba(120,140,166,.14);overflow:hidden;">
@@ -191,11 +191,11 @@
 class Component extends DCLogic {
   ORDER = ['engine','deliverer','sentinel','weaver','renegade'];
   ARCH = {
-    engine:{ short:'Engine', emoji:'\uD83D\uDD01', color:'#FF7A2F' },
-    deliverer:{ short:'Deliverer', emoji:'\uD83C\uDFF9', color:'#22C776' },
-    sentinel:{ short:'Sentinel', emoji:'\uD83D\uDEE1\uFE0F', color:'#D9A521' },
-    weaver:{ short:'Weaver', emoji:'\uD83E\uDDF5', color:'#22D3EE' },
-    renegade:{ short:'Renegade', emoji:'\uD83D\uDD25', color:'#F0359C' },
+    engine:{ short:'Engine', mono:'EN', color:'#FF7A2F' },
+    deliverer:{ short:'Deliverer', mono:'DE', color:'#22C776' },
+    sentinel:{ short:'Sentinel', mono:'SE', color:'#D9A521' },
+    weaver:{ short:'Weaver', mono:'WE', color:'#22D3EE' },
+    renegade:{ short:'Renegade', mono:'RE', color:'#F0359C' },
   };
 
   // wide-right oriented layouts (PRO near the right touchline)
@@ -312,8 +312,8 @@ class Component extends DCLogic {
         let border='rgba(120,140,166,.2)', bg='rgba(10,16,28,.5)', mark='ABCD'[i], markBorder='rgba(120,140,166,.28)', markColor='#9FB0C5', hover='border-color:color-mix(in srgb,'+accent+' 58%,transparent);background:rgba(16,20,37,.82);transform:translateY(-2px);', cursor='pointer';
         if(reveal){
           cursor='default'; hover='';
-          if(isCorrect){ border='color-mix(in srgb,#3BE07A 55%,transparent)'; bg='rgba(59,224,122,.1)'; mark='\u2713'; markBorder='#3BE07A'; markColor='#3BE07A'; }
-          else if(isYours){ border='color-mix(in srgb,#FF5A6E 55%,transparent)'; bg='rgba(255,90,110,.09)'; mark='\u2717'; markBorder='#FF5A6E'; markColor='#FF5A6E'; }
+          if(isCorrect){ border='color-mix(in srgb,#3BE07A 55%,transparent)'; bg='rgba(59,224,122,.1)'; mark=React.createElement('svg',{width:14,height:14,viewBox:'0 0 24 24',fill:'none',style:{stroke:'currentColor',strokeWidth:3,strokeLinecap:'round',strokeLinejoin:'round'}},React.createElement('path',{d:'M5 13l4 4L19 7'})); markBorder='#3BE07A'; markColor='#3BE07A'; }
+          else if(isYours){ border='color-mix(in srgb,#FF5A6E 55%,transparent)'; bg='rgba(255,90,110,.09)'; mark=React.createElement('svg',{width:14,height:14,viewBox:'0 0 24 24',fill:'none',style:{stroke:'currentColor',strokeWidth:3,strokeLinecap:'round',strokeLinejoin:'round'}},React.createElement('path',{d:'M6 6l12 12M18 6L6 18'})); markBorder='#FF5A6E'; markColor='#FF5A6E'; }
           else { bg='rgba(10,16,28,.35)'; }
         }
         return { text:clip.opts[a], mark, border, bg, markBorder, markColor, hover, cursor,
@@ -334,7 +334,7 @@ class Component extends DCLogic {
       base.iqSub = 'You matched the pro on '+r.right+' of 10'+(r.best>=4?(', with a best streak of '+r.best+' \u2014 seeing the move two seconds early is the wide player\u2019s gift.'):'. Reading the elite decision is trainable \u2014 the more you watch, the sharper it gets.');
       const maxSp=Math.max(...this.ORDER.map(a=>r.spread[a]),1);
       base.fingerprint=[...this.ORDER].sort((a,b)=>r.spread[b]-r.spread[a]).map(a=>({
-        emoji:this.ARCH[a].emoji, label:this.ARCH[a].short, col:this.ARCH[a].color, pctLabel:r.spread[a]+'%', w:Math.round(r.spread[a]/maxSp*100)+'%' }));
+        label:this.ARCH[a].short, col:this.ARCH[a].color, pctLabel:r.spread[a]+'%', w:Math.round(r.spread[a]/maxSp*100)+'%' }));
       const T=this.ARCH[r.top];
       base.leanColor=T.color;
       const pull={ engine:'the run and the graft, both ends', deliverer:'the ball into the box', sentinel:'shutting the flank down', weaver:'coming inside to combine', renegade:'taking your man on' }[r.top];

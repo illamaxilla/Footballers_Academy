@@ -80,7 +80,7 @@
 
   <sc-if value="{{ isHandoff }}" hint-placeholder-val="{{ false }}">
     <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;text-align:center;padding:20px clamp(26px,4vw,58px) 60px;">
-      <div class="fa-in-sm" style="display:grid;place-items:center;width:88px;height:88px;border-radius:22px;margin-bottom:22px;background:{{ handTint }};border:1px solid {{ handBorder }};font-size:40px;">{{ handEmoji }}</div>
+      <div class="fa-in-sm" style="display:grid;place-items:center;width:88px;height:88px;border-radius:22px;margin-bottom:22px;background:{{ handTint }};border:1px solid {{ handBorder }};font:800 26px 'IBM Plex Mono';letter-spacing:.08em;color:{{ handColor }};">{{ handMono }}</div>
       <div class="fa-in-sm" style="font:600 11px 'IBM Plex Mono';letter-spacing:.3em;color:{{ handColor }};margin-bottom:10px;animation-delay:.04s;">{{ handKicker }}</div>
       <h1 class="fa-in-sm" style="margin:0 0 12px;font:800 clamp(28px,4.4vw,50px)/1.02 'Archivo';letter-spacing:-0.02em;animation-delay:.08s;">{{ handTitle }}</h1>
       <p class="fa-in-sm" style="margin:0 0 30px;max-width:460px;font:400 15px/1.55 'Archivo';color:#9FB0C5;animation-delay:.12s;">{{ handSub }}</p>
@@ -100,7 +100,7 @@
       <div style="width:100%;max-width:560px;display:flex;flex-direction:column;gap:10px;">
         <sc-for list="{{ pickOptions }}" as="o" hint-placeholder-count="5">
           <button onClick="{{ o.onPick }}" class="fa-in-sm" style="display:flex;align-items:center;gap:14px;text-align:left;padding:15px 18px;border-radius:13px;border:1px solid {{ o.border }};background:rgba(10,16,28,.55);color:#EAF2FB;font:600 15px/1.3 'Archivo';cursor:pointer;transition:border-color .14s,background .14s,transform .14s;animation-delay:{{ o.delay }};" style-hover="border-color:{{ o.hover }};background:rgba(16,20,37,.85);transform:translateX(4px);">
-            <span style="flex:0 0 auto;width:34px;height:34px;border-radius:9px;display:grid;place-items:center;border:1px solid {{ o.dotBorder }};font-size:17px;">{{ o.emoji }}</span>
+            <span style="flex:0 0 auto;width:34px;height:34px;border-radius:9px;display:grid;place-items:center;border:1px solid {{ o.dotBorder }};background:color-mix(in srgb,{{ o.dot }} 14%,transparent);font:700 12px 'IBM Plex Mono';letter-spacing:.04em;color:{{ o.dot }};">{{ o.mono }}</span>
             <span style="flex:1;">{{ o.text }}</span>
             <span style="font:600 10px 'IBM Plex Mono';letter-spacing:.1em;color:#5c6e85;">{{ o.tag }}</span>
           </button>
@@ -118,13 +118,13 @@
         <div class="fa-in" style="display:flex;align-items:stretch;gap:12px;margin-bottom:20px;animation-delay:.08s;">
           <div style="flex:1;padding:18px 16px;border-radius:15px;border:1px solid {{ aCardBorder }};background:{{ aCardBg }};">
             <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.18em;color:#FF8A98;margin-bottom:10px;">ATTACKER PLAYED</div>
-            <div style="font-size:30px;margin-bottom:6px;">{{ aEmoji }}</div>
+            <div style="font:700 20px 'IBM Plex Mono';letter-spacing:.04em;margin-bottom:6px;color:{{ aColor }};">{{ aMono }}</div>
             <div style="font:700 14px 'Archivo';color:#F2F8FE;">{{ aText }}</div>
           </div>
           <div style="flex:0 0 auto;display:grid;place-items:center;font:800 16px 'IBM Plex Mono';color:#4f627a;">VS</div>
           <div style="flex:1;padding:18px 16px;border-radius:15px;border:1px solid {{ dCardBorder }};background:{{ dCardBg }};">
             <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.18em;color:#8FC0FF;margin-bottom:10px;">DEFENDER PLAYED</div>
-            <div style="font-size:30px;margin-bottom:6px;">{{ dEmoji }}</div>
+            <div style="font:700 20px 'IBM Plex Mono';letter-spacing:.04em;margin-bottom:6px;color:{{ dColor }};">{{ dMono }}</div>
             <div style="font:700 14px 'Archivo';color:#F2F8FE;">{{ dText }}</div>
           </div>
         </div>
@@ -150,7 +150,6 @@
     <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;text-align:center;padding:16px clamp(20px,4vw,58px) 72px;">
       <div style="width:100%;max-width:600px;">
         <div class="fa-in" style="font:600 11px 'IBM Plex Mono';letter-spacing:.38em;color:#7688a0;margin-bottom:10px;">FULL TIME</div>
-        <div class="fa-in" style="font-size:52px;margin-bottom:6px;animation-delay:.04s;">{{ winEmoji }}</div>
         <h1 class="fa-in" style="margin:0 0 8px;font:800 clamp(30px,4.6vw,54px)/1.0 'Archivo';letter-spacing:-0.025em;animation-delay:.06s;">{{ winTitle }}</h1>
         <p class="fa-in" style="margin:0 auto 24px;max-width:460px;font:400 15px/1.55 'Archivo';color:#B4C2D4;animation-delay:.1s;">{{ winSub }}</p>
 
@@ -166,7 +165,7 @@
             <sc-for list="{{ profileBars }}" as="p" hint-placeholder-count="5">
               <div style="display:flex;flex-direction:column;gap:6px;">
                 <div style="display:flex;align-items:baseline;justify-content:space-between;">
-                  <span style="font:700 12.5px 'Archivo';color:{{ p.labelColor }};">{{ p.emoji }} {{ p.label }}</span>
+                  <span style="display:inline-flex;align-items:center;gap:8px;font:700 12.5px 'Archivo';color:{{ p.labelColor }};"><span style="width:9px;height:9px;border-radius:3px;background:{{ p.dot }};"></span>{{ p.label }}</span>
                   <span style="font:800 12.5px 'IBM Plex Mono';color:{{ p.numColor }};">{{ p.count }}</span>
                 </div>
                 <div style="height:8px;border-radius:99px;background:rgba(120,140,166,.14);overflow:hidden;"><div style="height:100%;border-radius:99px;transform-origin:left;animation:fa-bar .8s cubic-bezier(.3,.8,.3,1) both;width:{{ p.barW }};{{ p.barLook }}"></div></div>
@@ -192,25 +191,25 @@
 class Component extends DCLogic {
   ORDER = ['engine','deliverer','sentinel','weaver','renegade'];
   ARCH = {
-    engine:   { short:'Engine',    emoji:'\uD83D\uDD01', color:'#FF7A2F' },
-    deliverer:{ short:'Deliverer', emoji:'\uD83C\uDFF9', color:'#22C776' },
-    sentinel: { short:'Sentinel',  emoji:'\uD83D\uDEE1\uFE0F', color:'#D9A521' },
-    weaver:   { short:'Weaver',    emoji:'\uD83E\uDDF5', color:'#22D3EE' },
-    renegade: { short:'Renegade',  emoji:'\uD83D\uDD25', color:'#F0359C' },
+    engine:   { short:'Engine',    mono:'EN', color:'#FF7A2F' },
+    deliverer:{ short:'Deliverer', mono:'DE', color:'#22C776' },
+    sentinel: { short:'Sentinel',  mono:'SE', color:'#D9A521' },
+    weaver:   { short:'Weaver',    mono:'WE', color:'#22D3EE' },
+    renegade: { short:'Renegade',  mono:'RE', color:'#F0359C' },
   };
   MOVES = [
-    { id:'renegade',  emoji:'\uD83D\uDD25', text:'Take him on \u2014 go outside', tag:'RENEGADE' },
-    { id:'weaver',    emoji:'\uD83E\uDDF5', text:'Cut inside into the pocket', tag:'WEAVER' },
-    { id:'engine',    emoji:'\uD83D\uDD01', text:'Knock it down the line and race', tag:'ENGINE' },
-    { id:'deliverer', emoji:'\uD83C\uDFF9', text:'Stand up an early cross', tag:'DELIVERER' },
-    { id:'sentinel',  emoji:'\uD83D\uDEE1\uFE0F', text:'Hold it up, wait for support', tag:'SENTINEL' },
+    { id:'renegade',  mono:'RE', text:'Take him on \u2014 go outside', tag:'RENEGADE' },
+    { id:'weaver',    mono:'WE', text:'Cut inside into the pocket', tag:'WEAVER' },
+    { id:'engine',    mono:'EN', text:'Knock it down the line and race', tag:'ENGINE' },
+    { id:'deliverer', mono:'DE', text:'Stand up an early cross', tag:'DELIVERER' },
+    { id:'sentinel',  mono:'SE', text:'Hold it up, wait for support', tag:'SENTINEL' },
   ];
   DEFS = [
-    { id:'dive',   emoji:'\uD83E\uDDB5', text:'Dive in \u2014 go to ground' },
-    { id:'jockey', emoji:'\uD83D\uDEA7', text:'Jockey and delay' },
-    { id:'outside',emoji:'\u2194\uFE0F', text:'Show him outside' },
-    { id:'inside', emoji:'\uD83D\uDD03', text:'Show him inside' },
-    { id:'drop',   emoji:'\uD83D\uDCC9', text:'Drop off, give ground' },
+    { id:'dive',   mono:'DV', text:'Dive in \u2014 go to ground' },
+    { id:'jockey', mono:'JK', text:'Jockey and delay' },
+    { id:'outside',mono:'OS', text:'Show him outside' },
+    { id:'inside', mono:'IN', text:'Show him inside' },
+    { id:'drop',   mono:'DR', text:'Drop off, give ground' },
   ];
   // outcome: 'beat' (attacker point) | 'stop' (defender point) | 'even'
   M = {
@@ -307,7 +306,7 @@ class Component extends DCLogic {
       border:sel?'color-mix(in srgb,'+accent+' 70%,transparent)':'rgba(120,140,166,.22)', bg:sel?'color-mix(in srgb,'+accent+' 15%,transparent)':'rgba(10,16,28,.5)', color:sel?'#F2F8FE':'#B4C2D4' }; });
 
     const toDef = ph==='toDefender';
-    base.handEmoji = toDef?'\uD83D\uDEE1\uFE0F':'\uD83D\uDC5F';
+    base.handMono = toDef?'DEF':'ATK';
     base.handColor = toDef?'#6ea8ff':'#FF5A6E';
     base.handTint = toDef?'rgba(110,168,255,.12)':'rgba(255,90,110,.12)';
     base.handBorder = toDef?'rgba(110,168,255,.4)':'rgba(255,90,110,.4)';
@@ -322,14 +321,14 @@ class Component extends DCLogic {
     base.pickTitle = atk?'What\u2019s your move?':'How do you stop him?';
     const src = atk?this.MOVES:this.DEFS;
     base.pickOptions = src.map((o,i)=>{ const col=atk?this.ARCH[o.id].color:'#6ea8ff';
-      return { emoji:o.emoji, text:o.text, tag:atk?o.tag:'', delay:(0.03+i*0.05).toFixed(2)+'s',
+      return { mono:o.mono, dot:col, text:o.text, tag:atk?o.tag:'', delay:(0.03+i*0.05).toFixed(2)+'s',
         border:'color-mix(in srgb,'+col+' 24%,transparent)', dotBorder:'color-mix(in srgb,'+col+' 40%,transparent)', hover:'color-mix(in srgb,'+col+' 62%,transparent)',
         onPick:()=>this._pick(o.id) }; });
 
     if(V==='reveal'){
       const a=this.state.moveA, d=this.state.moveD, out=this.M[a][d];
       const mv=this.MOVES.find(m=>m.id===a), df=this.DEFS.find(x=>x.id===d);
-      base.aEmoji=mv.emoji; base.aText=mv.text; base.dEmoji=df.emoji; base.dText=df.text;
+      base.aMono=mv.mono; base.aColor=this.ARCH[a].color; base.aText=mv.text; base.dMono=df.mono; base.dColor='#6ea8ff'; base.dText=df.text;
       base.outcomeText = out==='beat'?'BEATEN!':out==='stop'?'STOPPED!':'STALEMATE';
       base.outcomeColor = out==='beat'?'#FF5A6E':out==='stop'?'#6ea8ff':'#9FB0C5';
       base.outcomeNote = out==='even'?this.NOTES.even:this.NOTES[out][a];
@@ -340,18 +339,17 @@ class Component extends DCLogic {
       const need=this._needed();
       const matchOver = this.state.scoreA>=need || this.state.scoreD>=need || this.state.round>=this.state.rounds;
       base.nextLabel = matchOver?'Full time':'Next round';
-    } else { base.aEmoji='';base.aText='';base.dEmoji='';base.dText='';base.outcomeText='';base.outcomeColor=accent;base.outcomeNote='';base.aCardBorder='transparent';base.aCardBg='transparent';base.dCardBorder='transparent';base.dCardBg='transparent';base.nextLabel='Next round'; }
+    } else { base.aMono='';base.aColor='#9FB0C5';base.aText='';base.dMono='';base.dColor='#9FB0C5';base.dText='';base.outcomeText='';base.outcomeColor=accent;base.outcomeNote='';base.aCardBorder='transparent';base.aCardBg='transparent';base.dCardBorder='transparent';base.dCardBg='transparent';base.nextLabel='Next round'; }
 
-    Object.assign(base,{ winEmoji:'', winTitle:'', winSub:'', profileBars:[], dataLine:'' });
+    Object.assign(base,{ winTitle:'', winSub:'', profileBars:[], dataLine:'' });
     const m=this._meta;
     if(m && V==='results'){
       const aWon=m.scoreA>m.scoreD, draw=m.scoreA===m.scoreD;
-      base.winEmoji = draw?'\uD83E\uDD1D':aWon?'\u26BD':'\uD83D\uDEE1\uFE0F';
       base.winTitle = draw?'Honours even.':aWon?'The outside mid wins it.':'The full-back holds firm.';
       base.winSub = draw?'Neither of you could get the upper hand. Rematch to settle it.':aWon?'Beat your man more often than not \u2014 the flank belonged to the attacker.':'Read the wide man and shut him down. A full-back\u2019s masterclass.';
       const votes=m.votes; const maxV=Math.max(...Object.values(votes),1);
       base.profileBars=this.ORDER.map(id=>[id,votes[id]]).sort((a,b)=>b[1]-a[1]).map(([id,v],i)=>{ const isP=i===0&&v>0; const col=this.ARCH[id].color;
-        return { emoji:this.ARCH[id].emoji, label:this.ARCH[id].short, labelColor:isP?'#F2F8FE':'#9FB0C5', numColor:isP?col:'#9FB0C5',
+        return { dot:col, label:this.ARCH[id].short, labelColor:isP?'#F2F8FE':'#9FB0C5', numColor:isP?col:'#9FB0C5',
           count:String(v), barW:Math.round((v/maxV)*100)+'%',
           barLook:isP?('background:linear-gradient(90deg,'+col+',color-mix(in srgb,'+col+' 45%,transparent));box-shadow:0 0 12px color-mix(in srgb,'+col+' 55%,transparent);'):'background:rgba(140,160,186,.4);' }; });
       base.dataLine='2-PLAYER TOY \u00b7 WEIGHT 0 \u00b7 '+m.rounds+' ROUNDS \u00b7 '+m.beats+' TAKE-ONS WON';

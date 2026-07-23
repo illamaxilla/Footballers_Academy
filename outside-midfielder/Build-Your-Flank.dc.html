@@ -71,7 +71,7 @@
         <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
           <span style="font:600 10px 'IBM Plex Mono';letter-spacing:.2em;color:#8EA1B8;">FOUR STEPS &middot; ONE SIGNATURE</span>
           <div style="display:flex;gap:8px;">
-            <button onClick="{{ surprise }}" style="display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border-radius:9px;border:1px solid rgba(120,140,166,.24);background:rgba(10,16,28,.5);color:#B4C2D4;font:600 11px 'Archivo';cursor:pointer;" style-hover="border-color:color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);">&#127922; Surprise me</button>
+            <button onClick="{{ surprise }}" style="display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border-radius:9px;border:1px solid rgba(120,140,166,.24);background:rgba(10,16,28,.5);color:#B4C2D4;font:600 11px 'Archivo';cursor:pointer;" style-hover="border-color:color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);">Surprise me</button>
             <button onClick="{{ clear }}" style="padding:7px 12px;border-radius:9px;border:1px solid rgba(120,140,166,.24);background:rgba(10,16,28,.5);color:#8496ab;font:600 11px 'Archivo';cursor:pointer;" style-hover="color:#EAF2FB;">Clear</button>
           </div>
         </div>
@@ -85,7 +85,7 @@
             <div style="display:flex;flex-wrap:wrap;gap:7px;">
               <sc-for list="{{ s.opts }}" as="o" hint-placeholder-count="4">
                 <button onClick="{{ o.onPick }}" style="display:inline-flex;align-items:center;gap:7px;padding:9px 12px;border-radius:10px;border:1px solid {{ o.border }};background:{{ o.bg }};color:{{ o.color }};font:600 12.5px 'Archivo';cursor:pointer;transition:border-color .14s,background .14s,transform .14s;" style-hover="transform:translateY(-1px);">
-                  <span style="font-size:14px;">{{ o.emoji }}</span>{{ o.text }}
+                  <span style="width:9px;height:9px;border-radius:3px;background:{{ o.dot }};"></span>{{ o.text }}
                 </button>
               </sc-for>
             </div>
@@ -97,7 +97,7 @@
         <div style="padding:20px 22px;border-radius:18px;border:1px solid {{ readBorder }};background:{{ readBg }};">
           <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:#61748c;margin-bottom:6px;">{{ readKicker }}</div>
           <div style="display:flex;align-items:center;gap:11px;margin-bottom:4px;">
-            <span style="font-size:30px;">{{ flavourEmoji }}</span>
+            <div style="width:34px;height:34px;border-radius:9px;border:2px solid {{ flavourColor }};background:color-mix(in srgb,{{ flavourColor }} 18%,transparent);display:grid;place-items:center;font:700 12px 'IBM Plex Mono';letter-spacing:.04em;color:{{ flavourColor }};">{{ flavourMono }}</div>
             <h2 style="margin:0;font:800 clamp(20px,2.6vw,28px)/1.05 'Archivo';letter-spacing:-0.02em;color:{{ flavourColor }};">{{ flavourName }}</h2>
           </div>
           <p style="margin:6px 0 0;font:500 13.5px/1.5 'Archivo';color:#C6D3E2;text-wrap:pretty;min-height:40px;">{{ flavourLine }}</p>
@@ -108,7 +108,7 @@
           <div style="display:flex;flex-direction:column;gap:10px;">
             <sc-for list="{{ blendBars }}" as="b" hint-placeholder-count="5">
               <div style="display:flex;align-items:center;gap:10px;">
-                <span style="flex:0 0 96px;font:600 11.5px 'Archivo';color:{{ b.labelColor }};">{{ b.emoji }} {{ b.label }}</span>
+                <span style="flex:0 0 96px;display:inline-flex;align-items:center;gap:7px;font:600 11.5px 'Archivo';color:{{ b.labelColor }};"><span style="width:9px;height:9px;border-radius:3px;background:{{ b.dot }};"></span>{{ b.label }}</span>
                 <div style="flex:1;height:8px;border-radius:99px;background:rgba(120,140,166,.14);overflow:hidden;"><div style="height:100%;border-radius:99px;width:{{ b.barW }};{{ b.barLook }};transition:width .4s cubic-bezier(.3,.8,.3,1);"></div></div>
               </div>
             </sc-for>
@@ -137,11 +137,11 @@
 class Component extends DCLogic {
   ORDER = ['engine','deliverer','sentinel','weaver','renegade'];
   ARCH = {
-    engine:   { short:'Engine',    emoji:'\uD83D\uDD01', color:'#FF7A2F' },
-    deliverer:{ short:'Deliverer', emoji:'\uD83C\uDFF9', color:'#22C776' },
-    sentinel: { short:'Sentinel',  emoji:'\uD83D\uDEE1\uFE0F', color:'#D9A521' },
-    weaver:   { short:'Weaver',    emoji:'\uD83E\uDDF5', color:'#22D3EE' },
-    renegade: { short:'Renegade',  emoji:'\uD83D\uDD25', color:'#F0359C' },
+    engine:   { short:'Engine',    mono:'EN', color:'#FF7A2F' },
+    deliverer:{ short:'Deliverer', mono:'DE', color:'#22C776' },
+    sentinel: { short:'Sentinel',  mono:'SE', color:'#D9A521' },
+    weaver:   { short:'Weaver',    mono:'WE', color:'#22D3EE' },
+    renegade: { short:'Renegade',  mono:'RE', color:'#F0359C' },
   };
   FLAVOUR = {
     engine:   { name:'The Workhorse', line:'You own the whole lane \u2014 both ends, every minute. The move that never stops running.' },
@@ -152,32 +152,32 @@ class Component extends DCLogic {
   };
   SLOTS = [
     { key:'start', title:'THE START', opts:[
-      { id:'everywhere', emoji:'\uD83D\uDD01', text:'Show for it everywhere',        w:{engine:2,weaver:1} },
-      { id:'width',      emoji:'\uD83C\uDFF9', text:'Hold your width for the switch', w:{deliverer:2} },
-      { id:'winback',    emoji:'\uD83D\uDEE1\uFE0F', text:'Win it back off their winger', w:{sentinel:3} },
-      { id:'pocket',     emoji:'\uD83E\uDDF5', text:'Drop into the half-space',      w:{weaver:2,renegade:1} },
-      { id:'isolate',    emoji:'\uD83D\uDD25', text:'Demand it isolated, 1v1',       w:{renegade:2,deliverer:1} },
+      { id:'everywhere', text:'Show for it everywhere',        w:{engine:2,weaver:1} },
+      { id:'width',      text:'Hold your width for the switch', w:{deliverer:2} },
+      { id:'winback',    text:'Win it back off their winger', w:{sentinel:3} },
+      { id:'pocket',     text:'Drop into the half-space',      w:{weaver:2,renegade:1} },
+      { id:'isolate',    text:'Demand it isolated, 1v1',       w:{renegade:2,deliverer:1} },
     ]},
     { key:'move', title:'THE MOVE', opts:[
-      { id:'stepover', emoji:'\uD83D\uDD25', text:'Stepover, go outside',        w:{renegade:3} },
-      { id:'knock',    emoji:'\uD83D\uDD01', text:'Knock it past and race him',  w:{engine:2,renegade:1} },
-      { id:'chop',     emoji:'\uD83E\uDDF5', text:'Chop inside onto your foot',  w:{weaver:2,renegade:1} },
-      { id:'early',    emoji:'\uD83C\uDFF9', text:'No beat \u2014 hit it early', w:{deliverer:3} },
-      { id:'shield',   emoji:'\uD83D\uDEE1\uFE0F', text:'Shield it, lay it safe', w:{sentinel:3} },
+      { id:'stepover', text:'Stepover, go outside',        w:{renegade:3} },
+      { id:'knock',    text:'Knock it past and race him',  w:{engine:2,renegade:1} },
+      { id:'chop',     text:'Chop inside onto your foot',  w:{weaver:2,renegade:1} },
+      { id:'early',    text:'No beat \u2014 hit it early', w:{deliverer:3} },
+      { id:'shield',   text:'Shield it, lay it safe', w:{sentinel:3} },
     ]},
     { key:'space', title:'THE SPACE', opts:[
-      { id:'crossspot', emoji:'\uD83C\uDFF9', text:'Get to your crossing spot',   w:{deliverer:3} },
-      { id:'byline',    emoji:'\uD83D\uDD25', text:'Beat him to the byline',      w:{renegade:2,engine:1} },
-      { id:'halfspace', emoji:'\uD83E\uDDF5', text:'Link in the half-space',      w:{weaver:3} },
-      { id:'overlap',   emoji:'\uD83D\uDD01', text:'Overlap and cover both ends', w:{engine:2,deliverer:1} },
-      { id:'hold',      emoji:'\uD83D\uDEE1\uFE0F', text:'Hold shape, screen the counter', w:{sentinel:3} },
+      { id:'crossspot', text:'Get to your crossing spot',   w:{deliverer:3} },
+      { id:'byline',    text:'Beat him to the byline',      w:{renegade:2,engine:1} },
+      { id:'halfspace', text:'Link in the half-space',      w:{weaver:3} },
+      { id:'overlap',   text:'Overlap and cover both ends', w:{engine:2,deliverer:1} },
+      { id:'hold',      text:'Hold shape, screen the counter', w:{sentinel:3} },
     ]},
     { key:'finish', title:'THE END PRODUCT', opts:[
-      { id:'cross',    emoji:'\uD83C\uDFF9', text:'Whip the early cross',        w:{deliverer:3} },
-      { id:'cutback',  emoji:'\uD83E\uDDF5', text:'Cut it back to the spot',     w:{weaver:2,deliverer:1} },
-      { id:'beatshoot',emoji:'\uD83D\uDD25', text:'Beat the last man and go',    w:{renegade:3} },
-      { id:'backpost', emoji:'\uD83D\uDD01', text:'Arrive late at the back post', w:{engine:3} },
-      { id:'recycle',  emoji:'\uD83D\uDEE1\uFE0F', text:'Recycle it, kill the counter', w:{sentinel:2,weaver:1} },
+      { id:'cross',    text:'Whip the early cross',        w:{deliverer:3} },
+      { id:'cutback',  text:'Cut it back to the spot',     w:{weaver:2,deliverer:1} },
+      { id:'beatshoot',text:'Beat the last man and go',    w:{renegade:3} },
+      { id:'backpost', text:'Arrive late at the back post', w:{engine:3} },
+      { id:'recycle',  text:'Recycle it, kill the counter', w:{sentinel:2,weaver:1} },
     ]},
   ];
   PRESETS = { start:'isolate', move:'stepover', space:'byline', finish:'cross' };
@@ -247,7 +247,7 @@ class Component extends DCLogic {
         opts:s.opts.map(o=>{
           const sel=picked===o.id;
           const col=this._optColor(o);
-          return { emoji:o.emoji, text:o.text,
+          return { dot:col, text:o.text,
             border: sel?col:'rgba(120,140,166,.22)',
             bg: sel?('color-mix(in srgb,'+col+' 16%,transparent)'):'rgba(10,16,28,.5)',
             color: sel?'#F2F8FE':'#B4C2D4',
@@ -267,7 +267,7 @@ class Component extends DCLogic {
 
     base.blendBars=this.ORDER.map(id=>({ id, val:v[id] })).sort((a,b)=>b.val-a.val).map(({id,val})=>{
       const isP=any&&id===lead&&val>0; const col=this.ARCH[id].color;
-      return { emoji:this.ARCH[id].emoji, label:this.ARCH[id].short, labelColor:isP?'#F2F8FE':'#9FB0C5',
+      return { dot:col, label:this.ARCH[id].short, labelColor:isP?'#F2F8FE':'#9FB0C5',
         barW:(any?Math.round((val/max)*100):0)+'%',
         barLook:isP?('background:linear-gradient(90deg,'+col+',color-mix(in srgb,'+col+' 45%,transparent));box-shadow:0 0 10px color-mix(in srgb,'+col+' 50%,transparent)'):'background:rgba(140,160,186,.4)' };
     });
@@ -275,7 +275,7 @@ class Component extends DCLogic {
     if(any){
       const F=this.FLAVOUR[lead]; const col=this.ARCH[lead].color;
       base.readKicker= complete?'YOUR SIGNATURE':'FORMING\u2026';
-      base.flavourEmoji=this.ARCH[lead].emoji; base.flavourColor=col;
+      base.flavourMono=this.ARCH[lead].mono; base.flavourColor=col;
       base.readBorder='color-mix(in srgb,'+col+' 30%,transparent)'; base.readBg='color-mix(in srgb,'+col+' 6%,transparent)';
       const ratio = v[lead]>0 ? v[second]/v[lead] : 0;
       const blended = ratio>=0.7 && second && v[second]>0;
@@ -286,7 +286,7 @@ class Component extends DCLogic {
         base.flavourName=F.name; base.flavourLine=F.line;
       }
     } else {
-      base.readKicker='START PICKING'; base.flavourEmoji='\u2753'; base.flavourColor='#7688a0';
+      base.readKicker='START PICKING'; base.flavourMono='?'; base.flavourColor='#7688a0';
       base.flavourName='Undefined'; base.flavourLine='Pick a step to see your signature start to form.';
       base.readBorder='rgba(120,140,166,.2)'; base.readBg='rgba(10,16,28,.5)';
     }
@@ -304,7 +304,7 @@ class Component extends DCLogic {
         base.scoutNote='A balanced threat with a clear lean. Defenders know your first idea \u2014 but you\u2019ve always got a second one.';
       }
       base.namePlaceholder='e.g. \u201CThe '+base.flavourName.replace('The ','')+' Special\u201D';
-      base.saveLabel=this.state.saved?'\u2713 Saved to your locker':'Save this move';
+      base.saveLabel=this.state.saved?'Saved to your locker':'Save this move';
     } else { base.scoutNote=''; base.namePlaceholder=''; base.saveLabel='Save this move'; }
 
     return base;

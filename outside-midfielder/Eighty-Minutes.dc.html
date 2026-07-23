@@ -185,7 +185,7 @@
             <sc-for list="{{ fingerprint }}" as="f" hint-placeholder-count="5">
               <div style="display:flex;flex-direction:column;gap:5px;">
                 <div style="display:flex;align-items:baseline;justify-content:space-between;">
-                  <span style="font:700 12.5px 'Archivo';color:{{ f.labelColor }};">{{ f.emoji }} {{ f.label }}</span>
+                  <span style="display:inline-flex;align-items:center;gap:8px;font:700 12.5px 'Archivo';color:{{ f.labelColor }};"><span style="width:9px;height:9px;border-radius:3px;background:{{ f.dot }};"></span>{{ f.label }}</span>
                   <span style="font:800 12px 'IBM Plex Mono';color:{{ f.numColor }};">{{ f.pct }}</span>
                 </div>
                 <div style="height:8px;border-radius:99px;background:rgba(120,140,166,.14);overflow:hidden;"><div style="height:100%;border-radius:99px;width:{{ f.barW }};transform-origin:left;animation:fa-bar .7s cubic-bezier(.3,.8,.3,1) both;{{ f.barLook }}"></div></div>
@@ -216,11 +216,11 @@
 class Component extends DCLogic {
   // canonical actions (opaque mapping — never shown to the player during play)
   ACT = {
-    engine:   { label:'Engine',    emoji:'\uD83D\uDD01', color:'#FF7A2F' },
-    deliverer:{ label:'Deliverer', emoji:'\uD83C\uDFF9', color:'#22C776' },
-    sentinel: { label:'Sentinel',  emoji:'\uD83D\uDEE1\uFE0F', color:'#D9A521' },
-    weaver:   { label:'Weaver',    emoji:'\uD83E\uDDF5', color:'#22D3EE' },
-    renegade: { label:'Renegade',  emoji:'\uD83D\uDD25', color:'#F0359C' },
+    engine:   { label:'Engine',    mono:'EN', color:'#FF7A2F' },
+    deliverer:{ label:'Deliverer', mono:'DE', color:'#22C776' },
+    sentinel: { label:'Sentinel',  mono:'SE', color:'#D9A521' },
+    weaver:   { label:'Weaver',    mono:'WE', color:'#22D3EE' },
+    renegade: { label:'Renegade',  mono:'RE', color:'#F0359C' },
   };
   ORDER = ['engine','deliverer','sentinel','weaver','renegade'];
 
@@ -416,7 +416,7 @@ class Component extends DCLogic {
     const max=Math.max(...entries.map(e=>e[1]),1);
     const top=entries[0][0];
     return { bars:entries.map(([a,v])=>{ const A=this.ACT[a]; const isT=a===top&&v>0; const pct= total?Math.round(v/total*100):0;
-      return { emoji:A.emoji, label:A.label, pct:pct+'%', barW:Math.round(v/max*100)+'%',
+      return { dot:A.color, label:A.label, pct:pct+'%', barW:Math.round(v/max*100)+'%',
         labelColor:isT?'#F2F8FE':'#9FB0C5', numColor:isT?A.color:'#9FB0C5',
         barLook:v>0?('background:linear-gradient(90deg,'+A.color+',color-mix(in srgb,'+A.color+' 45%,transparent));box-shadow:0 0 10px color-mix(in srgb,'+A.color+' 50%,transparent);'):'background:rgba(140,160,186,.28);' }; }), top };
   }
@@ -429,7 +429,7 @@ class Component extends DCLogic {
     if(eff<=-0.6) return "As your legs went, you pulled your efforts in \u2014 shorter, safer, more disciplined. That's a Sentinel's late game: protect what you have.";
     if(eff>=0.6) return "Your legs emptied and you kept picking the hard, high-effort action anyway. That refusal to hide is an Engine's signature \u2014 or a Renegade who won't be caged.";
     const A=this.ACT[lateTop[0]];
-    return "Late on you leaned into "+A.label+"-type choices "+A.emoji+" \u2014 when tired, that's the instinct you fall back on. Notice it; it's the truest read in the game.";
+    return "Late on you leaned into "+A.label+"-type choices \u2014 when tired, that's the instinct you fall back on. Notice it; it's the truest read in the game.";
   }
 
   _soft(meta){

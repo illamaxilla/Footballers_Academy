@@ -71,7 +71,6 @@
 
   <sc-if value="{{ isRaterIntro }}" hint-placeholder-val="{{ false }}">
     <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;text-align:center;padding:20px clamp(26px,4vw,58px) 60px;">
-      <div class="fa-in" style="font-size:44px;margin-bottom:12px;">&#128101;</div>
       <h1 class="fa-in" style="margin:0 0 14px;font:800 clamp(30px,4.4vw,54px)/1.02 'Archivo';letter-spacing:-0.025em;max-width:700px;text-wrap:balance;animation-delay:.06s;">You&rsquo;re rating this player.</h1>
       <p class="fa-in" style="margin:0 0 30px;max-width:560px;font:400 15px/1.6 'Archivo';color:#B4C2D4;text-wrap:pretty;animation-delay:.12s;">Six quick questions about the wide midfielder who handed you this. Answer for the player you actually watch &mdash; not the one they wish they were. Honest is more useful than kind.</p>
       <button onClick="{{ raterStart }}" class="fa-in" style="display:inline-flex;align-items:center;gap:11px;padding:16px 36px;border-radius:12px;border:0;background:var(--accent,#22D3EE);color:#04060c;font:700 15px 'Archivo';cursor:pointer;box-shadow:0 14px 40px color-mix(in srgb,var(--accent,#22D3EE) 40%,transparent);transition:transform .16s ease;animation-delay:.18s;" style-hover="transform:translateY(-2px);">
@@ -133,7 +132,7 @@
             <sc-for list="{{ coachBars }}" as="p" hint-placeholder-count="5">
               <div style="display:flex;flex-direction:column;gap:5px;">
                 <div style="display:flex;align-items:baseline;justify-content:space-between;">
-                  <span style="font:700 12px 'Archivo';color:{{ p.labelColor }};">{{ p.emoji }} {{ p.label }}</span>
+                  <span style="display:inline-flex;align-items:center;gap:8px;font:700 12px 'Archivo';color:{{ p.labelColor }};"><span style="width:9px;height:9px;border-radius:3px;background:{{ p.dot }};"></span>{{ p.label }}</span>
                   <span style="font:800 12px 'IBM Plex Mono';color:{{ p.numColor }};">{{ p.pct }}</span>
                 </div>
                 <div style="height:8px;border-radius:99px;background:rgba(120,140,166,.14);overflow:hidden;"><div style="height:100%;border-radius:99px;width:{{ p.barW }};{{ p.barLook }}"></div></div>
@@ -159,11 +158,11 @@
 class Component extends DCLogic {
   ORDER = ['engine','deliverer','sentinel','weaver','renegade'];
   ARCH = {
-    engine:{ name:'The Engine', emoji:'\uD83D\uDD01', color:'#FF7A2F' },
-    deliverer:{ name:'The Deliverer', emoji:'\uD83C\uDFF9', color:'#22C776' },
-    sentinel:{ name:'The Sentinel', emoji:'\uD83D\uDEE1\uFE0F', color:'#D9A521' },
-    weaver:{ name:'The Weaver', emoji:'\uD83E\uDDF5', color:'#22D3EE' },
-    renegade:{ name:'The Renegade', emoji:'\uD83D\uDD25', color:'#F0359C' },
+    engine:{ name:'The Engine', mono:'EN', color:'#FF7A2F' },
+    deliverer:{ name:'The Deliverer', mono:'DE', color:'#22C776' },
+    sentinel:{ name:'The Sentinel', mono:'SE', color:'#D9A521' },
+    weaver:{ name:'The Weaver', mono:'WE', color:'#22D3EE' },
+    renegade:{ name:'The Renegade', mono:'RE', color:'#F0359C' },
   };
 
   Q = [
@@ -312,7 +311,7 @@ class Component extends DCLogic {
     };
 
     const self=this.state.self;
-    base.selfLine = self ? ('Your scan says you\u2019re '+this.ARCH[self].name+' '+this.ARCH[self].emoji+'. Let\u2019s see if they agree.') : 'You haven\u2019t run the scan yet \u2014 you can still get their read, then compare it later.';
+    base.selfLine = self ? ('Your scan says you\u2019re '+this.ARCH[self].name+'. Let\u2019s see if they agree.') : 'You haven\u2019t run the scan yet \u2014 you can still get their read, then compare it later.';
 
     const qi=this.state.qIndex, q=this.Q[qi]||this.Q[0];
     base.qNumLabel='Q'+(qi+1)+' / 6';
@@ -329,7 +328,7 @@ class Component extends DCLogic {
       const hasSelf=!!self; const agree=hasSelf&&self===coach;
       base.coachEmblem=this._emblem(coach,C.color,48); base.coachName=C.name; base.coachColor=C.color; base.coachBorder='color-mix(in srgb,'+C.color+' 45%,transparent)';
       if(hasSelf){ const S=this.ARCH[self]; base.selfEmblem=this._emblem(self,S.color,48); base.selfName=S.name; base.selfColor=S.color; base.selfBorder='color-mix(in srgb,'+S.color+' 45%,transparent)'; }
-      else { base.selfEmblem=React.createElement('div',{style:{fontSize:'38px',lineHeight:1}},'\u2753'); base.selfName='Not scanned'; base.selfColor='#61748c'; }
+      else { base.selfEmblem=React.createElement('div',{style:{fontSize:'34px',lineHeight:1,fontFamily:"'IBM Plex Mono',monospace",color:'#61748c'}},'?'); base.selfName='Not scanned'; base.selfColor='#61748c'; }
       base.cmpKicker=hasSelf?(agree?'THEY AGREE':'THE GAP'):'THEIR READ';
       base.cmpTitle = !hasSelf ? ('They see '+C.name+'.')
         : agree ? ('You both see '+C.name+'.')
@@ -348,7 +347,7 @@ class Component extends DCLogic {
       const maxV=Math.max(...entries.map(e=>e[1]),1);
       base.coachBars=entries.map(([id,v])=>{
         const isP=id===coach; const col=this.ARCH[id].color;
-        return { emoji:this.ARCH[id].emoji, label:this.ARCH[id].name, labelColor:isP?'#F2F8FE':'#9FB0C5',
+        return { dot:col, label:this.ARCH[id].name, labelColor:isP?'#F2F8FE':'#9FB0C5',
           numColor:isP?col:'#9FB0C5', pct:Math.round((v/total)*100)+'%', barW:Math.round((v/maxV)*100)+'%',
           barLook:isP?('background:linear-gradient(90deg,'+col+',color-mix(in srgb,'+col+' 45%,transparent));box-shadow:0 0 10px color-mix(in srgb,'+col+' 50%,transparent);'):'background:rgba(140,160,186,.4);' };
       });

@@ -186,7 +186,7 @@
             <sc-for list="{{ spreadBars }}" as="s" hint-placeholder-count="5">
               <div style="display:flex;flex-direction:column;gap:6px;">
                 <div style="display:flex;align-items:baseline;justify-content:space-between;">
-                  <span style="font:700 12.5px 'Archivo';color:{{ s.labelColor }};">{{ s.emoji }} {{ s.label }}</span>
+                  <span style="display:inline-flex;align-items:center;gap:8px;font:700 12.5px 'Archivo';color:{{ s.labelColor }};"><span style="width:9px;height:9px;border-radius:3px;background:{{ s.dot }};"></span>{{ s.label }}</span>
                   <span style="font:800 13px 'IBM Plex Mono';color:{{ s.numColor }};">{{ s.pct }}</span>
                 </div>
                 <div style="height:9px;border-radius:99px;background:rgba(120,140,166,.14);overflow:hidden;"><div style="height:100%;border-radius:99px;transform-origin:left;animation:fa-bar .8s cubic-bezier(.3,.8,.3,1) both;width:{{ s.barW }};{{ s.barLook }}"></div></div>
@@ -265,50 +265,50 @@ class Component extends DCLogic {
   DIST = { engine:30, deliverer:20, sentinel:16, weaver:22, renegade:12 };
 
   ARCH = {
-    engine:{ name:'The Engine', tagline:'The Flank Workhorse', identity:'You own the whole lane.', emoji:'\uD83D\uDD01', color:'#FF7A2F',
+    engine:{ name:'The Engine', tagline:'The Flank Workhorse', identity:'You own the whole lane.', mono:'EN', color:'#FF7A2F',
       reflect:"You don't need the credit. You need the flank to hold \u2014 and it holds because you're still running when everyone else has stopped.",
       isYou:"You own the entire lane. You track their full-back to your own corner flag and arrive in their box four seconds later. You're not the best crosser or the best dribbler \u2014 you're the one the manager never has to worry about, and that is the rarest currency in football. Fans forget your name. Managers build teams around you. You win things.",
       strengths:['Two-phase endurance','Positional discipline','Total reliability'],
       playLike:'Park Ji-sung \u00b7 James Milner \u00b7 Dirk Kuyt',
       edge:"One standout weapon \u2014 a delivery or a duel you're genuinely elite at \u2014 so you're not only trusted, but decisive.",
       firstStep:"Next game, track every opposition run down your flank and get into their box on every attack. Count both numbers. Nobody else in your team will do both.",
-      share:'I\u2019m The Engine \u26bd \u2014 I own the whole flank. Both ends. Which outside midfielder are you?' },
+      share:'I\u2019m The Engine \u2014 I own the whole flank. Both ends. Which outside midfielder are you?' },
 
-    deliverer:{ name:'The Deliverer', tagline:'The Touchline Craftsman', identity:'You go around the problem.', emoji:'\uD83C\uDFF9', color:'#22C776',
+    deliverer:{ name:'The Deliverer', tagline:'The Touchline Craftsman', identity:'You go around the problem.', mono:'DE', color:'#22C776',
       reflect:"You don't need to beat him. You need one yard \u2014 and one yard is always there.",
       isYou:"The craftsman. You don't go past defenders, you go around the problem. Hug the touchline, manufacture half a yard, and put the ball on a striker's head from forty metres. Your weapon isn't your body \u2014 it's the flight of the ball. And it doesn't age.",
       strengths:['Elite crossing & set pieces','Switch of play','Reading the striker\u2019s run'],
       playLike:'David Beckham \u00b7 Ashley Young \u00b7 Dwight McNeil',
       edge:"The 1v1 \u2014 solving it and defending it \u2014 so a system can't neutralise you simply by denying you space.",
       firstStep:"Take 50 crosses from your exact match position, to a target. Then in your next game, count how many of your deliveries actually reached the danger zone. That number, not the assists, is your scorecard.",
-      share:'I\u2019m The Deliverer \u26bd \u2014 I don\u2019t beat you, I go around you. Which outside midfielder are you?' },
+      share:'I\u2019m The Deliverer \u2014 I don\u2019t beat you, I go around you. Which outside midfielder are you?' },
 
-    sentinel:{ name:'The Sentinel', tagline:'The Flank Guardian', identity:'Nothing comes down your side.', emoji:'\uD83D\uDEE1\uFE0F', color:'#D9A521',
+    sentinel:{ name:'The Sentinel', tagline:'The Flank Guardian', identity:'Nothing comes down your side.', mono:'SE', color:'#D9A521',
       reflect:"Nothing comes down your side. That's the whole job \u2014 and you're genuinely at peace with that.",
       isYou:"The flank guardian. You're not out there to cross. You're out there to make sure their best attacker has a miserable ninety minutes. Your stat line looks like nothing \u2014 and their stat line is the reason why. You're the only player on the pitch measured by what didn't happen.",
       strengths:['Elite 1v1 defending','Anticipation of the overlap','Compactness & obedience'],
       playLike:'Blaise Matuidi \u00b7 Koke \u00b7 Sa\u00fal \u00d1\u00edguez',
       edge:"Attacking output \u2014 so a manager never has to trade a flank of the pitch to use you.",
       firstStep:"Pick their most dangerous wide attacker. Make his game a nightmare. Then look at his stat line, not yours.",
-      share:'I\u2019m The Sentinel \u26bd \u2014 nothing comes down my side. Which outside midfielder are you?' },
+      share:'I\u2019m The Sentinel \u2014 nothing comes down my side. Which outside midfielder are you?' },
 
-    weaver:{ name:'The Weaver', tagline:'The Half-Space Connector', identity:'You play in the gap.', emoji:'\uD83E\uDDF5', color:'#22D3EE',
+    weaver:{ name:'The Weaver', tagline:'The Half-Space Connector', identity:'You play in the gap.', mono:'WE', color:'#22D3EE',
       reflect:"The touchline is a wall to you. You'd rather play in the gap beside it \u2014 and let someone else run outside.",
       isYou:"The connector. You refuse to stay wide. You drift into the half-space, receive on the half-turn, and combine \u2014 and by vacating the touchline you turn a flat bank of four into something far more dangerous than a flat bank of four. You're the reason your full-back has a career.",
       strengths:['First touch & press resistance','Half-space occupation','Short combination passing'],
       playLike:'Steven Pienaar \u00b7 Robert Pir\u00e8s \u00b7 Bernardo Silva',
       edge:"End product \u2014 so all that connection finishes in goals, not just in beautiful moves.",
       firstStep:"Before the game, agree one rule with your full-back: when you come inside, he goes outside. Then count your combinations with him. Eight is good. Fifteen is elite.",
-      share:'I\u2019m The Weaver \u26bd \u2014 I play in the gap. Which outside midfielder are you?' },
+      share:'I\u2019m The Weaver \u2014 I play in the gap. Which outside midfielder are you?' },
 
-    renegade:{ name:'The Renegade', tagline:'The Caged Flair Player', identity:'You do the running and the magic.', emoji:'\uD83D\uDD25', color:'#F0359C',
+    renegade:{ name:'The Renegade', tagline:'The Caged Flair Player', identity:'You do the running and the magic.', mono:'RE', color:'#F0359C',
       reflect:"They put you back here to defend. Fine \u2014 you'll defend. And then you'll take him on anyway.",
       isYou:"A winger's soul in a midfielder's job. You're the most gifted player on the pitch, and they've put you in the bank of four because they need a body there \u2014 so you have to do the running and the magic. A winger is allowed to be a luxury. You are not allowed anything. You earn your freedom every single week. And you have the highest ceiling of anyone in this position.",
       strengths:['Dribbling & take-ons','Acceleration & disguise','Match-winning moments'],
       playLike:'Ryan Giggs \u00b7 Marc Overmars \u00b7 Damien Duff',
       edge:"Your lungs. This is the whole story of your career. The Renegade who builds an Engine's endurance becomes one of the best players in the world. The one who doesn't gets exposed at minute seventy. Nothing else you develop matters as much as this.",
       firstStep:"Do the defensive job for the full ninety \u2014 every tracking run, every recovery \u2014 and then take him on. That's the bargain. Giggs took it and won thirteen titles.",
-      share:'I\u2019m The Renegade \u26bd \u2014 I do the running AND the magic. Which outside midfielder are you?' },
+      share:'I\u2019m The Renegade \u2014 I do the running AND the magic. Which outside midfielder are you?' },
   };
 
   // short clause per archetype, used to compose hybrid / secondary lines
@@ -604,7 +604,7 @@ class Component extends DCLogic {
       const maxV=Math.max(...entries.map(e=>e[1]),1);
       base.spreadBars=entries.map(([id,v])=>{
         const isP=id===r.primary; const col=this.ARCH[id].color;
-        return { emoji:this.ARCH[id].emoji, label:short(id),
+        return { dot:col, label:short(id),
           labelColor:isP?'#F2F8FE':'#9FB0C5', numColor:isP?col:'#9FB0C5',
           pct:v.toFixed(1)+'%', barW:Math.round((v/maxV)*100)+'%',
           barLook:isP?('background:linear-gradient(90deg,'+col+',color-mix(in srgb,'+col+' 45%,transparent));box-shadow:0 0 12px color-mix(in srgb,'+col+' 55%,transparent);'):'background:rgba(140,160,186,.4);' };
