@@ -20,6 +20,8 @@
   @keyframes sb-blink{0%,100%{opacity:1;}50%{opacity:.3;}}
   @keyframes sb-bars{0%,100%{transform:scaleY(.4);}50%{transform:scaleY(1);}}
   @keyframes sb-arc{0%{opacity:.25;}50%{opacity:1;}100%{opacity:.25;}}
+  @keyframes sb-shock{0%{transform:scale(.16);opacity:0;}14%{opacity:.7;}100%{transform:scale(1);opacity:0;}}
+  @keyframes sb-corepulse{0%,100%{opacity:.35;transform:scale(.7);}50%{opacity:.9;transform:scale(1.1);}}
   @keyframes sb-fade{from{opacity:0;}to{opacity:1;}}
   @keyframes sb-barfill{from{transform:scaleX(0);}to{transform:scaleX(1);}}
   @keyframes sb-lbl{0%{opacity:0;}14%{opacity:1;}86%{opacity:1;}100%{opacity:0;}}
@@ -33,6 +35,7 @@
     .fa-in,.wg,.core{opacity:1!important;}
     .barfill{transform:scaleX(1)!important;}
     .ringfill{stroke-dashoffset:0!important;}
+    .shock,.corepulse{opacity:0!important;}
     .lbl{opacity:0!important;} .lbl.final{opacity:1!important;}
   }
 </style>
@@ -46,13 +49,13 @@
   <main style="position:relative;z-index:5;flex:1;min-height:0;display:grid;place-items:center;padding:12px;">
     <div style="position:relative;container-type:size;width:min(98vw,calc(96dvh*1376/768));aspect-ratio:1376/768;">
 
-    <!-- center energy core (scan-core.png drops in here once committed) -->
+    <!-- center energy core (scan-core.webp) -->
     <div class="core" style="position:absolute;left:50%;top:50%;width:41%;aspect-ratio:1/1;transform:translate(-50%,-50%);z-index:1;">
       <div style="position:absolute;inset:-18%;border-radius:50%;background:radial-gradient(circle, color-mix(in srgb,var(--accent,#22D3EE) 26%,transparent) 0%, transparent 60%);animation:sb-orb 3.6s ease-in-out infinite;"></div>
       <sc-if value="{{ hasCore }}" hint-placeholder-val="{{ false }}">
-        <div style="position:absolute;inset:-6%;-webkit-mask-image:radial-gradient(circle at 50% 50%,#000 56%,transparent 74%);mask-image:radial-gradient(circle at 50% 50%,#000 56%,transparent 74%);{{ animCore }}">
-          <img src="assets/img/scan-core.jpg" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 48%;mix-blend-mode:screen;{{ animCoreA }}"/>
-          <img src="assets/img/scan-core.jpg" alt="" style="position:absolute;inset:8%;width:84%;height:84%;object-fit:cover;object-position:50% 48%;mix-blend-mode:screen;opacity:.4;{{ animCoreB }}"/>
+        <div style="position:absolute;inset:-4%;{{ animCore }}">
+          <img src="assets/img/scan-core.webp" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 50%;filter:drop-shadow(0 0 22px color-mix(in srgb,var(--accent,#22D3EE) 40%,transparent));{{ animCoreA }}"/>
+          <img src="assets/img/scan-core.webp" alt="" style="position:absolute;inset:6%;width:88%;height:88%;object-fit:cover;object-position:50% 50%;mix-blend-mode:screen;opacity:.4;{{ animCoreB }}"/>
         </div>
       </sc-if>
     </div>
@@ -109,6 +112,13 @@
           <path d="M470 578 l-18 12 M470 578 l-4 21"/>
           <path d="M906 578 l18 12 M906 578 l4 21"/>
         </g>
+        <!-- pulsation emanating from the core -->
+        <g class="shock" fill="none" stroke="{{ accent }}" stroke-width="2" filter="url(#sbGlow)">
+          <circle cx="688" cy="384" r="300" style="transform-box:view-box;transform-origin:688px 384px;{{ animShock1 }}"/>
+          <circle cx="688" cy="384" r="300" style="transform-box:view-box;transform-origin:688px 384px;{{ animShock2 }}"/>
+          <circle cx="688" cy="384" r="300" style="transform-box:view-box;transform-origin:688px 384px;{{ animShock3 }}"/>
+        </g>
+        <circle class="corepulse" cx="688" cy="384" r="70" fill="url(#sbArc)" style="mix-blend-mode:screen;transform-box:fill-box;transform-origin:center;{{ animCorePulse }}"/>
         <!-- placeholder energy core (shown until scan-core.png lands) -->
         <sc-if value="{{ noCore }}" hint-placeholder-val="{{ true }}">
           <g>
@@ -277,6 +287,10 @@ class Component extends DCLogic {
       animCore: a('animation:sb-orb 4.4s ease-in-out infinite;'),
       animCoreA: a('animation:sb-spin 78s linear infinite;'),
       animCoreB: a('animation:sb-spin-r 54s linear infinite;'),
+      animCorePulse: a('animation:sb-corepulse 3.2s ease-in-out infinite;'),
+      animShock1: a('animation:sb-shock 4.5s cubic-bezier(.2,.5,.3,1) 0s infinite;'),
+      animShock2: a('animation:sb-shock 4.5s cubic-bezier(.2,.5,.3,1) 1.5s infinite;'),
+      animShock3: a('animation:sb-shock 4.5s cubic-bezier(.2,.5,.3,1) 3.0s infinite;'),
       animRing: a('animation:sb-spin 48s linear infinite;'),
       animArc: a('animation:sb-spin 6s linear infinite;'),
       animRadar: a('animation:sb-spin 3.4s linear infinite;'),
