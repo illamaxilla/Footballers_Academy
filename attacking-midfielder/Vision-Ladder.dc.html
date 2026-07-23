@@ -317,7 +317,7 @@ class Component extends DCLogic {
 
     const f=this._final||{};
     base.finalLevel=(f.depth!=null?f.depth:0)+'';
-    base.pbFlag=f.isPB?'★ NEW PERSONAL BEST':('BEST · LEVEL '+(this._best||0));
+    base.pbFlag=f.isPB?'NEW PERSONAL BEST':('BEST · LEVEL '+(this._best||0));
     base.cleared=(f.depth!=null?f.depth:0)+'';
     base.fastest=f.fastest!=null?Math.round(f.fastest)+'ms':'—';
     base.endReason = f.reason==='timeout'?'CLOCK':'MISREAD';

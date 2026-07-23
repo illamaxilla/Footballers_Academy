@@ -74,7 +74,7 @@
   <!-- ============ RATER INTRO ============ -->
   <sc-if value="{{ isRaterIntro }}" hint-placeholder-val="{{ false }}">
     <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;text-align:center;padding:20px clamp(26px,4vw,58px) 60px;">
-      <div class="fa-in" style="font-size:44px;margin-bottom:12px;">👥</div>
+      <div class="fa-in" style="margin-bottom:12px;line-height:0;"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" style="stroke:var(--accent,#22D3EE);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;"><path d="M16 19v-1a3 3 0 0 0-3-3H6a3 3 0 0 0-3 3v1"/><circle cx="9.5" cy="8" r="3"/><path d="M21 19v-1a3 3 0 0 0-2.3-2.9"/><path d="M15.5 5.2a3 3 0 0 1 0 5.6"/></svg></div>
       <h1 class="fa-in" style="margin:0 0 14px;font:800 clamp(30px,4.4vw,54px)/1.02 'Archivo';letter-spacing:-0.025em;max-width:700px;text-wrap:balance;animation-delay:.06s;">You&rsquo;re rating this player.</h1>
       <p class="fa-in" style="margin:0 0 30px;max-width:560px;font:400 15px/1.6 'Archivo';color:#B4C2D4;text-wrap:pretty;animation-delay:.12s;">Six quick questions about the number 10 who handed you this. Answer for the player you actually watch &mdash; not the one they wish they were. Honest is more useful than kind.</p>
       <button onClick="{{ raterStart }}" class="fa-in" style="display:inline-flex;align-items:center;gap:11px;padding:16px 36px;border-radius:12px;border:0;background:var(--accent,#22D3EE);color:#03121a;font:700 15px 'Archivo';cursor:pointer;box-shadow:0 14px 40px color-mix(in srgb,var(--accent,#22D3EE) 40%,transparent);transition:transform .16s ease;animation-delay:.18s;" style-hover="transform:translateY(-2px);">
@@ -116,13 +116,13 @@
         <div class="fa-in" style="display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;margin-bottom:24px;animation-delay:.12s;">
           <div style="padding:20px 16px;border-radius:16px;border:1px solid {{ selfBorder }};background:rgba(10,16,28,.5);text-align:center;">
             <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.2em;color:#61748c;margin-bottom:10px;">YOU SEE</div>
-            <div style="font-size:38px;line-height:1;margin-bottom:6px;">{{ selfEmoji }}</div>
+            <div style="width:44px;height:44px;margin:0 auto 8px;border-radius:50%;border:2px solid {{ selfColor }};background:color-mix(in srgb,{{ selfColor }} 18%,transparent);display:grid;place-items:center;font:700 15px 'IBM Plex Mono';letter-spacing:.04em;color:{{ selfColor }};">{{ selfMono }}</div>
             <div style="font:800 15px 'Archivo';color:{{ selfColor }};">{{ selfName }}</div>
           </div>
           <div style="font:800 18px 'IBM Plex Mono';color:#61748c;">vs</div>
           <div style="padding:20px 16px;border-radius:16px;border:1px solid {{ coachBorder }};background:rgba(10,16,28,.5);text-align:center;">
             <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.2em;color:#61748c;margin-bottom:10px;">THEY SEE</div>
-            <div style="font-size:38px;line-height:1;margin-bottom:6px;">{{ coachEmoji }}</div>
+            <div style="width:44px;height:44px;margin:0 auto 8px;border-radius:50%;border:2px solid {{ coachColor }};background:color-mix(in srgb,{{ coachColor }} 18%,transparent);display:grid;place-items:center;font:700 15px 'IBM Plex Mono';letter-spacing:.04em;color:{{ coachColor }};">{{ coachMono }}</div>
             <div style="font:800 15px 'Archivo';color:{{ coachColor }};">{{ coachName }}</div>
           </div>
         </div>
@@ -138,7 +138,7 @@
             <sc-for list="{{ coachBars }}" as="p" hint-placeholder-count="5">
               <div style="display:flex;flex-direction:column;gap:5px;">
                 <div style="display:flex;align-items:baseline;justify-content:space-between;">
-                  <span style="font:700 12px 'Archivo';color:{{ p.labelColor }};">{{ p.emoji }} {{ p.label }}</span>
+                  <span style="display:inline-flex;align-items:center;gap:8px;font:700 12px 'Archivo';color:{{ p.labelColor }};"><span style="width:9px;height:9px;border-radius:3px;background:{{ p.dot }};"></span>{{ p.label }}</span>
                   <span style="font:800 12px 'IBM Plex Mono';color:{{ p.numColor }};">{{ p.pct }}</span>
                 </div>
                 <div style="height:8px;border-radius:99px;background:rgba(120,140,166,.14);overflow:hidden;"><div style="height:100%;border-radius:99px;width:{{ p.barW }};{{ p.barLook }}"></div></div>
@@ -164,11 +164,11 @@
 class Component extends DCLogic {
   ORDER = ['maestro','maverick','phantom','architect','dynamo'];
   ARCH = {
-    maestro:   { name:'The Maestro',   emoji:'\uD83C\uDFBC', color:'#A78BFA' },
-    maverick:  { name:'The Maverick',  emoji:'\uD83D\uDD25', color:'#FF4D8D' },
-    phantom:   { name:'The Phantom',   emoji:'\uD83D\uDC7B', color:'#C8CED6' },
-    architect: { name:'The Architect', emoji:'\uD83D\uDCD0', color:'#22D3EE' },
-    dynamo:    { name:'The Dynamo',    emoji:'\u2699\uFE0F', color:'#FF7A45' },
+    maestro:   { name:'The Maestro',   mono:'MA', color:'#A78BFA' },
+    maverick:  { name:'The Maverick',  mono:'MV', color:'#FF4D8D' },
+    phantom:   { name:'The Phantom',   mono:'PH', color:'#C8CED6' },
+    architect: { name:'The Architect', mono:'AR', color:'#22D3EE' },
+    dynamo:    { name:'The Dynamo',    mono:'DY', color:'#FF7A45' },
   };
 
   Q = [
@@ -286,7 +286,7 @@ class Component extends DCLogic {
     };
 
     const self=this.state.self;
-    base.selfLine = self ? ('Your scan says you\u2019re '+this.ARCH[self].name+' '+this.ARCH[self].emoji+'. Let\u2019s see if they agree.') : 'You haven\u2019t run the scan yet \u2014 you can still get their read, then compare it later.';
+    base.selfLine = self ? ('Your scan says you\u2019re '+this.ARCH[self].name+'. Let\u2019s see if they agree.') : 'You haven\u2019t run the scan yet \u2014 you can still get their read, then compare it later.';
 
     const qi=this.state.qIndex, q=this.Q[qi]||this.Q[0];
     base.qNumLabel='Q'+(qi+1)+' / 6';
@@ -294,16 +294,16 @@ class Component extends DCLogic {
     const src=(this._qopts&&this._qopts[qi])||q.opts;
     base.options=src.map((o,i)=>({ text:o.t, dot:this.ARCH[o.a].color, delay:(0.05+i*0.05).toFixed(2)+'s', onPick:()=>this._answer(o.a) }));
 
-    Object.assign(base,{ cmpKicker:'', cmpTitle:'', selfEmoji:'',selfName:'',selfColor:'#9FB0C5',selfBorder:'rgba(120,140,166,.2)',
-      coachEmoji:'',coachName:'',coachColor:accent,coachBorder:'rgba(120,140,166,.2)',
+    Object.assign(base,{ cmpKicker:'', cmpTitle:'', selfMono:'',selfName:'',selfColor:'#9FB0C5',selfBorder:'rgba(120,140,166,.2)',
+      coachMono:'',coachName:'',coachColor:accent,coachBorder:'rgba(120,140,166,.2)',
       verdictKicker:'',verdictCopy:'',verdictAccent:accent,verdictBorder:'rgba(120,140,166,.2)',verdictBg:'rgba(10,16,28,.5)',
       coachBars:[], dataLine:'' });
     if(V==='compare' && this._lead){
       const coach=this._lead, C=this.ARCH[coach];
       const hasSelf=!!self; const agree=hasSelf&&self===coach;
-      base.coachEmoji=C.emoji; base.coachName=C.name; base.coachColor=C.color; base.coachBorder='color-mix(in srgb,'+C.color+' 45%,transparent)';
-      if(hasSelf){ const S=this.ARCH[self]; base.selfEmoji=S.emoji; base.selfName=S.name; base.selfColor=S.color; base.selfBorder='color-mix(in srgb,'+S.color+' 45%,transparent)'; }
-      else { base.selfEmoji='\u2753'; base.selfName='Not scanned'; base.selfColor='#61748c'; }
+      base.coachMono=C.mono; base.coachName=C.name; base.coachColor=C.color; base.coachBorder='color-mix(in srgb,'+C.color+' 45%,transparent)';
+      if(hasSelf){ const S=this.ARCH[self]; base.selfMono=S.mono; base.selfName=S.name; base.selfColor=S.color; base.selfBorder='color-mix(in srgb,'+S.color+' 45%,transparent)'; }
+      else { base.selfMono='?'; base.selfName='Not scanned'; base.selfColor='#61748c'; }
       base.cmpKicker=hasSelf?(agree?'THEY AGREE':'THE GAP'):'THEIR READ';
       base.cmpTitle = !hasSelf ? ('They see '+C.name+'.')
         : agree ? ('You both see '+C.name+'.')
@@ -322,7 +322,7 @@ class Component extends DCLogic {
       const maxV=Math.max(...entries.map(e=>e[1]),1);
       base.coachBars=entries.map(([id,v])=>{
         const isP=id===coach; const col=this.ARCH[id].color;
-        return { emoji:this.ARCH[id].emoji, label:this.ARCH[id].name, labelColor:isP?'#F2F8FE':'#9FB0C5',
+        return { dot:col, label:this.ARCH[id].name, labelColor:isP?'#F2F8FE':'#9FB0C5',
           numColor:isP?col:'#9FB0C5', pct:Math.round((v/total)*100)+'%', barW:Math.round((v/maxV)*100)+'%',
           barLook:isP?('background:linear-gradient(90deg,'+col+',color-mix(in srgb,'+col+' 45%,transparent));box-shadow:0 0 10px color-mix(in srgb,'+col+' 50%,transparent);'):'background:rgba(140,160,186,.4);' };
       });

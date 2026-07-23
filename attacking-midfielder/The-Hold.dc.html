@@ -515,7 +515,7 @@ class Component extends DCLogic {
     // over
     const f=this._final||{};
     base.finalPoints=(S.points||0)+'';
-    base.pbFlag=f.isPB?'★ NEW PERSONAL BEST':('BEST · '+(this._best||0)+' PTS');
+    base.pbFlag=f.isPB?'NEW PERSONAL BEST':('BEST · '+(this._best||0)+' PTS');
     const avgS=(f.meanHoldMs||0)/1000;
     base.propMs=avgS.toFixed(1)+'s';
     if(avgS>=3.2){ base.propBand='Gambler'; base.propNote='You wait for the killer ball. High reward, high exposure — a Maverick\u2019s appetite.'; }

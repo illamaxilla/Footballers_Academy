@@ -171,7 +171,7 @@
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" style="stroke:var(--accent,#22D3EE);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12.5l4.5 4.5L19 6.5"/></svg>{{ completeBadge }}
       </div>
       <!-- ARCHETYPE HERO -->
-      <div class="fa-in" style="font-size:56px;line-height:1;margin-bottom:4px;animation-delay:.04s;">{{ heroEmoji }}</div>
+      <div class="fa-in" style="width:56px;height:56px;margin:0 auto 4px;border-radius:50%;border:2px solid {{ heroColor }};background:color-mix(in srgb,{{ heroColor }} 18%,transparent);display:grid;place-items:center;font:700 20px 'IBM Plex Mono';letter-spacing:.04em;color:{{ heroColor }};animation-delay:.04s;">{{ heroMono }}</div>
       <div class="fa-in" style="font:600 10px 'IBM Plex Mono';letter-spacing:.32em;color:#7688a0;margin-bottom:8px;animation-delay:.06s;">{{ heroKicker }}</div>
       <h1 class="fa-in" style="margin:0 0 10px;font:800 clamp(40px,7vw,86px)/0.9 'Archivo';letter-spacing:-0.03em;color:{{ heroColor }};animation-delay:.08s;">{{ heroName }}</h1>
       <p class="fa-in" style="margin:0 0 8px;font:700 clamp(16px,1.7vw,21px) 'Archivo';color:#EAF2FB;animation-delay:.11s;">{{ heroTagline }}</p>
@@ -233,7 +233,7 @@
       <sc-if value="{{ hasEvo }}" hint-placeholder-val="{{ false }}">
         <div class="fa-in" style="width:100%;max-width:560px;margin:0 auto 12px;padding:16px 20px;border-radius:16px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);text-align:left;animation-delay:.3s;">
           <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.2em;color:#7688a0;margin-bottom:10px;">{{ evoKicker }}</div>
-          <div style="display:flex;align-items:center;gap:13px;"><span style="font-size:32px;line-height:1;flex-shrink:0;">{{ evoEmoji }}</span><div><div style="font:800 15px 'Archivo';color:{{ evoColor }};margin-bottom:2px;">{{ evoName }}</div><div style="font:500 12.5px/1.45 'Archivo';color:#9FB0C5;text-wrap:pretty;">{{ evoCopy }}</div></div></div>
+          <div style="display:flex;align-items:center;gap:13px;"><span style="width:36px;height:36px;flex-shrink:0;border-radius:50%;border:2px solid {{ evoColor }};background:color-mix(in srgb,{{ evoColor }} 18%,transparent);display:grid;place-items:center;font:700 12.5px 'IBM Plex Mono';letter-spacing:.04em;color:{{ evoColor }};">{{ evoMono }}</span><div><div style="font:800 15px 'Archivo';color:{{ evoColor }};margin-bottom:2px;">{{ evoName }}</div><div style="font:500 12.5px/1.45 'Archivo';color:#9FB0C5;text-wrap:pretty;">{{ evoCopy }}</div></div></div>
         </div>
       </sc-if>
 
@@ -304,31 +304,31 @@ class Component extends DCLogic {
   ARCH_NAME = { maestro:'The Maestro', maverick:'The Maverick', phantom:'The Phantom', architect:'The Architect', dynamo:'The Dynamo' };
   TACTICAL_KEY = { maestro:'Maestro', maverick:'Maverick', phantom:'Phantom', architect:'Architect', dynamo:'Complete' };
   ARCHDATA = {
-    maestro:  { color:'#A78BFA', emoji:'\uD83C\uDFBC', tagline:'The one who sees it first.',
+    maestro:  { color:'#A78BFA', mono:'MA', tagline:'The one who sees it first.',
       reflect:'You\u2019d rather make the goal than score it. The picture arrives in your head before the ball arrives at your feet.',
       strengths:['Vision that lands a beat before everyone else\u2019s','Dictates the tempo of a game from deep','The final ball nobody else even saw'],
       exemplars:'\u00d6zil \u00b7 Zidane \u00b7 \u00d8degaard',
       edge:'You can drift out of games that demand running and fighting. Choose your moments to impose yourself \u2014 don\u2019t wait to be given the ball.',
       firstStep:'This week: before every reception, take one extra glance over your shoulder. Know the picture before the ball comes.' },
-    maverick: { color:'#FF4D8D', emoji:'\uD83D\uDD25', tagline:'Chaos, with a purpose.',
+    maverick: { color:'#FF4D8D', mono:'MV', tagline:'Chaos, with a purpose.',
       reflect:'Give it to you in a phone box and you\u2019ll find the door. You make something out of nothing and you make defenders guess.',
       strengths:['Beats his man in the tightest space','A first step nobody lives with','Turns half a chance into a goal'],
       exemplars:'Ronaldinho \u00b7 Maradona \u00b7 Hazard',
       edge:'You\u2019re the most system-dependent of the five \u2014 the wrong setup smothers you. Learn which systems free you, and when to release it a fraction earlier.',
       firstStep:'This week: in 1v1s, pass within two seconds of beating your man \u2014 the take-on that makes a goal, not just applause.' },
-    phantom:  { color:'#C8CED6', emoji:'\uD83D\uDC7B', tagline:'You arrive from nowhere.',
+    phantom:  { color:'#C8CED6', mono:'PH', tagline:'You arrive from nowhere.',
       reflect:'You\u2019re never where they left you. You live on the run the defence has just stopped watching.',
       strengths:['Times the run the moment the marker looks away','Unmarkable in and around the box','The late arrival \u2014 every single time'],
       exemplars:'M\u00fcller \u00b7 Griezmann \u00b7 Dele Alli',
       edge:'Your game lives on others\u2019 service \u2014 you can go quiet when the team can\u2019t find you. Learn to drop and start the move yourself when it dries up.',
       firstStep:'This week: track the centre-backs\u2019 eyes, not the ball. Make your run the instant both are looking elsewhere.' },
-    architect:{ color:'#22D3EE', emoji:'\uD83D\uDCD0', tagline:'You build the game from the half-space.',
+    architect:{ color:'#22D3EE', mono:'AR', tagline:'You build the game from the half-space.',
       reflect:'You control a game before anyone notices you have it. The half-space is your office and the line-breaking pass is your signature.',
       strengths:['Owns the half-space, both feet','Breaks the line with the pass','Composure with a man on you \u2014 87%'],
       exemplars:'David Silva \u00b7 G\u00fcndo\u011fan \u00b7 Foden',
       edge:'Your control can tip into caution \u2014 the safe ball when the killer one was on. Trust the line-breaker a little more often.',
       firstStep:'This week: in every rondo, look for the forward, line-breaking pass first \u2014 only recycle if it\u2019s truly not on.' },
-    dynamo:   { color:'#FF7A45', emoji:'\u2699\uFE0F', tagline:'You influence every phase.',
+    dynamo:   { color:'#FF7A45', mono:'DY', tagline:'You influence every phase.',
       reflect:'You do a bit of everything, better than anyone does everything. Goals, assists, pressing, running \u2014 the sum is the point.',
       strengths:['Covers every blade of grass','Goals and assists in the same game','Fits any system \u2014 no bad match'],
       exemplars:'De Bruyne \u00b7 Bruno Fernandes \u00b7 Wirtz',
@@ -737,7 +737,7 @@ class Component extends DCLogic {
           barLook:isPeak?`background:linear-gradient(90deg,${accent},color-mix(in srgb,${accent} 45%,transparent));box-shadow:0 0 12px color-mix(in srgb,${accent} 55%,transparent);`:'background:rgba(140,160,186,.45);' };
       });
       const AX=this.ARCHDATA[r.primary]; const pid=r.primary;
-      base.heroEmoji=AX.emoji; base.heroKicker='YOUR ARCHETYPE'; base.heroName=this.ARCH_NAME[pid]; base.heroColor=AX.color;
+      base.heroMono=AX.mono; base.heroKicker='YOUR ARCHETYPE'; base.heroName=this.ARCH_NAME[pid]; base.heroColor=AX.color;
       base.heroTagline=AX.tagline; base.reflectLine=AX.reflect;
       base.strengths=AX.strengths.map(t=>({t})); base.exemplars=AX.exemplars; base.edgeLine=AX.edge; base.firstStepLine=AX.firstStep;
       const rad=this._radar(r.playerTraits, this.CANONICAL[pid]);
@@ -760,8 +760,8 @@ class Component extends DCLogic {
       else { base.fitFormation=''; base.fitPct=''; base.fitBar='0%'; base.fitColor=AX.color; base.fitCopy=''; }
       const tgt=this.TRANSITIONS[pid]; const young=r.context&&r.context.ageYears!=null&&r.context.ageYears<=18;
       base.hasEvo=true; base.evoKicker=young?'THE NEXT VERSION OF YOU':'HOW YOU MIGHT EVOLVE';
-      if(tgt){ const E=this.ARCHDATA[tgt]; base.evoEmoji=E.emoji; base.evoName=this.ARCH_NAME[tgt]; base.evoColor=E.color; base.evoCopy=this.TRANSITION_COPY[pid]; }
-      else { base.evoEmoji=AX.emoji; base.evoName=this.ARCH_NAME[pid]+', matured'; base.evoColor=AX.color; base.evoCopy=this.TRANSITION_COPY[pid]; }
+      if(tgt){ const E=this.ARCHDATA[tgt]; base.evoMono=E.mono; base.evoName=this.ARCH_NAME[tgt]; base.evoColor=E.color; base.evoCopy=this.TRANSITION_COPY[pid]; }
+      else { base.evoMono=AX.mono; base.evoName=this.ARCH_NAME[pid]+', matured'; base.evoColor=AX.color; base.evoCopy=this.TRANSITION_COPY[pid]; }
       const BANDC={developing:'#FF7A8A',competent:'#FFB020',proficient:'#8FD14F',elite:'#3BE07A'};
       base.hasMind=!!r.mind;
       if(r.mind){
@@ -774,11 +774,11 @@ class Component extends DCLogic {
     } else {
       base.completeBadge='SCAN COMPLETE'; base.completeTitle='Your shape is locked in.'; base.completeSub='';
       base.bandLabel=''; base.traitBars=[]; base.dataLine='';
-      base.heroEmoji=''; base.heroKicker=''; base.heroName=''; base.heroColor=accent; base.heroTagline=''; base.reflectLine='';
+      base.heroMono=''; base.heroKicker=''; base.heroName=''; base.heroColor=accent; base.heroTagline=''; base.reflectLine='';
       base.strengths=[]; base.exemplars=''; base.edgeLine=''; base.firstStepLine='';
       base.radarPlayer=''; base.radarCanon=''; base.radarAxes=[]; base.radarLabels=[];
       base.formations=[]; base.hasFit=false; base.fitFormation=''; base.fitPct=''; base.fitBar='0%'; base.fitColor=accent; base.fitCopy='';
-      base.hasEvo=false; base.evoKicker=''; base.evoEmoji=''; base.evoName=''; base.evoColor=accent; base.evoCopy='';
+      base.hasEvo=false; base.evoKicker=''; base.evoMono=''; base.evoName=''; base.evoColor=accent; base.evoCopy='';
       base.hasMind=false; base.mindBars=[]; base.hasBurden=false; base.burdenTitle=''; base.burdenCopy=''; base.burdenStep='';
     }
 

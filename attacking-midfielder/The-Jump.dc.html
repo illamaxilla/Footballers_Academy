@@ -348,7 +348,7 @@ class Component extends DCLogic {
     base.analysePct=(S.analysePct||0)+'%'; base.analyseStep=steps[Math.min(this._anStep||0,steps.length-1)];
 
     const f=this._final||{}; const best=f.best||{cm:0,flightS:0};
-    base.pbFlag=f.isPB?'★ NEW PERSONAL BEST':(this._best>0?('BEST · ~'+Math.round(this._best)+' CM'):'BASELINE SET');
+    base.pbFlag=f.isPB?'NEW PERSONAL BEST':(this._best>0?('BEST · ~'+Math.round(this._best)+' CM'):'BASELINE SET');
     base.heightRange=(f.lo!=null?Math.round(f.lo):0)+'–'+(f.hi!=null?Math.round(f.hi):0)+' cm';
     base.flightTxt=best.flightS?Math.round(best.flightS*1000)+'ms':'—';
     base.percentileTxt=(f.pct!=null?f.pct:0)+'th';

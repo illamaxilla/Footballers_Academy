@@ -92,7 +92,7 @@
         <div style="min-width:96px;display:flex;justify-content:flex-end;">
           <div style="position:relative;width:44px;height:44px;">
             <svg width="44" height="44" viewBox="0 0 44 44" style="transform:rotate(-90deg);"><circle cx="22" cy="22" r="18" fill="none" stroke="rgba(120,140,166,.2)" stroke-width="4"/><circle ref="{{ ringRef }}" cx="22" cy="22" r="18" fill="none" stroke="{{ ringColor }}" stroke-width="4" stroke-linecap="round" stroke-dasharray="113.1" stroke-dashoffset="0"/></svg>
-            <div style="position:absolute;inset:0;display:grid;place-items:center;font:800 11px 'IBM Plex Mono';color:{{ ringColor }};">{{ ringGlyph }}</div>
+            <div style="position:absolute;inset:0;display:grid;place-items:center;color:{{ ringColor }};"><sc-if value="{{ ringDone }}" hint-placeholder-val="{{ false }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 13l4 4L19 7"/></svg></sc-if></div>
           </div>
         </div>
       </div>
@@ -408,7 +408,7 @@ class Component extends DCLogic {
     const ph=S.phase;
     const pmap={ decide:['CALL IT','shoot, square, or drive','#EAF2FB'], reveal:['THE NUMBERS','what each was really worth','#3BE07A'] };
     const pm=pmap[ph]||pmap.decide; base.phaseTitle=pm[0]; base.phaseSub=pm[1]; base.phaseColor=pm[2];
-    base.ringColor = ph==='decide'? accent : '#3BE07A'; base.ringGlyph = ph==='decide'? '' : '\u2713';
+    base.ringColor = ph==='decide'? accent : '#3BE07A'; base.ringDone = ph!=='decide';
     base.pitchHint = ph==='decide'? 'READ THE PICTURE \u00B7 THE VALUES ARE HIDDEN' : '';
 
     // decide actions
