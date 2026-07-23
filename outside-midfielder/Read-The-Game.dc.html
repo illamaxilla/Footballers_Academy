@@ -86,7 +86,7 @@
 
           <!-- pass trail -->
           <sc-if value="{{ showTrail }}" hint-placeholder-val="{{ false }}">
-            <svg viewBox="0 0 160 100" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;"><path d="{{ trailPath }}" fill="none" stroke="color-mix(in srgb,var(--accent,#22D3EE) 60%,transparent)" stroke-width="0.7" stroke-dasharray="2 2"/></svg>
+            <svg viewBox="0 0 160 100" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;">{{ trailEl }}</svg>
           </sc-if>
 
           <!-- teammates / opponents -->
@@ -336,6 +336,7 @@ class Component extends DCLogic {
     // trail path (viewBox 160x100)
     const toXY=(s)=>parseFloat(s)/100;
     base.trailPath = p.path.map((w,i)=> (i===0?'M':'L')+(toXY(w.x)*160).toFixed(1)+' '+(toXY(w.y)*100).toFixed(1)).join(' ');
+    base.trailEl = base.trailPath ? React.createElement('path',{ d:base.trailPath, fill:'none', stroke:'color-mix(in srgb,var(--accent,#22D3EE) 60%,transparent)', strokeWidth:0.7, strokeDasharray:'2 2' }) : null;
 
     // tokens
     base.tokens=p.tokens.map(t=>({ x:t.x, y:t.y,

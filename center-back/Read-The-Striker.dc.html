@@ -77,7 +77,7 @@
             <!-- figure -->
             <div style="position:relative;width:120px;height:170px;transform:translateX({{ fig.shift }}) rotate({{ fig.rot }});transition:transform {{ figTrans }};animation:fa-pop .12s ease both;">
               <!-- hips chevron (honest cue toward travel) -->
-              <div style="position:absolute;left:50%;top:96px;transform:translateX(-50%);z-index:1;"><svg width="46" height="18" viewBox="0 0 46 18" fill="none"><path d="{{ fig.hips }}" stroke="{{ accent }}" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/></svg></div>
+              <div style="position:absolute;left:50%;top:96px;transform:translateX(-50%);z-index:1;"><svg width="46" height="18" viewBox="0 0 46 18" fill="none">{{ fig.hipsEl }}</svg></div>
               <!-- torso -->
               <div style="position:absolute;left:50%;top:44px;width:44px;height:56px;margin-left:-22px;border-radius:14px 14px 10px 10px;background:linear-gradient(180deg,#ff7a7a,#c0392b);transform:skewX({{ fig.torsoSkew }});z-index:2;"></div>
               <!-- shoulders (feint drops one side) -->
@@ -244,6 +244,7 @@ class Component extends DCLogic {
     base.timerKey='t'+this.state.timerKey; base.timerDur=(this._win()/1000).toFixed(2)+'s';
     base.sceneBorder = ph==='fb' ? ('color-mix(in srgb,'+this.state.fbColor+' 45%,transparent)') : 'rgba(120,140,166,.2)';
     base.fig=this._figure(); base.figTrans = ph==='fb' ? '.3s cubic-bezier(.3,.8,.3,1)' : '0s';
+    base.fig.hipsEl = base.fig.hips ? React.createElement('path',{ d:base.fig.hips, stroke:accent, strokeWidth:2.4, strokeLinecap:'round', strokeLinejoin:'round', opacity:0.9 }) : null;
     base.fbArrow=this.state.fbArrow; base.fbTitle=this.state.fbTitle; base.fbSub=this.state.fbSub; base.fbColor=this.state.fbColor;
     const canPick=ph==='show';
     base.lrCursor=canPick?'pointer':'not-allowed';
