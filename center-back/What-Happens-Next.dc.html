@@ -76,7 +76,7 @@
           <div style="position:absolute;left:{{ carrier.left }};top:{{ carrier.top }};width:20px;height:20px;margin:-10px 0 0 -10px;z-index:3;"><div style="width:100%;height:100%;background:radial-gradient(125% 125% at 34% 24%,#ff9a9a,#c0322f);border-radius:50%;box-shadow:0 2px 4px rgba(0,0,0,.5),0 0 7px rgba(255,90,110,.42);"></div></div>
           <!-- orientation arrow (cue) -->
           <sc-if value="{{ showArrow }}" hint-placeholder-val="{{ false }}">
-            <svg viewBox="0 0 160 120" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none;animation:fa-cut .2s ease both;"><defs><marker id="ah" markerWidth="5" markerHeight="5" refX="3" refY="2.5" orient="auto"><path d="M0 0 L5 2.5 L0 5 z" fill="{{ accent }}"></path></marker></defs><line x1="{{ arrow.x1 }}" y1="{{ arrow.y1 }}" x2="{{ arrow.x2 }}" y2="{{ arrow.y2 }}" stroke="{{ accent }}" stroke-width="1.6" stroke-dasharray="3 2" marker-end="url(#ah)" opacity="0.85"></line></svg>
+            <svg viewBox="0 0 160 120" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none;animation:fa-cut .2s ease both;"><defs><marker id="ah" markerWidth="5" markerHeight="5" refX="3" refY="2.5" orient="auto"><path d="M0 0 L5 2.5 L0 5 z" fill="{{ accent }}"></path></marker></defs>{{ arrowEl }}</svg>
           </sc-if>
           <!-- ball -->
           <div style="position:absolute;left:{{ ball.left }};top:{{ ball.top }};width:9px;height:9px;margin:-4.5px 0 0 -4.5px;border-radius:50%;background:#fff;transition:left {{ ballDur }} linear,top {{ ballDur }} linear;z-index:4;animation:fa-ballpulse 1s ease-in-out infinite;"></div>
@@ -266,6 +266,7 @@ class Component extends DCLogic {
     // orientation arrow: shown at contact & late (and reveal), pointing carrier->bt
     base.showArrow = playing && (ph==='cut'||ph==='reveal') && occ!=='early';
     base.arrow={ x1:s.c[0], y1:s.c[1], x2:s.c[0]+(s.bt[0]-s.c[0])*0.55, y2:s.c[1]+(s.bt[1]-s.c[1])*0.55 };
+    base.arrowEl = base.showArrow ? React.createElement('line',{ x1:base.arrow.x1, y1:base.arrow.y1, x2:base.arrow.x2, y2:base.arrow.y2, stroke:accent, strokeWidth:1.6, strokeDasharray:'3 2', markerEnd:'url(#ah)', opacity:0.85 }) : null;
 
     const canPick = ph==='cut';
     base.options=this.OPTS.map(o=>({ key:o.key, label:o.label, onPick:()=>this._pick(o), cursor:canPick?'pointer':'default',
