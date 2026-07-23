@@ -81,7 +81,7 @@
 
           <sc-for list="{{ anchors }}" as="an" hint-placeholder-count="0">
             <div style="position:absolute;left:{{ an.x }};top:{{ an.y }};transform:translate(-50%,-50%);pointer-events:none;z-index:4;display:flex;flex-direction:column;align-items:center;gap:2px;">
-              <div style="width:22px;height:22px;border-radius:50%;border:2px solid {{ an.color }};background:color-mix(in srgb,{{ an.color }} 20%,transparent);display:grid;place-items:center;font-size:11px;">{{ an.emoji }}</div>
+              <div style="width:24px;height:24px;border-radius:50%;border:2px solid {{ an.color }};background:color-mix(in srgb,{{ an.color }} 18%,transparent);display:grid;place-items:center;font:700 8.5px 'IBM Plex Mono';letter-spacing:.04em;color:{{ an.color }};">{{ an.mono }}</div>
               <span style="font:700 7.5px 'IBM Plex Mono';color:{{ an.color }};background:rgba(4,7,12,.55);padding:1px 4px;border-radius:4px;">{{ an.name }}</span>
             </div>
           </sc-for>
@@ -129,7 +129,7 @@
             <sc-for list="{{ fpBars }}" as="s" hint-placeholder-count="5">
               <div style="display:flex;flex-direction:column;gap:6px;">
                 <div style="display:flex;align-items:baseline;justify-content:space-between;">
-                  <span style="font:700 12.5px 'Archivo';color:{{ s.labelColor }};">{{ s.emoji }} {{ s.label }}</span>
+                  <span style="display:inline-flex;align-items:center;gap:8px;font:700 12.5px 'Archivo';color:{{ s.labelColor }};"><span style="width:9px;height:9px;border-radius:3px;background:{{ s.dot }};box-shadow:0 0 8px color-mix(in srgb,{{ s.dot }} 60%,transparent);"></span>{{ s.label }}</span>
                   <span style="font:800 12px 'IBM Plex Mono';color:{{ s.numColor }};">{{ s.pct }}</span>
                 </div>
                 <div style="height:8px;border-radius:99px;background:rgba(120,140,166,.14);overflow:hidden;"><div style="height:100%;border-radius:99px;transform-origin:left;animation:fa-bar .8s cubic-bezier(.3,.8,.3,1) both;width:{{ s.barW }};{{ s.barLook }}"></div></div>
@@ -156,7 +156,7 @@
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:900,&quot;height&quot;:860},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#22D3EE&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#22D3EE&quot;,&quot;#D9A521&quot;,&quot;#7C5CE0&quot;,&quot;#E0413C&quot;]},&quot;motion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;embedded&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;}}">
 class Component extends DCLogic {
   ORDER=["conductor","maestro","carrier","engine","destroyer"];
-  ARCH={ conductor:{name:'Conductor',emoji:'\uD83C\uDFBC',color:'#D9A521'}, maestro:{name:'Maestro',emoji:'\uD83C\uDFAF',color:'#7C5CE0'}, carrier:{name:'Carrier',emoji:'\uD83C\uDFC3',color:'#2E9BE8'}, engine:{name:'Engine',emoji:'\u2699\uFE0F',color:'#1FB588'}, destroyer:{name:'Destroyer',emoji:'\uD83D\uDEE1\uFE0F',color:'#E0413C'} };
+  ARCH={ conductor:{name:'Conductor',mono:'CO',color:'#D9A521'}, maestro:{name:'Maestro',mono:'MA',color:'#7C5CE0'}, carrier:{name:'Carrier',mono:'CA',color:'#2E9BE8'}, engine:{name:'Engine',mono:'EN',color:'#1FB588'}, destroyer:{name:'Destroyer',mono:'DE',color:'#E0413C'} };
   HOME={ conductor:{x:50,y:56}, maestro:{x:55,y:43}, carrier:{x:43,y:50}, engine:{x:59,y:49}, destroyer:{x:48,y:65} };
   NOTE={ conductor:'deep and central \u2014 the Conductor sits in front of the defence and sets every tempo.',
     maestro:'in the pocket \u2014 the Maestro finds the advanced seam to play the decisive ball.',
@@ -237,7 +237,7 @@ class Component extends DCLogic {
     base.hasTap=!!this.state.tap;
     base.tapX=this.state.tap?this.state.tap.x+'%':'50%'; base.tapY=this.state.tap?this.state.tap.y+'%':'50%';
     const A=this._anchors(s);
-    base.anchors = this.state.phase==='revealed' ? this.ORDER.map(a=>({ x:A[a].x+'%', y:A[a].y+'%', color:this.ARCH[a].color, emoji:this.ARCH[a].emoji, name:this.ARCH[a].name })) : [];
+    base.anchors = this.state.phase==='revealed' ? this.ORDER.map(a=>({ x:A[a].x+'%', y:A[a].y+'%', color:this.ARCH[a].color, mono:this.ARCH[a].mono, name:this.ARCH[a].name })) : [];
     if(this.state.chosen){ const c=this.state.chosen;
       base.fbName=this.ARCH[c].name; base.fbColor=this.ARCH[c].color;
       base.fbBg='color-mix(in srgb,'+this.ARCH[c].color+' 10%,transparent)'; base.fbBorder='color-mix(in srgb,'+this.ARCH[c].color+' 34%,transparent)';
@@ -256,7 +256,7 @@ class Component extends DCLogic {
       const tot=this.ORDER.reduce((a,k)=>a+m.counts[k],0)||1;
       const maxV=Math.max(...entries.map(e=>e[1]),1);
       base.fpBars=entries.map(([id,v])=>{ const col=this.ARCH[id].color; const isTop=id===top&&v>0;
-        return { emoji:this.ARCH[id].emoji, label:this.ARCH[id].name, labelColor:isTop?'#F2F8FE':'#9FB0C5', numColor:isTop?col:'#9FB0C5',
+        return { dot:col, label:this.ARCH[id].name, labelColor:isTop?'#F2F8FE':'#9FB0C5', numColor:isTop?col:'#9FB0C5',
           pct:Math.round(v/tot*100)+'%', barW:Math.round(v/maxV*100)+'%',
           barLook:isTop?('background:linear-gradient(90deg,'+col+',color-mix(in srgb,'+col+' 45%,transparent));box-shadow:0 0 12px color-mix(in srgb,'+col+' 55%,transparent);'):'background:rgba(130,150,176,.4);' }; });
       base.softRead=({ conductor:"You kept showing deep and central to dictate the tempo \u2014 the Conductor's map. You decide when the game speeds up and slows down. An observation, not a verdict.",
