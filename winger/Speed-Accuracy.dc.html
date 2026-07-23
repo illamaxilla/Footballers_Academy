@@ -93,7 +93,7 @@
       <div style="position:relative;width:min(300px,52vw);max-width:320px;aspect-ratio:1/1;flex:0 0 auto;border-radius:16px;overflow:hidden;border:1px solid rgba(120,140,166,.22);background:radial-gradient(120% 120% at 50% 0%,#0d1c2e,#091324 60%,#050c17);box-shadow:0 20px 60px rgba(0,0,0,.4) inset;">
         <div style="position:absolute;inset:0;border:1.4px solid rgba(120,180,220,.1);border-radius:16px;pointer-events:none;"></div>
         <svg viewBox="0 0 100 100" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;z-index:5;">
-          <line x1="{{ laneX1 }}" y1="{{ laneY1 }}" x2="{{ laneX2 }}" y2="{{ laneY2 }}" style="stroke:{{ laneStroke }};stroke-width:1;stroke-dasharray:3 2.5;" />
+          {{ laneEl }}
         </svg>
         <!-- defenders -->
         <sc-for list="{{ defs }}" as="d" hint-placeholder-count="1">
@@ -320,6 +320,7 @@ class Component extends DCLogic {
     base.youX=t.you.x+'%'; base.youY=t.you.y+'%'; base.mateX=t.mate.x+'%'; base.mateY=t.mate.y+'%';
     base.laneX1=t.you.x; base.laneY1=t.you.y; base.laneX2=t.mate.x; base.laneY2=t.mate.y;
     base.laneStroke = this.state.phase==='fb' ? (t.trap?'rgba(255,90,110,.7)':'rgba(74,222,128,.7)') : 'rgba(200,220,240,.45)';
+    base.laneEl = React.createElement('line',{ x1:base.laneX1, y1:base.laneY1, x2:base.laneX2, y2:base.laneY2, style:{ stroke:base.laneStroke, strokeWidth:1, strokeDasharray:'3 2.5' } });
     base.defs=(t.defs||[]).map(d=>({ x:d.x+'%', y:d.y+'%' }));
     const fb=this.state.fb;
     base.showFb=this.state.phase==='fb'&&!!fb;
