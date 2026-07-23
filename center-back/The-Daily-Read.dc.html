@@ -161,7 +161,7 @@ class Component extends DCLogic {
 
   _today(){ const base=Math.floor(Date.now()/86400000); return base + (this.props.demoNextDay?1:0); }
   _puzzleNo(){ return this._day - 20280; }
-  _scIndex(){ return ((this._day%this.POOL.length)+this.POOL.length)%this.POOL.length; }
+  _scIndex(){ if(this._day==null) this._day=this._today(); return ((this._day%this.POOL.length)+this.POOL.length)%this.POOL.length; }
   _sc(){ return this.POOL[this._scIndex()]; }
   _rng(seed){ let s=(seed>>>0)||1; return ()=>{ s=(s*1664525+1013904223)>>>0; return s/4294967296; }; }
 
