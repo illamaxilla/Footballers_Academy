@@ -165,7 +165,7 @@
             <sc-for list="{{ shiftBars }}" as="s" hint-placeholder-count="5">
               <div style="display:flex;flex-direction:column;gap:6px;">
                 <div style="display:flex;align-items:baseline;justify-content:space-between;">
-                  <span style="font:700 12.5px 'Archivo';color:{{ s.labelColor }};">{{ s.emoji }} {{ s.label }}</span>
+                  <span style="display:inline-flex;align-items:center;gap:8px;font:700 12.5px 'Archivo';color:{{ s.labelColor }};"><span style="width:9px;height:9px;border-radius:3px;background:{{ s.col }};box-shadow:0 0 8px color-mix(in srgb,{{ s.col }} 60%,transparent);"></span>{{ s.label }}</span>
                   <span style="font:700 11px 'IBM Plex Mono';color:{{ s.deltaColor }};">{{ s.delta }}</span>
                 </div>
                 <div style="position:relative;height:10px;border-radius:99px;background:rgba(120,140,166,.14);overflow:hidden;">
@@ -223,11 +223,11 @@
 class Component extends DCLogic {
   ORDER = ['conductor','maestro','carrier','engine','destroyer'];
   ARCH = {
-    conductor:{ short:'Conductor', emoji:'\uD83C\uDFBC', color:'#D9A521' },
-    maestro:{ short:'Maestro', emoji:'\uD83C\uDFAF', color:'#7C5CE0' },
-    carrier:{ short:'Carrier', emoji:'\uD83C\uDFC3', color:'#2E9BE8' },
-    engine:{ short:'Engine', emoji:'\u2699\uFE0F', color:'#1FB588' },
-    destroyer:{ short:'Destroyer', emoji:'\uD83D\uDEE1\uFE0F', color:'#E0413C' },
+    conductor:{ short:'Conductor', mono:'CO', color:'#D9A521' },
+    maestro:{ short:'Maestro', mono:'MA', color:'#7C5CE0' },
+    carrier:{ short:'Carrier', mono:'CA', color:'#2E9BE8' },
+    engine:{ short:'Engine', mono:'EN', color:'#1FB588' },
+    destroyer:{ short:'Destroyer', mono:'DE', color:'#E0413C' },
   };
 
   // pitch layout templates (x,y in 0..100; attack toward top). last ball point = at YOU.
@@ -465,7 +465,7 @@ class Component extends DCLogic {
       const maxBar=Math.max(...this.ORDER.map(a=>Math.max(r.free[a],r.pressure[a])),1);
       base.shiftBars=[...this.ORDER].sort((a,b)=>r.pressure[b]-r.pressure[a]).map(a=>{
         const d=r.shift[a];
-        return { emoji:this.ARCH[a].emoji, label:this.ARCH[a].short, col:this.ARCH[a].color,
+        return { label:this.ARCH[a].short, col:this.ARCH[a].color,
           labelColor:'#E4EDF7',
           delta:(d>0?'+':'')+d+' pp',
           deltaColor: d>4?'#7CFFB0':(d<-4?'#FF8A98':'#7688a0'),

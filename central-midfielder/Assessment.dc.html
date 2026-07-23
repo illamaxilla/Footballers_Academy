@@ -133,7 +133,7 @@
         <!-- hero -->
         <div class="fa-in" style="text-align:center;margin-bottom:8px;">
           <div style="font:600 11px 'IBM Plex Mono';letter-spacing:.42em;color:#7688a0;margin-bottom:14px;">{{ revKicker }}</div>
-          <div style="font-size:clamp(52px,9vw,88px);line-height:1;margin-bottom:6px;filter:drop-shadow(0 6px 30px {{ archGlow }});">{{ archEmoji }}</div>
+          <div style="font:700 clamp(18px,3vw,30px) 'IBM Plex Mono';letter-spacing:.04em;color:{{ archColor }};line-height:1;margin-bottom:6px;filter:drop-shadow(0 6px 30px {{ archGlow }});">{{ archMono }}</div>
           <h1 style="margin:0;font:900 clamp(40px,6.4vw,84px)/0.95 'Archivo';letter-spacing:-0.035em;color:{{ archColor }};text-shadow:0 0 48px {{ archGlow }};">{{ archName }}</h1>
           <div style="margin-top:8px;font:600 clamp(14px,1.5vw,19px) 'Archivo';letter-spacing:.02em;color:#C6D3E2;">{{ archIdentity }}</div>
         </div>
@@ -168,7 +168,7 @@
             <sc-for list="{{ spreadBars }}" as="s" hint-placeholder-count="5">
               <div style="display:flex;flex-direction:column;gap:6px;">
                 <div style="display:flex;align-items:baseline;justify-content:space-between;">
-                  <span style="font:700 12.5px 'Archivo';color:{{ s.labelColor }};">{{ s.emoji }} {{ s.label }}</span>
+                  <span style="display:inline-flex;align-items:center;gap:8px;font:700 12.5px 'Archivo';color:{{ s.labelColor }};"><span style="width:9px;height:9px;border-radius:3px;background:{{ s.dot }};box-shadow:0 0 8px color-mix(in srgb,{{ s.dot }} 60%,transparent);"></span>{{ s.label }}</span>
                   <span style="font:800 13px 'IBM Plex Mono';color:{{ s.numColor }};">{{ s.pct }}</span>
                 </div>
                 <div style="height:9px;border-radius:99px;background:rgba(120,140,166,.14);overflow:hidden;"><div style="height:100%;border-radius:99px;transform-origin:left;animation:fa-bar .8s cubic-bezier(.3,.8,.3,1) both;width:{{ s.barW }};{{ s.barLook }}"></div></div>
@@ -239,46 +239,46 @@ class Component extends DCLogic {
   // ---------- model ----------
   ORDER = ['conductor','maestro','carrier','engine','destroyer'];
   ARCH = {
-    conductor:{ name:'The Conductor', tagline:'tempo', identity:'You decide when.', emoji:'\uD83C\uDFBC', color:'#D9A521',
+    conductor:{ name:'The Conductor', tagline:'tempo', identity:'You decide when.', mono:'CO', color:'#D9A521',
       reflect:"You don't want to be everywhere. You want the game to run at your speed.",
       isYou:"You decide when. The reference point every pass comes back to. You slow it down when it's frantic and speed it up when they're comfortable, and the whole team plays at the pace you choose. Not the player who does everything \u2014 the player who sets the rhythm everyone else plays to.",
       strengths:['Tempo control','Press resistance','Reading the phase'],
       playLike:'Toni Kroos \u00b7 Luka Modri\u0107 \u00b7 Ilkay G\u00fcndo\u011fan',
       edge:"You can control a game for ninety minutes and still not decide it. Control without a decisive moment is a draw. Find the one pass, one run, one shot that turns your rhythm into a result.",
       firstStep:"In one game, deliberately change the tempo twice \u2014 once to slow it down when your team is rattled, once to speed it up when they've gone flat. Notice whether the team follows you.",
-      share:'I\u2019m The Conductor \u26bd \u2014 the game runs at my speed. Which midfielder are you?' },
-    maestro:{ name:'The Maestro', tagline:'the decisive moment', identity:'You decide what.', emoji:'\uD83C\uDFAF', color:'#7C5CE0',
+      share:'I\u2019m The Conductor \u2014 the game runs at my speed. Which midfielder are you?' },
+    maestro:{ name:'The Maestro', tagline:'the decisive moment', identity:'You decide what.', mono:'MA', color:'#7C5CE0',
       reflect:"You're not trying to control the game. You're waiting for the one moment that ends it.",
       isYou:"You decide what. You see the picture two seconds before anyone else and play the pass that changes it. One ball, one chance, done. Everyone else builds the attack. You finish the thought.",
       strengths:['Vision','Passing range','Chance creation'],
       playLike:'Kevin De Bruyne \u00b7 David Silva \u00b7 Cesc F\u00e0bregas',
       edge:"When the ball isn't near you, you disappear. A creator who's a passenger out of possession is a luxury, and at some level, luxuries get left out. Learn to be useful in the twenty minutes a game where nothing is coming to you.",
       firstStep:"Every time you receive, look up before your first touch and find one option nobody else has seen. Count how many times you actually play it.",
-      share:'I\u2019m The Maestro \u26bd \u2014 I see the pass before it exists. Which midfielder are you?' },
-    carrier:{ name:'The Carrier', tagline:'the line', identity:'You decide where.', emoji:'\uD83C\uDFC3', color:'#2E9BE8',
+      share:'I\u2019m The Maestro \u2014 I see the pass before it exists. Which midfielder are you?' },
+    carrier:{ name:'The Carrier', tagline:'the line', identity:'You decide where.', mono:'CA', color:'#2E9BE8',
       reflect:"You don't want to pass through them. You want to go through them.",
       isYou:"You decide where. You eliminate opponents by travelling \u2014 ball at your feet, straight at the line, and their whole shape has to move to deal with you. A pass can be tracked. A carry has to be stopped.",
       strengths:['Progressive carrying','Close control','Line-breaking'],
       playLike:'Yaya Tour\u00e9 \u00b7 Frenkie de Jong \u00b7 Nicol\u00f2 Barella',
       edge:"Carrying isn't producing. You break the line, and then the move dies, and the highlight reel looks better than the scoreline. Add the pass or the shot at the end of the carry, or the carry was just a nice run.",
       firstStep:"Count your progressive carries in one game \u2014 every time you take the ball forward past an opponent. Then count how many ended in a shot or a chance. That second number is your real one.",
-      share:'I\u2019m The Carrier \u26bd \u2014 I take it through them. Which midfielder are you?' },
-    engine:{ name:'The Engine', tagline:'volume', identity:'You decide how much.', emoji:'\u2699\uFE0F', color:'#1FB588',
+      share:'I\u2019m The Carrier \u2014 I take it through them. Which midfielder are you?' },
+    engine:{ name:'The Engine', tagline:'volume', identity:'You decide how much.', mono:'EN', color:'#1FB588',
       reflect:"You want to be in every single moment of the game, and you're prepared to run until it hurts.",
       isYou:"You decide how much. You cover more ground than anyone, you press until they break, and you're in both boxes in the same minute. Other players have a good twenty minutes. You have ninety.",
       strengths:['Endurance','Pressing intensity','Box-to-box'],
       playLike:'Federico Valverde \u00b7 Arturo Vidal \u00b7 Georginio Wijnaldum',
       edge:"You're always there and rarely decisive. Work rate gets you into every team at one level and out of every team at the next. Pick one signature quality \u2014 a pass, a shot, a duel \u2014 and make it elite, so the running comes with an end product.",
       firstStep:"Pick one game. Get into the opposition box and your own box in the same attacking sequence, three separate times. Then ask what you actually did when you got there.",
-      share:'I\u2019m The Engine \u26bd \u2014 ninety minutes, every blade of grass. Which midfielder are you?' },
-    destroyer:{ name:'The Destroyer', tagline:'the stop', identity:'You decide whether.', emoji:'\uD83D\uDEE1\uFE0F', color:'#E0413C',
+      share:'I\u2019m The Engine \u2014 ninety minutes, every blade of grass. Which midfielder are you?' },
+    destroyer:{ name:'The Destroyer', tagline:'the stop', identity:'You decide whether.', mono:'DE', color:'#E0413C',
       reflect:"You've worked out that the fastest way to win the ball is to go and take it.",
       isYou:"You decide whether. You take the ball off the other team's best player and you decide where the game is allowed to be played. This is not the dirty work that lets someone else shine \u2014 the ball-winner can be the most important player on the pitch.",
       strengths:['Ball-winning','Duels & timing','Screening space'],
       playLike:'N\u2019Golo Kant\u00e9 \u00b7 Declan Rice \u00b7 Wilfred Ndidi',
       edge:"You win it and you give it away. A turnover you can't use is just a delay. The gap between a good ball-winner and an elite one is entirely in the six seconds after the tackle.",
       firstStep:"Win your duels first \u2014 then track what happens next. Every regain, make one clean, simple, forward pass. Count how many survive.",
-      share:'I\u2019m The Destroyer \u26bd \u2014 I decide where this game gets played. Which midfielder are you?' },
+      share:'I\u2019m The Destroyer \u2014 I decide where this game gets played. Which midfielder are you?' },
   };
 
   SHADES = {
@@ -525,7 +525,7 @@ class Component extends DCLogic {
 
     // reveal defaults (placeholder-safe)
     Object.assign(base,{
-      revKicker:'YOUR MIDFIELD ARCHETYPE', archEmoji:'', archColor:accent, archGlow:'transparent',
+      revKicker:'YOUR MIDFIELD ARCHETYPE', archMono:'', archColor:accent, archGlow:'transparent',
       archName:'', archIdentity:'', bandLabel:'', isHybrid:false, secondaryColor:accent, shadeHeadline:'', shadeLine:'',
       stillForming:false, spreadNote:'', spreadBars:[], archReflect:'', archIsYou:'', strengths:[], archPlayLike:'',
       archEdge:'', archFirstStep:'', shareLabel:'Share result', dataLine:'',
@@ -538,7 +538,7 @@ class Component extends DCLogic {
       const archGlow='color-mix(in srgb,'+archColor+' 45%,transparent)';
       const short=(id)=>this.ARCH[id].name.replace('The ','');
       base.revKicker = r.clarity<30 ? 'YOUR EARLY LEANING' : 'YOUR MIDFIELD ARCHETYPE';
-      base.archEmoji=A.emoji; base.archColor=archColor; base.archGlow=archGlow;
+      base.archMono=A.mono; base.archColor=archColor; base.archGlow=archGlow;
       base.archName=A.name; base.archIdentity=A.identity;
       base.bandLabel = r.clarity<30 ? 'STILL FORMING'
         : r.isHybrid ? 'GENUINE HYBRID'
@@ -553,7 +553,7 @@ class Component extends DCLogic {
       const maxV=Math.max(...entries.map(e=>e[1]),1);
       base.spreadBars=entries.map(([id,v])=>{
         const isP=id===r.primary; const col=this.ARCH[id].color;
-        return { emoji:this.ARCH[id].emoji, label:short(id),
+        return { dot:col, label:short(id),
           labelColor:isP?'#F2F8FE':'#9FB0C5', numColor:isP?col:'#9FB0C5',
           pct:v+'%', barW:Math.round((v/maxV)*100)+'%',
           barLook:isP?('background:linear-gradient(90deg,'+col+',color-mix(in srgb,'+col+' 45%,transparent));box-shadow:0 0 12px color-mix(in srgb,'+col+' 55%,transparent);'):'background:rgba(140,160,186,.4);' };

@@ -49,7 +49,7 @@
         <sc-for list="{{ slots }}" as="s" hint-placeholder-count="3">
           <button onClick="{{ s.onClear }}" style="flex:1;max-width:180px;aspect-ratio:3/3.4;border-radius:16px;border:1.5px {{ s.borderStyle }} {{ s.border }};background:{{ s.bg }};display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;cursor:{{ s.cursor }};transition:border-color .15s,background .15s;padding:10px;" style-hover="{{ s.hover }}">
             <sc-if value="{{ s.filled }}" hint-placeholder-val="{{ false }}">
-              <div style="font-size:34px;line-height:1;animation:fa-pop .25s ease both;">{{ s.emoji }}</div>
+              <div style="font:700 12px 'IBM Plex Mono';letter-spacing:.04em;color:{{ s.color }};line-height:1;animation:fa-pop .25s ease both;">{{ s.mono }}</div>
               <div style="font:800 13px 'Archivo';color:{{ s.color }};">{{ s.name }}</div>
               <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.12em;color:#7688a0;">{{ s.role }}</div>
               <div style="font:500 8px 'IBM Plex Mono';letter-spacing:.14em;color:#4f627a;margin-top:2px;">TAP TO REMOVE</div>
@@ -68,7 +68,7 @@
         <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;">
           <sc-for list="{{ cards }}" as="c" hint-placeholder-count="5">
             <button onClick="{{ c.onAdd }}" style="border-radius:13px;border:1px solid {{ c.border }};background:{{ c.bg }};padding:12px 6px;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:{{ c.cursor }};opacity:{{ c.opacity }};transition:transform .12s,border-color .15s;" style-hover="transform:translateY(-3px);border-color:{{ c.hoverBorder }};">
-              <div style="font-size:26px;line-height:1;">{{ c.emoji }}</div>
+              <div style="font:700 9px 'IBM Plex Mono';letter-spacing:.04em;color:{{ c.color }};line-height:1;">{{ c.mono }}</div>
               <div style="font:800 11.5px 'Archivo';color:{{ c.color }};text-align:center;line-height:1.1;">{{ c.name }}</div>
               <div style="font:600 8px 'IBM Plex Mono';letter-spacing:.1em;color:#7688a0;">{{ c.role }}</div>
             </button>
@@ -112,11 +112,11 @@
 class Component extends DCLogic {
   ORDER = ['conductor','maestro','carrier','engine','destroyer'];
   ARCH = {
-    conductor:{ name:'Conductor', role:'tempo', emoji:'\uD83C\uDFBC', color:'#D9A521' },
-    maestro:{ name:'Maestro', role:'the pass', emoji:'\uD83C\uDFAF', color:'#7C5CE0' },
-    carrier:{ name:'Carrier', role:'the carry', emoji:'\uD83C\uDFC3', color:'#2E9BE8' },
-    engine:{ name:'Engine', role:'the legs', emoji:'\u2699\uFE0F', color:'#1FB588' },
-    destroyer:{ name:'Destroyer', role:'the stop', emoji:'\uD83D\uDEE1\uFE0F', color:'#E0413C' },
+    conductor:{ name:'Conductor', role:'tempo', mono:'CO', color:'#D9A521' },
+    maestro:{ name:'Maestro', role:'the pass', mono:'MA', color:'#7C5CE0' },
+    carrier:{ name:'Carrier', role:'the carry', mono:'CA', color:'#2E9BE8' },
+    engine:{ name:'Engine', role:'the legs', mono:'EN', color:'#1FB588' },
+    destroyer:{ name:'Destroyer', role:'the stop', mono:'DE', color:'#E0413C' },
   };
   TRAITS = ['control','creation','progression','intensity','duel'];
   TRAITLABEL = { control:'Control', creation:'Creation', progression:'Progression', intensity:'Work rate', duel:'Ball-winning' };
@@ -180,11 +180,11 @@ class Component extends DCLogic {
     };
     base.slots=[0,1,2].map(i=>{
       const a=picks[i];
-      if(a){ const d=this.ARCH[a]; return { filled:true, empty:false, num:i+1, emoji:d.emoji, name:d.name, role:d.role, color:d.color, onClear:()=>this._clearSlot(i), cursor:'pointer', borderStyle:'solid', border:'color-mix(in srgb,'+d.color+' 55%,transparent)', bg:'color-mix(in srgb,'+d.color+' 10%,transparent)', hover:'border-color:'+d.color+';' }; }
-      return { filled:false, empty:true, num:i+1, emoji:'', name:'', role:'', color:'#61748c', onClear:()=>{}, cursor:'default', borderStyle:'dashed', border:'rgba(120,140,166,.28)', bg:'rgba(10,16,28,.4)', hover:'' };
+      if(a){ const d=this.ARCH[a]; return { filled:true, empty:false, num:i+1, mono:d.mono, name:d.name, role:d.role, color:d.color, onClear:()=>this._clearSlot(i), cursor:'pointer', borderStyle:'solid', border:'color-mix(in srgb,'+d.color+' 55%,transparent)', bg:'color-mix(in srgb,'+d.color+' 10%,transparent)', hover:'border-color:'+d.color+';' }; }
+      return { filled:false, empty:true, num:i+1, mono:'', name:'', role:'', color:'#61748c', onClear:()=>{}, cursor:'default', borderStyle:'dashed', border:'rgba(120,140,166,.28)', bg:'rgba(10,16,28,.4)', hover:'' };
     });
     const full=picks.length>=3;
-    base.cards=this.ORDER.map(a=>{ const d=this.ARCH[a]; return { emoji:d.emoji, name:d.name, role:d.role, color:d.color, onAdd:()=>this._add(a), cursor:full?'not-allowed':'pointer', opacity:full?'.45':'1', border:'color-mix(in srgb,'+d.color+' 30%,transparent)', hoverBorder:d.color, bg:'color-mix(in srgb,'+d.color+' 8%,transparent)' }; });
+    base.cards=this.ORDER.map(a=>{ const d=this.ARCH[a]; return { mono:d.mono, name:d.name, role:d.role, color:d.color, onAdd:()=>this._add(a), cursor:full?'not-allowed':'pointer', opacity:full?'.45':'1', border:'color-mix(in srgb,'+d.color+' 30%,transparent)', hoverBorder:d.color, bg:'color-mix(in srgb,'+d.color+' 8%,transparent)' }; });
     base.presets=this.PRESETS.map(p=>({ label:p.label, onPick:()=>this._preset(p.trio) }));
 
     const r=this.state.res;
