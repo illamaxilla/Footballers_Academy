@@ -140,7 +140,7 @@
         <!-- hero -->
         <div class="fa-in" style="text-align:center;margin-bottom:8px;">
           <div style="font:600 11px 'IBM Plex Mono';letter-spacing:.42em;color:#7688a0;margin-bottom:14px;">{{ revKicker }}</div>
-          <div style="font-size:clamp(52px,9vw,88px);line-height:1;margin-bottom:6px;filter:drop-shadow(0 6px 30px {{ archGlow }});">{{ archEmoji }}</div>
+          <div style="width:72px;height:72px;margin:0 auto 6px;border-radius:18px;border:2px solid {{ archColor }};background:color-mix(in srgb,{{ archColor }} 18%,transparent);display:grid;place-items:center;font:700 25px 'IBM Plex Mono';letter-spacing:.04em;color:{{ archColor }};box-shadow:0 6px 30px {{ archGlow }};">{{ archMono }}</div>
           <h1 style="margin:0;font:900 clamp(40px,6.4vw,84px)/0.95 'Archivo';letter-spacing:-0.035em;color:{{ archColor }};text-shadow:0 0 48px {{ archGlow }};">{{ archName }}</h1>
           <div style="margin-top:8px;font:600 clamp(14px,1.5vw,19px) 'Archivo';letter-spacing:.02em;color:#C6D3E2;">{{ archIdentity }}</div>
         </div>
@@ -173,7 +173,7 @@
             <sc-for list="{{ spreadBars }}" as="s" hint-placeholder-count="4">
               <div style="display:flex;flex-direction:column;gap:6px;">
                 <div style="display:flex;align-items:baseline;justify-content:space-between;">
-                  <span style="font:700 12.5px 'Archivo';color:{{ s.labelColor }};">{{ s.emoji }} {{ s.label }}</span>
+                  <span style="display:inline-flex;align-items:center;gap:8px;font:700 12.5px 'Archivo';color:{{ s.labelColor }};"><span style="width:9px;height:9px;border-radius:3px;background:{{ s.dot }};box-shadow:0 0 8px color-mix(in srgb,{{ s.dot }} 60%,transparent);"></span>{{ s.label }}</span>
                   <span style="font:800 13px 'IBM Plex Mono';color:{{ s.numColor }};">{{ s.pct }}</span>
                 </div>
                 <div style="height:9px;border-radius:99px;background:rgba(120,140,166,.14);overflow:hidden;"><div style="height:100%;border-radius:99px;transform-origin:left;animation:fa-bar .8s cubic-bezier(.3,.8,.3,1) both;width:{{ s.barW }};{{ s.barLook }}"></div></div>
@@ -259,7 +259,7 @@ class Component extends DCLogic {
   // ---------- model ----------
   ORDER = ['destroyer','sentinel','architect','warrior'];
   ARCH = {
-    destroyer:{ name:'The Destroyer', identity:'The Ball-Winner', emoji:'\uD83D\uDCA5', color:'#E0413C',
+    destroyer:{ name:'The Destroyer', identity:'The Ball-Winner', mono:'DE', color:'#E0413C',
       reflect:"You want to win the ball back and dominate the midfield battle \u2014 the enforcer.",
       isYou:"The enforcer. Aggressive, physical, relentless, you break up attacks and win possession for your team. Where there\u2019s a battle, you\u2019re winning it.",
       strengths:['Tackling & ball-winning','Physical duels','Disruption'],
@@ -267,8 +267,8 @@ class Component extends DCLogic {
       edge:"Passing and composure on the ball, so winning it turns cleanly into keeping it. The gap between a good ball-winner and an elite one is what you do in the six seconds after you win it.",
       firstStep:"Win your duels and tackles first \u2014 then make a clean, simple pass every time you win it back. Count how many survive.",
       cta:'Your Destroyer path starts with winning the midfield battle \u2192',
-      share:'I\u2019m The Destroyer \u26bd \u2014 I win the ball back. Which midfielder are you?' },
-    sentinel:{ name:'The Sentinel', identity:'The Positioning Master', emoji:'\uD83D\uDEE1\uFE0F', color:'#D9A521',
+      share:'I\u2019m The Destroyer \u2014 I win the ball back. Which midfielder are you?' },
+    sentinel:{ name:'The Sentinel', identity:'The Positioning Master', mono:'SE', color:'#D9A521',
       reflect:"You read the game and cut out danger before it builds \u2014 you defend with your brain.",
       isYou:"The shield. You anticipate, position perfectly, and snuff out attacks before they become chances. You rarely need to tackle because you\u2019re already there.",
       strengths:['Anticipation & interceptions','Positioning','Defensive organization'],
@@ -276,8 +276,8 @@ class Component extends DCLogic {
       edge:"Physical presence in duels, so you can win it when reading alone isn\u2019t enough. The best readers still have to survive the moments the game gets physical.",
       firstStep:"Before each opposition attack, predict the pass and step to intercept \u2014 count how many you cut out.",
       cta:'Your Sentinel path starts with reading the game \u2192',
-      share:'I\u2019m The Sentinel \u26bd \u2014 I read danger before it builds. Which midfielder are you?' },
-    architect:{ name:'The Architect', identity:'The Deep-Lying Playmaker', emoji:'\uD83C\uDFBC', color:'#22D3EE',
+      share:'I\u2019m The Sentinel \u2014 I read danger before it builds. Which midfielder are you?' },
+    architect:{ name:'The Architect', identity:'The Deep-Lying Playmaker', mono:'AR', color:'#22D3EE',
       reflect:"You want the ball and to dictate the tempo \u2014 the regista everything flows through.",
       isYou:"The metronome. From deep, you control the game with your passing range, vision, and tempo. Every attack starts with you.",
       strengths:['Passing range & vision','Tempo control','Progressive distribution'],
@@ -285,8 +285,8 @@ class Component extends DCLogic {
       edge:"The defensive side \u2014 screening and duels \u2014 so you can dictate without being a target to bypass. A playmaker who can\u2019t defend gets pressed out of the game.",
       firstStep:"Get on the ball as often as you can and look for one progressive, line-breaking pass every possession.",
       cta:'Your Architect path starts with dictating the tempo \u2192',
-      share:'I\u2019m The Architect \u26bd \u2014 the game flows through me. Which midfielder are you?' },
-    warrior:{ name:'The Warrior', identity:'The Complete Midfielder', emoji:'\u2699\uFE0F', color:'#FF7A2F',
+      share:'I\u2019m The Architect \u2014 the game flows through me. Which midfielder are you?' },
+    warrior:{ name:'The Warrior', identity:'The Complete Midfielder', mono:'WA', color:'#FF7A2F',
       reflect:"You want to do everything and cover every area \u2014 the complete box-to-box midfielder.",
       isYou:"The all-rounder. You defend, carry, pass, and cover \u2014 everywhere, all game. No single label fits because you do all of it at a high level.",
       strengths:['Versatility','Work rate & endurance','All-phase contribution'],
@@ -294,7 +294,7 @@ class Component extends DCLogic {
       edge:"One standout weapon \u2014 sharpen your ball-winning or your passing so you\u2019re elite at something, not just good at everything. Work rate gets you in at one level and out at the next.",
       firstStep:"In one session, deliberately contribute in every phase \u2014 win it, carry it, pass it, cover \u2014 and notice how often you\u2019re involved.",
       cta:'Your Warrior path starts with covering every phase \u2192',
-      share:'I\u2019m The Warrior \u26bd \u2014 I do everything in midfield. Which midfielder are you?' },
+      share:'I\u2019m The Warrior \u2014 I do everything in midfield. Which midfielder are you?' },
   };
 
   CHAPTERS = [
@@ -519,7 +519,7 @@ class Component extends DCLogic {
 
     // reveal defaults (placeholder-safe)
     Object.assign(base,{
-      revKicker:'YOUR MIDFIELD DNA', archEmoji:'', archColor:accent, archGlow:'transparent',
+      revKicker:'YOUR MIDFIELD DNA', archMono:'', archColor:accent, archGlow:'transparent',
       archName:'', archIdentity:'', clarityLabel:'', isHybrid:false, secondaryColor:accent, hybridLine:'',
       dnaSegments:[], spreadBars:[], whyText:'', archReflect:'', archIsYou:'', strengths:[], archPlayLike:'',
       archEdge:'', archFirstStep:'', aspColor:accent, aspText:'', aspCta:'', shareLabel:'Share result', dataLine:'',
@@ -531,7 +531,7 @@ class Component extends DCLogic {
       const archColor=A.color;
       const archGlow='color-mix(in srgb,'+archColor+' 45%,transparent)';
       const short=(id)=>this.ARCH[id].name.replace('The ','');
-      base.archEmoji=A.emoji; base.archColor=archColor; base.archGlow=archGlow;
+      base.archMono=A.mono; base.archColor=archColor; base.archGlow=archGlow;
       base.archName=A.name; base.archIdentity=A.identity;
       base.clarityLabel=r.clarityLabel;
       base.isHybrid=r.isHybrid;
@@ -543,7 +543,7 @@ class Component extends DCLogic {
       const maxV=Math.max(...entries.map(e=>e[1]),1);
       base.spreadBars=entries.map(([id,v])=>{
         const isP=id===r.primary; const col=this.ARCH[id].color;
-        return { emoji:this.ARCH[id].emoji, label:short(id),
+        return { dot:col, label:short(id),
           labelColor:isP?'#F2F8FE':'#9FB0C5', numColor:isP?col:'#9FB0C5',
           pct:v+'%', barW:Math.round((v/maxV)*100)+'%',
           barLook:isP?('background:linear-gradient(90deg,'+col+',color-mix(in srgb,'+col+' 45%,transparent));box-shadow:0 0 12px color-mix(in srgb,'+col+' 55%,transparent);'):'background:rgba(140,160,186,.4);' };

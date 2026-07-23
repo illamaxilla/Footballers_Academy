@@ -85,7 +85,7 @@
             <div style="display:flex;flex-wrap:wrap;gap:7px;">
               <sc-for list="{{ s.opts }}" as="o" hint-placeholder-count="4">
                 <button onClick="{{ o.onPick }}" style="display:inline-flex;align-items:center;gap:7px;padding:9px 12px;border-radius:10px;border:1px solid {{ o.border }};background:{{ o.bg }};color:{{ o.color }};font:600 12.5px 'Archivo';cursor:pointer;transition:border-color .14s,background .14s,transform .14s;" style-hover="transform:translateY(-1px);">
-                  <span style="font-size:14px;">{{ o.emoji }}</span>{{ o.text }}
+                  <span style="width:9px;height:9px;border-radius:3px;background:{{ o.dot }};"></span>{{ o.text }}
                 </button>
               </sc-for>
             </div>
@@ -97,7 +97,7 @@
         <div style="padding:20px 22px;border-radius:18px;border:1px solid {{ readBorder }};background:{{ readBg }};">
           <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:#61748c;margin-bottom:6px;">{{ readKicker }}</div>
           <div style="display:flex;align-items:center;gap:11px;margin-bottom:4px;">
-            <span style="font-size:30px;">{{ flavourEmoji }}</span>
+            <span style="width:34px;height:34px;border-radius:9px;border:2px solid {{ flavourColor }};background:color-mix(in srgb,{{ flavourColor }} 18%,transparent);display:grid;place-items:center;font:700 12px 'IBM Plex Mono';letter-spacing:.04em;color:{{ flavourColor }};">{{ flavourMono }}</span>
             <h2 style="margin:0;font:800 clamp(20px,2.6vw,28px)/1.05 'Archivo';letter-spacing:-0.02em;color:{{ flavourColor }};">{{ flavourName }}</h2>
           </div>
           <p style="margin:6px 0 0;font:500 13.5px/1.5 'Archivo';color:#C6D3E2;text-wrap:pretty;min-height:40px;">{{ flavourLine }}</p>
@@ -108,7 +108,7 @@
           <div style="display:flex;flex-direction:column;gap:10px;">
             <sc-for list="{{ blendBars }}" as="b" hint-placeholder-count="4">
               <div style="display:flex;align-items:center;gap:10px;">
-                <span style="flex:0 0 96px;font:600 11.5px 'Archivo';color:{{ b.labelColor }};">{{ b.emoji }} {{ b.label }}</span>
+                <span style="flex:0 0 96px;display:inline-flex;align-items:center;gap:8px;font:600 11.5px 'Archivo';color:{{ b.labelColor }};"><span style="width:9px;height:9px;border-radius:3px;background:{{ b.dot }};box-shadow:0 0 8px color-mix(in srgb,{{ b.dot }} 60%,transparent);"></span>{{ b.label }}</span>
                 <div style="flex:1;height:8px;border-radius:99px;background:rgba(120,140,166,.14);overflow:hidden;"><div style="height:100%;border-radius:99px;width:{{ b.barW }};{{ b.barLook }};transition:width .4s cubic-bezier(.3,.8,.3,1);"></div></div>
               </div>
             </sc-for>
@@ -121,7 +121,7 @@
             <p style="margin:0 0 14px;font:500 13px/1.5 'Archivo';color:#EAF2FB;text-wrap:pretty;">{{ scoutNote }}</p>
             <label style="display:block;font:600 9px 'IBM Plex Mono';letter-spacing:.18em;color:#7688a0;margin-bottom:7px;">NAME YOUR SCREEN</label>
             <input type="text" placeholder="{{ namePlaceholder }}" onInput="{{ onName }}" style="width:100%;padding:11px 13px;border-radius:10px;border:1px solid rgba(120,140,166,.3);background:rgba(4,8,14,.5);color:#F2F8FE;font:600 14px 'Archivo';outline:none;" />
-            <button onClick="{{ save }}" style="margin-top:11px;width:100%;display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:13px 20px;border-radius:11px;border:0;background:var(--accent,#E0413C);color:#04060c;font:700 14px 'Archivo';cursor:pointer;transition:transform .16s ease;" style-hover="transform:translateY(-2px);">{{ saveLabel }}</button>
+            <button onClick="{{ save }}" style="margin-top:11px;width:100%;display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:13px 20px;border-radius:11px;border:0;background:var(--accent,#E0413C);color:#04060c;font:700 14px 'Archivo';cursor:pointer;transition:transform .16s ease;" style-hover="transform:translateY(-2px);"><sc-if value="{{ isSaved }}" hint-placeholder-val="{{ false }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 13l4 4L19 7"/></svg></sc-if>{{ saveLabel }}</button>
           </div>
         </sc-if>
         <sc-if value="{{ notComplete }}" hint-placeholder-val="{{ true }}">
@@ -137,10 +137,10 @@
 class Component extends DCLogic {
   ORDER = ['destroyer','sentinel','architect','warrior'];
   ARCH = {
-    destroyer:{ short:'Destroyer', emoji:'\uD83D\uDCA5', color:'#E0413C' },
-    sentinel: { short:'Sentinel',  emoji:'\uD83D\uDEE1\uFE0F', color:'#D9A521' },
-    architect:{ short:'Architect', emoji:'\uD83C\uDFBC', color:'#22D3EE' },
-    warrior:  { short:'Warrior',   emoji:'\u2699\uFE0F', color:'#FF7A2F' },
+    destroyer:{ short:'Destroyer', mono:'DE', color:'#E0413C' },
+    sentinel: { short:'Sentinel',  mono:'SE', color:'#D9A521' },
+    architect:{ short:'Architect', mono:'AR', color:'#22D3EE' },
+    warrior:  { short:'Warrior',   mono:'WA', color:'#FF7A2F' },
   };
   FLAVOUR = {
     destroyer:{ name:'The Enforcer',  line:'You win the ball back and dominate the battle. The screen that starts with a tackle.' },
@@ -150,28 +150,28 @@ class Component extends DCLogic {
   };
   SLOTS = [
     { key:'read', title:'THE READ', opts:[
-      { id:'tackle',    emoji:'\uD83D\uDCA5', text:'Step in and win the tackle',       w:{destroyer:3} },
-      { id:'intercept', emoji:'\uD83D\uDEE1\uFE0F', text:'Read the pass and intercept it', w:{sentinel:3} },
-      { id:'nick',      emoji:'\uD83C\uDFBC', text:'Nick it and turn it into attack',  w:{architect:2,destroyer:1} },
-      { id:'press',     emoji:'\u2699\uFE0F', text:'Press and chase it down everywhere', w:{warrior:3} },
+      { id:'tackle',    text:'Step in and win the tackle',       w:{destroyer:3} },
+      { id:'intercept', text:'Read the pass and intercept it', w:{sentinel:3} },
+      { id:'nick',      text:'Nick it and turn it into attack',  w:{architect:2,destroyer:1} },
+      { id:'press',     text:'Press and chase it down everywhere', w:{warrior:3} },
     ]},
     { key:'duel', title:'THE DUEL', opts:[
-      { id:'tight',   emoji:'\uD83D\uDCA5', text:'Get tight and put the tackle in',  w:{destroyer:3} },
-      { id:'jockey',  emoji:'\uD83D\uDEE1\uFE0F', text:'Jockey, delay, force him wide', w:{sentinel:3} },
-      { id:'track',   emoji:'\u2699\uFE0F', text:'Track him all the way across',     w:{warrior:2,sentinel:1} },
-      { id:'angle',   emoji:'\uD83C\uDFBC', text:'Angle him onto the cover, screen', w:{architect:2,sentinel:1} },
+      { id:'tight',   text:'Get tight and put the tackle in',  w:{destroyer:3} },
+      { id:'jockey',  text:'Jockey, delay, force him wide', w:{sentinel:3} },
+      { id:'track',   text:'Track him all the way across',     w:{warrior:2,sentinel:1} },
+      { id:'angle',   text:'Angle him onto the cover, screen', w:{architect:2,sentinel:1} },
     ]},
     { key:'build', title:'THE BUILD', opts:[
-      { id:'spray',   emoji:'\uD83C\uDFBC', text:'Turn and spray a progressive pass', w:{architect:3} },
-      { id:'recycle', emoji:'\uD83D\uDEE1\uFE0F', text:'Recycle it, keep the shape',   w:{sentinel:2,architect:1} },
-      { id:'carry',   emoji:'\u2699\uFE0F', text:'Carry it out and drive forward',    w:{warrior:3} },
-      { id:'simple',  emoji:'\uD83D\uDCA5', text:'Give it simple and safe',           w:{destroyer:2,sentinel:1} },
+      { id:'spray',   text:'Turn and spray a progressive pass', w:{architect:3} },
+      { id:'recycle', text:'Recycle it, keep the shape',   w:{sentinel:2,architect:1} },
+      { id:'carry',   text:'Carry it out and drive forward',    w:{warrior:3} },
+      { id:'simple',  text:'Give it simple and safe',           w:{destroyer:2,sentinel:1} },
     ]},
     { key:'finish', title:'THE END PRODUCT', opts:[
-      { id:'tempo',   emoji:'\uD83C\uDFBC', text:'Dictate the tempo, keep it ticking', w:{architect:3} },
-      { id:'latebox', emoji:'\u2699\uFE0F', text:'Arrive late in the box',            w:{warrior:3} },
-      { id:'screen',  emoji:'\uD83D\uDCA5', text:'Screen the counter, protect the four', w:{destroyer:2,sentinel:1} },
-      { id:'cover',   emoji:'\uD83D\uDEE1\uFE0F', text:'Drop, cover, kill the counter', w:{sentinel:3} },
+      { id:'tempo',   text:'Dictate the tempo, keep it ticking', w:{architect:3} },
+      { id:'latebox', text:'Arrive late in the box',            w:{warrior:3} },
+      { id:'screen',  text:'Screen the counter, protect the four', w:{destroyer:2,sentinel:1} },
+      { id:'cover',   text:'Drop, cover, kill the counter', w:{sentinel:3} },
     ]},
   ];
 
@@ -240,7 +240,7 @@ class Component extends DCLogic {
         opts:s.opts.map(o=>{
           const sel=picked===o.id;
           const col=this._optColor(o);
-          return { emoji:o.emoji, text:o.text,
+          return { dot:col, text:o.text,
             border: sel?col:'rgba(120,140,166,.22)',
             bg: sel?('color-mix(in srgb,'+col+' 16%,transparent)'):'rgba(10,16,28,.5)',
             color: sel?'#F2F8FE':'#B4C2D4',
@@ -260,7 +260,7 @@ class Component extends DCLogic {
 
     base.blendBars=this.ORDER.map(id=>({ id, val:v[id] })).sort((a,b)=>b.val-a.val).map(({id,val})=>{
       const isP=any&&id===lead&&val>0; const col=this.ARCH[id].color;
-      return { emoji:this.ARCH[id].emoji, label:this.ARCH[id].short, labelColor:isP?'#F2F8FE':'#9FB0C5',
+      return { dot:col, label:this.ARCH[id].short, labelColor:isP?'#F2F8FE':'#9FB0C5',
         barW:(any?Math.round((val/max)*100):0)+'%',
         barLook:isP?('background:linear-gradient(90deg,'+col+',color-mix(in srgb,'+col+' 45%,transparent));box-shadow:0 0 10px color-mix(in srgb,'+col+' 50%,transparent)'):'background:rgba(140,160,186,.4)' };
     });
@@ -268,7 +268,7 @@ class Component extends DCLogic {
     if(any){
       const F=this.FLAVOUR[lead]; const col=this.ARCH[lead].color;
       base.readKicker= complete?'YOUR SIGNATURE':'FORMING\u2026';
-      base.flavourEmoji=this.ARCH[lead].emoji; base.flavourColor=col;
+      base.flavourMono=this.ARCH[lead].mono; base.flavourColor=col;
       base.readBorder='color-mix(in srgb,'+col+' 30%,transparent)'; base.readBg='color-mix(in srgb,'+col+' 6%,transparent)';
       const ratio = v[lead]>0 ? v[second]/v[lead] : 0;
       const blended = ratio>=0.7 && second && v[second]>0;
@@ -279,7 +279,7 @@ class Component extends DCLogic {
         base.flavourName=F.name; base.flavourLine=F.line;
       }
     } else {
-      base.readKicker='START PICKING'; base.flavourEmoji='\u2753'; base.flavourColor='#7688a0';
+      base.readKicker='START PICKING'; base.flavourMono='?'; base.flavourColor='#7688a0';
       base.flavourName='Undefined'; base.flavourLine='Pick a step to see your signature start to form.';
       base.readBorder='rgba(120,140,166,.2)'; base.readBg='rgba(10,16,28,.5)';
     }
@@ -297,8 +297,8 @@ class Component extends DCLogic {
         base.scoutNote='A balanced screen with a clear lean. Your first job is obvious \u2014 but you\u2019ve always got a second string to your game.';
       }
       base.namePlaceholder='e.g. \u201CThe '+base.flavourName.replace('The ','')+' Lock\u201D';
-      base.saveLabel=this.state.saved?'\u2713 Saved to your locker':'Save this screen';
-    } else { base.scoutNote=''; base.namePlaceholder=''; base.saveLabel='Save this screen'; }
+      base.saveLabel=this.state.saved?'Saved to your locker':'Save this screen'; base.isSaved=this.state.saved;
+    } else { base.scoutNote=''; base.namePlaceholder=''; base.saveLabel='Save this screen'; base.isSaved=false; }
 
     return base;
   }

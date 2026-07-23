@@ -155,7 +155,7 @@
             <div style="display:flex;flex-wrap:wrap;gap:14px;align-items:center;padding-top:12px;border-top:1px solid rgba(120,140,166,.16);">
               <div style="display:flex;flex-direction:column;gap:3px;">
                 <span style="font:600 8.5px 'IBM Plex Mono';letter-spacing:.18em;color:#61748c;">THE REAL CALL</span>
-                <span style="font:700 13px 'Archivo';color:{{ outcomeColor }};">{{ outcomeEmoji }} {{ outcomeLabel }}</span>
+                <span style="display:inline-flex;align-items:center;gap:8px;font:700 13px 'Archivo';color:{{ outcomeColor }};"><span style="width:9px;height:9px;border-radius:3px;background:{{ outcomeColor }};"></span>{{ outcomeLabel }}</span>
               </div>
               <span style="flex:1;"></span>
               <div style="display:flex;flex-direction:column;gap:3px;align-items:flex-end;">
@@ -196,7 +196,7 @@
             <sc-for list="{{ spreadBars }}" as="s" hint-placeholder-count="4">
               <div style="display:flex;flex-direction:column;gap:6px;">
                 <div style="display:flex;align-items:baseline;justify-content:space-between;">
-                  <span style="font:700 12.5px 'Archivo';color:{{ s.labelColor }};">{{ s.emoji }} {{ s.label }} <span style="font:500 10px 'IBM Plex Mono';color:#61748c;">· {{ s.tag }}</span></span>
+                  <span style="display:inline-flex;align-items:center;gap:8px;font:700 12.5px 'Archivo';color:{{ s.labelColor }};"><span style="width:9px;height:9px;border-radius:3px;background:{{ s.dot }};box-shadow:0 0 8px color-mix(in srgb,{{ s.dot }} 60%,transparent);"></span>{{ s.label }} <span style="font:500 10px 'IBM Plex Mono';color:#61748c;">· {{ s.tag }}</span></span>
                   <span style="font:800 13px 'IBM Plex Mono';color:{{ s.numColor }};">{{ s.pct }}</span>
                 </div>
                 <div style="height:9px;border-radius:99px;background:rgba(120,140,166,.14);overflow:hidden;"><div style="height:100%;border-radius:99px;transform-origin:left;animation:fa-bar .8s cubic-bezier(.3,.8,.3,1) both;width:{{ s.barW }};{{ s.barLook }}"></div></div>
@@ -247,10 +247,10 @@
 class Component extends DCLogic {
   ORDER = ['destroyer','sentinel','architect','warrior'];
   ARCH = {
-    destroyer:{ short:'Destroyer', emoji:'\uD83D\uDCA5', color:'#E0413C', tag:'WIN IT AGGRESSIVELY' },
-    sentinel:{ short:'Sentinel', emoji:'\uD83D\uDEE1\uFE0F', color:'#D9A521', tag:'KEEP IT SAFE' },
-    architect:{ short:'Architect', emoji:'\uD83C\uDFBC', color:'#22D3EE', tag:'PLAY THE LINE-BREAKER' },
-    warrior:{ short:'Warrior', emoji:'\u2699\uFE0F', color:'#FF7A2F', tag:'DRIVE & COVER' },
+    destroyer:{ short:'Destroyer', mono:'DE', color:'#E0413C', tag:'WIN IT AGGRESSIVELY' },
+    sentinel:{ short:'Sentinel', mono:'SE', color:'#D9A521', tag:'KEEP IT SAFE' },
+    architect:{ short:'Architect', mono:'AR', color:'#22D3EE', tag:'PLAY THE LINE-BREAKER' },
+    warrior:{ short:'Warrior', mono:'WA', color:'#FF7A2F', tag:'DRIVE & COVER' },
   };
 
   // pitch layouts (x,y 0..100; attack toward top). ball path last point = the contested spot.
@@ -455,21 +455,21 @@ class Component extends DCLogic {
       // reveal panel
       const rec=this._lastRec;
       const oc=this.ARCH[sc.outcome.arch];
-      base.outcomeColor=oc.color; base.outcomeEmoji=oc.emoji; base.outcomeLabel=oc.short;
+      base.outcomeColor=oc.color; base.outcomeLabel=oc.short;
       base.outcomeText=sc.outcome.text;
       const matched=rec&&rec.matched;
       base.matchChip = matched?'YOU\u2019D HAVE GONE THE SAME WAY':(rec&&rec.noResp?'NO CALL IN TIME':'YOU SAW IT DIFFERENTLY');
       base.matchChipStyle = matched
         ? 'font:700 8.5px \'IBM Plex Mono\';letter-spacing:.14em;color:#7CFFB0;padding:4px 10px;border-radius:99px;border:1px solid rgba(124,255,176,.4);background:rgba(124,255,176,.1);'
         : 'font:700 8.5px \'IBM Plex Mono\';letter-spacing:.14em;color:#7688a0;padding:4px 10px;border-radius:99px;border:1px solid rgba(120,140,166,.28);';
-      base.pickLabel = rec ? (rec.noResp?'\u2014 no call':(this.ARCH[rec.arch].emoji+' '+this.ARCH[rec.arch].short)) : '';
+      base.pickLabel = rec ? (rec.noResp?'\u2014 no call':(this.ARCH[rec.arch].short)) : '';
       base.pickColor = rec&&!rec.noResp?this.ARCH[rec.arch].color:'#7688a0';
       base.nextLabel = (this.state.trialIdx+1>=8)?'See your read':'Next freeze';
     } else {
       base.callNum=1; base.condLabel='WATCHING…'; base.condColor='#7688a0';
       base.mates=[]; base.foes=[]; base.you={left:'50%',top:'58%'}; base.ball={left:'50%',top:'58%'};
       base.ballDur='0.42s'; base.frozen=false; base.prompt=''; base.ringKey='r0'; base.ringDur='2800ms'; base.options=[];
-      base.outcomeColor=accent; base.outcomeEmoji=''; base.outcomeLabel=''; base.outcomeText='';
+      base.outcomeColor=accent; base.outcomeLabel=''; base.outcomeText='';
       base.matchChip=''; base.matchChipStyle=''; base.pickLabel=''; base.pickColor='#7688a0'; base.nextLabel='Next freeze';
     }
 
@@ -490,7 +490,7 @@ class Component extends DCLogic {
       const maxV=Math.max(...entries.map(e=>e[1]),1);
       base.spreadBars=entries.map(([id,v])=>{
         const isP=id===r.lean; const col=this.ARCH[id].color;
-        return { emoji:this.ARCH[id].emoji, label:this.ARCH[id].short, tag:this.ARCH[id].tag,
+        return { dot:col, label:this.ARCH[id].short, tag:this.ARCH[id].tag,
           labelColor:isP?'#F2F8FE':'#9FB0C5', numColor:isP?col:'#9FB0C5', pct:v+'%',
           barW:Math.round((v/maxV)*100)+'%',
           barLook:isP?('background:linear-gradient(90deg,'+col+',color-mix(in srgb,'+col+' 45%,transparent));box-shadow:0 0 12px color-mix(in srgb,'+col+' 55%,transparent);'):'background:rgba(140,160,186,.4);' };

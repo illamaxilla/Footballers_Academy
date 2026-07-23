@@ -161,7 +161,7 @@
       <div style="width:100%;max-width:620px;">
         <div class="fa-in" style="text-align:center;margin-bottom:14px;">
           <div style="display:inline-grid;place-items:center;width:74px;height:74px;border-radius:50%;border:2px solid {{ hitColor }};background:color-mix(in srgb,{{ hitColor }} 12%,transparent);margin-bottom:12px;animation:fa-pop .5s ease both;">
-            <span style="font-size:34px;">{{ hitIcon }}</span>
+            <sc-if value="{{ hitCorrect }}" hint-placeholder-val="{{ true }}"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" style="stroke:{{ hitColor }};stroke-width:3;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 13l4 4L19 7"/></svg></sc-if><sc-if value="{{ hitMiss }}" hint-placeholder-val="{{ false }}"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" style="stroke:{{ hitColor }};stroke-width:3;stroke-linecap:round;stroke-linejoin:round;"><path d="M6 6l12 12M18 6L6 18"/></svg></sc-if>
           </div>
           <h1 style="margin:0;font:900 clamp(26px,4.2vw,46px)/1.0 'Archivo';letter-spacing:-0.025em;color:{{ hitColor }};">{{ hitHeadline }}</h1>
           <p style="margin:8px auto 0;max-width:440px;font:400 14.5px/1.55 'Archivo';color:#B4C2D4;text-wrap:pretty;">{{ hitSub }}</p>
@@ -194,7 +194,7 @@
     <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;text-align:center;padding:16px clamp(20px,4vw,58px) 68px;">
       <div style="width:100%;max-width:600px;">
         <div class="fa-in" style="font:600 11px 'IBM Plex Mono';letter-spacing:.4em;color:#7688a0;margin-bottom:10px;">FULL TIME</div>
-        <div class="fa-in" style="font-size:52px;line-height:1;margin-bottom:8px;animation:fa-pop .5s ease both;animation-delay:.05s;">{{ winEmoji }}</div>
+        <div class="fa-in" style="display:flex;justify-content:center;margin-bottom:8px;animation:fa-pop .5s ease both;animation-delay:.05s;"><span style="width:14px;height:14px;border-radius:5px;background:{{ winColor }};box-shadow:0 0 16px color-mix(in srgb,{{ winColor }} 70%,transparent);"></span></div>
         <h1 class="fa-in" style="margin:0 0 8px;font:900 clamp(30px,5vw,58px)/0.98 'Archivo';letter-spacing:-0.03em;color:{{ winColor }};text-shadow:0 0 44px color-mix(in srgb,{{ winColor }} 38%,transparent);animation-delay:.1s;">{{ winHeadline }}</h1>
         <p class="fa-in" style="margin:0 auto 24px;max-width:480px;font:400 15px/1.6 'Archivo';color:#B4C2D4;text-wrap:pretty;animation-delay:.14s;">{{ winSub }}</p>
 
@@ -397,7 +397,7 @@ class Component extends DCLogic {
       base.prompt=''; base.roundLabel='1 / 1'; base.taskLine=''; base.taskColor=accent; base.options=[];
     }
 
-    Object.assign(base,{ hitIcon:'',hitColor:accent,hitHeadline:'',hitSub:'',chooserName:'',chooserColor:accent,chooserBorder:'rgba(120,140,166,.2)',chooserPickText:'',
+    Object.assign(base,{ hitCorrect:false,hitMiss:false,hitColor:accent,hitHeadline:'',hitSub:'',chooserName:'',chooserColor:accent,chooserBorder:'rgba(120,140,166,.2)',chooserPickText:'',
       readerName:'',readerColor:accent,readerBorder:'rgba(120,140,166,.2)',readerGuessText:'',nextLabel:'Next' });
     if(V==='reveal' && sub){
       const sc=this.SCN[sub.sceneIdx];
@@ -405,7 +405,7 @@ class Component extends DCLogic {
       const chooserName=chooserKey==='p1'?nm.p1:nm.p2, readerName=readerKey==='p1'?nm.p1:nm.p2;
       const chooserCol=chooserKey==='p1'?p1Color:p2Color, readerCol=readerKey==='p1'?p1Color:p2Color;
       const correct=this._lastCorrect;
-      base.hitIcon = correct?'\u2713':'\u2717';
+      base.hitCorrect = correct; base.hitMiss = !correct;
       base.hitColor = correct?'#3BE07A':'#FF5A6E';
       base.hitHeadline = correct?(readerName+' read it!'):(readerName+' misread it');
       base.hitSub = correct ? (readerName+' knew exactly what '+chooserName+' would do. That\u2019s a point.')
@@ -417,13 +417,13 @@ class Component extends DCLogic {
       base.nextLabel = (this.state.subIdx+1>=this._order.length)?'See who won':'Next moment';
     }
 
-    Object.assign(base,{ winEmoji:'',winColor:accent,winHeadline:'',winSub:'',dataLine:'' });
+    Object.assign(base,{ winColor:accent,winHeadline:'',winSub:'',dataLine:'' });
     if(V==='result'){
       const w=this._winner;
-      if(w==='tie'){ base.winEmoji='\uD83E\uDD1D'; base.winColor=accent; base.winHeadline='Dead heat'; base.winSub='You read each other exactly as well. You clearly know each other\u2019s game inside out.'; }
+      if(w==='tie'){ base.winColor=accent; base.winHeadline='Dead heat'; base.winSub='You read each other exactly as well. You clearly know each other\u2019s game inside out.'; }
       else {
         const wn=w==='p1'?nm.p1:nm.p2; const wc=w==='p1'?p1Color:p2Color; const ws=w==='p1'?scores.p1:scores.p2; const ls=w==='p1'?scores.p2:scores.p1;
-        base.winEmoji='\uD83E\uDDE0'; base.winColor=wc; base.winHeadline=wn+' reads the room';
+        base.winColor=wc; base.winHeadline=wn+' reads the room';
         base.winSub=wn+' landed '+ws+' reads to '+ls+'. Knowing what your teammate will do before they do it \u2014 that\u2019s the midfield skill that never shows on a stat sheet.';
       }
       base.dataLine='PASS &amp; PLAY \u00b7 READS THE OPPONENT \u00b7 DM FREEZE DUEL v1.0';
