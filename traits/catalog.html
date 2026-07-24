@@ -39,7 +39,7 @@
   /* shapes */
   .tri .edge,.tri .face{clip-path:polygon(50% 5%,95% 92%,5% 92%);} .tri .sym{padding-top:18px;}
   .dia .edge,.dia .face{clip-path:polygon(50% 2%,98% 50%,50% 98%,2% 50%);}
-  .sq .edge,.sq .face{border-radius:0;}
+  .sq .edge,.sq .face{border-radius:0;transform:scale(.8);} /* optical size match — square fills its box, polygons don't */
   .hex .edge,.hex .face{clip-path:polygon(50% 2%,93% 26%,93% 74%,50% 98%,7% 74%,7% 26%);}
   .oct .edge,.oct .face{clip-path:polygon(30% 2%,70% 2%,98% 30%,98% 70%,70% 98%,30% 98%,2% 70%,2% 30%);}
   /* archetype cards */
@@ -58,7 +58,7 @@
   .pent .pn{font:700 8.5px/1.15 'Archivo';color:#C6D3E2;}
   .pent .tri .edge,.pent .tri .face{clip-path:polygon(50% 5%,95% 92%,5% 92%);} .pent .tri .sym{padding-top:11px;}
   .pent .dia .edge,.pent .dia .face{clip-path:polygon(50% 2%,98% 50%,50% 98%,2% 50%);}
-  .pent .sq .edge,.pent .sq .face{border-radius:0;}
+  .pent .sq .edge,.pent .sq .face{border-radius:0;transform:scale(.8);}
   .pent .hex .edge,.pent .hex .face{clip-path:polygon(50% 2%,93% 26%,93% 74%,50% 98%,7% 74%,7% 26%);}
   .pent .oct .edge,.pent .oct .face{clip-path:polygon(30% 2%,70% 2%,98% 30%,98% 70%,70% 98%,30% 98%,2% 70%,2% 30%);}
 </style></head>
