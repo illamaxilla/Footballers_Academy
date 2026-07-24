@@ -439,8 +439,9 @@ class Component extends DCLogic {
       base.condLabel = decide?'READ IT':(reveal?'THE TAPE ROLLS ON':'WATCHING…');
       base.condColor = decide?'#FF5A6E':(reveal?accent:'#7688a0');
       base.mates=lay.mates.map(pos); base.foes=lay.foes.map(pos); base.you=pos(lay.you);
-      const bs=Math.min(this.state.ballStep, this._path.length-1);
-      base.ball=pos(this._path[bs]);
+      const path=this._path||lay.ball;
+      const bs=Math.min(this.state.ballStep, path.length-1);
+      base.ball=pos(path[bs]);
       const motion=this.props.motion??true;
       base.ballDur=(motion?0.42:0.08)+'s';
       base.frozen=this.state.frozen;
