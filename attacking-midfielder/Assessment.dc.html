@@ -183,10 +183,10 @@
           <circle cx="110" cy="110" r="82" fill="none" stroke="rgba(120,140,166,.13)" stroke-width="1"></circle>
           <circle cx="110" cy="110" r="55" fill="none" stroke="rgba(120,140,166,.09)" stroke-width="1"></circle>
           <circle cx="110" cy="110" r="28" fill="none" stroke="rgba(120,140,166,.07)" stroke-width="1"></circle>
-          <sc-for list="{{ radarAxes }}" as="ax" hint-placeholder-count="10"><line x1="110" y1="110" x2="{{ ax.x2 }}" y2="{{ ax.y2 }}" stroke="rgba(120,140,166,.14)" stroke-width="1"></line></sc-for>
-          <polygon points="{{ radarCanon }}" fill="none" stroke="{{ heroColor }}" stroke-opacity="0.45" stroke-dasharray="3,3" stroke-width="1.4"></polygon>
-          <polygon points="{{ radarPlayer }}" fill="{{ heroColor }}" fill-opacity="0.2" stroke="{{ heroColor }}" stroke-width="2.2" stroke-linejoin="round"></polygon>
-          <sc-for list="{{ radarLabels }}" as="l" hint-placeholder-count="10"><text x="{{ l.x }}" y="{{ l.y }}" text-anchor="{{ l.anchor }}" style="font:700 8px 'IBM Plex Mono';fill:{{ l.fill }};">{{ l.label }}</text></sc-for>
+          {{ radarAxesEls }}
+          {{ radarCanonEl }}
+          {{ radarPlayerEl }}
+          {{ radarLabelsEls }}
         </svg>
         <div style="flex:1 1 240px;min-width:220px;text-align:left;">
           <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.2em;color:#7688a0;margin-bottom:12px;">WHAT YOU BRING</div>
@@ -741,7 +741,10 @@ class Component extends DCLogic {
       base.heroTagline=AX.tagline; base.reflectLine=AX.reflect;
       base.strengths=AX.strengths.map(t=>({t})); base.exemplars=AX.exemplars; base.edgeLine=AX.edge; base.firstStepLine=AX.firstStep;
       const rad=this._radar(r.playerTraits, this.CANONICAL[pid]);
-      base.radarPlayer=rad.player; base.radarCanon=rad.canon; base.radarAxes=rad.axes; base.radarLabels=rad.labels;
+      base.radarLabelsEls=rad.labels.map((l,i)=>React.createElement('text',{ key:i, x:l.x, y:l.y, textAnchor:l.anchor, style:{ font:"700 8px 'IBM Plex Mono'", fill:l.fill } }, l.label));
+      base.radarAxesEls=rad.axes.map((ax,i)=>React.createElement('line',{ key:i, x1:110, y1:110, x2:ax.x2, y2:ax.y2, stroke:'rgba(120,140,166,.14)', strokeWidth:1 }));
+      base.radarCanonEl=React.createElement('polygon',{ points:rad.canon, fill:'none', stroke:AX.color, strokeOpacity:0.45, strokeDasharray:'3,3', strokeWidth:1.4 });
+      base.radarPlayerEl=React.createElement('polygon',{ points:rad.player, fill:AX.color, fillOpacity:0.2, stroke:AX.color, strokeWidth:2.2, strokeLinejoin:'round' });
       const fmap=this.SYSTEM_FIT[pid]; const realF=this.FORMATIONS.filter(f=>f.id!=='ns');
       let bestF=realF[0]; realF.forEach(f=>{ if(fmap[f.id]>fmap[bestF.id]) bestF=f; }); const bestFit=fmap[bestF.id];
       const sel=this.state.formation||null;
@@ -776,7 +779,7 @@ class Component extends DCLogic {
       base.bandLabel=''; base.traitBars=[]; base.dataLine='';
       base.heroMono=''; base.heroKicker=''; base.heroName=''; base.heroColor=accent; base.heroTagline=''; base.reflectLine='';
       base.strengths=[]; base.exemplars=''; base.edgeLine=''; base.firstStepLine='';
-      base.radarPlayer=''; base.radarCanon=''; base.radarAxes=[]; base.radarLabels=[];
+      base.radarLabelsEls=[]; base.radarAxesEls=[]; base.radarCanonEl=null; base.radarPlayerEl=null;
       base.formations=[]; base.hasFit=false; base.fitFormation=''; base.fitPct=''; base.fitBar='0%'; base.fitColor=accent; base.fitCopy='';
       base.hasEvo=false; base.evoKicker=''; base.evoMono=''; base.evoName=''; base.evoColor=accent; base.evoCopy='';
       base.hasMind=false; base.mindBars=[]; base.hasBurden=false; base.burdenTitle=''; base.burdenCopy=''; base.burdenStep='';
