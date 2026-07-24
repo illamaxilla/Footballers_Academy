@@ -12,7 +12,7 @@
 <style>
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;background:#04060c;}
-  a{color:var(--accent,#D9A521);text-decoration:none;}
+  a{color:var(--accent,#22D3EE);text-decoration:none;}
   a:hover{opacity:.92;}
   @keyframes fa-blink{0%,100%{opacity:1;}50%{opacity:.25;}}
   @keyframes fa-rise{0%{transform:translateY(16px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
@@ -20,15 +20,16 @@
   .fa-in{opacity:0;animation:fa-rise .7s cubic-bezier(.2,.7,.2,1) forwards;}
   .fa-in-sm{opacity:0;animation:fa-rise-sm .5s cubic-bezier(.2,.7,.2,1) forwards;}
   @media (prefers-reduced-motion:reduce){*{animation-duration:.001s!important;}.fa-in,.fa-in-sm{opacity:1!important;transform:none!important;}}
+  @media (max-width:430px){header{padding-left:16px!important;padding-right:16px!important;gap:10px!important;}header>div{min-width:0!important;}header span{overflow:hidden;text-overflow:ellipsis;}}
 </style>
 </helmet>
 <div data-screen-label="Coach 360" style="position:relative;display:flex;flex-direction:column;min-height:100dvh;width:100%;overflow:hidden;background:radial-gradient(120% 90% at 50% 6%,#0e1a2d 0%,#080e1a 44%,#04060c 100%);color:#EAF2FB;font-family:'Archivo',system-ui,sans-serif;--accent:{{ accent }};">
 
   <div style="position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.4;background:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0px,rgba(255,255,255,.02) 1px,transparent 1px,transparent 4px);"></div>
-  <div style="position:absolute;top:20px;left:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#D9A521) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#D9A521) 50%,transparent);z-index:4;pointer-events:none;"></div>
-  <div style="position:absolute;top:20px;right:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#D9A521) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#D9A521) 50%,transparent);z-index:4;pointer-events:none;"></div>
-  <div style="position:absolute;bottom:20px;left:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#D9A521) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#D9A521) 50%,transparent);z-index:4;pointer-events:none;"></div>
-  <div style="position:absolute;bottom:20px;right:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#D9A521) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#D9A521) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;top:20px;left:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;top:20px;right:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;left:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;right:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
 
   <!-- ============ TOP BAR ============ -->
   <header style="position:relative;z-index:6;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px clamp(26px,3.4vw,58px);">
@@ -40,7 +41,7 @@
       </sc-if>
     </div>
     <div style="display:flex;align-items:center;gap:11px;">
-      <svg width="20" height="20" viewBox="0 0 32 32" fill="none"><path d="M16 2 28 9v14L16 30 4 23V9z" style="stroke:var(--accent,#D9A521);stroke-width:1.5;fill:color-mix(in srgb,var(--accent,#D9A521) 12%,transparent);"/><circle cx="12" cy="14" r="3" style="stroke:var(--accent,#D9A521);stroke-width:1.5;fill:none;"/><circle cx="20" cy="14" r="3" style="stroke:var(--accent,#D9A521);stroke-width:1.5;fill:none;"/></svg>
+      <svg width="20" height="20" viewBox="0 0 32 32" fill="none"><path d="M16 2 28 9v14L16 30 4 23V9z" style="stroke:var(--accent,#22D3EE);stroke-width:1.5;fill:color-mix(in srgb,var(--accent,#22D3EE) 12%,transparent);"/><circle cx="12" cy="14" r="3" style="stroke:var(--accent,#22D3EE);stroke-width:1.5;fill:none;"/><circle cx="20" cy="14" r="3" style="stroke:var(--accent,#22D3EE);stroke-width:1.5;fill:none;"/></svg>
       <span style="font:800 12.5px 'Archivo';letter-spacing:.05em;">COACH 360</span>
       <span style="font:600 9px 'IBM Plex Mono';letter-spacing:.16em;color:#5c6e85;border:1px solid rgba(120,140,166,.24);border-radius:6px;padding:3px 6px;">EXTERNAL EYE</span>
     </div>
@@ -50,8 +51,8 @@
   <!-- ============ PLAYER / SEND ============ -->
   <sc-if value="{{ isPlayer }}" hint-placeholder-val="{{ true }}">
     <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;text-align:center;padding:20px clamp(26px,4vw,58px) 60px;">
-      <div class="fa-in" style="display:inline-flex;align-items:center;gap:10px;margin-bottom:18px;font:600 12px 'IBM Plex Mono';letter-spacing:.32em;color:var(--accent,#D9A521);">
-        <span style="width:6px;height:6px;border-radius:50%;background:var(--accent,#D9A521);box-shadow:0 0 8px var(--accent,#D9A521);animation:fa-blink 1.6s ease-in-out infinite;"></span>THE ONE READ THAT ISN&rsquo;T SELF-REPORT
+      <div class="fa-in" style="display:inline-flex;align-items:center;gap:10px;margin-bottom:18px;font:600 12px 'IBM Plex Mono';letter-spacing:.32em;color:var(--accent,#22D3EE);">
+        <span style="width:6px;height:6px;border-radius:50%;background:var(--accent,#22D3EE);box-shadow:0 0 8px var(--accent,#22D3EE);animation:fa-blink 1.6s ease-in-out infinite;"></span>THE ONE READ THAT ISN&rsquo;T SELF-REPORT
       </div>
       <h1 class="fa-in" style="margin:0 0 16px;font:800 clamp(34px,5.2vw,68px)/0.99 'Archivo';letter-spacing:-0.03em;text-wrap:balance;max-width:820px;animation-delay:.06s;">Ask someone who watches you play.</h1>
       <p class="fa-in" style="margin:0 0 24px;max-width:610px;font:400 clamp(15px,1.3vw,18px)/1.6 'Archivo';color:#9FB0C5;text-wrap:pretty;animation-delay:.12s;">Six questions for a coach or a teammate. If they see the same midfielder you do, your read gets stronger. If they don&rsquo;t &mdash; <em>that</em> gap is the most useful thing in here. They see your work rate, your positioning and your tackles better than you can; you know your own head better than they ever will.</p>
@@ -59,11 +60,11 @@
       <div class="fa-in" style="margin-bottom:22px;padding:12px 18px;border-radius:12px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);font:500 13px 'Archivo';color:#B4C2D4;animation-delay:.16s;">{{ selfLine }}</div>
 
       <div class="fa-in" style="display:flex;flex-wrap:wrap;gap:13px;justify-content:center;margin-bottom:16px;animation-delay:.2s;">
-        <button onClick="{{ handOver }}" style="display:inline-flex;align-items:center;gap:11px;padding:17px 34px;border-radius:13px;border:0;background:var(--accent,#D9A521);color:#1a1204;font:700 16px 'Archivo';cursor:pointer;box-shadow:0 14px 46px color-mix(in srgb,var(--accent,#D9A521) 42%,transparent);transition:transform .16s ease;" style-hover="transform:translateY(-2px);">
+        <button onClick="{{ handOver }}" style="display:inline-flex;align-items:center;gap:11px;padding:17px 34px;border-radius:13px;border:0;background:var(--accent,#22D3EE);color:#1a1204;font:700 16px 'Archivo';cursor:pointer;box-shadow:0 14px 46px color-mix(in srgb,var(--accent,#22D3EE) 42%,transparent);transition:transform .16s ease;" style-hover="transform:translateY(-2px);">
           Hand them your phone now
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12h13M12 6l6 6-6 6"/></svg>
         </button>
-        <button onClick="{{ copyLink }}" style="display:inline-flex;align-items:center;gap:10px;padding:17px 28px;border-radius:13px;border:1px solid rgba(157,176,198,.28);background:rgba(12,18,30,.4);color:#C6D3E2;font:600 15px 'Archivo';cursor:pointer;transition:border-color .16s ease,color .16s ease;" style-hover="border-color:color-mix(in srgb,var(--accent,#D9A521) 55%,transparent);color:#EAF2FB;">
+        <button onClick="{{ copyLink }}" style="display:inline-flex;align-items:center;gap:10px;padding:17px 28px;border-radius:13px;border:1px solid rgba(157,176,198,.28);background:rgba(12,18,30,.4);color:#C6D3E2;font:600 15px 'Archivo';cursor:pointer;transition:border-color .16s ease,color .16s ease;" style-hover="border-color:color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);color:#EAF2FB;">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round;"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg>{{ copyLabel }}
         </button>
       </div>
@@ -77,7 +78,7 @@
       <div class="fa-in" style="margin-bottom:12px;line-height:0;"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" style="stroke:var(--accent,#7688A0);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;"><circle cx="9" cy="8" r="3.2"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 5.4a3.2 3.2 0 0 1 0 5.2M17 14.2c2 .8 3.5 2.8 3.5 5.3"/></svg></div>
       <h1 class="fa-in" style="margin:0 0 14px;font:800 clamp(30px,4.4vw,54px)/1.02 'Archivo';letter-spacing:-0.025em;max-width:700px;text-wrap:balance;animation-delay:.06s;">You&rsquo;re rating this player.</h1>
       <p class="fa-in" style="margin:0 0 30px;max-width:560px;font:400 15px/1.6 'Archivo';color:#B4C2D4;text-wrap:pretty;animation-delay:.12s;">Six quick questions about the midfielder who handed you this. Answer for the player you actually watch &mdash; not the one they wish they were. Honest is more useful than kind.</p>
-      <button onClick="{{ raterStart }}" class="fa-in" style="display:inline-flex;align-items:center;gap:11px;padding:16px 36px;border-radius:12px;border:0;background:var(--accent,#D9A521);color:#1a1204;font:700 15px 'Archivo';cursor:pointer;box-shadow:0 14px 40px color-mix(in srgb,var(--accent,#D9A521) 40%,transparent);transition:transform .16s ease;animation-delay:.18s;" style-hover="transform:translateY(-2px);">
+      <button onClick="{{ raterStart }}" class="fa-in" style="display:inline-flex;align-items:center;gap:11px;padding:16px 36px;border-radius:12px;border:0;background:var(--accent,#22D3EE);color:#1a1204;font:700 15px 'Archivo';cursor:pointer;box-shadow:0 14px 40px color-mix(in srgb,var(--accent,#22D3EE) 40%,transparent);transition:transform .16s ease;animation-delay:.18s;" style-hover="transform:translateY(-2px);">
         Start the six
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" style="stroke:#1a1204;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12h13M12 6l6 6-6 6"/></svg>
       </button>
@@ -89,14 +90,14 @@
     <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:12px clamp(26px,4vw,58px) 54px;">
       <div style="width:100%;max-width:640px;">
         <div class="fa-in-sm" style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
-          <span style="font:600 10px 'IBM Plex Mono';letter-spacing:.24em;color:var(--accent,#D9A521);">THEIR EYES</span>
+          <span style="font:600 10px 'IBM Plex Mono';letter-spacing:.24em;color:var(--accent,#22D3EE);">THEIR EYES</span>
           <span style="flex:1;height:1px;background:rgba(120,140,166,.18);"></span>
           <span style="font:600 10px 'IBM Plex Mono';letter-spacing:.16em;color:#61748c;">{{ qNumLabel }}</span>
         </div>
         <h1 class="fa-in-sm" style="margin:0 0 24px;font:800 clamp(22px,2.9vw,36px)/1.18 'Archivo';letter-spacing:-0.02em;text-wrap:pretty;animation-delay:.05s;">{{ qPrompt }}</h1>
         <div style="display:flex;flex-direction:column;gap:10px;">
           <sc-for list="{{ options }}" as="opt" hint-placeholder-count="5">
-            <button onClick="{{ opt.onPick }}" class="fa-in-sm" style="display:flex;align-items:center;gap:14px;width:100%;text-align:left;padding:15px 18px;border-radius:13px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);color:#EAF2FB;font:600 14.5px/1.4 'Archivo';cursor:pointer;transition:border-color .16s ease,background .16s ease,transform .16s ease;animation-delay:{{ opt.delay }};" style-hover="border-color:color-mix(in srgb,var(--accent,#D9A521) 58%,transparent);background:rgba(14,22,37,.78);transform:translateY(-2px);">
+            <button onClick="{{ opt.onPick }}" class="fa-in-sm" style="display:flex;align-items:center;gap:14px;width:100%;text-align:left;padding:15px 18px;border-radius:13px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);color:#EAF2FB;font:600 14.5px/1.4 'Archivo';cursor:pointer;transition:border-color .16s ease,background .16s ease,transform .16s ease;animation-delay:{{ opt.delay }};" style-hover="border-color:color-mix(in srgb,var(--accent,#22D3EE) 58%,transparent);background:rgba(14,22,37,.78);transform:translateY(-2px);">
               <span style="flex:0 0 auto;width:10px;height:10px;border-radius:50%;background:{{ opt.dot }};"></span>
               <span style="flex:1;">{{ opt.text }}</span>
             </button>
@@ -148,7 +149,7 @@
         </div>
 
         <div class="fa-in" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:13px;animation-delay:.3s;">
-          <button onClick="{{ another }}" style="display:inline-flex;align-items:center;gap:10px;padding:16px 30px;border-radius:12px;border:0;background:var(--accent,#D9A521);color:#1a1204;font:700 15px 'Archivo';cursor:pointer;box-shadow:0 12px 38px color-mix(in srgb,var(--accent,#D9A521) 40%,transparent);transition:transform .16s ease;" style-hover="transform:translateY(-2px);">
+          <button onClick="{{ another }}" style="display:inline-flex;align-items:center;gap:10px;padding:16px 30px;border-radius:12px;border:0;background:var(--accent,#22D3EE);color:#1a1204;font:700 15px 'Archivo';cursor:pointer;box-shadow:0 12px 38px color-mix(in srgb,var(--accent,#22D3EE) 40%,transparent);transition:transform .16s ease;" style-hover="transform:translateY(-2px);">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:#1a1204;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M12 5v14M5 12h14"/></svg>Ask someone else
           </button>
           <a href="Assessment.dc.html" style="display:inline-flex;align-items:center;gap:9px;padding:16px 24px;border-radius:12px;border:1px solid rgba(157,176,198,.28);background:rgba(12,18,30,.4);color:#C6D3E2;font:600 14px 'Archivo';">Back to the scan</a>
@@ -160,7 +161,7 @@
 
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:940,&quot;height&quot;:760},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#D9A521&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#D9A521&quot;,&quot;#7C5CE0&quot;,&quot;#2E9BE8&quot;,&quot;#1FB588&quot;,&quot;#E0413C&quot;]},&quot;motion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;embedded&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;onDone&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;(votes:any, meta:any)=&gt;void&quot;}}">
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:940,&quot;height&quot;:760},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#22D3EE&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#22D3EE&quot;,&quot;#A78BFA&quot;,&quot;#C6FF3A&quot;,&quot;#FF7A45&quot;,&quot;#FF4D8D&quot;]},&quot;motion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;embedded&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;onDone&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;(votes:any, meta:any)=&gt;void&quot;}}">
 class Component extends DCLogic {
   ORDER = ['conductor','maestro','carrier','engine','destroyer'];
   ARCH = {
@@ -271,7 +272,7 @@ class Component extends DCLogic {
     else { window.location.href='Assessment.dc.html'; } }
 
   renderVals(){
-    const accent=this.props.accent ?? '#D9A521';
+    const accent=this.props.accent ?? '#22D3EE';
     const V=this.state.view;
     const embedded=!!this.props.embedded;
 

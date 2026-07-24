@@ -12,7 +12,7 @@
 <style>
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;background:#04060c;}
-  a{color:var(--accent,#D9A521);text-decoration:none;}
+  a{color:var(--accent,#22D3EE);text-decoration:none;}
   a:hover{opacity:.92;}
   @keyframes fa-blink{0%,100%{opacity:1;}50%{opacity:.25;}}
   @keyframes fa-rise{0%{transform:translateY(16px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
@@ -21,15 +21,16 @@
   .fa-in{opacity:0;animation:fa-rise .7s cubic-bezier(.2,.7,.2,1) forwards;}
   .fa-in-sm{opacity:0;animation:fa-rise-sm .5s cubic-bezier(.2,.7,.2,1) forwards;}
   @media (prefers-reduced-motion:reduce){*{animation-duration:.001s!important;}.fa-in,.fa-in-sm{opacity:1!important;transform:none!important;}}
+  @media (max-width:430px){header{padding-left:16px!important;padding-right:16px!important;gap:10px!important;}header>div{min-width:0!important;}header span{overflow:hidden;text-overflow:ellipsis;}}
 </style>
 </helmet>
 <div data-screen-label="Midfield Chemistry" style="position:relative;display:flex;flex-direction:column;min-height:100dvh;width:100%;overflow:hidden;background:radial-gradient(120% 90% at 50% 6%,#0e1a2d 0%,#080e1a 44%,#04060c 100%);color:#EAF2FB;font-family:'Archivo',system-ui,sans-serif;--accent:{{ accent }};">
 
   <div style="position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.4;background:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0px,rgba(255,255,255,.02) 1px,transparent 1px,transparent 4px);"></div>
-  <div style="position:absolute;top:20px;left:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#D9A521) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#D9A521) 50%,transparent);z-index:4;pointer-events:none;"></div>
-  <div style="position:absolute;top:20px;right:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#D9A521) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#D9A521) 50%,transparent);z-index:4;pointer-events:none;"></div>
-  <div style="position:absolute;bottom:20px;left:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#D9A521) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#D9A521) 50%,transparent);z-index:4;pointer-events:none;"></div>
-  <div style="position:absolute;bottom:20px;right:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#D9A521) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#D9A521) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;top:20px;left:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;top:20px;right:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;left:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;right:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
 
   <!-- ============ TOP BAR ============ -->
   <header style="position:relative;z-index:6;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px clamp(26px,3.4vw,58px);">
@@ -41,7 +42,7 @@
       </sc-if>
     </div>
     <div style="display:flex;align-items:center;gap:11px;">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" style="stroke:var(--accent,#D9A521);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;"><circle cx="7" cy="9" r="3"/><circle cx="17" cy="9" r="3"/><path d="M2 20c0-3 2.5-5 5-5s5 2 5 5M12 20c0-3 2.5-5 5-5s5 2 5 5"/></svg>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" style="stroke:var(--accent,#22D3EE);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;"><circle cx="7" cy="9" r="3"/><circle cx="17" cy="9" r="3"/><path d="M2 20c0-3 2.5-5 5-5s5 2 5 5M12 20c0-3 2.5-5 5-5s5 2 5 5"/></svg>
       <span style="font:800 12.5px 'Archivo';letter-spacing:.05em;">MIDFIELD</span>
       <span style="font:600 9px 'IBM Plex Mono';letter-spacing:.16em;color:#5c6e85;border:1px solid rgba(120,140,166,.24);border-radius:6px;padding:3px 6px;">CHEMISTRY</span>
     </div>
@@ -140,10 +141,10 @@
         </div>
 
         <div class="fa-in" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:12px;animation-delay:.28s;">
-          <button onClick="{{ copyLink }}" style="display:inline-flex;align-items:center;gap:10px;padding:16px 30px;border-radius:12px;border:0;background:var(--accent,#D9A521);color:#1a1204;font:700 15px 'Archivo';cursor:pointer;box-shadow:0 12px 38px color-mix(in srgb,var(--accent,#D9A521) 40%,transparent);transition:transform .16s ease;" style-hover="transform:translateY(-2px);">
+          <button onClick="{{ copyLink }}" style="display:inline-flex;align-items:center;gap:10px;padding:16px 30px;border-radius:12px;border:0;background:var(--accent,#22D3EE);color:#1a1204;font:700 15px 'Archivo';cursor:pointer;box-shadow:0 12px 38px color-mix(in srgb,var(--accent,#22D3EE) 40%,transparent);transition:transform .16s ease;" style-hover="transform:translateY(-2px);">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:#1a1204;stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round;"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg>{{ copyLabel }}
           </button>
-          <button onClick="{{ again }}" style="display:inline-flex;align-items:center;gap:9px;padding:16px 24px;border-radius:12px;border:1px solid rgba(157,176,198,.28);background:rgba(12,18,30,.4);color:#C6D3E2;font:600 14px 'Archivo';cursor:pointer;" style-hover="border-color:color-mix(in srgb,var(--accent,#D9A521) 55%,transparent);color:#EAF2FB;">
+          <button onClick="{{ again }}" style="display:inline-flex;align-items:center;gap:9px;padding:16px 24px;border-radius:12px;border:1px solid rgba(157,176,198,.28);background:rgba(12,18,30,.4);color:#C6D3E2;font:600 14px 'Archivo';cursor:pointer;" style-hover="border-color:color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);color:#EAF2FB;">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M12 5v14M5 12h14"/></svg>Try another partner
           </button>
           <a href="Assessment.dc.html" style="display:inline-flex;align-items:center;gap:9px;padding:16px 22px;border-radius:12px;border:1px solid rgba(157,176,198,.28);background:rgba(12,18,30,.4);color:#C6D3E2;font:600 14px 'Archivo';">Back to the scan</a>
@@ -155,7 +156,7 @@
 
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:940,&quot;height&quot;:800},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#D9A521&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#D9A521&quot;,&quot;#7C5CE0&quot;,&quot;#2E9BE8&quot;,&quot;#1FB588&quot;,&quot;#E0413C&quot;]},&quot;motion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;embedded&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;onDone&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;(res:any, meta:any)=&gt;void&quot;}}">
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:940,&quot;height&quot;:800},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#22D3EE&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#22D3EE&quot;,&quot;#A78BFA&quot;,&quot;#C6FF3A&quot;,&quot;#FF7A45&quot;,&quot;#FF4D8D&quot;]},&quot;motion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;embedded&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;onDone&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;(res:any, meta:any)=&gt;void&quot;}}">
 class Component extends DCLogic {
   ORDER = ['conductor','maestro','carrier','engine','destroyer'];
   ARCH = {
@@ -254,7 +255,7 @@ class Component extends DCLogic {
     else { window.location.href='Assessment.dc.html'; } }
 
   renderVals(){
-    const accent=this.props.accent ?? '#D9A521';
+    const accent=this.props.accent ?? '#22D3EE';
     const V=this.state.view; const embedded=!!this.props.embedded;
     const A=this.ARCH; const self=this.state.self;
     const cardsFor=(handler)=> this.ORDER.map((id,i)=>{ const a=A[id]; return { name:a.name, mono:a.mono, color:a.color, role:a.role,

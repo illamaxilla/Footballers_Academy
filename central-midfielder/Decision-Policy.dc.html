@@ -37,7 +37,7 @@
   <!-- ============ TOP BAR ============ -->
   <sc-if value="{{ showChrome }}" hint-placeholder-val="{{ true }}">
     <header style="position:relative;z-index:6;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px clamp(26px,3.4vw,58px);">
-      <div style="min-width:120px;display:flex;">
+      <div style="min-width:clamp(84px,22vw,120px);display:flex;">
         <a href="Assessment.dc.html" style="display:inline-flex;align-items:center;gap:8px;color:#8EA1B8;font:600 12.5px 'Archivo';" style-hover="color:#EAF2FB;">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M15 5l-7 7 7 7"/></svg>Back to the scan
         </a>
@@ -46,8 +46,8 @@
         <svg width="22" height="22" viewBox="0 0 32 32" fill="none"><path d="M16 2 28 9v14L16 30 4 23V9z" style="stroke:var(--accent,#22D3EE);stroke-width:1.5;fill:color-mix(in srgb,var(--accent,#22D3EE) 12%,transparent);"/><circle cx="16" cy="16" r="5" style="stroke:var(--accent,#22D3EE);stroke-width:1.5;fill:none;"/><circle cx="16" cy="16" r="1.6" style="fill:var(--accent,#22D3EE);"/></svg>
         <span style="font:800 13px 'Archivo';letter-spacing:.05em;">DECISION <span style="color:var(--accent,#22D3EE);">POLICY</span></span>
       </div>
-      <div style="display:flex;align-items:center;gap:12px;min-width:120px;justify-content:flex-end;">
-        <div style="width:88px;height:4px;border-radius:99px;background:rgba(120,140,166,.18);overflow:hidden;">
+      <div style="display:flex;align-items:center;gap:12px;min-width:clamp(84px,22vw,120px);justify-content:flex-end;">
+        <div style="width:clamp(52px,13vw,88px);height:4px;border-radius:99px;background:rgba(120,140,166,.18);overflow:hidden;">
           <div style="height:100%;border-radius:99px;background:var(--accent,#22D3EE);box-shadow:0 0 10px var(--accent,#22D3EE);width:{{ progPct }};transition:width .4s cubic-bezier(.3,.8,.3,1);"></div>
         </div>
         <span style="font:600 10px 'IBM Plex Mono';letter-spacing:.14em;color:color-mix(in srgb,var(--accent,#22D3EE) 80%,#fff);white-space:nowrap;">{{ progLabel }}</span>

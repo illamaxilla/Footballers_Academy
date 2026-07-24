@@ -12,7 +12,7 @@
 <style>
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;background:#04060c;}
-  a{color:var(--accent,#E0413C);text-decoration:none;}
+  a{color:var(--accent,#22D3EE);text-decoration:none;}
   a:hover{opacity:.92;}
   @keyframes fa-blink{0%,100%{opacity:1;}50%{opacity:.25;}}
   @keyframes fa-rise{0%{transform:translateY(16px);opacity:0;}100%{transform:translateY(0);opacity:1;}}
@@ -25,15 +25,16 @@
   .fa-in{opacity:0;animation:fa-rise .7s cubic-bezier(.2,.7,.2,1) forwards;}
   .fa-in-sm{opacity:0;animation:fa-rise-sm .5s cubic-bezier(.2,.7,.2,1) forwards;}
   @media (prefers-reduced-motion:reduce){*{animation-duration:.001s!important;}.fa-in,.fa-in-sm{opacity:1!important;transform:none!important;}}
+  @media (max-width:430px){header{padding-left:16px!important;padding-right:16px!important;gap:10px!important;}header>div{min-width:0!important;}header span{overflow:hidden;text-overflow:ellipsis;}}
 </style>
 </helmet>
 <div data-screen-label="The Six Seconds" style="position:relative;display:flex;flex-direction:column;min-height:100dvh;width:100%;overflow:hidden;background:radial-gradient(120% 90% at 50% 6%,#0e1a2d 0%,#080e1a 44%,#04060c 100%);color:#EAF2FB;font-family:'Archivo',system-ui,sans-serif;--accent:{{ accent }};">
 
   <div style="position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.4;background:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0px,rgba(255,255,255,.02) 1px,transparent 1px,transparent 4px);"></div>
-  <div style="position:absolute;top:20px;left:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#E0413C) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#E0413C) 50%,transparent);z-index:4;pointer-events:none;"></div>
-  <div style="position:absolute;top:20px;right:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#E0413C) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#E0413C) 50%,transparent);z-index:4;pointer-events:none;"></div>
-  <div style="position:absolute;bottom:20px;left:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#E0413C) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#E0413C) 50%,transparent);z-index:4;pointer-events:none;"></div>
-  <div style="position:absolute;bottom:20px;right:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#E0413C) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#E0413C) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;top:20px;left:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;top:20px;right:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;left:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:20px;right:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
 
   <!-- ============ TOP BAR ============ -->
   <header style="position:relative;z-index:6;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px clamp(26px,3.4vw,58px);">
@@ -45,12 +46,12 @@
       </sc-if>
     </div>
     <div style="display:flex;align-items:center;gap:11px;">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" style="stroke:var(--accent,#E0413C);stroke-width:1.6;fill:none;"/><path d="M12 7v5l3 2" style="stroke:var(--accent,#E0413C);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;fill:none;"/></svg>
-      <span style="font:800 12.5px 'Archivo';letter-spacing:.05em;">THE SIX <span style="color:var(--accent,#E0413C);">SECONDS</span></span>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" style="stroke:var(--accent,#22D3EE);stroke-width:1.6;fill:none;"/><path d="M12 7v5l3 2" style="stroke:var(--accent,#22D3EE);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;fill:none;"/></svg>
+      <span style="font:800 12.5px 'Archivo';letter-spacing:.05em;">THE SIX <span style="color:var(--accent,#22D3EE);">SECONDS</span></span>
     </div>
     <div style="display:flex;align-items:center;gap:12px;min-width:120px;justify-content:flex-end;">
       <sc-if value="{{ inPlay }}" hint-placeholder-val="{{ false }}">
-        <span style="font:600 10px 'IBM Plex Mono';letter-spacing:.14em;color:color-mix(in srgb,var(--accent,#E0413C) 80%,#fff);white-space:nowrap;">{{ progLabel }}</span>
+        <span style="font:600 10px 'IBM Plex Mono';letter-spacing:.14em;color:color-mix(in srgb,var(--accent,#22D3EE) 80%,#fff);white-space:nowrap;">{{ progLabel }}</span>
       </sc-if>
     </div>
   </header>
@@ -58,8 +59,8 @@
   <!-- ============ INTRO ============ -->
   <sc-if value="{{ isIntro }}" hint-placeholder-val="{{ true }}">
     <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;text-align:center;padding:20px clamp(26px,4vw,58px) 60px;">
-      <div class="fa-in" style="display:inline-flex;align-items:center;gap:10px;margin-bottom:18px;font:600 12px 'IBM Plex Mono';letter-spacing:.34em;color:var(--accent,#E0413C);">
-        <span style="width:6px;height:6px;border-radius:50%;background:var(--accent,#E0413C);box-shadow:0 0 8px var(--accent,#E0413C);animation:fa-blink 1.6s ease-in-out infinite;"></span>THE MOMENT THE BALL IS LOST
+      <div class="fa-in" style="display:inline-flex;align-items:center;gap:10px;margin-bottom:18px;font:600 12px 'IBM Plex Mono';letter-spacing:.34em;color:var(--accent,#22D3EE);">
+        <span style="width:6px;height:6px;border-radius:50%;background:var(--accent,#22D3EE);box-shadow:0 0 8px var(--accent,#22D3EE);animation:fa-blink 1.6s ease-in-out infinite;"></span>THE MOMENT THE BALL IS LOST
       </div>
       <h1 class="fa-in" style="margin:0 0 16px;font:800 clamp(34px,5.2vw,70px)/0.98 'Archivo';letter-spacing:-0.03em;text-wrap:balance;max-width:840px;animation-delay:.06s;">The instant you turn it over, you&rsquo;ve got six seconds.</h1>
       <p class="fa-in" style="margin:0 0 28px;max-width:610px;font:400 clamp(15px,1.3vw,18px)/1.6 'Archivo';color:#9FB0C5;text-wrap:pretty;animation-delay:.12s;">Win it back now, cut their escape, or drop and protect the shape &mdash; and read which one it is before the window shuts. Counter-press when it&rsquo;s on; get back when it&rsquo;s not. This is the moment that separates a Destroyer from a Conductor.</p>
@@ -67,14 +68,14 @@
         <div style="font:600 9px 'IBM Plex Mono';letter-spacing:.24em;color:#61748c;margin-bottom:11px;">HOW FAST DO THEY ESCAPE?</div>
         <div style="display:flex;gap:9px;flex-wrap:wrap;justify-content:center;">
           <sc-for list="{{ diffs }}" as="d" hint-placeholder-count="3">
-            <button onClick="{{ d.onPick }}" style="padding:11px 20px;border-radius:11px;border:1px solid {{ d.border }};background:{{ d.bg }};color:{{ d.color }};font:700 13.5px 'Archivo';cursor:pointer;display:flex;flex-direction:column;gap:2px;align-items:center;" style-hover="border-color:color-mix(in srgb,var(--accent,#E0413C) 55%,transparent);">
+            <button onClick="{{ d.onPick }}" style="padding:11px 20px;border-radius:11px;border:1px solid {{ d.border }};background:{{ d.bg }};color:{{ d.color }};font:700 13.5px 'Archivo';cursor:pointer;display:flex;flex-direction:column;gap:2px;align-items:center;" style-hover="border-color:color-mix(in srgb,var(--accent,#22D3EE) 55%,transparent);">
               <span>{{ d.label }}</span>
               <span style="font:500 9.5px 'IBM Plex Mono';letter-spacing:.06em;color:{{ d.subColor }};">{{ d.sub }}</span>
             </button>
           </sc-for>
         </div>
       </div>
-      <button onClick="{{ begin }}" class="fa-in" style="display:inline-flex;align-items:center;gap:12px;padding:18px 44px;border-radius:13px;border:0;background:var(--accent,#E0413C);color:#1c0908;font:700 16px 'Archivo';cursor:pointer;box-shadow:0 14px 46px color-mix(in srgb,var(--accent,#E0413C) 42%,transparent);animation-delay:.22s;" style-hover="transform:translateY(-2px);">
+      <button onClick="{{ begin }}" class="fa-in" style="display:inline-flex;align-items:center;gap:12px;padding:18px 44px;border-radius:13px;border:0;background:var(--accent,#22D3EE);color:#1c0908;font:700 16px 'Archivo';cursor:pointer;box-shadow:0 14px 46px color-mix(in srgb,var(--accent,#22D3EE) 42%,transparent);animation-delay:.22s;" style-hover="transform:translateY(-2px);">
         Start the transitions
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12h13M12 6l6 6-6 6"/></svg>
       </button>
@@ -87,7 +88,7 @@
     <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;padding:6px clamp(18px,3vw,50px) 40px;gap:13px;">
       <div style="width:100%;max-width:1120px;display:flex;flex-direction:column;gap:12px;flex:1;min-height:0;justify-content:center;">
         <div style="display:flex;align-items:center;gap:12px;">
-          <span style="font:600 10px 'IBM Plex Mono';letter-spacing:.18em;color:var(--accent,#E0413C);">TURNOVER {{ roundNum }} / 8</span>
+          <span style="font:600 10px 'IBM Plex Mono';letter-spacing:.18em;color:var(--accent,#22D3EE);">TURNOVER {{ roundNum }} / 8</span>
           <span style="flex:1;height:1px;background:rgba(120,140,166,.18);"></span>
           <span style="font:600 10px 'IBM Plex Mono';letter-spacing:.14em;color:#9FB0C5;">{{ ctx }}</span>
         </div>
@@ -137,7 +138,7 @@
         <!-- actions -->
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;">
           <sc-for list="{{ actions }}" as="act" hint-placeholder-count="3">
-            <button onClick="{{ act.onPick }}" style="display:flex;flex-direction:column;align-items:center;gap:7px;padding:15px 10px;border-radius:14px;border:1px solid {{ act.border }};background:rgba(10,16,28,.5);color:#EAF2FB;cursor:{{ act.cursor }};transition:border-color .12s,background .12s,transform .12s;opacity:{{ act.opacity }};" style-hover="border-color:color-mix(in srgb,var(--accent,#E0413C) 60%,transparent);background:rgba(16,20,37,.82);transform:translateY(-2px);">
+            <button onClick="{{ act.onPick }}" style="display:flex;flex-direction:column;align-items:center;gap:7px;padding:15px 10px;border-radius:14px;border:1px solid {{ act.border }};background:rgba(10,16,28,.5);color:#EAF2FB;cursor:{{ act.cursor }};transition:border-color .12s,background .12s,transform .12s;opacity:{{ act.opacity }};" style-hover="border-color:color-mix(in srgb,var(--accent,#22D3EE) 60%,transparent);background:rgba(16,20,37,.82);transform:translateY(-2px);">
               <span style="font:800 14px 'Archivo';">{{ act.label }}</span>
               <span style="font:500 10px/1.3 'IBM Plex Mono';letter-spacing:.02em;color:#7688a0;text-align:center;">{{ act.sub }}</span>
             </button>
@@ -191,7 +192,7 @@
         </div>
 
         <div class="fa-in" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:13px;animation-delay:.3s;">
-          <button onClick="{{ again }}" style="display:inline-flex;align-items:center;gap:10px;padding:16px 30px;border-radius:12px;border:0;background:var(--accent,#E0413C);color:#1c0908;font:700 15px 'Archivo';cursor:pointer;box-shadow:0 12px 38px color-mix(in srgb,var(--accent,#E0413C) 40%,transparent);" style-hover="transform:translateY(-2px);">
+          <button onClick="{{ again }}" style="display:inline-flex;align-items:center;gap:10px;padding:16px 30px;border-radius:12px;border:0;background:var(--accent,#22D3EE);color:#1c0908;font:700 15px 'Archivo';cursor:pointer;box-shadow:0 12px 38px color-mix(in srgb,var(--accent,#22D3EE) 40%,transparent);" style-hover="transform:translateY(-2px);">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:#1c0908;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>Play again
           </button>
           <a href="Assessment.dc.html" style="display:inline-flex;align-items:center;gap:9px;padding:16px 24px;border-radius:12px;border:1px solid rgba(157,176,198,.28);background:rgba(12,18,30,.4);color:#C6D3E2;font:600 14px 'Archivo';">Back to the scan</a>
@@ -203,7 +204,7 @@
 
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:960,&quot;height&quot;:740},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#E0413C&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#E0413C&quot;,&quot;#D9A521&quot;,&quot;#7C5CE0&quot;,&quot;#2E9BE8&quot;,&quot;#1FB588&quot;]},&quot;motion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;embedded&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;onDone&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;(shape:Record&lt;string,number&gt;, meta:object)=&gt;void&quot;}}">
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:960,&quot;height&quot;:740},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#22D3EE&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#22D3EE&quot;,&quot;#A78BFA&quot;,&quot;#C6FF3A&quot;,&quot;#FF7A45&quot;,&quot;#FF4D8D&quot;]},&quot;motion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;embedded&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;onDone&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;(shape:Record&lt;string,number&gt;, meta:object)=&gt;void&quot;}}">
 class Component extends DCLogic {
   LAY = {
     high:{ you:[50,40], mates:[[30,32],[70,34]], foes:[[52,46],[66,40],[38,44]], lost:[52,46], escape:[60,20] },
@@ -344,7 +345,7 @@ class Component extends DCLogic {
   _again(){ this._sfx('click'); this.setState({ view:'intro' }); }
 
   renderVals(){
-    const accent=this.props.accent ?? '#E0413C';
+    const accent=this.props.accent ?? '#22D3EE';
     const V=this.state.view; const embedded=!!this.props.embedded;
     const soundOn=this._soundOn!==false;
     const base={ accent,
