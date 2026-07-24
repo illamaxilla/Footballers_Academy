@@ -9,12 +9,12 @@ window.POS_TRAITS['winger'] = {
   archLabel:'THE WIDE THREAT',
   attrs:{
     // MOTOR △
-    w_pace:      {cat:'motor', name:'Flying Pace',   def:'Raw top-end speed that eats the touchline and burns a full-back over forty yards.', sym:'speedo'},
+    w_pace:      {cat:'motor', name:'Flying Pace',   def:'Raw top-end speed that eats the touchline and burns a full-back.', sym:'speedo'},
     w_knockgo:   {cat:'motor', name:'Knock & Go',    def:'Pushes it past the man and beats him for pure pace on the outside.', sym:'burst'},
-    w_stopstart: {cat:'motor', name:'Stop-Start',    def:'Freezes, then explodes — the change of pace that leaves a marker flat-footed.', sym:'pistons'},
+    w_stopstart: {cat:'motor', name:'Stop-Start',    def:'Freezes, then explodes — the change of pace that leaves a marker flat-footed.', sym:'fastchev'},
     w_lowcog:    {cat:'motor', name:'Low Centre',    def:'Runs low and balanced, so the ball stays glued through every jink.', sym:'lowgravity'},
     w_inbehind:  {cat:'motor', name:'In Behind',     def:'Spins off the shoulder and attacks the space in behind the line.', sym:'dashrun'},
-    w_engine:    {cat:'motor', name:'All-Game Legs', def:'Still sprinting at the full-back in the ninetieth as he was in the first.', sym:'returnloop'},
+    w_engine:    {cat:'motor', name:'All-Game Legs', def:'Still sprinting at the full-back in the ninetieth as he was in the first.', sym:'heartbeat'},
     // TECHNIQUE ◆
     w_stepover:  {cat:'technique', name:'The Stepover', def:'Stepovers and feints that send a defender the wrong way in a phone box.', sym:'swirl'},
     w_chop:      {cat:'technique', name:'The Chop',     def:'Chops the ball back inside off the outside foot to cut across a defender.', sym:'zigzag'},
@@ -25,21 +25,21 @@ window.POS_TRAITS['winger'] = {
     // VISION ▪
     w_isolate:   {cat:'vision', name:'The Isolation', def:'Drifts wide to lock the full-back in a one-on-one with no cover.', sym:'focusframe'},
     w_offshoulder:{cat:'vision', name:'Off The Shoulder', def:'Times the run so he is level as the ball is played, never offside.', sym:'stopwatch'},
-    w_crosspick: {cat:'vision', name:'The Read',      def:'Lifts his head and picks the exact runner before he swings it in.', sym:'radar'},
-    w_overlap:   {cat:'vision', name:'The Overlap',   def:'Feels the full-back bombing on and knows when to hold or release.', sym:'eye'},
+    w_crosspick: {cat:'vision', name:'The Pick',      def:'Lifts his head and picks the exact runner before he swings it in.', sym:'radar'},
+    w_overlap:   {cat:'vision', name:'Hold or Release',def:'Feels the full-back bombing on and knows when to hold or release.', sym:'eye'},
     w_when:      {cat:'vision', name:'When To Go',    def:'Reads the moment the defender sets — outside, inside or waiting.', sym:'bulb'},
     w_channel:   {cat:'vision', name:'The Channel',   def:'Finds the seam between full-back and centre-half to run through.', sym:'crossgrid'},
     // IMPACT ⬡
     w_beatman:   {cat:'impact', name:'Beat The Man',  def:'Takes his defender on and gets past — the whole move springs from it.', sym:'progress'},
     w_hang:      {cat:'impact', name:'The Hang',      def:'Hangs the whipped cross to the back post for the arriving header.', sym:'crossarc'},
-    w_setback:   {cat:'impact', name:'The Set-Back',  def:'Reaches the byline and pulls the cut-back to the edge of the box.', sym:'cutback'},
-    w_tightangle:{cat:'impact', name:'Tight Angle',   def:'Finishes from the acute angle when he beats the last man to the byline.', sym:'target'},
+    w_setback:   {cat:'impact', name:'The Pull-Back', def:'Reaches the byline and pulls the cut-back to the edge of the box.', sym:'cutback'},
+    w_tightangle:{cat:'impact', name:'Tight Angle',   def:'Finishes from the tightest angle after he beats the last man to the byline.', sym:'target'},
     w_backpost:  {cat:'impact', name:'Back-Post',     def:'Ghosts to the far post and arrives to finish the cross from the other side.', sym:'header'},
     w_onetwo:    {cat:'impact', name:'The One-Two',   def:'Plays the give-and-go off the striker and bursts through the gap.', sym:'thread'},
     // SPIRIT ⯃
     w_flair:     {cat:'spirit', name:'Flair',         def:'The tricks and the audacity — plays to beat you and to entertain.', sym:'sparkle'},
     w_fearless:  {cat:'spirit', name:'Fearless',      def:'Runs straight at the biggest defender all day and never hides from the ball.', sym:'flame'},
-    w_duel:      {cat:'spirit', name:'The Duel',      def:'Loves the one-on-one and demands it be his against their best full-back.', sym:'star'},
+    w_duel:      {cat:'spirit', name:'The Duel',      def:'Loves the one-on-one and demands it be his against their best full-back.', sym:'fist'},
     w_keepcoming:{cat:'spirit', name:'Keeps Coming',  def:'Beaten once, he is straight back at the man the very next ball.', sym:'reload'},
     w_bigstage:  {cat:'spirit', name:'Big Stage',     def:'Turns it on when the ground is loud and the game is on the line.', sym:'bolt'},
     w_everyweek: {cat:'spirit', name:'Every Week',    def:'The same threat away on a wet Tuesday as at home in the sun.', sym:'evenbars'},
