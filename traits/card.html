@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<link href="assets/fonts/fonts.css" rel="stylesheet">
+<script src="symbols-lib.js"></script>
+<script src="data/attacking-midfielder.js"></script>
+<script src="data/center-back.js"></script>
+<script src="data/full-back.js"></script>
+<script src="data/defensive-midfielder.js"></script>
+<script src="data/central-midfielder.js"></script>
+<script src="data/winger.js"></script>
+<script src="data/outside-midfielder.js"></script>
+<script src="data/goalkeeper.js"></script>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:radial-gradient(130% 80% at 50% 0%,#0e1a2d 0%,#080e1a 46%,#04060c 100%);color:#EAF2FB;font-family:'Archivo',system-ui,sans-serif;padding:40px 42px 90px;}
+  .head{font:600 11px 'IBM Plex Mono';letter-spacing:.4em;color:#8EA6BD;display:flex;align-items:center;gap:10px;}
+  .head .dot{width:6px;height:6px;border-radius:50%;background:#8EA6BD;}
+  h1.t{font:800 40px 'Archivo';letter-spacing:-.02em;margin:12px 0 6px;}
+  .intro{font:400 15px 'Archivo';color:#9FB0C5;max-width:780px;margin-bottom:14px;}
+  /* filter bar */
+  .bar{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0 8px;}
+  .chip{font:600 10px 'IBM Plex Mono';letter-spacing:.14em;color:#9FB0C5;border:1px solid rgba(120,140,166,.32);background:rgba(14,26,45,.5);padding:7px 13px;border-radius:20px;cursor:pointer;transition:.15s;}
+  .chip:hover{color:#EAF2FB;border-color:rgba(120,140,166,.6);}
+  .chip.on{color:#04060c;background:#EAF2FB;border-color:#EAF2FB;}
+  .catbar .chip.on{color:#04060c;}
+  .pos-label{margin:34px 0 4px;font:900 22px 'Archivo';letter-spacing:-.01em;}
+  .pos-sub{font:600 9.5px 'IBM Plex Mono';letter-spacing:.24em;color:#7E90A8;margin-bottom:16px;}
+  /* deck */
+  .deck{display:grid;grid-template-columns:repeat(auto-fill,minmax(232px,1fr));gap:16px;}
+  /* ---- trait card ---- */
+  .card{position:relative;border:1px solid color-mix(in srgb,var(--acc) 24%,rgba(120,140,166,.22));border-radius:14px;
+        background:linear-gradient(158deg,color-mix(in srgb,var(--acc) 9%,rgba(10,17,30,.72)),rgba(7,12,22,.82));
+        padding:16px 16px 14px;overflow:hidden;min-height:262px;display:flex;flex-direction:column;}
+  .card::before{content:'';position:absolute;inset:0;pointer-events:none;
+        background:radial-gradient(90% 55% at 50% 0%,color-mix(in srgb,var(--acc) 12%,transparent),transparent 70%);}
+  /* corner scan ticks */
+  .card .tick{position:absolute;width:12px;height:12px;border:1.5px solid color-mix(in srgb,var(--acc) 55%,#4a5b6e);opacity:.75;}
+  .card .tick.tl{top:8px;left:8px;border-right:none;border-bottom:none;}
+  .card .tick.tr{top:8px;right:8px;border-left:none;border-bottom:none;}
+  .card .tick.bl{bottom:8px;left:8px;border-right:none;border-top:none;}
+  .card .tick.br{bottom:8px;right:8px;border-left:none;border-top:none;}
+  .card .top{position:relative;display:flex;justify-content:space-between;align-items:flex-start;z-index:1;}
+  .card .pos{font:700 8.5px 'IBM Plex Mono';letter-spacing:.2em;color:var(--acc);}
+  .card .cat{font:600 8.5px 'IBM Plex Mono';letter-spacing:.16em;color:#61748c;text-align:right;}
+  /* badge */
+  .card .badge{position:relative;width:76px;height:76px;margin:14px auto 12px;z-index:1;}
+  .card .badge .edge{position:absolute;inset:0;background:linear-gradient(160deg,color-mix(in srgb,var(--acc) 58%,#8ea6bd),color-mix(in srgb,var(--acc) 26%,#42525f));}
+  .card .badge .face{position:absolute;inset:2px;background:radial-gradient(120% 90% at 50% 20%,#12233a,#0a1524 70%,#060d18);}
+  .card .badge .sym{position:absolute;inset:0;display:grid;place-items:center;}
+  .card .badge .sym svg{width:34px;height:34px;stroke:var(--acc);stroke-width:1.6;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+  .card .nm{position:relative;z-index:1;font:800 17px 'Archivo';letter-spacing:-.01em;color:#F1F6FC;text-align:center;}
+  .card .sh{position:relative;z-index:1;font:600 8px 'IBM Plex Mono';letter-spacing:.18em;color:#6f8299;text-align:center;margin:4px 0 9px;}
+  .card .def{position:relative;z-index:1;font:400 11.5px/1.4 'Archivo';color:#9FB0C5;text-align:center;flex:1;}
+  .card .foot{position:relative;z-index:1;margin-top:11px;padding-top:9px;border-top:1px solid rgba(120,140,166,.16);
+        display:flex;flex-wrap:wrap;gap:5px;justify-content:center;min-height:12px;}
+  .card .ac{font:600 7.5px 'IBM Plex Mono';letter-spacing:.06em;color:color-mix(in srgb,var(--acc) 70%,#c6d3e2);
+        border:1px solid color-mix(in srgb,var(--acc) 30%,rgba(120,140,166,.24));border-radius:10px;padding:2px 7px;}
+  .card .ac.none{color:#5a6b7e;border-color:rgba(120,140,166,.18);}
+  /* shapes */
+  .tri .edge,.tri .face{clip-path:polygon(50% 5%,95% 92%,5% 92%);} .tri .sym{padding-top:17px;}
+  .dia .edge,.dia .face{clip-path:polygon(50% 2%,98% 50%,50% 98%,2% 50%);}
+  .sq  .edge,.sq  .face{border-radius:0;}
+  .hex .edge,.hex .face{clip-path:polygon(50% 2%,93% 26%,93% 74%,50% 98%,7% 74%,7% 26%);}
+  .oct .edge,.oct .face{clip-path:polygon(30% 2%,70% 2%,98% 30%,98% 70%,70% 98%,30% 98%,2% 70%,2% 30%);}
+  .hidden{display:none !important;}
+</style></head>
+<body>
+<div class="head"><span class="dot"></span>FOOTBALLER'S ACADEMY · TRAIT CARDS</div>
+<h1 class="t">The catalog.</h1>
+<div class="intro">Every trait as a profile card — the shape marks its category, the glyph its meaning, and the footer shows which of the position's archetypes carry it. Filter by position and category.</div>
+<div class="bar posbar" id="posbar"></div>
+<div class="bar catbar" id="catbar"></div>
+<div id="root"></div>
+<script>
+const CAT={ motor:{name:'MOTOR',shape:'tri',sh:'TRIANGLE'}, technique:{name:'TECHNIQUE',shape:'dia',sh:'DIAMOND'}, vision:{name:'VISION',shape:'sq',sh:'SQUARE'}, impact:{name:'IMPACT',shape:'hex',sh:'HEXAGON'}, spirit:{name:'SPIRIT',shape:'oct',sh:'OCTAGON'} };
+const ORDER=['motor','technique','vision','impact','spirit'];
+function sym(a){ return a.svg || (window.SYM&&window.SYM[a.sym]) || ''; }
+const POS=window.POS_TRAITS||{};
+const posOrder=['goalkeeper','center-back','full-back','defensive-midfielder','central-midfielder','attacking-midfielder','winger','outside-midfielder'];
+const root=document.getElementById('root');
+
+// which archetypes carry each attr id
+function archesFor(P,id){ return P.archetypes.filter(A=>ORDER.some(c=>A.five[c]===id)).map(A=>A.name.replace(/^The\s+/,'')); }
+
+function card(P,id){
+  const a=P.attrs[id]; const meta=CAT[a.cat];
+  const arches=archesFor(P,id);
+  const chips = arches.length
+    ? arches.map(n=>`<span class="ac">${n}</span>`).join('')
+    : `<span class="ac none">vocabulary</span>`;
+  return `<div class="card" data-pos="${P.key}" data-cat="${a.cat}" style="--acc:${P.accent}">
+    <span class="tick tl"></span><span class="tick tr"></span><span class="tick bl"></span><span class="tick br"></span>
+    <div class="top"><div class="pos">${P.label}</div><div class="cat">${meta.name}</div></div>
+    <div class="badge ${meta.shape}"><div class="edge"></div><div class="face"></div><div class="sym"><svg viewBox="0 0 24 24">${sym(a)}</svg></div></div>
+    <div class="nm">${a.name}</div>
+    <div class="sh">${meta.sh}</div>
+    <div class="def">${a.def}</div>
+    <div class="foot">${chips}</div>
+  </div>`;
+}
+
+function render(){
+  root.innerHTML='';
+  for(const key of posOrder){
+    const P=POS[key]; if(!P) continue;
+    if(state.pos!=='all' && state.pos!==key) continue;
+    const sec=document.createElement('div');
+    let cards='';
+    for(const cat of ORDER){
+      if(state.cat!=='all' && state.cat!==cat) continue;
+      const ids=Object.keys(P.attrs).filter(id=>P.attrs[id].cat===cat);
+      for(const id of ids) cards+=card(P,id);
+    }
+    sec.innerHTML=`<div class="pos-label" style="color:${P.accent}">${P.label}</div><div class="pos-sub">${P.archLabel||''} · ${Object.keys(P.attrs).length} TRAITS</div><div class="deck">${cards}</div>`;
+    root.appendChild(sec);
+  }
+}
+
+const state={pos:'all',cat:'all'};
+function buildBar(el,items,keyname){
+  el.innerHTML='';
+  for(const it of items){
+    const c=document.createElement('span'); c.className='chip'+(state[keyname]===it.v?' on':'');
+    c.textContent=it.l; c.onclick=()=>{ state[keyname]=it.v; buildBar(el,items,keyname); render(); };
+    el.appendChild(c);
+  }
+}
+buildBar(document.getElementById('posbar'),
+  [{l:'ALL POSITIONS',v:'all'}].concat(posOrder.filter(k=>POS[k]).map(k=>({l:POS[k].label,v:k}))),'pos');
+buildBar(document.getElementById('catbar'),
+  [{l:'ALL CATEGORIES',v:'all'}].concat(ORDER.map(c=>({l:CAT[c].name,v:c}))),'cat');
+render();
+</script>
+</body></html>
