@@ -24,7 +24,7 @@
   @media (prefers-reduced-motion:reduce){*{animation:none!important;}.fa-in,.fa-in-sm{opacity:1!important;transform:none!important;}}
 </style>
 </helmet>
-<div data-screen-label="Hold The Line" style="position:relative;display:flex;flex-direction:column;min-height:100dvh;width:100%;overflow:hidden;background:radial-gradient(120% 90% at 50% 6%,#0e1a2d 0%,#080e1a 44%,#04060c 100%);color:#EAF2FB;font-family:'Archivo',system-ui,sans-serif;--accent:{{ accent }};">
+<div data-screen-label="Step Or Stay" style="position:relative;display:flex;flex-direction:column;min-height:100dvh;width:100%;overflow:hidden;background:radial-gradient(120% 90% at 50% 6%,#0e1a2d 0%,#080e1a 44%,#04060c 100%);color:#EAF2FB;font-family:'Archivo',system-ui,sans-serif;--accent:{{ accent }};">
 
   <div style="position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.4;background:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0px,rgba(255,255,255,.02) 1px,transparent 1px,transparent 4px);"></div>
   <div style="position:absolute;top:20px;left:20px;width:24px;height:24px;border-top:2px solid color-mix(in srgb,var(--accent,#C8102E) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#C8102E) 50%,transparent);z-index:4;pointer-events:none;"></div>
@@ -35,7 +35,7 @@
   <sc-if value="{{ showChrome }}" hint-placeholder-val="{{ true }}">
     <header style="position:relative;z-index:6;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px clamp(24px,3.4vw,54px);">
       <div style="min-width:110px;display:flex;"><a href="Assessment.dc.html" style="display:inline-flex;align-items:center;gap:8px;color:#8EA1B8;font:600 12.5px 'Archivo';"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M15 5l-7 7 7 7"/></svg>Back to the scan</a></div>
-      <div style="display:flex;align-items:center;gap:11px;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" style="stroke:var(--accent,#C8102E);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><line x1="3" y1="12" x2="21" y2="12"/><path d="M8 8l4-4 4 4"/><path d="M8 16l4 4 4-4"/></svg><span style="font:800 13px 'Archivo';letter-spacing:.05em;">HOLD THE <span style="color:var(--accent,#C8102E);">LINE</span></span></div>
+      <div style="display:flex;align-items:center;gap:11px;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" style="stroke:var(--accent,#C8102E);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><line x1="5" y1="21" x2="19" y2="21"/><path d="M12 20V8"/><path d="M7 13l5-5 5 5"/></svg><span style="font:800 13px 'Archivo';letter-spacing:.05em;">STEP OR <span style="color:var(--accent,#C8102E);">STAY</span></span></div>
       <div style="display:flex;align-items:center;gap:12px;min-width:110px;justify-content:flex-end;"></div>
     </header>
   </sc-if>
@@ -43,9 +43,9 @@
   <!-- INTRO -->
   <sc-if value="{{ isIntro }}" hint-placeholder-val="{{ true }}">
     <main style="position:relative;z-index:3;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow-y:auto;text-align:center;padding:14px clamp(24px,4vw,54px) 54px;">
-      <div class="fa-in" style="display:inline-flex;align-items:center;gap:10px;margin-bottom:18px;font:600 12px 'IBM Plex Mono';letter-spacing:.4em;color:var(--accent,#C8102E);"><span style="width:6px;height:6px;border-radius:50%;background:var(--accent,#C8102E);box-shadow:0 0 8px var(--accent,#C8102E);animation:fa-blink 1.6s ease-in-out infinite;"></span>HOLD THE LINE</div>
-      <h1 class="fa-in" style="margin:0 0 14px;font:800 clamp(34px,5.2vw,68px)/0.98 'Archivo';letter-spacing:-0.03em;text-wrap:balance;max-width:760px;animation-delay:.05s;">The line is yours. Step up, or drop?</h1>
-      <p class="fa-in" style="margin:0 0 26px;max-width:560px;font:400 clamp(14px,1.25vw,17px)/1.6 'Archivo';color:#9FB0C5;text-wrap:pretty;animation-delay:.1s;">You&rsquo;re the centre-back and the line moves on your call. Each moment freezes the pitch &mdash; tap where you&rsquo;d hold: stepping up to squeeze the game, or dropping to guard the space in behind. Where you keep choosing to set the line is the truest tell of the defender you are.</p>
+      <div class="fa-in" style="display:inline-flex;align-items:center;gap:10px;margin-bottom:18px;font:600 12px 'IBM Plex Mono';letter-spacing:.4em;color:var(--accent,#C8102E);"><span style="width:6px;height:6px;border-radius:50%;background:var(--accent,#C8102E);box-shadow:0 0 8px var(--accent,#C8102E);animation:fa-blink 1.6s ease-in-out infinite;"></span>STEP OR STAY</div>
+      <h1 class="fa-in" style="margin:0 0 14px;font:800 clamp(34px,5.2vw,68px)/0.98 'Archivo';letter-spacing:-0.03em;text-wrap:balance;max-width:760px;animation-delay:.05s;">The striker drops off. Do you follow?</h1>
+      <p class="fa-in" style="margin:0 0 26px;max-width:560px;font:400 clamp(14px,1.25vw,17px)/1.6 'Archivo';color:#9FB0C5;text-wrap:pretty;animation-delay:.1s;">You&rsquo;re the centre-back and the striker peels off the line into the pocket. Each moment freezes the pitch &mdash; tap where you&rsquo;d go: stepping out to jump the pass, screening it from a measured distance, or holding your shape and covering behind. Where you keep choosing to engage is the truest tell of the defender you are.</p>
       <button onClick="{{ start }}" class="fa-in" style="display:inline-flex;align-items:center;gap:12px;padding:17px 42px;border-radius:13px;border:0;background:var(--accent,#C8102E);color:#04121a;font:700 16px 'Archivo';cursor:pointer;box-shadow:0 14px 44px color-mix(in srgb,var(--accent,#C8102E) 42%,transparent);transition:transform .16s ease;animation-delay:.22s;" style-hover="transform:translateY(-2px);">Take the pitch<svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;"><path d="M5 12h13M12 6l6 6-6 6"/></svg></button>
       <div class="fa-in" style="margin-top:16px;font:500 10px 'IBM Plex Mono';letter-spacing:.14em;color:#61748C;animation-delay:.3s;">8 MOMENTS &middot; TAP TO POSITION &middot; JUST FOR FUN</div>
     </main>
@@ -120,7 +120,7 @@
 
         <div class="fa-in" style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:22px;animation-delay:.06s;">
           <div style="padding:15px 12px;border-radius:13px;border:1px solid rgba(120,140,166,.18);background:rgba(10,16,28,.45);text-align:center;"><div style="font:800 20px 'Archivo';color:var(--accent,#C8102E);">{{ widthLabel }}</div><div style="font:600 8px 'IBM Plex Mono';letter-spacing:.1em;color:#7688A0;margin-top:4px;">AVERAGE SLANT</div></div>
-          <div style="padding:15px 12px;border-radius:13px;border:1px solid rgba(120,140,166,.18);background:rgba(10,16,28,.45);text-align:center;"><div style="font:800 20px 'Archivo';color:#5B9BD5;">{{ heightLabel }}</div><div style="font:600 8px 'IBM Plex Mono';letter-spacing:.1em;color:#7688A0;margin-top:4px;">AVERAGE LINE</div></div>
+          <div style="padding:15px 12px;border-radius:13px;border:1px solid rgba(120,140,166,.18);background:rgba(10,16,28,.45);text-align:center;"><div style="font:800 20px 'Archivo';color:#5B9BD5;">{{ heightLabel }}</div><div style="font:600 8px 'IBM Plex Mono';letter-spacing:.1em;color:#7688A0;margin-top:4px;">AVERAGE ENGAGEMENT</div></div>
         </div>
 
         <div class="fa-in" style="width:100%;padding:20px 22px;border-radius:16px;border:1px solid rgba(120,140,166,.2);background:rgba(10,16,28,.5);margin-bottom:22px;animation-delay:.1s;">
@@ -157,20 +157,20 @@
 class Component extends DCLogic {
   ORDER=["libero","colossus","architect","sentinel"];
   ARCH={ colossus:{name:'Colossus',mono:'CO',color:'#C8102E'}, architect:{name:'Architect',mono:'AR',color:'#00E5FF'}, sentinel:{name:'Sentinel',mono:'SE',color:'#E8B33A'}, libero:{name:'Libero',mono:'LI',color:'#8B5CF6'} };
-  HOME={ libero:{x:52,y:40}, colossus:{x:56,y:47}, architect:{x:48,y:55}, sentinel:{x:42,y:66} };
-  NOTE={ libero:'a step ahead of the line — the Libero steps out to sweep and intercept before danger forms.',
-    colossus:'high and on the front foot — the Colossus pushes the line up and dares them to run.',
-    architect:'on a measured, balanced line — the Architect holds the middle and keeps the shape honest.',
-    sentinel:'dropped to guard the space behind — the Sentinel protects in behind before anything else.' };
+  HOME={ libero:{x:52,y:42}, colossus:{x:56,y:50}, architect:{x:47,y:58}, sentinel:{x:44,y:68} };
+  NOTE={ libero:'a stride out to intercept — the Libero jumps the pass and cuts it out early.',
+    colossus:'tight to the striker’s back — the Colossus follows him and refuses him a turn.',
+    architect:'stepping to screen the pass — the Architect measures it and blocks the line in.',
+    sentinel:'holding the line and covering — the Sentinel stays in shape and protects behind.' };
   SC=[
-    { k:'HIGH PRESS — WE HUNT IT UP', desc:'Your team presses high. The ball is trapped in their half.', ball:{x:50,y:26}, dx:0, dy:-8 },
-    { k:'THEY KNOCK IT OVER THE TOP', desc:'Their striker spins to run in behind your line.', ball:{x:48,y:40}, dx:0, dy:14 },
-    { k:'THEY BUILD IT PATIENTLY', desc:'A settled game — they knock it side to side in front of you.', ball:{x:55,y:60}, dx:0, dy:0 },
-    { k:'LOW BLOCK — WE DEFEND DEEP', desc:'They pin you back and probe on the edge of your box.', ball:{x:50,y:78}, dx:0, dy:20 },
-    { k:'COUNTER — YOU RECOVER', desc:'Turnover. They break at you with grass to run into.', ball:{x:46,y:52}, dx:0, dy:12 },
-    { k:'HE RUNS THE SHOULDER', desc:'The striker toes the offside line, waiting for the pass.', ball:{x:52,y:44}, dx:0, dy:4 },
-    { k:'OVERLOAD ON THE RIGHT', desc:'They swing it wide right and load your far side.', ball:{x:76,y:50}, dx:10, dy:2 },
-    { k:'GOAL KICK — THEY GO LONG', desc:'The keeper launches it. An aerial duel is coming.', ball:{x:50,y:70}, dx:0, dy:10 }
+    { k:'HE DROPS INTO THE POCKET', desc:'The striker checks into the space between the lines.', ball:{x:50,y:52}, dx:0, dy:0 },
+    { k:'HE PEELS INTO THE LEFT CHANNEL', desc:'He drifts wide left to receive on the half-turn.', ball:{x:34,y:48}, dx:-8, dy:-2 },
+    { k:'DEEP DROP TOWARD MIDFIELD', desc:'He comes right off, deep into their own half.', ball:{x:52,y:40}, dx:0, dy:-8 },
+    { k:'HE STAYS ON THE LAST LINE', desc:'The striker holds high — don’t get dragged out.', ball:{x:55,y:30}, dx:0, dy:8 },
+    { k:'SHOWS IN THE RIGHT HALF-SPACE', desc:'He pulls into the right pocket, asking for it.', ball:{x:66,y:50}, dx:8, dy:-2 },
+    { k:'ONE-TWO THREATENS IN BEHIND', desc:'He drops, but a runner is ready to spin off you.', ball:{x:48,y:46}, dx:0, dy:10 },
+    { k:'HE DROPS, MIDFIELD RUNS BEYOND', desc:'Follow him and you leave a gap for the late run.', ball:{x:50,y:44}, dx:0, dy:6 },
+    { k:'HE FINDS THE SEAM CENTRAL', desc:'A tight game — he slips into the central pocket.', ball:{x:50,y:54}, dx:0, dy:-4 }
   ];
 
   state={ view:'intro', idx:0, phase:'await', tap:null, chosen:null, picks:[] };
@@ -208,14 +208,14 @@ class Component extends DCLogic {
     const avgX=picks.reduce((s,p)=>s+p.x,0)/(picks.length||1);
     const avgY=picks.reduce((s,p)=>s+p.y,0)/(picks.length||1);
     this._meta={ counts, avgX, avgY };
-    if(!this._embedded){ try{ localStorage.setItem('fa_cb_line', JSON.stringify({ counts, avgX:Math.round(avgX), avgY:Math.round(avgY), at:new Date().toISOString(), weight:0 })); }catch(e){} }
+    if(!this._embedded){ try{ localStorage.setItem('fa_cb_step', JSON.stringify({ counts, avgX:Math.round(avgX), avgY:Math.round(avgY), at:new Date().toISOString(), weight:0 })); }catch(e){} }
     this.setState({ view:'result' });
     if(this._embedded && typeof (this.props.onDone||this.props.ondone)==='function'){ (this.props.onDone||this.props.ondone)(counts, this._meta); }
   }
   _again(){ this._begin(); }
 
   _xClass(v){ return (v>=44&&v<=58)?'Central':'Covering wide'; }
-  _yClass(v){ return v<=46?'High line':(v<=58?'Balanced':'Deep'); }
+  _yClass(v){ return v<=48?'Step out':(v<=60?'Measured':'Hold shape'); }
 
   renderVals(){
     const accent=this.props.accent ?? '#C8102E';
@@ -249,7 +249,7 @@ class Component extends DCLogic {
       const entries=this.ORDER.map(k=>[k,m.counts[k]]).sort((a,b)=>b[1]-a[1]);
       const top=entries[0][0];
       base.leanBig=this.ARCH[top].name;
-      base.resultHeadline=({ libero:'You step out and sweep it up.', colossus:'You hold a high, brave line.', architect:'You keep the line balanced.', sentinel:'You drop to guard the space.' })[top];
+      base.resultHeadline=({ libero:'You jump out to intercept.', colossus:'You follow him tight.', architect:'You step to screen the pass.', sentinel:'You hold your shape.' })[top];
       base.widthLabel=this._xClass(m.avgX);
       base.heightLabel=this._yClass(m.avgY);
       const tot=this.ORDER.reduce((a,k)=>a+m.counts[k],0)||1;
@@ -258,10 +258,10 @@ class Component extends DCLogic {
         return { dot:col, label:this.ARCH[id].name, labelColor:isTop?'#F2F8FE':'#9FB0C5', numColor:isTop?col:'#9FB0C5',
           pct:Math.round(v/tot*100)+'%', barW:Math.round(v/maxV*100)+'%',
           barLook:isTop?('background:linear-gradient(90deg,'+col+',color-mix(in srgb,'+col+' 45%,transparent));box-shadow:0 0 12px color-mix(in srgb,'+col+' 55%,transparent);'):'background:rgba(130,150,176,.4);' }; });
-      base.softRead=({ libero:"You kept stepping ahead of the line to sweep and intercept — the Libero’s proactive map. You kill danger before it grows; just make sure the cover’s there when you gamble. A tendency, not a verdict.",
-    colossus:"You pushed the line high and played on the front foot — the Colossus’s aggressive instinct. You squeeze the game and dare them to run. An observation, not a label.",
-    architect:"You held a measured, balanced line again and again — the Architect’s composed map. Rarely too high, rarely too deep; the shape stays honest. A habit, not a verdict.",
-    sentinel:"You kept dropping to protect the space in behind — the Sentinel’s security-first read. Almost nothing gets over the top of you. A tendency, not your archetype." })[top] || '';
+      base.softRead=({ libero:"You kept jumping out to intercept the drop — the Libero’s aggressive read. Time it right and you kill the move at source; time it wrong and there’s a gap. A tendency, not a verdict.",
+    colossus:"You kept following the striker tight, refusing him a turn — the Colossus’s front-foot map. He gets no comfort on the ball; just mind the runner off your back. An observation, not a label.",
+    architect:"You kept stepping a measured amount to screen the pass — the Architect’s composed map. You cut the supply without breaking the line. A habit, not a verdict.",
+    sentinel:"You kept holding the line and covering the space — the Sentinel’s disciplined read. You don’t get dragged out, and nothing runs in behind. A tendency, not your archetype." })[top] || '';
     }
     return base;
   }
