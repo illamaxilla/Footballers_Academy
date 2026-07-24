@@ -34,19 +34,19 @@
   <div style="position:absolute;bottom:20px;left:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-left:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
   <div style="position:absolute;bottom:20px;right:20px;width:24px;height:24px;border-bottom:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);border-right:2px solid color-mix(in srgb,var(--accent,#22D3EE) 50%,transparent);z-index:4;pointer-events:none;"></div>
 
-  <header style="position:relative;z-index:6;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px clamp(26px,3.4vw,58px);">
-    <div style="min-width:120px;display:flex;">
+  <header style="position:relative;z-index:6;display:flex;align-items:center;justify-content:space-between;gap:14px;padding:22px clamp(20px,3.4vw,58px);">
+    <div style="min-width:0;display:flex;">
       <sc-if value="{{ showBack }}" hint-placeholder-val="{{ true }}">
         <a href="Assessment.dc.html" style="display:inline-flex;align-items:center;gap:8px;color:#8EA1B8;font:600 12.5px 'Archivo';" style-hover="color:#EAF2FB;">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><path d="M15 5l-7 7 7 7"/></svg>Back to the scan
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;"><path d="M15 5l-7 7 7 7"/></svg>Back to the scan
         </a>
       </sc-if>
     </div>
-    <div style="display:flex;align-items:center;gap:11px;">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" style="stroke:var(--accent,#22D3EE);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
+    <div style="display:flex;align-items:center;gap:11px;flex-shrink:0;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" style="stroke:var(--accent,#22D3EE);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
       <span style="font:800 12.5px 'Archivo';letter-spacing:.05em;">PREDICT THE <span style="color:var(--accent,#22D3EE);">PRO</span></span>
     </div>
-    <div style="display:flex;align-items:center;gap:12px;min-width:120px;justify-content:flex-end;">
+    <div style="display:flex;align-items:center;gap:12px;min-width:0;justify-content:flex-end;">
       <sc-if value="{{ inPlay }}" hint-placeholder-val="{{ false }}">
         <span style="display:inline-flex;align-items:center;gap:6px;font:700 12px 'IBM Plex Mono';color:{{ streakColor }};">
           <sc-if value="{{ onFire }}" hint-placeholder-val="{{ false }}"><span style="width:7px;height:7px;border-radius:50%;background:{{ streakColor }};box-shadow:0 0 8px {{ streakColor }};display:inline-block;animation:fa-flame .7s ease-in-out infinite;"></span></sc-if>
@@ -284,7 +284,7 @@ class Component extends DCLogic {
     const V=this.state.view; const embedded=!!this.props.embedded;
     const base={ accent,
       isIntro:V==='intro', isPlay:V==='play', isResult:V==='result', inPlay:V==='play',
-      showBack:!embedded, begin:()=>this._begin(), next:()=>this._next(), again:()=>this._again(),
+      showBack:!embedded && V!=='play', begin:()=>this._begin(), next:()=>this._next(), again:()=>this._again(),
     };
     const streak=this.state.streak;
     base.onFire = streak>=3;
